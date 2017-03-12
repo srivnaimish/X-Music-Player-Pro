@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/player"
     android:visibility="gone"
-    >
+    android:animateLayoutChanges="true">
     <ImageView
         android:id="@+id/album_art"
         android:layout_width="0dp"

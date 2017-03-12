@@ -8,16 +8,22 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SongsFragment.OnFragmentInteractionListener, ArtistFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener {
 
     private ArrayList<Song> songList;
     private MusicService musicService;
@@ -57,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
     ImageButton play_pause,play_pause_mini,prev,next,hide,repeat;
     ImageView album_art,album_art_mini;
 
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+    private TabLayout tabLayout;
+    private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +75,12 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        currentFragment = SongsFragment.newInstance(1);
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, currentFragment)
-                .commit();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
         songList = new ArrayList<Song>();
 
         init();
@@ -107,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 constraintLayout.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.GONE);
+                tabLayout.setVisibility(View.GONE);
+                mViewPager.setVisibility(View.GONE);
                 miniPlayer.setVisibility(View.GONE);
                 return false;
             }
@@ -116,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 miniPlayer.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
+                mViewPager.setVisibility(View.VISIBLE);
+                tabLayout.setVisibility(View.VISIBLE);
                 constraintLayout.setVisibility(View.GONE);
             }
         });
@@ -215,7 +229,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(constraintLayout.getVisibility()==View.VISIBLE){
             miniPlayer.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.VISIBLE);
+            mViewPager.setVisibility(View.VISIBLE);
+            tabLayout.setVisibility(View.VISIBLE);
+            //recyclerView.setVisibility(View.VISIBLE);
             constraintLayout.setVisibility(View.GONE);
         }
        /* try {
@@ -283,6 +299,49 @@ public class MainActivity extends AppCompatActivity {
        moveTaskToBack(true);
         else {
            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        Toast.makeText(this, "helo", Toast.LENGTH_SHORT).show();
+    }
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return SongsFragment.newInstance();
+                case 1:
+                    return PlaylistFragment.newInstance();
+                case 2:
+                    return ArtistFragment.newInstance();
+            }
+            return SongsFragment.newInstance();
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "All Songs";
+                case 1:
+                    return "Playlist";
+                case 2:
+                    return "Artists";
+            }
+            return null;
         }
     }
 }

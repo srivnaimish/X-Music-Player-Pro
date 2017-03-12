@@ -1,27 +1,17 @@
 package com.riseapps.xmusic.view;
 
-import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.ClickListener;
@@ -44,39 +34,41 @@ public class SongsFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    public static SongsFragment newInstance(int sectionNumber) {
-        SongsFragment fragment = new SongsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
+    public static SongsFragment newInstance() {
+        return new SongsFragment();
     }
 
     public SongsFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
 
         songList = ((MainActivity) getActivity()).getSongs();
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.songs);
 
         recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        if (songList.size() != 0) {
+            ((MainActivity) getActivity()).setSongs(songList);
+            songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
+            recyclerView.setAdapter(songsAdapter);
+            ((MainActivity) getActivity()).setRecyclerView(recyclerView);
+        }
+        else {
+            getSongList();
+            ((MainActivity) getActivity()).setSongs(songList);
+            songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
+            recyclerView.setAdapter(songsAdapter);
+            ((MainActivity) getActivity()).setRecyclerView(recyclerView);
+        }
 
-
-        getSongList();
-
-        ((MainActivity) getActivity()).setSongs(songList);
-        songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
-        recyclerView.setAdapter(songsAdapter);
-
-        ((MainActivity) getActivity()).setRecyclerView(recyclerView);
 
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
@@ -132,5 +124,10 @@ public class SongsFragment extends Fragment {
             musicCursor.close();
         }
 
+    }
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 }

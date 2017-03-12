@@ -37,7 +37,7 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent" />
 
-    <TextView
+    <com.riseapps.xmusic.widgets.MainTextView
         android:id="@+id/name_mini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         app:layout_constraintLeft_toRightOf="@+id/album_art_mini"
         app:layout_constraintTop_toTopOf="@+id/album_art_mini" />
 
-    <TextView
+    <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/artist_mini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
