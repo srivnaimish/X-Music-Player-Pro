@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8sp">
+
+    <ImageView
+        android:id="@+id/album_art"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
+        android:src="@drawable/empty"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="TextView"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/album_art"
+        android:layout_marginLeft="16sp"
+        android:layout_marginStart="16sp"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/artist_mini"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/album_art"
+        android:layout_marginBottom="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/album_art"
+        android:layout_marginLeft="16sp"
+        android:layout_marginStart="16sp"/>
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="TextView"
+        app:layout_constraintLeft_toRightOf="@+id/artist_mini"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="@+id/artist_mini"
+        app:layout_constraintBottom_toBottomOf="@+id/artist_mini"/>
+
+
+
+</android.support.constraint.ConstraintLayout>
