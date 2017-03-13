@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.Song;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -69,8 +70,11 @@ public class SongAdapter extends RecyclerView.Adapter {
                     TimeUnit.MILLISECONDS.toMinutes(time),
                     TimeUnit.MILLISECONDS.toSeconds(time) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)) ));
-
-            ((SongViewHolder) holder).iv.setImageURI(imagepath);
+            if (imagepath!=null) {
+                ((SongViewHolder) holder).iv.setImageURI(imagepath);
+                 }else{
+                   // ((SongViewHolder) holder).iv.setBackground(c.getResources().getDrawable(R.drawable.empty));
+                }
 
             ((SongViewHolder) holder).song = song;
 

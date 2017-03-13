@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.DragEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -79,12 +81,17 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(3);
+
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            tab.setCustomView(mSectionsPagerAdapter.getTabView(i));
+        }
         songList = new ArrayList<Song>();
 
         init();
-
 
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,25 +151,47 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
         }
     };
 
+    private void init() {
+        title= (TextView) findViewById(R.id.name);
+        title_mini= (TextView) findViewById(R.id.name_mini);
+        album_art = (ImageView) findViewById(R.id.album_art);
+        album_art_mini = (ImageView) findViewById(R.id.album_art_mini);
+        artist = (TextView) findViewById(R.id.artist);
+        artist_mini = (TextView) findViewById(R.id.artist_mini);
+        play_pause= (ImageButton) findViewById(R.id.play_pause);
+        play_pause_mini=(ImageButton) findViewById(R.id.play_pause_mini);
+        next= (ImageButton) findViewById(R.id.next);
+        prev= (ImageButton) findViewById(R.id.prev);
+        hide= (ImageButton) findViewById(R.id.hide);
+        repeat= (ImageButton) findViewById(R.id.repeat);
+        currentPosition= (TextView) findViewById(R.id.currentPosition);
+        totalDuration= (TextView) findViewById(R.id.totalDuration);
+        seekBar= (SeekBar) findViewById(R.id.seekBar);
+        play_pause.setOnClickListener(togglePlayBtn);
+        play_pause_mini.setOnClickListener(togglePlayBtn);
+    }
+
     private ServiceConnection musicConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(final ComponentName name, IBinder service) {
 
             MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
-            // Get service
             musicService = binder.getService();
-            // Pass song list
             musicService.setSongs(songList);
             musicService.setUIControls(seekBar, currentPosition, totalDuration);
 
-            // Initialize interfaces
             musicService.setOnSongChangedListener(new MusicService.OnSongChangedListener() {
-                // IconTextView previewPlayBtn = (IconTextView) findViewById(R.id.previewPlayBtn);
                 @Override
                 public void onSongChanged(Song song) {
-                   album_art.setImageURI(song.getImagepath());
-                   album_art_mini.setImageURI(song.getImagepath());
+                   if (song.getImagepath()!=null) {
+                       album_art.setImageURI(song.getImagepath());
+                       album_art_mini.setImageURI(song.getImagepath());
+                   }
+                   else {
+                       album_art.setBackgroundResource(R.drawable.empty);
+                       album_art_mini.setBackgroundResource(R.drawable.empty);
+                   }
 
                    title.setText(song.getName());
                    title_mini.setText(song.getName());
@@ -175,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
                             TimeUnit.MILLISECONDS.toMinutes(time),
                             TimeUnit.MILLISECONDS.toSeconds(time) -
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)) ));
-
                 }
 
                 @Override
@@ -209,7 +237,6 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
     protected void onStart() {
         super.onStart();
 
-        // Start service when we start the activity
         if (playIntent == null) {
             playIntent = new Intent(this, MusicService.class);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
@@ -234,48 +261,22 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
             //recyclerView.setVisibility(View.VISIBLE);
             constraintLayout.setVisibility(View.GONE);
         }
-       /* try {
-            if (!MusicService.player.isPlaying()&playIntent==null) {
-                play_pause.setImageResource(R.drawable.ic_play);
-                play_pause_mini.setImageResource(R.drawable.ic_play);
-            } else {
-                play_pause.setImageResource(R.drawable.ic_pause);
-                play_pause_mini.setImageResource(R.drawable.ic_pause);
-                int progress= new SharedPreferenceSingelton().getSaved(this,"seekbarPos");
-                Toast.makeText(this, "playing "+progress, Toast.LENGTH_SHORT).show();
-               *//* SharedPreferences sp=getSharedPreferences("play",MODE_PRIVATE);
-                String json=sp.getString("service",null);
-                musicService=gson.fromJson(json,new TypeToken<MusicService>() {}.getType());*//*
-
-            }
-        } catch (Exception e) {
-           // Log.e("Exception", "" + e.getMessage() + e.getStackTrace() + e.getCause());
-        }*/
         super.onResume();
     }
 
-    private void init() {
-        title= (TextView) findViewById(R.id.name);
-        title_mini= (TextView) findViewById(R.id.name_mini);
-        album_art = (ImageView) findViewById(R.id.album_art);
-        album_art_mini = (ImageView) findViewById(R.id.album_art_mini);
-        artist = (TextView) findViewById(R.id.artist);
-        artist_mini = (TextView) findViewById(R.id.artist_mini);
-        play_pause= (ImageButton) findViewById(R.id.play_pause);
-        play_pause_mini=(ImageButton) findViewById(R.id.play_pause_mini);
-        next= (ImageButton) findViewById(R.id.next);
-        prev= (ImageButton) findViewById(R.id.prev);
-        hide= (ImageButton) findViewById(R.id.hide);
-        repeat= (ImageButton) findViewById(R.id.repeat);
-        currentPosition= (TextView) findViewById(R.id.currentPosition);
-        totalDuration= (TextView) findViewById(R.id.totalDuration);
-        seekBar= (SeekBar) findViewById(R.id.seekBar);
-        play_pause.setOnClickListener(togglePlayBtn);
-        play_pause_mini.setOnClickListener(togglePlayBtn);
+    @Override
+    public void onBackPressed() {
+        if (musicPlaying)
+       moveTaskToBack(true);
+        else {
+           super.onBackPressed();
+        }
     }
 
-
-
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        Toast.makeText(this, "helo", Toast.LENGTH_SHORT).show();
+    }
 
     public ArrayList<Song> getSongs() {
         return songList;
@@ -293,55 +294,42 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
         return musicService;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (musicPlaying)
-       moveTaskToBack(true);
-        else {
-           super.onBackPressed();
-        }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-        Toast.makeText(this, "helo", Toast.LENGTH_SHORT).show();
-    }
-
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        String tabTitles[] = new String[] {"Playlist","Albums", "Artist" , "All Songs"};
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return SongsFragment.newInstance();
+                    return PlaylistFragment.newInstance();
                 case 1:
                     return PlaylistFragment.newInstance();
                 case 2:
                     return ArtistFragment.newInstance();
+                case 3:
+                    return SongsFragment.newInstance();
             }
-            return SongsFragment.newInstance();
+            return PlaylistFragment.newInstance();
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "All Songs";
-                case 1:
-                    return "Playlist";
-                case 2:
-                    return "Artists";
-            }
-            return null;
+            return tabTitles[position];
+        }
+        public View getTabView(int position) {
+            View tab = LayoutInflater.from(MainActivity.this).inflate(R.layout.custom_tab, null);
+            TextView tv = (TextView) tab.findViewById(R.id.custom_text);
+            tv.setText(tabTitles[position]);
+            return tab;
         }
     }
 }

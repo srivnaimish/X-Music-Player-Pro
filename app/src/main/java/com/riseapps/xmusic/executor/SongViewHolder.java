@@ -16,9 +16,9 @@ public class SongViewHolder extends RecyclerView.ViewHolder {
     ImageView iv;
     TextView name,artist,duration;
 
-    public Song song;
+    Song song;
 
-    public SongViewHolder(View v) {
+    SongViewHolder(View v) {
         super(v);
         iv= (ImageView) v.findViewById(R.id.album_art);
         name= (TextView) v.findViewById(R.id.name);

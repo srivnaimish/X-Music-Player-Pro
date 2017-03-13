@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     >
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/album_art"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -29,7 +29,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:textColor="@color/colorPrimaryFont"
-        android:textSize="17sp"/>
+        android:textSize="16sp"/>
 
     <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/artist_mini"
@@ -41,7 +41,7 @@
         app:layout_constraintLeft_toRightOf="@+id/album_art"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:textSize="16sp"/>
+        android:textSize="15sp"/>
 
     <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/duration"
@@ -51,7 +51,7 @@
         app:layout_constraintLeft_toRightOf="@+id/artist_mini"
         app:layout_constraintTop_toTopOf="@+id/artist_mini"
         app:layout_constraintBottom_toBottomOf="@+id/artist_mini"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:visibility="gone"/>
 
     <View

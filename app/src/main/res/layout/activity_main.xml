@@ -50,7 +50,8 @@ tools:context="com.riseapps.xmusic.view.MainActivity">
                 app:tabSelectedTextColor="@color/colorAccent"
                 app:tabPaddingStart="-1dp"
                 app:tabPaddingEnd="-1dp"
-                android:layout_gravity="bottom"/>
+                android:layout_gravity="bottom"
+                />
 
         </android.support.design.widget.AppBarLayout>
 

@@ -41,21 +41,19 @@
         android:id="@+id/name_mini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Song"
+        app:layout_constraintTop_toTopOf="@+id/album_art_mini"
         app:layout_constraintLeft_toRightOf="@+id/album_art_mini"
-        app:layout_constraintTop_toTopOf="@+id/album_art_mini" />
+        android:layout_marginLeft="16dp" />
 
     <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/artist_mini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Artist"
-        app:layout_constraintLeft_toRightOf="@+id/album_art_mini"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/album_art_mini"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/name_mini" />
 </android.support.constraint.ConstraintLayout>

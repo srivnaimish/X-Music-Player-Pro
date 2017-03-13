@@ -29,22 +29,19 @@ import java.util.concurrent.TimeUnit;
 
 import static java.security.AccessController.getContext;
 
-/**
- * Responsible for music playback. This is the main controller that handles all user actions
- * regarding song playback
- */
+
 public class MusicService extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
         MediaPlayer.OnCompletionListener {
 
-    // Media player
     public MediaPlayer player;
-    // Song list
+
     private ArrayList<Song> songs;
-    // Current position
+
     private int songPos;
-    // Our binder
+
     private final IBinder musicBind = new MusicBinder();
+
     private OnSongChangedListener onSongChangedListener;
 
     GenerateNotification generateNotification;
@@ -58,53 +55,17 @@ public class MusicService extends Service implements
     public TextView mTotalDuration;
     private int mInterval = 1000;
 
-    // Async thread to update progress bar every second
-    private Runnable mProgressRunner = new Runnable() {
-        @Override
-        public void run() {
-            if (mSeekBar != null) {
-                mSeekBar.setProgress(player.getCurrentPosition());
-
-                if (player.isPlaying()) {
-                    mSeekBar.postDelayed(mProgressRunner, mInterval);
-                }
-            }
-        }
-    };
-
     public void onCreate() {
-        // Create the service
+
         super.onCreate();
-        // Initialize position
         songPos = 0;
-        // Create player
         player = new MediaPlayer();
         initMusicPlayer();
     }
 
-    public void initMusicPlayer() {
-        // Set player properties
-        player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        // Set player event listeners
-        player.setOnPreparedListener(this);
-        player.setOnCompletionListener(this);
-        player.setOnErrorListener(this);
-    }
-
-    public void setSongs(ArrayList<Song> songs) {
-        this.songs = songs;
-    }
-
-    public class MusicBinder extends Binder {
-        public MusicService getService() {
-            return MusicService.this;
-        }
-    }
-
     @Override
     public IBinder onBind(Intent intent) {
-        Toast.makeText(this, "Bound ", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "Bound ", Toast.LENGTH_SHORT).show();
         generateNotification = new GenerateNotification();
 
         return musicBind;
@@ -123,7 +84,7 @@ public class MusicService extends Service implements
     @Override
     public void onDestroy() {
        // generateNotification.cancelNotification(5);
-        Toast.makeText(this, "Service gone", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Service gone", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -150,12 +111,33 @@ public class MusicService extends Service implements
 
     }
 
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        generateNotification.cancelNotification(5);
+        stopSelf();
+        super.onTaskRemoved(rootIntent);
+    }
 
-    /**
-     * Sets a new song to buffer
-     *
-     * @param songIndex - position of the song in the array
-     */
+    public class MusicBinder extends Binder {
+        public MusicService getService() {
+            return MusicService.this;
+        }
+    }
+
+    public void initMusicPlayer() {
+
+        player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        player.setOnPreparedListener(this);
+        player.setOnCompletionListener(this);
+        player.setOnErrorListener(this);
+    }
+
+    public void setSongs(ArrayList<Song> songs) {
+        this.songs = songs;
+    }
+
     public void setSong(int songIndex) {
         if (songs.size() <= songIndex || songIndex < 0) // if the list is empty... just return
             return;
@@ -164,9 +146,6 @@ public class MusicService extends Service implements
         onSongChangedListener.onSongChanged(songs.get(songPos));
     }
 
-    /**
-     * Toggles on/off song playback
-     */
     public void togglePlay() {
         switch (playerState) {
             case STOPPED:
@@ -190,17 +169,15 @@ public class MusicService extends Service implements
     }
 
     private void playSong() {
-        if (songs.size() <= songPos) // if the list is empty... just return
+        if (songs.size() <= songPos)
             return;
-        // Play a song
         player.reset();
-        // Get song
+
         Song playSong = songs.get(songPos);
         long currSongID = playSong.getID();
         Uri trackUri = ContentUris.withAppendedId(
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 currSongID);
-        // Try playing the track... but it might be missing so try and catch
         try {
             player.setDataSource(getApplicationContext(), trackUri);
         } catch (Exception e) {
@@ -218,16 +195,11 @@ public class MusicService extends Service implements
         void onPlayerStatusChanged(int status);
     }
 
-    // Sets a callback to execute when we switch songs.. ie: update UI
-    public void setOnSongChangedListener(OnSongChangedListener listener) {
+
+    public void setOnSongChangedListener(OnSongChangedListener listener) {   // Sets a callback to execute when we switch songs.. ie: update UI
         onSongChangedListener = listener;
     }
 
-    /**
-     * Sets seekBar to control while playing music
-     *
-     * @param seekBar - Seek bar instance that's already on our UI thread
-     */
     public void setUIControls(SeekBar seekBar, TextView currentPosition, TextView totalDuration) {
         mSeekBar = seekBar;
         mCurrentPosition = currentPosition;
@@ -262,10 +234,17 @@ public class MusicService extends Service implements
         return songPos;
     }
 
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        generateNotification.cancelNotification(5);
-        stopSelf();
-        super.onTaskRemoved(rootIntent);
-    }
+    private Runnable mProgressRunner = new Runnable() {
+        @Override
+        public void run() {
+            if (mSeekBar != null) {
+                mSeekBar.setProgress(player.getCurrentPosition());
+
+                if (player.isPlaying()) {
+                    mSeekBar.postDelayed(mProgressRunner, mInterval);
+                }
+            }
+        }
+    };
+
 }
