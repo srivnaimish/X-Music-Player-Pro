@@ -2,6 +2,7 @@ package com.riseapps.xmusic.executor;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.riseapps.xmusic.model.Song;
 public class SongViewHolder extends RecyclerView.ViewHolder {
     ImageView iv;
     TextView name,artist,duration;
+    ImageButton like;
 
     Song song;
 
@@ -24,6 +26,7 @@ public class SongViewHolder extends RecyclerView.ViewHolder {
         name= (TextView) v.findViewById(R.id.name);
         artist= (TextView) v.findViewById(R.id.artist_mini);
         duration= (TextView) v.findViewById(R.id.duration);
+        like= (ImageButton) v.findViewById(R.id.like);
     }
 
 }

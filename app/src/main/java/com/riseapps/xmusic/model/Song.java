@@ -8,41 +8,23 @@ import android.os.Parcelable;
  * Created by naimish on 4/1/17.
  */
 
-public class Song implements Parcelable {
+public class Song{
     private long ID, duration;
     private String Name, Artist;
-    private Uri Imagepath;
+    private String Imagepath;
+    private boolean favourite;
 
-    public Song(long id, long duration, String name, String artist, Uri imagepath) {
+    public Song(long id, long duration, String name, String artist, String imagepath, boolean favourite) {
         Name = name;
         ID = id;
         Artist = artist;
         Imagepath = imagepath;
         this.duration = duration;
+        this.favourite = favourite;
     }
 
-    protected Song(Parcel in) {
-        ID = in.readLong();
-        duration = in.readLong();
-        Name = in.readString();
-        Artist = in.readString();
-        Imagepath = in.readParcelable(Uri.class.getClassLoader());
-    }
-
-    public static final Creator<Song> CREATOR = new Creator<Song>() {
-        @Override
-        public Song createFromParcel(Parcel in) {
-            return new Song(in);
-        }
-
-        @Override
-        public Song[] newArray(int size) {
-            return new Song[size];
-        }
-    };
-
-    public long getDuration() {
-        return duration;
+    public long getID() {
+        return ID;
     }
 
     public String getName() {
@@ -53,13 +35,15 @@ public class Song implements Parcelable {
         return Artist;
     }
 
-    public Uri getImagepath() {
+    public long getDuration() {
+        return duration;
+    }
+
+    public String getImagepath() {
         return Imagepath;
     }
 
-    public long getID() {
-        return ID;
-    }
+    public boolean getFavourite(){ return favourite; }
 
     public void setID(long ID) {
         this.ID = ID;
@@ -73,7 +57,7 @@ public class Song implements Parcelable {
         Artist = artist;
     }
 
-    public void setImagepath(Uri imagepath) {
+    public void setImagepath(String imagepath) {
         Imagepath = imagepath;
     }
 
@@ -81,18 +65,9 @@ public class Song implements Parcelable {
         this.duration = duration;
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(ID);
-        parcel.writeLong(duration);
-        parcel.writeString(Name);
-        parcel.writeString(Artist);
-        parcel.writeParcelable(Imagepath, i);
-    }
+
 }

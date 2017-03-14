@@ -1,10 +1,7 @@
 package com.riseapps.xmusic.model;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -12,22 +9,17 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.GenerateNotification;
-import com.riseapps.xmusic.view.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import static java.security.AccessController.getContext;
 
 
 public class MusicService extends Service implements
@@ -45,6 +37,8 @@ public class MusicService extends Service implements
     private OnSongChangedListener onSongChangedListener;
 
     GenerateNotification generateNotification;
+
+    private static final int NOTIFICATION_ID = 1;
 
     public static final int STOPPED = 0;
     public static final int PAUSED = 1;
@@ -65,26 +59,14 @@ public class MusicService extends Service implements
 
     @Override
     public IBinder onBind(Intent intent) {
-      //  Toast.makeText(this, "Bound ", Toast.LENGTH_SHORT).show();
-        generateNotification = new GenerateNotification();
-
         return musicBind;
     }
 
     @Override
-    public boolean onUnbind(Intent intent) {
-        // Stop media player
-        Toast.makeText(this, "UnBound ", Toast.LENGTH_SHORT).show();
-        /*player.stop();
-        player.reset();
-        player.release();*/
-        return false;
-    }
-
-    @Override
-    public void onDestroy() {
-       // generateNotification.cancelNotification(5);
-        //Toast.makeText(this, "Service gone", Toast.LENGTH_SHORT).show();
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        generateNotification = new GenerateNotification();
+        startForeground(NOTIFICATION_ID,generateNotification.getNotification(this));
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -113,7 +95,11 @@ public class MusicService extends Service implements
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        generateNotification.cancelNotification(5);
+        mSeekBar=null;
+        onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
+        player.stop();
+        player.reset();
+        player.release();
         stopSelf();
         super.onTaskRemoved(rootIntent);
     }
@@ -150,12 +136,10 @@ public class MusicService extends Service implements
         switch (playerState) {
             case STOPPED:
                 playSong();
-                generateNotification.generateNotification(this, 5);
                 break;
             case PAUSED:
                 player.start();
                 onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
-                generateNotification.generateNotification(this, 5);
                 //  Toast.makeText(this, "Resume song", Toast.LENGTH_SHORT).show();
                 mProgressRunner.run();
                 break;
@@ -194,7 +178,6 @@ public class MusicService extends Service implements
 
         void onPlayerStatusChanged(int status);
     }
-
 
     public void setOnSongChangedListener(OnSongChangedListener listener) {   // Sets a callback to execute when we switch songs.. ie: update UI
         onSongChangedListener = listener;

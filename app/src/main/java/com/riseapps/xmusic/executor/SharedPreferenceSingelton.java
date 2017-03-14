@@ -2,6 +2,7 @@ package com.riseapps.xmusic.executor;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 
 import static android.content.Context.MODE_PRIVATE;
 

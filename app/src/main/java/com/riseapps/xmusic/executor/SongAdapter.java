@@ -39,11 +39,8 @@ public class SongAdapter extends RecyclerView.Adapter {
 
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,        //contens of recyclerview
-                                                      int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
-
-
         View v = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.song_list_row, parent, false);
         return new SongViewHolder(v);
@@ -57,24 +54,33 @@ public class SongAdapter extends RecyclerView.Adapter {
 
             Song song = (Song) songsList.get(position);
 
-            String name=song.getName();
-            String artist=song.getArtist();
-            long time=song.getDuration();
-            Uri imagepath=song.getImagepath();
+            String name = song.getName();
+            String artist = song.getArtist();
+            long time = song.getDuration();
+            String imagepath = song.getImagepath();
 
             ((SongViewHolder) holder).name.setText(name);
 
             ((SongViewHolder) holder).artist.setText(artist);
 
-            ((SongViewHolder) holder).duration.setText(String.format(Locale.getDefault(),"%d:%02d",
+            ((SongViewHolder) holder).duration.setText(String.format(Locale.getDefault(), "%d:%02d",
                     TimeUnit.MILLISECONDS.toMinutes(time),
                     TimeUnit.MILLISECONDS.toSeconds(time) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)) ));
-            if (imagepath!=null) {
-                ((SongViewHolder) holder).iv.setImageURI(imagepath);
-                 }else{
-                   // ((SongViewHolder) holder).iv.setBackground(c.getResources().getDrawable(R.drawable.empty));
-                }
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))));
+            if (!imagepath.equalsIgnoreCase("no_image")) {
+                ((SongViewHolder) holder).iv.setImageURI(Uri.parse(imagepath));
+            }
+            else {
+                ((SongViewHolder) holder).iv.setImageResource(R.drawable.empty);
+            }
+
+
+            if(song.getFavourite()){
+                ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);
+            }
+            else {
+                ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
+            }
 
             ((SongViewHolder) holder).song = song;
 
@@ -89,7 +95,6 @@ public class SongAdapter extends RecyclerView.Adapter {
 
 
     //
-
 
 
 }

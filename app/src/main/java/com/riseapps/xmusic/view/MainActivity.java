@@ -19,12 +19,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,6 +41,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.executor.AlbumArtChecker;
 import com.riseapps.xmusic.executor.GenerateNotification;
 import com.riseapps.xmusic.executor.SharedPreferenceSingelton;
 import com.riseapps.xmusic.model.MusicService;
@@ -50,6 +54,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements SongsFragment.OnFragmentInteractionListener, ArtistFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener {
 
+    private static final String DEBUG_TAG ="abc" ;
     private ArrayList<Song> songList;
     private MusicService musicService;
     private Intent playIntent;
@@ -184,13 +189,13 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
             musicService.setOnSongChangedListener(new MusicService.OnSongChangedListener() {
                 @Override
                 public void onSongChanged(Song song) {
-                   if (song.getImagepath()!=null) {
-                       album_art.setImageURI(song.getImagepath());
-                       album_art_mini.setImageURI(song.getImagepath());
+                   if (!song.getImagepath().equalsIgnoreCase("no_image")) {
+                       album_art.setImageURI(Uri.parse(song.getImagepath()));
+                       album_art_mini.setImageURI(Uri.parse(song.getImagepath()));
                    }
                    else {
-                       album_art.setBackgroundResource(R.drawable.empty);
-                       album_art_mini.setBackgroundResource(R.drawable.empty);
+                       album_art.setImageResource(R.drawable.empty);
+                       album_art_mini.setImageResource(R.drawable.empty);
                    }
 
                    title.setText(song.getName());
@@ -236,17 +241,17 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
     @Override
     protected void onStart() {
         super.onStart();
-
         if (playIntent == null) {
             playIntent = new Intent(this, MusicService.class);
-            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             startService(playIntent);
+            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
+            Toast.makeText(MainActivity.this, "Bind", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
     protected void onDestroy() {
+        unbindService(musicConnection);
         stopService(playIntent);
         super.onDestroy();
     }
@@ -284,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
 
     public void setSongs(ArrayList<Song> songList) {
         this.songList = songList;
+
     }
 
     public void setRecyclerView(RecyclerView recyclerView){
@@ -300,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
             super(fm);
         }
 
-        String tabTitles[] = new String[] {"Playlist","Albums", "Artist" , "All Songs"};
+        String tabTitles[] = new String[] {"Playlist","Albums", "Artist" , "All Songs","Artist","Artist"};
         @Override
         public Fragment getItem(int position) {
             switch (position) {
@@ -312,13 +318,17 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
                     return ArtistFragment.newInstance();
                 case 3:
                     return SongsFragment.newInstance();
+                case 4:
+                    return ArtistFragment.newInstance();
+                case 5:
+                    return ArtistFragment.newInstance();
             }
             return PlaylistFragment.newInstance();
         }
 
         @Override
         public int getCount() {
-            return 4;
+            return 6;
         }
 
         @Override

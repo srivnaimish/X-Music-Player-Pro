@@ -16,9 +16,7 @@ import com.riseapps.xmusic.view.MainActivity;
  */
 
 public class GenerateNotification {
-    Context context;
-    public void generateNotification(Context context,int id) {
-        this.context=context;
+    public Notification getNotification(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
@@ -28,7 +26,6 @@ public class GenerateNotification {
         mBuilder.setAutoCancel(false);
         mBuilder.setOngoing(true);
         mBuilder.setSmallIcon(R.drawable.ic_play);
-                // Set Ticker Messag
         mBuilder.setTicker("Music Playing");
         Notification notification = mBuilder.build();
         RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_content_layout);
@@ -45,13 +42,7 @@ public class GenerateNotification {
         expandedView.setImageViewResource(R.id.imageView,R.drawable.empty);
         notification.bigContentView = expandedView;
 
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(id, notification);
-    }
-
-    public void cancelNotification(int id){
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.cancel(id);
+        return notification;
     }
 
 
