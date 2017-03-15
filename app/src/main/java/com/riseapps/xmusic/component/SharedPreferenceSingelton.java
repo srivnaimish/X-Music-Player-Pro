@@ -1,4 +1,4 @@
-package com.riseapps.xmusic.executor;
+package com.riseapps.xmusic.component;
 
 import android.content.Context;
 import android.content.SharedPreferences;

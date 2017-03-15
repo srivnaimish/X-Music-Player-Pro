@@ -8,7 +8,8 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
     card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="2dp"
+    card_view:cardElevation="1dp"
+
     >
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,12 +18,11 @@
     android:layout_height="wrap_content"
     >
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/album_art"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/empty"
-        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/empty"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -42,7 +42,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:textColor="@color/colorPrimaryFont"
-        android:textSize="15sp"/>
+        android:textSize="14sp"
+        android:textAllCaps="true"
+        />
 
     <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/artist_mini"
@@ -71,13 +73,13 @@
         android:id="@+id/like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        card_view:srcCompat="@drawable/ic_like"
+        app:srcCompat="@drawable/ic_like"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@null"
         app:layout_constraintRight_toRightOf="parent" />
 

@@ -1,8 +1,11 @@
 package com.riseapps.xmusic.model;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -12,6 +15,7 @@ import android.os.PowerManager;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.GenerateNotification;
@@ -28,7 +32,7 @@ public class MusicService extends Service implements
 
     public MediaPlayer player;
 
-    private ArrayList<Song> songs;
+    public ArrayList<Song> songs;
 
     private int songPos;
 
@@ -55,6 +59,7 @@ public class MusicService extends Service implements
         songPos = 0;
         player = new MediaPlayer();
         initMusicPlayer();
+
     }
 
     @Override
@@ -65,7 +70,7 @@ public class MusicService extends Service implements
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         generateNotification = new GenerateNotification();
-        startForeground(NOTIFICATION_ID,generateNotification.getNotification(this));
+        startForeground(NOTIFICATION_ID,generateNotification.getNotification(this,getInstance()));
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -110,6 +115,10 @@ public class MusicService extends Service implements
         }
     }
 
+    public MusicService getInstance() {
+        return MusicService.this;
+    }
+
     public void initMusicPlayer() {
 
         player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
@@ -124,6 +133,7 @@ public class MusicService extends Service implements
         this.songs = songs;
     }
 
+    public ArrayList<Song> getSongs(){ return songs;}
     public void setSong(int songIndex) {
         if (songs.size() <= songIndex || songIndex < 0) // if the list is empty... just return
             return;
@@ -211,6 +221,12 @@ public class MusicService extends Service implements
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+      //  unregisterReceiver(receiver);
+        super.onDestroy();
     }
 
     public int getCurrentIndex() {

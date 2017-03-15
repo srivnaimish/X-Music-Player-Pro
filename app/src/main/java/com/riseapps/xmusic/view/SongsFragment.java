@@ -5,35 +5,27 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
-import com.riseapps.xmusic.executor.AlbumArtChecker;
-import com.riseapps.xmusic.executor.ClickListener;
-import com.riseapps.xmusic.executor.RecycleTouchListener;
-import com.riseapps.xmusic.executor.SharedPreferenceSingelton;
+import com.riseapps.xmusic.component.AlbumArtChecker;
 import com.riseapps.xmusic.executor.SongAdapter;
-import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
 
-import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by naimish on 11/3/17.
@@ -47,7 +39,7 @@ public class SongsFragment extends Fragment {
     View view;
     Gson gson = new Gson();
     Async async;
-    private Animation scale;
+
     ImageButton like;
     Type type=new TypeToken<ArrayList<Song>>() {}.getType();
 
@@ -62,12 +54,11 @@ public class SongsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
         async=new Async();
 
-        scale = AnimationUtils.loadAnimation(getContext(), R.anim.like);
         songList = ((MainActivity) getActivity()).getSongs();
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.songs);
         int spanCount = 1; // 2 columns
-        int spacing = 15; // 50px
+        int spacing = 20; // 50px
         boolean includeEdge = true;
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, includeEdge));
         recyclerView.setHasFixedSize(true);
@@ -80,39 +71,6 @@ public class SongsFragment extends Fragment {
 
         async.execute();
 
-
-
-        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, final int position) {
-                MusicService musicService =((MainActivity)getActivity()).getMusicService();
-                musicService.setSong(position);
-                musicService.togglePlay();
-
-                like= (ImageButton) view.findViewById(R.id.like);
-                like.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getContext(), "Added to Favourites", Toast.LENGTH_SHORT).show();
-                        like.startAnimation(scale);
-                        if(songList.get(position).getFavourite()){
-                            like.setImageResource(R.drawable.ic_like);
-                            songList.get(position).setFavourite(false);
-                        }
-                        else {
-                            like.setImageResource(R.drawable.ic_liked);
-                            songList.get(position).setFavourite(true);
-                        }
-                    }
-                });
-
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
         view=rootView;
         return rootView;
     }
@@ -199,6 +157,12 @@ public class SongsFragment extends Fragment {
             }
             else {*/
                 getSongList();
+                Collections.sort(songList, new Comparator<Song>() {
+                    @Override
+                    public int compare(Song song, Song t1) {
+                        return song.getName().compareTo(t1.getName());
+                    }
+                });
             /*    String json = gson.toJson(songList, type);
                 new SharedPreferenceSingelton().saveAs(getContext(),"songList",json);
             }*/
@@ -210,7 +174,7 @@ public class SongsFragment extends Fragment {
             ((MainActivity) getActivity()).setSongs(songList);
             songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
             recyclerView.setAdapter(songsAdapter);
-            ((MainActivity) getActivity()).setRecyclerView(recyclerView);
+           // ((MainActivity) getActivity()).setRecyclerView(recyclerView);
             super.onPostExecute(aVoid);
         }
     }

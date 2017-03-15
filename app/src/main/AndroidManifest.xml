@@ -23,7 +23,7 @@
         <service
             android:name=".model.MusicService"
             android:enabled="true" />
-
+        <receiver android:name=".executor.SwitchButtonListener"/>
     </application>
 
 </manifest>
