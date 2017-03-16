@@ -1,4 +1,4 @@
-package com.riseapps.xmusic.view;
+package com.riseapps.xmusic.view.Fragment;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -12,17 +12,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AlbumArtChecker;
-import com.riseapps.xmusic.executor.SongAdapter;
-import com.riseapps.xmusic.model.Song;
+import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
+import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
+import com.riseapps.xmusic.view.Activity.MainActivity;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,9 +37,7 @@ public class SongsFragment extends Fragment {
     View view;
     Gson gson = new Gson();
     Async async;
-
-    ImageButton like;
-    Type type=new TypeToken<ArrayList<Song>>() {}.getType();
+    //Type type=new TypeToken<ArrayList<Song>>() {}.getType();
 
     public static SongsFragment newInstance() {
         return new SongsFragment();

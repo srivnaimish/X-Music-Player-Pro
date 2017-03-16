@@ -5,7 +5,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.riseapps.xmusic.R;
-import com.riseapps.xmusic.view.MainActivity;
 
 /**
  * Created by naimish on 15/3/17.

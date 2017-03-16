@@ -24,8 +24,7 @@
 
     <style name="AppTheme.NoActionBarColored.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="customtabs" parent="Widget.Design.TabLayout">
-    </style>
+    <style name="customtabs" parent="Widget.Design.TabLayout"></style>
 
 
 </resources>

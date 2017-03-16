@@ -1,0 +1,31 @@
+package com.riseapps.xmusic.model.Pojo;
+
+/**
+ * Created by naimish on 15/3/17.
+ */
+
+public class Playlist{
+    private String name;
+    private int count;
+
+    public Playlist(String name,int count) {
+        this.name = name;
+        this.count=count;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getcount() {
+        return count;
+    }
+}

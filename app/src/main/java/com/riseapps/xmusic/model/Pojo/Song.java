@@ -1,4 +1,4 @@
-package com.riseapps.xmusic.model;
+package com.riseapps.xmusic.model.Pojo;
 
 import android.net.Uri;
 import android.os.Parcel;

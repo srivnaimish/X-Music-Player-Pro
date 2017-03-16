@@ -1,7 +1,6 @@
 package com.riseapps.xmusic.executor;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,12 +8,10 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.MusicService;
-import com.riseapps.xmusic.model.Song;
-import com.riseapps.xmusic.view.MainActivity;
+import com.riseapps.xmusic.view.Activity.MainActivity;
 
 /**
  * Created by naimish on 12/3/17.

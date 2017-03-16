@@ -1,11 +1,8 @@
 package com.riseapps.xmusic.model;
 
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -15,10 +12,9 @@ import android.os.PowerManager;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.GenerateNotification;
+import com.riseapps.xmusic.model.Pojo.Song;
 
 import java.util.ArrayList;
 import java.util.Locale;

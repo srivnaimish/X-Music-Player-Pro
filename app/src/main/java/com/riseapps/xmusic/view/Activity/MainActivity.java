@@ -1,4 +1,4 @@
-package com.riseapps.xmusic.view;
+package com.riseapps.xmusic.view.Activity;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -30,13 +30,17 @@ import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.model.MusicService;
-import com.riseapps.xmusic.model.Song;
+import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.view.Fragment.AlbumFragment;
+import com.riseapps.xmusic.view.Fragment.ArtistFragment;
+import com.riseapps.xmusic.view.Fragment.PlaylistFragment;
+import com.riseapps.xmusic.view.Fragment.SongsFragment;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements SongsFragment.OnFragmentInteractionListener, ArtistFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements SongsFragment.OnFragmentInteractionListener, ArtistFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener,AlbumFragment.OnFragmentInteractionListener {
 
     private ArrayList<Song> songList = new ArrayList<Song>();
     private MusicService musicService;
@@ -325,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
             super(fm);
         }
 
-        String tabTitles[] = new String[]{"Playlist", "Albums", "Artist", "All Songs", "Artist", "Artist"};
+        String tabTitles[] = new String[]{"Playlist", "Album", "Artist", "All Songs"};
 
         @Override
         public Fragment getItem(int position) {
@@ -333,22 +337,18 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
                 case 0:
                     return PlaylistFragment.newInstance();
                 case 1:
-                    return PlaylistFragment.newInstance();
+                    return AlbumFragment.newInstance();
                 case 2:
                     return ArtistFragment.newInstance();
                 case 3:
                     return SongsFragment.newInstance();
-                case 4:
-                    return ArtistFragment.newInstance();
-                case 5:
-                    return ArtistFragment.newInstance();
             }
             return PlaylistFragment.newInstance();
         }
 
         @Override
         public int getCount() {
-            return 6;
+            return 4;
         }
 
         @Override

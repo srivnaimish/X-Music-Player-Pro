@@ -5,7 +5,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/drawerLayout"
 android:layout_width="match_parent"
 android:layout_height="match_parent" android:fitsSystemWindows="false"
-tools:context="com.riseapps.xmusic.view.MainActivity">
+tools:context="com.riseapps.xmusic.view.Activity.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -72,8 +72,7 @@ tools:context="com.riseapps.xmusic.view.MainActivity">
                 app:tabPaddingStart="-1dp"
                 app:tabPaddingEnd="-1dp"
                 android:layout_gravity="bottom"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:tabMode="scrollable"/>
+                app:layout_scrollFlags="scroll|enterAlways"/>
 
         </android.support.design.widget.AppBarLayout>
 

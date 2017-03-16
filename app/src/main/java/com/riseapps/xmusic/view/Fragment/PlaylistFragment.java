@@ -1,48 +1,38 @@
-package com.riseapps.xmusic.view;
+package com.riseapps.xmusic.view.Fragment;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.executor.RecycleViewAdapters.PlaylistAdapter;
+import com.riseapps.xmusic.model.Pojo.Playlist;
+import com.riseapps.xmusic.utils.GridItemDecoration;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment_songs must implement the
- * {@link PlaylistFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PlaylistFragment#newInstance} factory method to
- * create an instance of this fragment_songs.
- */
+import java.util.ArrayList;
+
+
 public class PlaylistFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment_songs initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    RecyclerView recyclerView;
+    ArrayList<Playlist> playListLists=new ArrayList<>();
+    PlaylistAdapter playlistAdapter;
     private OnFragmentInteractionListener mListener;
 
     public PlaylistFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment_songs using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment_songs PlaylistFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static PlaylistFragment newInstance() {
         return new PlaylistFragment();
     }
@@ -51,8 +41,7 @@ public class PlaylistFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -60,7 +49,28 @@ public class PlaylistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment_songs
-        return inflater.inflate(R.layout.fragment_playlist, container, false);
+        View v=inflater.inflate(R.layout.fragment_playlist, container, false);
+
+        playListLists.add(new Playlist("auto Playlist 1",5));
+        playListLists.add(new Playlist("auto Playlist 1",5));
+        playListLists.add(new Playlist("auto Playlist 1",5));
+        playListLists.add(new Playlist("auto Playlist 1",5));
+        playListLists.add(new Playlist("auto Playlist 1",5));
+        playListLists.add(new Playlist("auto Playlist 1",5));
+        recyclerView = (RecyclerView) v.findViewById(R.id.playlists);
+        recyclerView.setHasFixedSize(true);
+        GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
+        recyclerView.setLayoutManager(grid);
+
+        int spanCount = 2;
+        int spacing = 40;
+
+        recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
+        recyclerView.setNestedScrollingEnabled(false);
+
+        playlistAdapter = new PlaylistAdapter(getActivity(), playListLists, recyclerView);
+        recyclerView.setAdapter(playlistAdapter);
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -87,16 +97,7 @@ public class PlaylistFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment_songs to allow an interaction in this fragment_songs to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
