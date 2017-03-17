@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.constraint.ConstraintLayout;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,10 +29,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.claudiodegio.msv.OnSearchViewListener;
+import com.claudiodegio.msv.SuggestionMaterialSearchView;
+import com.gelitenight.waveview.library.WaveView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
 import com.riseapps.xmusic.view.Fragment.ArtistFragment;
 import com.riseapps.xmusic.view.Fragment.PlaylistFragment;
@@ -40,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements SongsFragment.OnFragmentInteractionListener, ArtistFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener,AlbumFragment.OnFragmentInteractionListener {
+public class MainActivity extends BaseMatSearchViewActivity implements SongsFragment.OnFragmentInteractionListener, ArtistFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AlbumFragment.OnFragmentInteractionListener, OnSearchViewListener {
 
     private ArrayList<Song> songList = new ArrayList<Song>();
     private MusicService musicService;
@@ -64,11 +70,16 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
     private TabLayout tabLayout;
     private Toolbar toolbar,toolbarPlayer;
 
+    private WaveHelper mWaveHelper;
+
+    private int mBorderColor = Color.parseColor("#44FFFFFF");
+    private int mBorderWidth = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
         initiallize();
 
@@ -103,6 +114,17 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
             }
         });
 
+        final WaveView waveView = (WaveView) findViewById(R.id.wave);
+        waveView.setBorder(mBorderWidth, mBorderColor);
+
+        // set wave view
+        mWaveHelper = new WaveHelper(waveView);
+        waveView.setShapeType(WaveView.ShapeType.CIRCLE);
+        waveView.setWaveColor(
+                Color.parseColor("#D32F2F"),
+                Color.parseColor("#F44336"));
+        mWaveHelper.start();
+
     }
 
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
@@ -113,15 +135,6 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
     };
 
     private void initiallize() {
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.main_menu);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
 
         toolbarPlayer = (Toolbar) findViewById(R.id.toolbar_player);
         toolbarPlayer.inflateMenu(R.menu.player_menu);
@@ -222,11 +235,13 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
                             play_pause.setImageResource(R.drawable.ic_pause);
                             play_pause_mini.setImageResource(R.drawable.ic_pause);
                             musicPlaying = true;
+                            mWaveHelper.start();
                             break;
                         case MusicService.PAUSED:
                             play_pause.setImageResource(R.drawable.ic_play);
                             play_pause_mini.setImageResource(R.drawable.ic_play);
                             musicPlaying = false;
+                            mWaveHelper.cancel();
                             break;
                     }
                 }
@@ -323,13 +338,33 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
         return musicService;
     }
 
+    @Override
+    public void onSearchViewShown() {
+
+    }
+
+    @Override
+    public void onSearchViewClosed() {
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public void onQueryTextChange(String s) {
+
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        String tabTitles[] = new String[]{"Playlist", "Album", "Artist", "All Songs"};
+        String tabTitles[] = new String[]{"PLAYLIST", "ALBUM", "ARTISTS", "ALL SONGS"};
 
         @Override
         public Fragment getItem(int position) {
@@ -362,5 +397,19 @@ public class MainActivity extends AppCompatActivity implements SongsFragment.OnF
             tv.setText(tabTitles[position]);
             return tab;
         }
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initCustom() {
+        super.initCustom();
+        String[] arrays = getResources().getStringArray(R.array.query_suggestions);
+        SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView)mSearchView;
+        cast.setSuggestion(arrays);
+        mSearchView.setOnSearchViewListener(this);
     }
 }

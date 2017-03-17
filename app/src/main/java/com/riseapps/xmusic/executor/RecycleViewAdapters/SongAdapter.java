@@ -69,12 +69,12 @@ public class SongAdapter extends RecyclerView.Adapter {
                     TimeUnit.MILLISECONDS.toSeconds(time) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))));
             if (!imagepath.equalsIgnoreCase("no_image")) {
-                //((SongViewHolder) holder).iv.setImageURI(Uri.parse(imagepath));
-                Glide.with(c).load(Uri.parse(imagepath)).into(((SongViewHolder) holder).iv);
+                Glide.with(c).load(Uri.parse(imagepath))
+                        .crossFade()
+                        .into(((SongViewHolder) holder).iv);
             }
             else {
                 ((SongViewHolder) holder).iv.setImageResource(R.drawable.empty);
-                //Glide.with(c).load(R.drawable.empty).into(((SongViewHolder) holder).iv);
             }
 
             if(song.getFavourite()){
