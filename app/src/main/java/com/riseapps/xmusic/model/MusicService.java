@@ -1,7 +1,9 @@
 package com.riseapps.xmusic.model;
 
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -65,8 +67,6 @@ public class MusicService extends Service implements
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        generateNotification = new GenerateNotification();
-        startForeground(NOTIFICATION_ID,generateNotification.getNotification(this,getInstance()));
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -142,18 +142,22 @@ public class MusicService extends Service implements
         switch (playerState) {
             case STOPPED:
                 playSong();
+                generateNotification = new GenerateNotification(1);
+                startForeground(NOTIFICATION_ID,generateNotification.getNotification(this,getInstance()));
                 break;
             case PAUSED:
                 player.start();
                 onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
-                //  Toast.makeText(this, "Resume song", Toast.LENGTH_SHORT).show();
                 mProgressRunner.run();
+                generateNotification = new GenerateNotification(1);
+                startForeground(NOTIFICATION_ID,generateNotification.getNotification(this,getInstance()));
                 break;
             case PLAYING:
                 player.pause();
                 onSongChangedListener.onPlayerStatusChanged(playerState = PAUSED);
                 mSeekBar.removeCallbacks(mProgressRunner);
-                //   Toast.makeText(this, "Pause song", Toast.LENGTH_SHORT).show();
+                generateNotification = new GenerateNotification(0);
+                startForeground(NOTIFICATION_ID,generateNotification.getNotification(this,getInstance()));
                 break;
         }
     }

@@ -3,69 +3,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="64dp">
+    android:layout_height="74dp">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:background="#337180"
         android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/track"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/linearLayout"
-        android:layout_toStartOf="@+id/linearLayout"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:fontFamily="sans-serif-light"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:maxLines="1"
-        android:layout_marginEnd="5dp"
-        android:scrollHorizontally="true"
-        android:textColor="@color/colorPrimaryFont"
-        android:textSize="14sp"
-        android:layout_marginRight="3dp" />
-
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/imageView"
         android:layout_toStartOf="@+id/imageView"
-        android:orientation="horizontal">
+        android:layout_marginBottom="4dp">
 
         <ImageButton
             android:id="@+id/prev"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/ripple" />
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            app:srcCompat="@drawable/ic_prev"
+            android:background="@drawable/ripple"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/play_pause"
+            android:layout_toStartOf="@+id/play_pause"
+            android:layout_marginRight="50dp"
+            android:layout_marginEnd="50dp"
+            android:scaleType="fitXY"/>
 
         <ImageButton
             android:id="@+id/play_pause"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginStart="30dp"
-            android:background="@drawable/ripple" />
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_notification_play"
+            android:background="@drawable/ripple"
+            android:layout_centerHorizontal="true" />
 
         <ImageButton
             android:id="@+id/next"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/ripple"/>
-    </LinearLayout>
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="end"
+            app:srcCompat="@drawable/ic_next"
+            android:background="@drawable/ripple"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/play_pause"
+            android:layout_toEndOf="@+id/play_pause"
+            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
+            android:scaleType="fitXY"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/track"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/colorPrimaryFont"
+        android:layout_alignParentTop="true"
+        tools:text="Text"
+        android:textSize="16sp"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView" />
 
 
 </RelativeLayout>

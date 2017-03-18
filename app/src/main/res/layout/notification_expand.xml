@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="95dp">
+    android:layout_height="105dp">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="95dp"
-        android:layout_height="95dp"
+        android:layout_width="105dp"
+        android:layout_height="105dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:background="#337180"
@@ -17,47 +17,80 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/empty" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/artist"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/imageView"
         android:layout_toStartOf="@+id/imageView"
-        android:orientation="horizontal">
+        android:layout_marginBottom="10dp">
 
         <ImageButton
             android:id="@+id/prev"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:background="@drawable/ripple" />
+            app:srcCompat="@drawable/ic_prev"
+            android:background="@drawable/ripple"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/play_pause"
+            android:layout_toStartOf="@+id/play_pause"
+            android:layout_marginRight="50dp"
+            android:layout_marginEnd="50dp"
+            android:scaleType="fitXY"/>
 
         <ImageButton
             android:id="@+id/play_pause"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginStart="30dp"
-            android:background="@drawable/ripple" />
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_notification_play"
+            android:background="@drawable/ripple"
+            android:layout_centerHorizontal="true" />
 
         <ImageButton
             android:id="@+id/next"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:background="@drawable/ripple" />
-    </LinearLayout>
+            android:layout_gravity="end"
+            app:srcCompat="@drawable/ic_next"
+            android:background="@drawable/ripple"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/play_pause"
+            android:layout_toEndOf="@+id/play_pause"
+            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
+            android:scaleType="fitXY"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/track"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:fontFamily="sans-serif"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:textColor="@color/colorPrimaryFont"
+        android:textSize="16sp"
+        tools:text="TextView"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/artist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/track"
+        android:layout_alignStart="@id/track"
+        android:layout_below="@id/track"
         android:layout_marginTop="5dp"
         android:ellipsize="marquee"
         android:focusable="true"
@@ -66,25 +99,10 @@
         android:maxLines="1"
         android:scrollHorizontally="true"
         android:textColor="@color/colorPrimaryFont"
-        android:textSize="16sp"
-        tools:text="TextView" />
-
-    <TextView
-        android:id="@+id/artist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/track"
-        android:layout_alignStart="@id/track"
-        android:layout_below="@id/track"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:fontFamily="sans-serif-light"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:maxLines="1"
-        android:scrollHorizontally="true"
-        android:textColor="@color/colorPrimaryFont"
         android:textSize="14sp"
-        tools:text="TextView" />
+        tools:text="TextView"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView" />
 
     <!--
 
