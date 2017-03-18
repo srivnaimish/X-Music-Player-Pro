@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,12 +46,13 @@ import com.riseapps.xmusic.view.Fragment.SongsFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseMatSearchViewActivity implements SongsFragment.OnFragmentInteractionListener, ArtistFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AlbumFragment.OnFragmentInteractionListener, OnSearchViewListener {
 
-    private ArrayList<Song> songList = new ArrayList<Song>();
+    private ArrayList<Song> songList = new ArrayList<>();
     private MusicService musicService;
     private Intent playIntent;
     public boolean musicPlaying;
@@ -414,7 +416,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
     @Override
     protected void initCustom() {
         super.initCustom();
-        String[] arrays = getResources().getStringArray(R.array.query_suggestions);
+        //getTitles();
+        //String[] arrays = getResources().getStringArray(R.array.query_suggestions);
+        String[] arrays = getTitles();
         SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView)mSearchView;
         cast.setSuggestion(arrays);
         mSearchView.setOnSearchViewListener(this);
@@ -428,6 +432,15 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
                 hideMainPlayer();
             }
         }
+    }
+
+    private String[] getTitles() {
+        String[] array = new String[getSongs().size()];
+        Iterator it = getSongs().iterator();
+        while (it.hasNext()) {
+            Log.d("LIST", "" + it.next());
+        }
+        return array;
     }
 }
 
