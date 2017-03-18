@@ -436,10 +436,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
 
     private String[] getTitles() {
         String[] array = new String[getSongs().size()];
-        Iterator it = getSongs().iterator();
-        while (it.hasNext()) {
-            Log.d("LIST", "" + it.next());
-        }
+        /*your logic to fetch titles of all the loaded songs and put it in string array*/
         return array;
     }
 }

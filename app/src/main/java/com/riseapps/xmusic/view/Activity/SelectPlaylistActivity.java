@@ -64,6 +64,9 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                * Add logic to add all the song to all the selected playlists. dataset - otherSKills hashmap.
+                 * This hashmap contains all the selected items.*/
                 Intent i = new Intent();
                 setResult(RESULT_CANCELED, i);
                 finish();
@@ -155,7 +158,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                 if (otherSkills.get(tag.text) == null) {
                     view.setBackground(tagSelector.getSelector(tag));
                     tagView.setTextColor(getResources().getColor(R.color.colorWhite));
-                    otherSkills.put(tag.text, 2);
+                    otherSkills.put(tag.text, 2); // tag.text - playlist name
                 } else {
                     // reset same tag
                     tagView.setTextColor(getResources().getColor(R.color.colorBlack));
