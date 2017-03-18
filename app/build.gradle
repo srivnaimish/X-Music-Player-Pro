@@ -36,7 +36,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    testCompile 'junit:junit:4.12'
     compile 'com.gelitenight.waveview:waveview:1.0.0'
     compile 'com.github.claudiodegio:MsvSearch:1.0.0'
+    testCompile 'junit:junit:4.12'
 }

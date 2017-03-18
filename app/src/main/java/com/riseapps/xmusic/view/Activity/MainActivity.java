@@ -1,5 +1,6 @@
 package com.riseapps.xmusic.view.Activity;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -43,6 +44,7 @@ import com.riseapps.xmusic.view.Fragment.PlaylistFragment;
 import com.riseapps.xmusic.view.Fragment.SongsFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -145,6 +147,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
                 if (item.getItemId() == R.id.favouritesPlayer) {
                     View v = findViewById(R.id.favouritesPlayer);
                     v.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
+                }
+                else if (item.getItemId() == R.id.playlist) {
+                    Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
+                    startActivityForResult(i, 1);
                 }
                 return true;
             }
@@ -320,7 +326,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
         tabLayout.setVisibility(View.GONE);
         mViewPager.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.GONE);
-        toolbar.setVisibility(View.GONE);
+        mToolbar.setVisibility(View.GONE);
         toolbarPlayer.setVisibility(View.VISIBLE);
     }
 
@@ -331,7 +337,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
         mViewPager.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.VISIBLE);
         toolbarPlayer.setVisibility(View.GONE);
-        toolbar.setVisibility(View.VISIBLE);
+        mToolbar.setVisibility(View.VISIBLE);
     }
 
     public MusicService getMusicService() {
@@ -350,6 +356,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
 
     @Override
     public boolean onQueryTextSubmit(String s) {
+        startActivity(new Intent(this, ScrollingActivity.class));
         return false;
     }
 
@@ -364,7 +371,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
             super(fm);
         }
 
-        String tabTitles[] = new String[]{"PLAYLIST", "ALBUM", "ARTISTS", "ALL SONGS"};
+        String tabTitles[] = new String[]{"PLAYLIST", "ALBUM", "ARTISTS", "TRACKS"};
 
         @Override
         public Fragment getItem(int position) {
@@ -412,4 +419,15 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
         cast.setSuggestion(arrays);
         mSearchView.setOnSearchViewListener(this);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_CANCELED) {
+            if (mainPlayer.getVisibility() == View.VISIBLE) {
+                hideMainPlayer();
+            }
+        }
+    }
 }
+

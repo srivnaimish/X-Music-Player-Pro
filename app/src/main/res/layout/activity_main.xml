@@ -36,7 +36,7 @@ tools:context="com.riseapps.xmusic.view.Activity.MainActivity">
                     android:textAlignment="center"
                     android:id="@+id/toolbar_title"
                     android:textColor="@color/colorPrimaryFont"
-                    android:textSize="18sp"/>
+                    android:textSize="20sp"/>
 
             </android.support.v7.widget.Toolbar>
 
@@ -61,11 +61,11 @@ tools:context="com.riseapps.xmusic.view.Activity.MainActivity">
                 <com.riseapps.xmusic.widgets.MainTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NOW PLAYING"
+                    android:text="Now Playing"
                     android:layout_gravity="center|start"
                     android:id="@+id/toolbar_player_title"
                     android:textColor="@color/colorPrimaryFont"
-                    android:textSize="16sp"/>
+                    android:textSize="18sp"/>
 
             </android.support.v7.widget.Toolbar>
 
@@ -80,7 +80,6 @@ tools:context="com.riseapps.xmusic.view.Activity.MainActivity">
                 app:tabPaddingEnd="-1dp"
                 android:layout_gravity="bottom"
                 app:tabTextColor="@color/colorAccent"
-                android:textAlignment="center"
                 app:layout_scrollFlags="scroll|enterAlways"/>
 
         </android.support.design.widget.AppBarLayout>

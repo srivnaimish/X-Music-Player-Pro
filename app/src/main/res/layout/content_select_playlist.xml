@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    tools:context=".view.Activity.SelectPlaylistActivity"
+    android:layout_marginTop="60dp">
+
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/skill_select_indicator_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/playlist_screen_placeholder"
+                android:textSize="16sp"
+                android:layout_margin="16dp"/>
+
+
+            <com.riseapps.xmusic.widgets.TagView
+                android:id="@+id/tag_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_below="@id/skill_select_indicator_text"/>
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tag_group"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:scrollbars="none">
+
+                <com.riseapps.xmusic.component.TagToken.customviews.TagCompletionView
+                    android:id="@+id/tokenView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Please type your skills ... "
+                    android:imeOptions="actionDone"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="16sp"
+                    android:nextFocusDown="@+id/editText"
+                    android:inputType="text|textNoSuggestions"
+                    android:focusableInTouchMode="true"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical"
+                    android:background="#fff"
+                    android:layout_marginRight="16dp"/>
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
+

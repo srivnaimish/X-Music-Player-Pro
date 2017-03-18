@@ -29,6 +29,10 @@
         <activity
             android:name=".view.Activity.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".view.Activity.SelectPlaylistActivity"
+            android:label="@string/title_activity_select_playlist"
             android:theme="@style/AppTheme"></activity>
     </application>
 

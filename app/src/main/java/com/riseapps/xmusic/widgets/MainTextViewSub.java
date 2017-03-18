@@ -36,8 +36,8 @@ public class MainTextViewSub extends TextView {
     }
 
     private void applyFont(Context context) {
-        Typeface font = FontCache.getTypeface("fonts/Karla/Karla-Regular.ttf", context);
-        //Typeface font = FontCache.getTypeface("fonts/Montserrat/Montserrat-Light.ttf", context);
+        //Typeface font = FontCache.getTypeface("fonts/Hind_Siliguri/HindSiliguri-Regular.ttf", context);
+        Typeface font = FontCache.getTypeface("fonts/Mada/Mada-Medium.ttf", context);
         setTypeface(font);
     }
 }

@@ -7,8 +7,8 @@
     android:id="@+id/mini_player"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
-    card_view:cardCornerRadius="1dp"
-    card_view:cardElevation="1dp"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="0dp"
 
     >
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         tools:text="TextView"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="17dp"
         app:layout_constraintLeft_toRightOf="@+id/album_art_card"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         tools:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/album_art_card"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="13dp"
         app:layout_constraintLeft_toRightOf="@+id/album_art_card"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"

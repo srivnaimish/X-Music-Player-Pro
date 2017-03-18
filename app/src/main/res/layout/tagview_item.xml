@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <com.riseapps.xmusic.widgets.MainTextViewSub
+        android:id="@+id/tv_tag_item_contain"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:textSize="36sp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+
+    <!--TextView
+        android:id="@+id/tv_tag_item_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:visibility="gone"/-->
+
+</LinearLayout>
