@@ -76,8 +76,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
 
     private WaveHelper mWaveHelper;
 
-    private int mBorderColor = Color.parseColor("#44FFFFFF");
-    private int mBorderWidth = 10;
+    private int mBorderColor = Color.parseColor("#000000");
+    private int mBorderWidth = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
