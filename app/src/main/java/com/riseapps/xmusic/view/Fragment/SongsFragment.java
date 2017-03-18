@@ -37,6 +37,7 @@ public class SongsFragment extends Fragment {
     View view;
     Gson gson = new Gson();
     Async async;
+    final int textLimit = 26;
     //Type type=new TypeToken<ArrayList<Song>>() {}.getType();
 
     public static SongsFragment newInstance() {
@@ -54,7 +55,7 @@ public class SongsFragment extends Fragment {
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.songs);
         int spanCount = 1; // 2 columns
-        int spacing = 20; // 50px
+        int spacing = 22; // 50px
         boolean includeEdge = true;
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, includeEdge));
         recyclerView.setHasFixedSize(true);
@@ -93,11 +94,11 @@ public class SongsFragment extends Fragment {
                 long thisId = musicCursor.getLong(idColumn);
                 long albumId = musicCursor.getLong(albumColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
-                if (thisTitle.length() > 32)
-                    thisTitle = thisTitle.substring(0, 32) + "...";
+                if (thisTitle.length() > textLimit)
+                    thisTitle = thisTitle.substring(0, textLimit) + "...";
                 String thisArtist = musicCursor.getString(artistColumn);
-                if (thisArtist.length() > 32)
-                    thisArtist = thisArtist.substring(0, 32) + "...";
+                if (thisArtist.length() > textLimit)
+                    thisArtist = thisArtist.substring(0, textLimit) + "...";
                 long thisduration = musicCursor.getLong(song_duration);
 
                 String imagepath="content://media/external/audio/media/" + thisId + "/albumart";
