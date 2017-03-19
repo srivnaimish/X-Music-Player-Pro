@@ -31,7 +31,14 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
         mSearchView = (BaseMaterialSearchView) findViewById(R.id.sv);
         mCoordinator = (CoordinatorLayout) findViewById(R.id.drawerLayout);
         mSearchView.setMenuItem(mToolbar.getMenu().findItem(R.id.action_search));
-        initCustom();
+
+        mSearchView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initCustom();
+            }
+        },1000);
+        //;
     }
 
     public int getLayoutId() {
@@ -47,4 +54,5 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
         mSearchView.setMenuItem(menu.findItem(R.id.action_search));
         return true;
     }
+
 }

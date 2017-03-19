@@ -46,8 +46,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="0dp"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintLeft_toLeftOf="@+id/imageContainer"
-                app:layout_constraintRight_toRightOf="@+id/imageContainer"
                 android:alpha="0.5"/>
 
         </RelativeLayout>

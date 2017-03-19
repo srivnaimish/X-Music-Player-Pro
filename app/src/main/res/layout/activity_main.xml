@@ -39,7 +39,6 @@ tools:context="com.riseapps.xmusic.view.Activity.MainActivity">
                     android:textSize="20sp"/>
 
             </android.support.v7.widget.Toolbar>
-
             <com.claudiodegio.msv.SuggestionMaterialSearchView
                 android:id="@+id/sv"
                 android:elevation="5dip"

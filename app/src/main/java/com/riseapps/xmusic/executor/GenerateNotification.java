@@ -1,6 +1,7 @@
 package com.riseapps.xmusic.executor;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,7 +32,7 @@ public class GenerateNotification {
         this.status=status;
     }
 
-    public Notification getNotification(Context context,MusicService musicService) {
+    public void getNotification(Context context,MusicService musicService) {
         this.context=context;
         GenerateNotification.musicService =musicService;
         Intent intent = new Intent(context, MainActivity.class);
@@ -40,8 +41,10 @@ public class GenerateNotification {
 
         PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 2,intent, PendingIntent.FLAG_CANCEL_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
-
+        mBuilder.setPriority(Notification.PRIORITY_HIGH);
+        mBuilder.setGroupSummary(true);
         mBuilder.setAutoCancel(false);
+        mBuilder.setTicker("Music Playing");
 
         if (status==0)
             mBuilder.setOngoing(false);
@@ -93,8 +96,9 @@ public class GenerateNotification {
                             notification,
                             NOTIFICATION_ID));
         }
-
-        return notification;
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+      //  return notification;
     }
 
     private RemoteViews contentView(Song song, PendingIntent pendingPlayIntent, PendingIntent pendingNextIntent, PendingIntent pendingPrevIntent){

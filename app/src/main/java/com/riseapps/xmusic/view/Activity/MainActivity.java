@@ -36,6 +36,7 @@ import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
+import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.WaveHelper;
@@ -358,7 +359,13 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
 
     @Override
     public boolean onQueryTextSubmit(String s) {
-        startActivity(new Intent(this, ScrollingActivity.class));
+        for(Song song:songList){
+            if(song.getName().equalsIgnoreCase(s)){
+                new PlaySongExec(this,songList.indexOf(song)).startPlaying();
+               // Toast.makeText(this, ""+songList.indexOf(song), Toast.LENGTH_SHORT).show();
+            }
+        }
+        //startActivity(new Intent(this, ScrollingActivity.class));
         return false;
     }
 
@@ -415,13 +422,13 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
 
     @Override
     protected void initCustom() {
-        super.initCustom();
         //getTitles();
         //String[] arrays = getResources().getStringArray(R.array.query_suggestions);
         String[] arrays = getTitles();
         SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView)mSearchView;
         cast.setSuggestion(arrays);
         mSearchView.setOnSearchViewListener(this);
+        super.initCustom();
     }
 
     @Override
@@ -435,7 +442,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
     }
 
     private String[] getTitles() {
+
         String[] array = new String[getSongs().size()];
+        for(int i=0;i<array.length;i++){
+            array[i]=getSongs().get(i).getName();
+
+        }
         /*your logic to fetch titles of all the loaded songs and put it in string array*/
         return array;
     }

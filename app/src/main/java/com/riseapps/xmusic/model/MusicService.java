@@ -38,10 +38,6 @@ public class MusicService extends Service implements
 
     private OnSongChangedListener onSongChangedListener;
 
-    GenerateNotification generateNotification;
-
-    private static final int NOTIFICATION_ID = 1;
-
     public static final int STOPPED = 0;
     public static final int PAUSED = 1;
     public static final int PLAYING = 2;
@@ -50,6 +46,7 @@ public class MusicService extends Service implements
     public TextView mCurrentPosition;
     public TextView mTotalDuration;
     private int mInterval = 1000;
+    private static final int NOTIFICATION_ID = 1;
 
     public void onCreate() {
 
@@ -142,22 +139,19 @@ public class MusicService extends Service implements
         switch (playerState) {
             case STOPPED:
                 playSong();
-                generateNotification = new GenerateNotification(1);
-                startForeground(NOTIFICATION_ID,generateNotification.getNotification(this,getInstance()));
+                new GenerateNotification(1).getNotification(this,getInstance());
                 break;
             case PAUSED:
                 player.start();
                 onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
                 mProgressRunner.run();
-                generateNotification = new GenerateNotification(1);
-                startForeground(NOTIFICATION_ID,generateNotification.getNotification(this,getInstance()));
+                new GenerateNotification(1).getNotification(this,getInstance());
                 break;
             case PLAYING:
                 player.pause();
                 onSongChangedListener.onPlayerStatusChanged(playerState = PAUSED);
                 mSeekBar.removeCallbacks(mProgressRunner);
-                generateNotification = new GenerateNotification(0);
-                startForeground(NOTIFICATION_ID,generateNotification.getNotification(this,getInstance()));
+                new GenerateNotification(0).getNotification(this,getInstance());
                 break;
         }
     }
@@ -225,7 +219,8 @@ public class MusicService extends Service implements
 
     @Override
     public void onDestroy() {
-      //  unregisterReceiver(receiver);
+        NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(NOTIFICATION_ID);
         super.onDestroy();
     }
 
