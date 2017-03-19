@@ -1,6 +1,7 @@
 package com.riseapps.xmusic.view.Activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -32,12 +33,20 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
         mCoordinator = (CoordinatorLayout) findViewById(R.id.drawerLayout);
         mSearchView.setMenuItem(mToolbar.getMenu().findItem(R.id.action_search));
 
-        mSearchView.postDelayed(new Runnable() {
+        /*mSearchView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 initCustom();
             }
-        },1000);
+        },1000);*/
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initCustom();
+            }
+        }, 8000);
         //;
     }
 

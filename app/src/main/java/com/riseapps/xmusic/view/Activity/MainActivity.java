@@ -428,7 +428,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
         SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView)mSearchView;
         cast.setSuggestion(arrays);
         mSearchView.setOnSearchViewListener(this);
-        super.initCustom();
+        //super.initCustom();
     }
 
     @Override
