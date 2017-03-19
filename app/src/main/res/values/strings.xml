@@ -103,4 +103,7 @@
     </string>
     <string name="title_activity_select_playlist">SelectPlaylistActivity</string>
     <string name="playlist_screen_placeholder">You can add this song to MULTIPLE playlists at once.</string>
+    <string name="title_activity_walkthrough">Walkthrough</string>
+    <string name="permission_rationale">Need store permission to access Songs</string>
+    <string name="ok">OK</string>
 </resources>

@@ -22,6 +22,7 @@ public class PlaySongExec {
     }
 
     public void startPlaying() {
+        ((MainActivity)ctx).changeMiniPlayerVisibility();
         MusicService musicService =((MainActivity)ctx).getMusicService();
         musicService.setSong(mPos);
         musicService.togglePlay();

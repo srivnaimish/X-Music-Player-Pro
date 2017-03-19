@@ -46,7 +46,7 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
             public void run() {
                 initCustom();
             }
-        }, 8000);
+        }, 4000);
         //;
     }
 

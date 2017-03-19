@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AlbumArtChecker;
+import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
@@ -72,54 +73,6 @@ public class SongsFragment extends Fragment {
         return rootView;
     }
 
-    public void getSongList() {
-        ContentResolver musicResolver = getActivity().getContentResolver();
-        Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
-
-        if (musicCursor != null && musicCursor.moveToFirst()) {
-            //get columns
-            int titleColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.TITLE);
-            int idColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media._ID);
-            int artistColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.ARTIST);
-            int song_duration = musicCursor.getColumnIndex
-                    (MediaStore.Audio.AudioColumns.DURATION);
-            int albumColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.ALBUM_ID);
-            //add songs to list
-            do {
-                long thisId = musicCursor.getLong(idColumn);
-                long albumId = musicCursor.getLong(albumColumn);
-                String thisTitle = musicCursor.getString(titleColumn);
-                if (thisTitle.length() > textLimit)
-                    thisTitle = thisTitle.substring(0, textLimit) + "...";
-                String thisArtist = musicCursor.getString(artistColumn);
-                if (thisArtist.length() > textLimit)
-                    thisArtist = thisArtist.substring(0, textLimit) + "...";
-                long thisduration = musicCursor.getLong(song_duration);
-
-                String imagepath="content://media/external/audio/media/" + thisId + "/albumart";
-                if(new AlbumArtChecker().hasAlbumArt(getContext(),imagepath)){
-                    songList.add(new Song(thisId, thisduration, thisTitle, thisArtist, imagepath,false));
-                }
-                else {
-                    songList.add(new Song(thisId, thisduration, thisTitle, thisArtist, "no_image",false));
-                }
-
-
-
-            }
-            while (musicCursor.moveToNext());
-            musicCursor.close();
-        }
-
-
-    }
-
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -127,8 +80,6 @@ public class SongsFragment extends Fragment {
         if (isVisibleToUser) {
             View v=getView();
             if (v != null){
-
-
               // Toast.makeText(view.getContext(),"visible", Toast.LENGTH_SHORT).show();
             }
 
@@ -146,30 +97,14 @@ public class SongsFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-           // String recieved=new SharedPreferenceSingelton().getSavedString(getContext(),"songList");
-
-         /*   if (recieved!=null) {
-                songList=gson.fromJson(recieved,type);
-                Log.d(getClass().getSimpleName(),songList.size()+"");
-            }
-            else {*/
-                getSongList();
-                Collections.sort(songList, new Comparator<Song>() {
-                    @Override
-                    public int compare(Song song, Song t1) {
-                        return song.getName().compareTo(t1.getName());
-                    }
-                });
-            /*    String json = gson.toJson(songList, type);
-                new SharedPreferenceSingelton().saveAs(getContext(),"songList",json);
-            }*/
+                songList=new MyApplication(getActivity()).getWritableDatabase().readsongs();
+                ((MainActivity) getActivity()).setSongs(songList);
+                songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            ((MainActivity) getActivity()).setSongs(songList);
-            songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
             recyclerView.setAdapter(songsAdapter);
            // ((MainActivity) getActivity()).setRecyclerView(recyclerView);
             super.onPostExecute(aVoid);

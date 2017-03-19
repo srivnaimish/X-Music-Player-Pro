@@ -10,17 +10,21 @@ import android.os.Parcelable;
 
 public class Song{
     private long ID, duration;
-    private String Name, Artist;
-    private String Imagepath;
+    private String Name, Artist,Imagepath,playlist;
     private boolean favourite;
 
-    public Song(long id, long duration, String name, String artist, String imagepath, boolean favourite) {
+    public Song(){
+
+    }
+
+    public Song(long id, long duration, String name, String artist, String imagepath,String playlist,boolean favourite) {
         Name = name;
         ID = id;
         Artist = artist;
         Imagepath = imagepath;
         this.duration = duration;
         this.favourite = favourite;
+        this.playlist=playlist;
     }
 
     public long getID() {
@@ -43,6 +47,10 @@ public class Song{
         return Imagepath;
     }
 
+    public String getPlaylist() {
+        return playlist;
+    }
+
     public boolean getFavourite(){ return favourite; }
 
     public void setID(long ID) {
@@ -63,6 +71,10 @@ public class Song{
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public void setPlaylist(String playlist) {
+        this.playlist = playlist;
     }
 
     public void setFavourite(boolean favourite) {

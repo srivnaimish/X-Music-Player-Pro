@@ -24,6 +24,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -207,7 +211,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
 
         @Override
         public void onServiceConnected(final ComponentName name, IBinder service) {
-
             MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
             musicService = binder.getService();
             musicService.setSongs(songList);
@@ -255,7 +258,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
                     }
                 }
             });
-
             musicService.setSong(0);
         }
 
@@ -273,7 +275,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
             playIntent = new Intent(this, MusicService.class);
             startService(playIntent);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
-            Toast.makeText(MainActivity.this, "Bind", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -450,6 +451,13 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
         }
         /*your logic to fetch titles of all the loaded songs and put it in string array*/
         return array;
+    }
+
+    public void changeMiniPlayerVisibility(){
+        if(miniPlayer.getVisibility()==View.GONE) {
+            miniPlayer.startAnimation(new CustomAnimation().slideShow(MainActivity.this));
+            miniPlayer.setVisibility(View.VISIBLE);
+        }
     }
 }
 

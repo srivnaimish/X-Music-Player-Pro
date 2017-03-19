@@ -134,11 +134,12 @@ class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 
         name.setOnClickListener(this);
         iv.setOnClickListener(this);
+        artist.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.name || view.getId() == R.id.album_art) {
+        if (view.getId() == R.id.name || view.getId() == R.id.album_art|| view.getId() == R.id.artist) {
             playSongExec = new PlaySongExec(ctx, getAdapterPosition());
             playSongExec.startPlaying();
         }
