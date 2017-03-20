@@ -98,13 +98,13 @@ public class SongsFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
                 songList=new MyApplication(getActivity()).getWritableDatabase().readsongs();
-                ((MainActivity) getActivity()).setSongs(songList);
-                songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            ((MainActivity) getActivity()).setSongs(songList);
+            songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
             recyclerView.setAdapter(songsAdapter);
            // ((MainActivity) getActivity()).setRecyclerView(recyclerView);
             super.onPostExecute(aVoid);

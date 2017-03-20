@@ -42,7 +42,7 @@ public class SharedPreferenceSingelton {
 
     public int getSavedInt(Context c, String name) {
         SharedPreferences sp = c.getSharedPreferences("player", MODE_PRIVATE);
-        return sp.getInt(name, 0);
+        return sp.getInt(name, -1);
     }
 
     public boolean getSavedBoolean(Context c, String name) {
@@ -52,7 +52,7 @@ public class SharedPreferenceSingelton {
 
     public long getSavedLong(Context c, String name) {
         SharedPreferences sp = c.getSharedPreferences("player", MODE_PRIVATE);
-        return sp.getLong(name, 0);
+        return sp.getLong(name, -1);
     }
 
     public String getSavedString(Context c, String name) {

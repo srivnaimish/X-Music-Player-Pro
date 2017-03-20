@@ -40,7 +40,6 @@
             android:id="@+id/album_art_mini"
             android:layout_width="60sp"
             android:layout_height="60sp"
-            app:srcCompat="@drawable/empty"
             android:scaleType="centerCrop"/>
 
         <RelativeLayout

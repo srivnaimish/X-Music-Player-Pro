@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.GenerateNotification;
 import com.riseapps.xmusic.model.Pojo.Song;
 
@@ -102,6 +103,15 @@ public class MusicService extends Service implements
         super.onTaskRemoved(rootIntent);
     }
 
+    @Override
+    public void onDestroy() {
+        NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(NOTIFICATION_ID);
+        player.release();
+        super.onDestroy();
+    }
+
+
     public class MusicBinder extends Binder {
         public MusicService getService() {
             return MusicService.this;
@@ -127,6 +137,7 @@ public class MusicService extends Service implements
     }
 
     public ArrayList<Song> getSongs(){ return songs;}
+
     public void setSong(int songIndex) {
         if (songs.size() <= songIndex || songIndex < 0) // if the list is empty... just return
             return;
@@ -175,6 +186,7 @@ public class MusicService extends Service implements
         player.prepareAsync();
         mProgressRunner.run();
         onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
+
     }
 
     public interface OnSongChangedListener {
@@ -217,12 +229,6 @@ public class MusicService extends Service implements
         });
     }
 
-    @Override
-    public void onDestroy() {
-        NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.cancel(NOTIFICATION_ID);
-        super.onDestroy();
-    }
 
     public int getCurrentIndex() {
         return songPos;

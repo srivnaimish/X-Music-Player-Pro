@@ -50,7 +50,8 @@ public class DBPlayer {
         statement.execute();
         mDatabase.setTransactionSuccessful();
         mDatabase.endTransaction();
-        Log.d("Song Insert", "" + id);
+        mDatabase.close();
+
     }
 
     public ArrayList<Song> readsongs() {
@@ -82,15 +83,16 @@ public class DBPlayer {
                 songlist.add(song);
             }
             while (cursor.moveToNext());
+            cursor.close();
         }
-        cursor.close();
+
+        mDatabase.close();
         Collections.sort(songlist, new Comparator<Song>() {
             @Override
             public int compare(Song song, Song t1) {
                 return song.getName().compareTo(t1.getName());
             }
         });
-        Log.d("Read", "songs");
         return songlist;
     }
 
@@ -154,8 +156,12 @@ public class DBPlayer {
             } catch (SQLiteException e) {
 
             }
+        }
 
-
+        @Override
+        protected void finalize() throws Throwable {
+            this.close();
+            super.finalize();
         }
     }
 

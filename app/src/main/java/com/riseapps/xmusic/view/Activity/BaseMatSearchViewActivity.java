@@ -39,14 +39,7 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
                 initCustom();
             }
         },1000);*/
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
                 initCustom();
-            }
-        }, 4000);
         //;
     }
 

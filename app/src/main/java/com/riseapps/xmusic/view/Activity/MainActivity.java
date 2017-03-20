@@ -40,6 +40,8 @@ import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
+import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
@@ -77,7 +79,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
-    private Toolbar toolbar,toolbarPlayer;
+    private Toolbar toolbar, toolbarPlayer;
 
     private WaveHelper mWaveHelper;
 
@@ -154,8 +156,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
                 if (item.getItemId() == R.id.favouritesPlayer) {
                     View v = findViewById(R.id.favouritesPlayer);
                     v.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
-                }
-                else if (item.getItemId() == R.id.playlist) {
+                } else if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
                     startActivityForResult(i, 1);
                 }
@@ -215,6 +216,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
             musicService = binder.getService();
             musicService.setSongs(songList);
             musicService.setUIControls(seekBar, currentPosition, totalDuration);
+            final int pos = new SharedPreferenceSingelton().getSavedInt(MainActivity.this, "pos");
 
             musicService.setOnSongChangedListener(new MusicService.OnSongChangedListener() {
                 @Override
@@ -258,7 +260,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
                     }
                 }
             });
-            musicService.setSong(0);
+            if (new SharedPreferenceSingelton().getSavedInt(MainActivity.this, "pos") != -1) {
+                musicService.setSong(pos);
+                miniPlayer.setVisibility(View.VISIBLE);
+            } else
+                musicService.setSong(0);
         }
 
         @Override
@@ -335,7 +341,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
     }
 
     void hideMainPlayer() {
-        mainPlayer.startAnimation(new CustomAnimation().slideHide(MainActivity.this));
         mainPlayer.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.VISIBLE);
         mViewPager.setVisibility(View.VISIBLE);
@@ -360,10 +365,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
 
     @Override
     public boolean onQueryTextSubmit(String s) {
-        for(Song song:songList){
-            if(song.getName().equalsIgnoreCase(s)){
-                new PlaySongExec(this,songList.indexOf(song)).startPlaying();
-               // Toast.makeText(this, ""+songList.indexOf(song), Toast.LENGTH_SHORT).show();
+        for (Song song : songList) {
+            if (song.getName().equalsIgnoreCase(s)) {
+                new PlaySongExec(this, songList.indexOf(song)).startPlaying();
+                // Toast.makeText(this, ""+songList.indexOf(song), Toast.LENGTH_SHORT).show();
             }
         }
         //startActivity(new Intent(this, ScrollingActivity.class));
@@ -426,7 +431,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
         //getTitles();
         //String[] arrays = getResources().getStringArray(R.array.query_suggestions);
         String[] arrays = getTitles();
-        SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView)mSearchView;
+        SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView) mSearchView;
         cast.setSuggestion(arrays);
         mSearchView.setOnSearchViewListener(this);
         //super.initCustom();
@@ -443,21 +448,19 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
     }
 
     private String[] getTitles() {
-
-        String[] array = new String[getSongs().size()];
-        for(int i=0;i<array.length;i++){
-            array[i]=getSongs().get(i).getName();
-
+        ArrayList<Song> list=new MyApplication(this).getWritableDatabase().readsongs();
+        String[] array = new String[list.size()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] =list.get(i).getName();
         }
         /*your logic to fetch titles of all the loaded songs and put it in string array*/
         return array;
     }
 
-    public void changeMiniPlayerVisibility(){
-        if(miniPlayer.getVisibility()==View.GONE) {
-            miniPlayer.startAnimation(new CustomAnimation().slideShow(MainActivity.this));
+    public void changeMiniPlayerVisibility() {
+        if (miniPlayer.getVisibility() == View.GONE)
             miniPlayer.setVisibility(View.VISIBLE);
-        }
     }
+
 }
 

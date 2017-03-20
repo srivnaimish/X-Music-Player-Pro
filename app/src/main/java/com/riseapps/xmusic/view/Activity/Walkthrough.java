@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -70,12 +71,9 @@ public class Walkthrough extends AppCompatActivity {
                     (MediaStore.Audio.Media.ARTIST);
             int song_duration = musicCursor.getColumnIndex
                     (MediaStore.Audio.AudioColumns.DURATION);
-            int albumColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.ALBUM_ID);
-            //add songs to list
+           int x=0;
             do {
                 long thisId = musicCursor.getLong(idColumn);
-                long albumId = musicCursor.getLong(albumColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
                 if (thisTitle.length() > textLimit)
                     thisTitle = thisTitle.substring(0, textLimit) + "...";
@@ -90,10 +88,10 @@ public class Walkthrough extends AppCompatActivity {
                 } else {
                     new MyApplication(this).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, "no_image", "none", false);
                 }
-
-
+                x++;
             }
             while (musicCursor.moveToNext());
+            Log.d("Song Insert", "" + x);
             musicCursor.close();
         }
     }

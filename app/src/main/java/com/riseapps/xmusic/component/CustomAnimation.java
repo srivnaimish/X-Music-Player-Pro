@@ -1,6 +1,7 @@
 package com.riseapps.xmusic.component;
 
 import android.content.Context;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -12,6 +13,7 @@ import com.riseapps.xmusic.R;
 
 public class CustomAnimation {
 
+    View V;
     public Animation slideShow(Context context){
         return AnimationUtils.loadAnimation(context, R.anim.main_player_show);
     }
@@ -23,4 +25,5 @@ public class CustomAnimation {
     public Animation likeAnimation(Context context){
         return AnimationUtils.loadAnimation(context, R.anim.like);
     }
+
 }
