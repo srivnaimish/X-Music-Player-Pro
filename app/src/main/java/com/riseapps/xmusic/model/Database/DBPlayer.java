@@ -29,7 +29,7 @@ public class DBPlayer {
         playerHelper = new PlayerHelper(context);
         mDatabase = playerHelper.getWritableDatabase();
     }
-
+    /*Insert Song*/
     public void insertSong(long id, String Name, String Artist, long duration, String Imagepath,String playlist, boolean favourite) {
         String sql = "INSERT INTO " + PlayerHelper.SONG_TABLE_NAME + " (" + PlayerHelper.COLUMN_ID + "," + PlayerHelper.COLUMN_NAME + "," +
                 PlayerHelper.COLUMN_ARTIST + "," + PlayerHelper.COLUMN_DURATION + "," + PlayerHelper.COLUMN_IMAGEPATH + "," + PlayerHelper.COLUMN_PLAYLIST +
@@ -53,8 +53,8 @@ public class DBPlayer {
         mDatabase.close();
 
     }
-
-    public ArrayList<Song> readsongs() {
+    /*Read Songs*/
+    public ArrayList<Song> readSongs() {
         ArrayList<Song> songlist = new ArrayList<>();
         String[] columns = {
                 PlayerHelper.COLUMN_ID,
@@ -95,6 +95,13 @@ public class DBPlayer {
         });
         return songlist;
     }
+    /*Delete All Songs*/
+    public void deleteAllSongs() {
+        mDatabase.delete(PlayerHelper.SONG_TABLE_NAME, null, null);
+        Log.d("Songs", "Deleted");
+        mDatabase.close();
+    }
+
 
     private class PlayerHelper extends SQLiteOpenHelper {
         private static final String DB_NAME = "playerDB";

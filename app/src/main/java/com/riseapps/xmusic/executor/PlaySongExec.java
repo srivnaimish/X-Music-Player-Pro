@@ -27,6 +27,6 @@ public class PlaySongExec {
         musicService.setSong(mPos);
         musicService.togglePlay();
         new SharedPreferenceSingelton().saveAs(ctx,"pos",mPos);
-        ((MainActivity)ctx).changeMiniPlayerVisibility();
+        //((MainActivity)ctx).changeMiniPlayerVisibility();
     }
 }

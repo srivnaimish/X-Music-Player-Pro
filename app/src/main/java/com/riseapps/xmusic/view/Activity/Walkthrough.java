@@ -24,7 +24,9 @@ import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AlbumArtChecker;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.MyApplication;
+import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.Pojo.Song;
 
 import java.util.ArrayList;
@@ -34,8 +36,8 @@ import java.util.Comparator;
 public class Walkthrough extends AppCompatActivity {
     FloatingActionButton fab;
     final int textLimit = 26;
-    Async async;
     private static final int REQUEST_PERMISSION = 0;
+    UpdateSongs updateSongs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,79 +45,24 @@ public class Walkthrough extends AppCompatActivity {
         setContentView(R.layout.activity_walkthrough);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        async=new Async();
+        updateSongs = new UpdateSongs(this);
         checkPermission();
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            startActivity(new Intent(Walkthrough.this,MainActivity.class));
+                new SharedPreferenceSingelton().saveAs(Walkthrough.this,"opened_before",true);
+                startActivity(new Intent(Walkthrough.this, MainActivity.class));
                 finish();
             }
         });
     }
 
-    public void getSongList() {
-        ContentResolver musicResolver = getContentResolver();
-        Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
 
-        if (musicCursor != null && musicCursor.moveToFirst()) {
-            //get columns
-            int titleColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.TITLE);
-            int idColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media._ID);
-            int artistColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.ARTIST);
-            int song_duration = musicCursor.getColumnIndex
-                    (MediaStore.Audio.AudioColumns.DURATION);
-           int x=0;
-            do {
-                long thisId = musicCursor.getLong(idColumn);
-                String thisTitle = musicCursor.getString(titleColumn);
-                if (thisTitle.length() > textLimit)
-                    thisTitle = thisTitle.substring(0, textLimit) + "...";
-                String thisArtist = musicCursor.getString(artistColumn);
-                if (thisArtist.length() > textLimit)
-                    thisArtist = thisArtist.substring(0, textLimit) + "...";
-                long thisduration = musicCursor.getLong(song_duration);
-
-                String imagepath = "content://media/external/audio/media/" + thisId + "/albumart";
-                if (new AlbumArtChecker().hasAlbumArt(this, imagepath)) {
-                    new MyApplication(this).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, "none", false);
-                } else {
-                    new MyApplication(this).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, "no_image", "none", false);
-                }
-                x++;
-            }
-            while (musicCursor.moveToNext());
-            Log.d("Song Insert", "" + x);
-            musicCursor.close();
-        }
-    }
-
-    private class Async extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            getSongList();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-    }
-
-    public void checkPermission()
-    {
+    public void checkPermission() {
         int currentAPIVersion = Build.VERSION.SDK_INT;
-        if(currentAPIVersion>=android.os.Build.VERSION_CODES.M)
-        {
+        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)) {
                     Snackbar.make(fab, R.string.permission_rationale,
@@ -133,18 +80,20 @@ public class Walkthrough extends AppCompatActivity {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
                 }
             } else {
-                async.execute();
+                updateSongs.fetchSongs();
             }
         } else {
-            async.execute();
+            updateSongs.fetchSongs();
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    async.execute();
+                    updateSongs.fetchSongs();
+                    // async.execute();
                 } else {
                     Snackbar.make(fab, R.string.permission_rationale,
                             Snackbar.LENGTH_INDEFINITE)

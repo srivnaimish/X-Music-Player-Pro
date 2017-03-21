@@ -52,11 +52,6 @@ public class PlaylistFragment extends Fragment {
         View v=inflater.inflate(R.layout.fragment_playlist, container, false);
 
         playListLists.add(new Playlist("auto Playlist 1",5));
-        playListLists.add(new Playlist("auto Playlist 1",5));
-        playListLists.add(new Playlist("auto Playlist 1",5));
-        playListLists.add(new Playlist("auto Playlist 1",5));
-        playListLists.add(new Playlist("auto Playlist 1",5));
-        playListLists.add(new Playlist("auto Playlist 1",5));
         recyclerView = (RecyclerView) v.findViewById(R.id.playlists);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);

@@ -106,8 +106,8 @@ tools:context="com.riseapps.xmusic.view.Activity.MainActivity">
                 card_view:cardCornerRadius="0dp"
                 card_view:cardElevation="18dp"
                 card_view:cardBackgroundColor="@color/colorPrimary"
-                android:visibility="gone"
                 android:animateLayoutChanges="true"
+                android:visibility="gone"
                 >
                 <include layout="@layout/mini_player"/>
 

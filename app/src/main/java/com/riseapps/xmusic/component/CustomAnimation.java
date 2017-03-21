@@ -18,10 +18,6 @@ public class CustomAnimation {
         return AnimationUtils.loadAnimation(context, R.anim.main_player_show);
     }
 
-    public Animation slideHide(Context context){
-        return AnimationUtils.loadAnimation(context, R.anim.main_player_hide);
-    }
-
     public Animation likeAnimation(Context context){
         return AnimationUtils.loadAnimation(context, R.anim.like);
     }

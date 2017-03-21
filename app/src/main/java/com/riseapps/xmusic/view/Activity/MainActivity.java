@@ -6,7 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
@@ -24,10 +27,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -43,6 +42,8 @@ import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
+import com.riseapps.xmusic.executor.ShakeDetector;
+import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.WaveHelper;
@@ -86,13 +87,28 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
     private int mBorderColor = Color.parseColor("#000000");
     private int mBorderWidth = 5;
 
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //setContentView(R.layout.activity_main);
-
         initiallize();
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                    musicService.togglePlay();
+
+            }
+        });
 
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,7 +232,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
             musicService = binder.getService();
             musicService.setSongs(songList);
             musicService.setUIControls(seekBar, currentPosition, totalDuration);
-            final int pos = new SharedPreferenceSingelton().getSavedInt(MainActivity.this, "pos");
 
             musicService.setOnSongChangedListener(new MusicService.OnSongChangedListener() {
                 @Override
@@ -260,11 +275,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
                     }
                 }
             });
-            if (new SharedPreferenceSingelton().getSavedInt(MainActivity.this, "pos") != -1) {
-                musicService.setSong(pos);
-                miniPlayer.setVisibility(View.VISIBLE);
-            } else
-                musicService.setSong(0);
+
+                musicService.setSong(new SharedPreferenceSingelton().getSavedInt(MainActivity.this,"pos"));
         }
 
         @Override
@@ -281,6 +293,15 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
             playIntent = new Intent(this, MusicService.class);
             startService(playIntent);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    miniPlayer.setVisibility(View.VISIBLE);
+                    miniPlayer.setAlpha(0.f);
+                    miniPlayer.animate().alpha(1.f).setDuration(2500).start();
+                }
+            },1000);
+            mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
         }
     }
 
@@ -288,6 +309,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
     protected void onDestroy() {
         unbindService(musicConnection);
         stopService(playIntent);
+        new MyApplication(this).getWritableDatabase().deleteAllSongs();
+        new UpdateSongs(this).fetchSongs();
+        mSensorManager.unregisterListener(mShakeDetector);
         super.onDestroy();
     }
 
@@ -448,7 +472,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
     }
 
     private String[] getTitles() {
-        ArrayList<Song> list=new MyApplication(this).getWritableDatabase().readsongs();
+        ArrayList<Song> list=new MyApplication(this).getWritableDatabase().readSongs();
         String[] array = new String[list.size()];
         for (int i = 0; i < array.length; i++) {
             array[i] =list.get(i).getName();
@@ -457,10 +481,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
         return array;
     }
 
-    public void changeMiniPlayerVisibility() {
-        if (miniPlayer.getVisibility() == View.GONE)
-            miniPlayer.setVisibility(View.VISIBLE);
-    }
 
 }
 
