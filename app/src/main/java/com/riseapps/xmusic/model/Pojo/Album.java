@@ -6,11 +6,14 @@ package com.riseapps.xmusic.model.Pojo;
 
 public class Album {
     private String name;
-    private int count;
+    private String imagepath;
 
-    public Album(String name, int count) {
+    public Album() {
+    }
+
+    public Album(String name,String imagepath) {
         this.name = name;
-        this.count=count;
+        this.imagepath=imagepath;
     }
     public void setName(String name) {
         this.name = name;
@@ -20,11 +23,11 @@ public class Album {
         return name;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
     }
 
-    public int getcount() {
-        return count;
+    public String getImagepath() {
+        return imagepath;
     }
 }

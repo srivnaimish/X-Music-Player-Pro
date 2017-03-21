@@ -2,6 +2,7 @@ package com.riseapps.xmusic.view.Fragment;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.ArtistAdapter;
 import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.utils.GridItemDecoration;
@@ -50,12 +52,8 @@ public class ArtistFragment extends Fragment {
         // Inflate the layout for this fragment_songs
         View v=inflater.inflate(R.layout.fragment_artist, container, false);
 
-        artistLists.add(new Artist("auto Artist 1",5));
-        artistLists.add(new Artist("auto Artist 1",5));
-        artistLists.add(new Artist("auto Artist 1",5));
-        artistLists.add(new Artist("auto Artist 1",5));
-        artistLists.add(new Artist("auto Artist 1",5));
-        artistLists.add(new Artist("auto Artist 1",5));
+        new Async().execute();
+
         recyclerView = (RecyclerView) v.findViewById(R.id.artists);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
@@ -67,8 +65,7 @@ public class ArtistFragment extends Fragment {
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setNestedScrollingEnabled(false);
 
-        artistAdapter = new ArtistAdapter(getActivity(), artistLists, recyclerView);
-        recyclerView.setAdapter(artistAdapter);
+
         return v;
     }
 
@@ -94,6 +91,23 @@ public class ArtistFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private class Async extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            // getListOfAlbums();
+            artistLists=new MyApplication(getActivity()).getWritableDatabase().readArtists();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            artistAdapter = new ArtistAdapter(getActivity(), artistLists, recyclerView);
+            recyclerView.setAdapter(artistAdapter);
+        }
     }
 
 

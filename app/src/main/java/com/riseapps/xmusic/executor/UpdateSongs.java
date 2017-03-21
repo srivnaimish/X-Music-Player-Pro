@@ -41,6 +41,8 @@ public class UpdateSongs {
                     (MediaStore.Audio.Media.ARTIST);
             int song_duration = musicCursor.getColumnIndex
                     (MediaStore.Audio.AudioColumns.DURATION);
+            int album=musicCursor.getColumnIndex
+                    (MediaStore.Audio.AudioColumns.ALBUM);
             int x=0;
             do {
                 long thisId = musicCursor.getLong(idColumn);
@@ -48,16 +50,25 @@ public class UpdateSongs {
                 if (thisTitle.length() > textLimit)
                     thisTitle = thisTitle.substring(0, textLimit) + "...";
                 String thisArtist = musicCursor.getString(artistColumn);
+                if(thisArtist.equalsIgnoreCase("<unknown>")){
+                    thisArtist="Unknown";
+                }
                 if (thisArtist.length() > textLimit)
                     thisArtist = thisArtist.substring(0, textLimit) + "...";
+
+                String thisAlbum=musicCursor.getString(album);
                 long thisduration = musicCursor.getLong(song_duration);
 
                 String imagepath = "content://media/external/audio/media/" + thisId + "/albumart";
-                if (new AlbumArtChecker().hasAlbumArt(context, imagepath)) {
-                    new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, "none", false);
-                } else {
-                    new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, "no_image", "none", false);
+                if (!new AlbumArtChecker().hasAlbumArt(context, imagepath))
+                    imagepath="no_image";
+
+                if(thisAlbum==null){
+                    thisAlbum="Unknown";
                 }
+
+                new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, "none",thisAlbum, false);
+
                 x++;
             }
             while (musicCursor.moveToNext());

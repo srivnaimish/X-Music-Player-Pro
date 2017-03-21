@@ -232,7 +232,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
             musicService = binder.getService();
             musicService.setSongs(songList);
             musicService.setUIControls(seekBar, currentPosition, totalDuration);
-
+            Log.d("Songs","Connected to service");
             musicService.setOnSongChangedListener(new MusicService.OnSongChangedListener() {
                 @Override
                 public void onSongChanged(Song song) {
@@ -276,7 +276,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
                 }
             });
 
-                musicService.setSong(new SharedPreferenceSingelton().getSavedInt(MainActivity.this,"pos"));
+                musicService.setSong(0);
         }
 
         @Override
@@ -293,14 +293,17 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
             playIntent = new Intent(this, MusicService.class);
             startService(playIntent);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
-            new Handler().postDelayed(new Runnable() {
+            miniPlayer.setVisibility(View.VISIBLE);
+            miniPlayer.setAlpha(0.f);
+            miniPlayer.animate().alpha(1.f).setDuration(1000).start();
+            /*new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     miniPlayer.setVisibility(View.VISIBLE);
                     miniPlayer.setAlpha(0.f);
                     miniPlayer.animate().alpha(1.f).setDuration(2500).start();
                 }
-            },1000);
+            },1000);*/
             mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
         }
     }

@@ -6,26 +6,27 @@ package com.riseapps.xmusic.model.Pojo;
 
 public class Artist {
     private String name;
-    private int count;
+    private String imagepath;
 
-    public Artist(String name,int count) {
+    public Artist(){}
+
+    public Artist(String name,String imagepath) {
         this.name = name;
-        this.count=count;
+        this.imagepath=imagepath;
     }
     public void setName(String name) {
         this.name = name;
     }
 
-
     public String getName() {
         return name;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
     }
 
-    public int getcount() {
-        return count;
+    public String getImagepath() {
+        return imagepath;
     }
 }

@@ -71,7 +71,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
 class PlaylistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     ImageView imageView;
-    ImageButton imageButton;
     TextView name,count;
     Context ctx;
 
@@ -82,12 +81,10 @@ class PlaylistViewHolder extends RecyclerView.ViewHolder implements View.OnClick
         this.ctx = context;
 
         imageView= (ImageView) v.findViewById(R.id.imageView);
-        imageButton= (ImageButton) v.findViewById(R.id.play);
         name= (TextView) v.findViewById(R.id.name);
         count= (TextView) v.findViewById(R.id.count);
 
         imageView.setOnClickListener(this);
-        imageButton.setOnClickListener(this);
         name.setOnClickListener(this);
         count.setOnClickListener(this);
 

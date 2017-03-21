@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,14 +46,13 @@ public class SongsFragment extends Fragment {
         return new SongsFragment();
     }
 
-    public SongsFragment(){}
+    public SongsFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
-        async=new Async();
-
-        songList = ((MainActivity) getActivity()).getSongs();
+        async = new Async();
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.songs);
         int spanCount = 1; // 2 columns
@@ -69,7 +69,7 @@ public class SongsFragment extends Fragment {
 
         async.execute();
 
-        view=rootView;
+        view = rootView;
         return rootView;
     }
 
@@ -78,15 +78,14 @@ public class SongsFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
 
         if (isVisibleToUser) {
-            View v=getView();
-            if (v != null){
-              // Toast.makeText(view.getContext(),"visible", Toast.LENGTH_SHORT).show();
+            View v = getView();
+            if (v != null) {
+                // Toast.makeText(view.getContext(),"visible", Toast.LENGTH_SHORT).show();
             }
 
-        }
-        else {
-            View v=getView();
-            if (v != null){
+        } else {
+            View v = getView();
+            if (v != null) {
 
             }
         }
@@ -97,16 +96,17 @@ public class SongsFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-                songList=new MyApplication(getActivity()).getWritableDatabase().readSongs();
+            songList = new MyApplication(getActivity()).getWritableDatabase().readSongs();
             ((MainActivity) getActivity()).setSongs(songList);
             songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
+            Log.d("Songs","Loaded in async "+songList.size());
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             recyclerView.setAdapter(songsAdapter);
-           // ((MainActivity) getActivity()).setRecyclerView(recyclerView);
+            // ((MainActivity) getActivity()).setRecyclerView(recyclerView);
             super.onPostExecute(aVoid);
         }
     }

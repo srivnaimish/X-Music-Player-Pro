@@ -1,16 +1,21 @@
 package com.riseapps.xmusic.view.Fragment;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.AlbumsAdapter;
 import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.utils.GridItemDecoration;
@@ -50,12 +55,8 @@ public class AlbumFragment extends Fragment {
         // Inflate the layout for this fragment_songs
         View v=inflater.inflate(R.layout.fragment_album, container, false);
 
-        albumLists.add(new Album("auto album 1",5));
-        albumLists.add(new Album("auto album 1",5));
-        albumLists.add(new Album("auto album 1",5));
-        albumLists.add(new Album("auto album 1",5));
-        albumLists.add(new Album("auto album 1",5));
-        albumLists.add(new Album("auto album 1",5));
+        new Async().execute();
+
         recyclerView = (RecyclerView) v.findViewById(R.id.albums);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
@@ -67,8 +68,7 @@ public class AlbumFragment extends Fragment {
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setNestedScrollingEnabled(false);
 
-        albumAdapter = new AlbumsAdapter(getActivity(), albumLists, recyclerView);
-        recyclerView.setAdapter(albumAdapter);
+
         return v;
     }
 
@@ -95,6 +95,24 @@ public class AlbumFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    private class Async extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+           // getListOfAlbums();
+            albumLists=new MyApplication(getActivity()).getWritableDatabase().readAlbums();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            albumAdapter = new AlbumsAdapter(getActivity(), albumLists, recyclerView);
+            recyclerView.setAdapter(albumAdapter);
+        }
+    }
+
 
 
     public interface OnFragmentInteractionListener {
