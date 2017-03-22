@@ -1,10 +1,13 @@
 package com.riseapps.xmusic.model.Pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by naimish on 16/3/17.
  */
 
-public class Album {
+public class Album implements Parcelable{
     private String name;
     private String imagepath;
 
@@ -15,6 +18,24 @@ public class Album {
         this.name = name;
         this.imagepath=imagepath;
     }
+
+    protected Album(Parcel in) {
+        name = in.readString();
+        imagepath = in.readString();
+    }
+
+    public static final Creator<Album> CREATOR = new Creator<Album>() {
+        @Override
+        public Album createFromParcel(Parcel in) {
+            return new Album(in);
+        }
+
+        @Override
+        public Album[] newArray(int size) {
+            return new Album[size];
+        }
+    };
+
     public void setName(String name) {
         this.name = name;
     }
@@ -29,5 +50,16 @@ public class Album {
 
     public String getImagepath() {
         return imagepath;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(imagepath);
     }
 }

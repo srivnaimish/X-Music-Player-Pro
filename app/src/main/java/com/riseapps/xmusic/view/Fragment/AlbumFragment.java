@@ -61,7 +61,7 @@ public class AlbumFragment extends Fragment {
         // Inflate the layout for this fragment_songs
         View v=inflater.inflate(R.layout.fragment_album, container, false);
 
-        new Async().execute();
+        //new Async().execute();
 
         recyclerView = (RecyclerView) v.findViewById(R.id.albums);
         recyclerView.setHasFixedSize(true);
@@ -95,6 +95,10 @@ public class AlbumFragment extends Fragment {
             }
         }));
 
+        albumLists=getActivity().getIntent().getParcelableArrayListExtra("albumList");
+        albumAdapter = new AlbumsAdapter(getActivity(), albumLists, recyclerView);
+        recyclerView.setAdapter(albumAdapter);
+
         return v;
     }
 
@@ -122,7 +126,7 @@ public class AlbumFragment extends Fragment {
         mListener = null;
     }
 
-    private class Async extends AsyncTask<Void, Void, Void> {
+   /* private class Async extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -138,7 +142,7 @@ public class AlbumFragment extends Fragment {
             recyclerView.setAdapter(albumAdapter);
         }
     }
-
+*/
 
 
     public interface OnFragmentInteractionListener {

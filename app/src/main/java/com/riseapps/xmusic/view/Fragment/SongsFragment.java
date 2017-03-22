@@ -34,11 +34,11 @@ import java.util.Comparator;
 public class SongsFragment extends Fragment {
 
     RecyclerView recyclerView;
-    ArrayList<Song> songList;
+    ArrayList<Song> songList=new ArrayList<>();
     SongAdapter songsAdapter;
     View view;
     Gson gson = new Gson();
-    Async async;
+   // Async async;
     final int textLimit = 26;
     //Type type=new TypeToken<ArrayList<Song>>() {}.getType();
 
@@ -52,7 +52,7 @@ public class SongsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
-        async = new Async();
+      //  async = new Async();
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.songs);
         int spanCount = 1; // 2 columns
@@ -67,7 +67,12 @@ public class SongsFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        async.execute();
+        songList=getActivity().getIntent().getParcelableArrayListExtra("songList");
+
+        ((MainActivity) getActivity()).setSongs(songList);
+        songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
+        recyclerView.setAdapter(songsAdapter);
+      //  async.execute();
 
         view = rootView;
         return rootView;
@@ -92,7 +97,7 @@ public class SongsFragment extends Fragment {
     }
 
 
-    private class Async extends AsyncTask<Void, Void, Void> {
+   /* private class Async extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -114,5 +119,5 @@ public class SongsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
+    }*/
 }

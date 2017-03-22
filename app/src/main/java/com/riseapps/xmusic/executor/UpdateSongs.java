@@ -26,7 +26,7 @@ public class UpdateSongs {
     public void fetchSongs(){
         new Async().execute();
     }
-    private void getSongList() {
+    public void getSongList() {
         ContentResolver musicResolver = context.getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);

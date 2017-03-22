@@ -295,16 +295,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             startService(playIntent);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             miniPlayer.setVisibility(View.VISIBLE);
-            miniPlayer.setAlpha(0.f);
-            miniPlayer.animate().alpha(1.f).setDuration(1000).start();
-            /*new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    miniPlayer.setVisibility(View.VISIBLE);
-                    miniPlayer.setAlpha(0.f);
-                    miniPlayer.animate().alpha(1.f).setDuration(2500).start();
-                }
-            },1000);*/
+
             mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
         }
     }

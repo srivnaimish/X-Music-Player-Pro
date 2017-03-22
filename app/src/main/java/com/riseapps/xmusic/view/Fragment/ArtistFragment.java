@@ -54,7 +54,7 @@ public class ArtistFragment extends Fragment {
         // Inflate the layout for this fragment_songs
         View v=inflater.inflate(R.layout.fragment_artist, container, false);
 
-        new Async().execute();
+       // new Async().execute();
 
         recyclerView = (RecyclerView) v.findViewById(R.id.artists);
         recyclerView.setHasFixedSize(true);
@@ -88,6 +88,10 @@ public class ArtistFragment extends Fragment {
             }
         }));
 
+        artistLists=getActivity().getIntent().getParcelableArrayListExtra("artistList");
+        artistAdapter = new ArtistAdapter(getActivity(), artistLists, recyclerView);
+        recyclerView.setAdapter(artistAdapter);
+
         return v;
     }
 
@@ -115,7 +119,7 @@ public class ArtistFragment extends Fragment {
         mListener = null;
     }
 
-    private class Async extends AsyncTask<Void, Void, Void> {
+    /*private class Async extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -130,7 +134,7 @@ public class ArtistFragment extends Fragment {
             artistAdapter = new ArtistAdapter(getActivity(), artistLists, recyclerView);
             recyclerView.setAdapter(artistAdapter);
         }
-    }
+    }*/
 
 
     public interface OnFragmentInteractionListener {
