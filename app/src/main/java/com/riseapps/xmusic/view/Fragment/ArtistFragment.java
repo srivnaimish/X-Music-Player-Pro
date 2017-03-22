@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.executor.ClickListener;
 import com.riseapps.xmusic.executor.MyApplication;
+import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.ArtistAdapter;
 import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.utils.GridItemDecoration;
@@ -22,8 +26,6 @@ import java.util.ArrayList;
 public class ArtistFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     RecyclerView recyclerView;
     ArrayList<Artist> artistLists=new ArrayList<>();
     ArtistAdapter artistAdapter;
@@ -64,7 +66,27 @@ public class ArtistFragment extends Fragment {
 
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+                ScrollingFragment scrollingFragment=new ScrollingFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("Name",artistLists.get(position).getName());
+                bundle.putString("Imagepath",artistLists.get(position).getImagepath());
+                bundle.putString("Action","Artists");
+                scrollingFragment.setArguments(bundle);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.replace(R.id.drawerLayout,scrollingFragment);
+                fragmentTransaction.commit();
+            }
 
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
         return v;
     }

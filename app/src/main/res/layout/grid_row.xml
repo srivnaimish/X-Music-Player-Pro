@@ -52,16 +52,6 @@
                 android:textSize="15sp"
                 tools:text="Song Name" />
 
-            <com.riseapps.xmusic.widgets.MainTextViewSub
-                android:id="@+id/count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif-light"
-                android:textAlignment="center"
-                android:textColor="#636363"
-                android:textSize="14sp"
-                tools:text="Song Artist" />
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>

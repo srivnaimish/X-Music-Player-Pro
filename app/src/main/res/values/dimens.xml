@@ -2,7 +2,7 @@
 <resources>
     <dimen name="main_player_image_height">300dp</dimen>
     <dimen name="image_border_curvature">50dp</dimen>
-    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="app_bar_height">250dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 </resources>

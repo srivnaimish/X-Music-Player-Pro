@@ -50,6 +50,7 @@ import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
 import com.riseapps.xmusic.view.Fragment.ArtistFragment;
 import com.riseapps.xmusic.view.Fragment.PlaylistFragment;
+import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 import com.riseapps.xmusic.view.Fragment.SongsFragment;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends BaseMatSearchViewActivity implements SongsFragment.OnFragmentInteractionListener, ArtistFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AlbumFragment.OnFragmentInteractionListener, OnSearchViewListener {
+public class MainActivity extends BaseMatSearchViewActivity implements ScrollingFragment.OnFragmentInteractionListener,SongsFragment.OnFragmentInteractionListener, ArtistFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AlbumFragment.OnFragmentInteractionListener, OnSearchViewListener {
 
     private ArrayList<Song> songList = new ArrayList<>();
     private MusicService musicService;
@@ -335,8 +336,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements SongsFrag
         if (mainPlayer.getVisibility() == View.VISIBLE) {
             hideMainPlayer();
         } else {
-            if (musicPlaying)
+            if (musicPlaying) {
+                if(getSupportFragmentManager().getBackStackEntryCount()>0)
+                    getSupportFragmentManager().popBackStackImmediate();
+                else
                 moveTaskToBack(true);
+            }
             else {
                 super.onBackPressed();
             }

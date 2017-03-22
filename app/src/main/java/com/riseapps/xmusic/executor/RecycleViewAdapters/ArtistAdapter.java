@@ -1,21 +1,18 @@
 package com.riseapps.xmusic.executor.RecycleViewAdapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.Pojo.Artist;
-import com.riseapps.xmusic.view.Activity.ScrollingActivity;
 
 import java.util.List;
 
@@ -76,7 +73,7 @@ public class ArtistAdapter extends RecyclerView.Adapter {
     }
 
 }
-class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+class ArtistViewHolder extends RecyclerView.ViewHolder {
 
     ImageView imageView;
     TextView name;
@@ -91,20 +88,8 @@ class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
         imageView= (ImageView) v.findViewById(R.id.imageView);
         name= (TextView) v.findViewById(R.id.name);
 
-        imageView.setOnClickListener(this);
-        name.setOnClickListener(this);
-
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.name ||view.getId() == R.id.imageView) {
-            Intent intent=new Intent(ctx, ScrollingActivity.class);
-            intent.setAction("Open Artist");
-            intent.putExtra("artist_name",name.getText().toString());
-            ctx.startActivity(intent);
-        }
-    }
 }
 
 

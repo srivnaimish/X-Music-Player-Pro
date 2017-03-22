@@ -142,6 +142,80 @@ public class DBPlayer {
         return artistlist;
     }
 
+    public ArrayList<Song> readAlbumSongs(String album) {
+        ArrayList<Song> songlist = new ArrayList<>();
+        String[] columns = {
+                PlayerHelper.COLUMN_ID,
+                PlayerHelper.COLUMN_NAME,
+                PlayerHelper.COLUMN_ARTIST,
+                PlayerHelper.COLUMN_DURATION,
+                PlayerHelper.COLUMN_IMAGEPATH,
+                PlayerHelper.COLUMN_PLAYLIST,
+                PlayerHelper.COLUMN_FAVOURITE
+        };
+        String whereClause="ALBUM=?";
+        String whereArgs[]={album};
+        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, whereClause, whereArgs, null, null, PlayerHelper.COLUMN_NAME);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Song song = new Song();
+                song.setID(cursor.getLong(cursor.getColumnIndex(PlayerHelper.COLUMN_ID)));
+                song.setName(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_NAME)));
+                song.setArtist(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_ARTIST)));
+                song.setDuration(cursor.getLong(cursor.getColumnIndex(PlayerHelper.COLUMN_DURATION)));
+                song.setImagepath(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_IMAGEPATH)));
+                song.setPlaylist(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_PLAYLIST)));
+                int f = cursor.getInt(cursor.getColumnIndex(PlayerHelper.COLUMN_FAVOURITE));
+                if (f == 1)
+                    song.setFavourite(true);
+                else
+                    song.setFavourite(false);
+                songlist.add(song);
+            }
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+        mDatabase.close();
+        return songlist;
+    }
+
+    public ArrayList<Song> readArtistSongs(String artist) {
+        ArrayList<Song> songlist = new ArrayList<>();
+        String[] columns = {
+                PlayerHelper.COLUMN_ID,
+                PlayerHelper.COLUMN_NAME,
+                PlayerHelper.COLUMN_ARTIST,
+                PlayerHelper.COLUMN_DURATION,
+                PlayerHelper.COLUMN_IMAGEPATH,
+                PlayerHelper.COLUMN_PLAYLIST,
+                PlayerHelper.COLUMN_FAVOURITE
+        };
+        String whereClause="ARTIST=?";
+        String whereArgs[]={artist};
+        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, whereClause, whereArgs, null, null, PlayerHelper.COLUMN_NAME);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Song song = new Song();
+                song.setID(cursor.getLong(cursor.getColumnIndex(PlayerHelper.COLUMN_ID)));
+                song.setName(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_NAME)));
+                song.setArtist(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_ARTIST)));
+                song.setDuration(cursor.getLong(cursor.getColumnIndex(PlayerHelper.COLUMN_DURATION)));
+                song.setImagepath(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_IMAGEPATH)));
+                song.setPlaylist(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_PLAYLIST)));
+                int f = cursor.getInt(cursor.getColumnIndex(PlayerHelper.COLUMN_FAVOURITE));
+                if (f == 1)
+                    song.setFavourite(true);
+                else
+                    song.setFavourite(false);
+                songlist.add(song);
+            }
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+        mDatabase.close();
+        return songlist;
+    }
+
     /*Delete All Songs*/
     public void deleteAllSongs() {
         mDatabase.delete(PlayerHelper.SONG_TABLE_NAME, null, null);
