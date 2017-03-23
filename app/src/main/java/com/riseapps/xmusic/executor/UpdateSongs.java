@@ -23,9 +23,7 @@ public class UpdateSongs {
         this.context = context;
     }
 
-    public void fetchSongs(){
-        new Async().execute();
-    }
+
     public void getSongList() {
         ContentResolver musicResolver = context.getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -67,27 +65,12 @@ public class UpdateSongs {
                     thisAlbum="Unknown";
                 }
 
-                new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, "none",thisAlbum, false);
-
+                new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, "All Songs,",thisAlbum, false);
                 x++;
             }
             while (musicCursor.moveToNext());
             Log.d("Song Insert", "" + x);
             musicCursor.close();
-        }
-    }
-
-    private class Async extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            getSongList();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
         }
     }
 

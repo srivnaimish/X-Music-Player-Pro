@@ -14,8 +14,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
+import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.List;
 import java.util.Locale;
@@ -90,10 +92,12 @@ public class SongAdapter extends RecyclerView.Adapter {
                     // Toast.makeText(getContext(), "Added to Favourites", Toast.LENGTH_SHORT).show();
                     ((SongViewHolder) holder).like.startAnimation(new CustomAnimation().likeAnimation(c));
                     if(song.getFavourite()){
+                        new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),0);
                         ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
                         song.setFavourite(false);
                     }
                     else {
+                        new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),1);
                         ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);
                         song.setFavourite(true);
                     }

@@ -13,11 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AlbumArtChecker;
+import com.riseapps.xmusic.executor.ClickListener;
 import com.riseapps.xmusic.executor.MyApplication;
+import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
@@ -72,6 +75,24 @@ public class SongsFragment extends Fragment {
         ((MainActivity) getActivity()).setSongs(songList);
         songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
         recyclerView.setAdapter(songsAdapter);
+
+        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //  Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
+                if((((MainActivity) getActivity()).getSongs()!=songList)) {
+                    Toast.makeText(getContext(), "Now Playing All Songs", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).setSongs(songList);
+                    ((MainActivity) getActivity()).getMusicService().setSongs(songList);
+                }
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
       //  async.execute();
 
         view = rootView;

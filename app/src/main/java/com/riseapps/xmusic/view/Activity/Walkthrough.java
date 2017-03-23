@@ -29,6 +29,7 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
+import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.model.Pojo.Song;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class Walkthrough extends AppCompatActivity {
     ArrayList<Song> songList=new ArrayList<>();
     ArrayList<Album> albumList=new ArrayList<>();
     ArrayList<Artist> artistList=new ArrayList<>();
+   // ArrayList<Playlist> playLists=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,7 @@ public class Walkthrough extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             new UpdateSongs(Walkthrough.this).getSongList();
+            new MyApplication(Walkthrough.this).getWritableDatabase().insertPlaylist("All Songs,");
             songList = new MyApplication(Walkthrough.this).getWritableDatabase().readSongs();
             artistList = new MyApplication(Walkthrough.this).getWritableDatabase().readArtists();
             albumList = new MyApplication(Walkthrough.this).getWritableDatabase().readAlbums();
@@ -130,7 +133,6 @@ public class Walkthrough extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             finish();
-            // ((MainActivity) getActivity()).setRecyclerView(recyclerView);
             super.onPostExecute(aVoid);
         }
     }

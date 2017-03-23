@@ -305,8 +305,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     protected void onDestroy() {
         unbindService(musicConnection);
         stopService(playIntent);
-        new MyApplication(this).getWritableDatabase().deleteAllSongs();
-        new UpdateSongs(this).fetchSongs();
+        //new MyApplication(this).getWritableDatabase().deleteAllSongs();
+        //new UpdateSongs(this).fetchSongs();
         mSensorManager.unregisterListener(mShakeDetector);
         super.onDestroy();
     }

@@ -48,7 +48,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
         if (holder instanceof PlaylistViewHolder) {
             final Playlist playlist = (Playlist) playlistsList.get(position);
             String name=playlist.getName();
-            String count=playlist.getcount()+"songs";
             ((PlaylistViewHolder)holder).name.setText(name);
 
             ((PlaylistViewHolder) holder).playlist = playlist;
@@ -67,7 +66,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
 class PlaylistViewHolder extends RecyclerView.ViewHolder{
 
     ImageView imageView;
-    TextView name,count;
+    TextView name;
     Context ctx;
 
     Playlist playlist;

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +21,7 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
+import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.model.Pojo.Song;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class SplashScreen extends AppCompatActivity {
     ArrayList<Song> songList=new ArrayList<>();
     ArrayList<Album> albumList=new ArrayList<>();
     ArrayList<Artist> artistList=new ArrayList<>();
+  //  ArrayList<Playlist> playLists=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +47,8 @@ public class SplashScreen extends AppCompatActivity {
                 } else {
                     startActivity(new Intent(SplashScreen.this, Walkthrough.class));
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    finish();
                 }
-                finish();
     }
 
     private class Async extends AsyncTask<Void, Void, Void> {
@@ -66,7 +69,7 @@ public class SplashScreen extends AppCompatActivity {
             intent.putParcelableArrayListExtra("artistList",artistList);
             startActivity(intent);
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            // ((MainActivity) getActivity()).setRecyclerView(recyclerView);
+            finish();
             super.onPostExecute(aVoid);
         }
     }
