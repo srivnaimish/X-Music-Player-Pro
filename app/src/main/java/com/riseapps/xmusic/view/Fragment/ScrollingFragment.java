@@ -3,6 +3,8 @@ package com.riseapps.xmusic.view.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +39,8 @@ public class ScrollingFragment extends Fragment {
     NestedFragmentAdapter nestedFragmentAdapter;
     private PlaySongExec playSongExec;
 
+    FloatingActionButton fab;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -60,9 +64,14 @@ public class ScrollingFragment extends Fragment {
         View rootView=inflater.inflate(R.layout.fragment_scrolling, container, false);
         title= (TextView) rootView.findViewById(R.id.textView);
         imageView = (ImageView) rootView.findViewById(R.id.imageView);
+        fab= (FloatingActionButton) rootView.findViewById(R.id.fab);
         recyclerView= (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
+        if(Name!=null)
         title.setText(Name);
+        else
+            title.setText("Favourites");
+
         if (Imagepath!=null&&!Imagepath.equalsIgnoreCase("no_image")) {
             Glide.with(getContext()).load(Uri.parse(Imagepath))
                     .crossFade()
@@ -77,9 +86,11 @@ public class ScrollingFragment extends Fragment {
         }
         else if (Action.equalsIgnoreCase("Artists"))
             songArrayList=new MyApplication(getActivity()).getWritableDatabase().readArtistSongs(Name);
-        else {
+        else if(Action.equalsIgnoreCase("Playlists")){
             songArrayList=new MyApplication(getActivity()).getWritableDatabase().readSongsFromPlaylist(Name);
         }
+        else
+            songArrayList=new MyApplication(getActivity()).getWritableDatabase().readFavouriteSongs();
 
         int spanCount = 1; // 2 columns
         int spacing = 22; // 50px
@@ -98,9 +109,8 @@ public class ScrollingFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-              //  Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
                 if((((MainActivity) getActivity()).getSongs()!=songArrayList)) {
-                    Toast.makeText(getContext(), "Now Playing from "+Name, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Now Playing from "+title.getText().toString(), Toast.LENGTH_SHORT).show();
                     ((MainActivity) getActivity()).setSongs(songArrayList);
                     ((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
                 }
@@ -113,8 +123,23 @@ public class ScrollingFragment extends Fragment {
 
             }
         }));
-       // ((MainActivity) getActivity()).setSongs(songArrayList);
-        //((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(songArrayList.size()!=0) {
+                    if ((((MainActivity) getActivity()).getSongs() != songArrayList)) {
+                        Toast.makeText(getContext(), "Playling All Songs from " + title.getText().toString(), Toast.LENGTH_SHORT).show();
+                        ((MainActivity) getActivity()).setSongs(songArrayList);
+                        ((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
+                    }
+                    playSongExec = new PlaySongExec(getContext(), 0);
+                    playSongExec.startPlaying();
+                }
+                else
+                    Snackbar.make(fab,"No Songs Here to Play",Snackbar.LENGTH_SHORT).show();
+            }
+        });
 
         return rootView;
     }

@@ -2,24 +2,31 @@ package com.riseapps.xmusic.model;
 
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.GenerateNotification;
 import com.riseapps.xmusic.model.Pojo.Song;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +37,7 @@ public class MusicService extends Service implements
         MediaPlayer.OnCompletionListener {
 
     public MediaPlayer player;
-
+    public HeadsetPlugReceiver headsetPlugReceiver;
     public ArrayList<Song> songs;
 
     private int songPos;
@@ -38,6 +45,10 @@ public class MusicService extends Service implements
     private final IBinder musicBind = new MusicBinder();
 
     private OnSongChangedListener onSongChangedListener;
+
+    private boolean isPausedOnCall=false;
+    private PhoneStateListener phoneStateListener;
+    private TelephonyManager telephonyManager;
 
     public static final int STOPPED = 0;
     public static final int PAUSED = 1;
@@ -55,7 +66,10 @@ public class MusicService extends Service implements
         songPos = 0;
         player = new MediaPlayer();
         initMusicPlayer();
-
+        headsetPlugReceiver = new HeadsetPlugReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.intent.action.HEADSET_PLUG");
+        registerReceiver(headsetPlugReceiver, intentFilter);
     }
 
     @Override
@@ -65,6 +79,33 @@ public class MusicService extends Service implements
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        telephonyManager= (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        phoneStateListener=new PhoneStateListener(){
+            @Override
+            public void onCallStateChanged(int state, String incomingNumber) {
+                switch (state){
+                    case TelephonyManager.CALL_STATE_OFFHOOK:
+                    case TelephonyManager.CALL_STATE_RINGING:
+                        if(player!=null){
+                            isPausedOnCall=true;
+                            togglePlay();
+                            //pause
+                        }
+                        break;
+                    case TelephonyManager.CALL_STATE_IDLE:
+                        if(player!=null){
+                            if (isPausedOnCall){
+                                isPausedOnCall=false;
+                                togglePlay();
+                                //pause
+                            }
+                        }
+
+                }
+            }
+        };
+        telephonyManager.listen(phoneStateListener,PhoneStateListener.LISTEN_CALL_STATE);
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -108,6 +149,13 @@ public class MusicService extends Service implements
         NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(NOTIFICATION_ID);
         player.release();
+        if(phoneStateListener!=null){
+            telephonyManager.listen(phoneStateListener,PhoneStateListener.LISTEN_NONE);
+        }
+        if (headsetPlugReceiver != null) {
+            unregisterReceiver(headsetPlugReceiver);
+            headsetPlugReceiver = null;
+        }
         super.onDestroy();
     }
 
@@ -189,6 +237,19 @@ public class MusicService extends Service implements
 
     }
 
+    public void shuffleSongs(){
+        Collections.shuffle(songs);
+    }
+
+    public void sortSongs() {
+        Collections.sort(songs, new Comparator<Song>() {
+            @Override
+            public int compare(Song song, Song t1) {
+                return song.getName().compareTo(t1.getName());
+            }
+        });
+    }
+
     public interface OnSongChangedListener {
         void onSongChanged(Song song);
 
@@ -246,5 +307,21 @@ public class MusicService extends Service implements
             }
         }
     };
+
+    public class HeadsetPlugReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
+                return;
+            }
+            boolean disconnectHeadphones = (intent.getIntExtra("state", 0) == 0);
+            if(player.isPlaying() && disconnectHeadphones){
+                togglePlay();
+            }
+
+           // Toast.makeText(MusicService.this, ""+connectedHeadphones, Toast.LENGTH_SHORT).show();
+            // ...
+        }
+    }
 
 }

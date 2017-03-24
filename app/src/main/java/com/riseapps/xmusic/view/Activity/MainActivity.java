@@ -1,9 +1,11 @@
 package com.riseapps.xmusic.view.Activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -16,6 +18,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -64,7 +68,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private ArrayList<Song> songList = new ArrayList<>();
     private MusicService musicService;
     private Intent playIntent;
-    public boolean musicPlaying;
+    public boolean musicPlaying,isMusicShuffled=false;
     //Mini & Main player layouts
     private CardView miniPlayer;
     private ConstraintLayout mainPlayer;
@@ -91,6 +95,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +139,21 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 musicService.togglePlay();
             }
         });
+        shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isMusicShuffled) {
+                    musicService.sortSongs();
+                    isMusicShuffled=false;
+                    DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
+                }
+                else {
+                    musicService.shuffleSongs();
+                    isMusicShuffled=true;
+                    DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                }
+            }
+        });
 
         miniPlayer.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -166,6 +187,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         toolbarPlayer = (Toolbar) findViewById(R.id.toolbar_player);
         toolbarPlayer.inflateMenu(R.menu.player_menu);
+
         toolbarPlayer.setNavigationIcon(R.drawable.ic_back);
         toolbarPlayer.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -173,6 +195,17 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 if (item.getItemId() == R.id.favouritesPlayer) {
                     View v = findViewById(R.id.favouritesPlayer);
                     v.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
+                    Song song=songList.get(musicService.getCurrentIndex());
+                    if(song.getFavourite()) {
+                        new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(),0);
+                        song.setFavourite(false);
+                        item.setIcon(R.drawable.ic_like);
+                    }
+                    else {
+                        new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(),1);
+                        song.setFavourite(true);
+                        item.setIcon(R.drawable.ic_liked);
+                    }
                 } else if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
                     startActivityForResult(i, 1);
@@ -207,7 +240,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         next = (ImageButton) findViewById(R.id.next);
         prev = (ImageButton) findViewById(R.id.prev);
         shuffle = (ImageButton) findViewById(R.id.shuffle);
-        repeat = (ImageButton) findViewById(R.id.shuffle);
+        repeat = (ImageButton) findViewById(R.id.repeat);
         currentPosition = (TextView) findViewById(R.id.currentPosition);
         totalDuration = (TextView) findViewById(R.id.totalDuration);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
@@ -296,7 +329,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
 
             miniPlayer.setVisibility(View.VISIBLE);
-
+            miniPlayer.setAlpha(0.f);
+            miniPlayer.animate()
+                    .alpha(1.f)
+                    .setDuration(1000)
+                    .start();
             mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
         }
     }
@@ -355,17 +392,18 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     void showMainPlayer() {
-        mainPlayer.startAnimation(new CustomAnimation().slideShow(MainActivity.this));
+     //   mainPlayer.startAnimation(new CustomAnimation().slideShow(MainActivity.this));
         mainPlayer.setVisibility(View.VISIBLE);
+        toolbarPlayer.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.GONE);
         mViewPager.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.GONE);
         mToolbar.setVisibility(View.GONE);
-        toolbarPlayer.setVisibility(View.VISIBLE);
     }
 
     void hideMainPlayer() {
         mainPlayer.setVisibility(View.GONE);
+
         miniPlayer.setVisibility(View.VISIBLE);
         mViewPager.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.VISIBLE);

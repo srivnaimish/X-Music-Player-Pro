@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,6 +14,8 @@ import android.view.View;
 
 import com.claudiodegio.msv.BaseMaterialSearchView;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.CustomAnimation;
+import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 
 /**
  * Created by kanishk on 17/03/17.
@@ -32,7 +36,25 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
         mSearchView = (BaseMaterialSearchView) findViewById(R.id.sv);
         mCoordinator = (CoordinatorLayout) findViewById(R.id.drawerLayout);
         mSearchView.setMenuItem(mToolbar.getMenu().findItem(R.id.action_search));
-
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.favourites) {
+                    View v = findViewById(R.id.favourites);
+                    v.startAnimation(new CustomAnimation().likeAnimation(BaseMatSearchViewActivity.this));
+                    FragmentManager fragmentManager=getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+                    ScrollingFragment scrollingFragment=new ScrollingFragment();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("Action","Favourites");
+                    scrollingFragment.setArguments(bundle);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.replace(R.id.drawerLayout,scrollingFragment);
+                    fragmentTransaction.commit();
+                }
+                return true;
+            }
+        });
         /*mSearchView.postDelayed(new Runnable() {
             @Override
             public void run() {

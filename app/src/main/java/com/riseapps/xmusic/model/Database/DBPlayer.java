@@ -32,7 +32,14 @@ public class DBPlayer {
         playerHelper = new PlayerHelper(context);
         mDatabase = playerHelper.getWritableDatabase();
     }
-    /*Insert Song*/
+
+    /*For Songs-
+     1)Insertion              -insertSong(...)
+     2)Read                   -readSongs()
+     3)Update Favourites      -updateFavourites(SongId,FavouriteStatus)
+     4)Read Favourite  Songs  -readFavouriteSongs()
+     5)Delete All Songs       -Deletes all songs in Song table just in case*/
+
     public void insertSong(long id, String Name, String Artist, long duration, String Imagepath,String playlist, String albumName,boolean favourite) {
         String sql = "INSERT INTO " + PlayerHelper.SONG_TABLE_NAME + " (" + PlayerHelper.COLUMN_ID + "," + PlayerHelper.COLUMN_NAME + "," +
                 PlayerHelper.COLUMN_ARTIST + "," + PlayerHelper.COLUMN_DURATION + "," + PlayerHelper.COLUMN_IMAGEPATH + "," + PlayerHelper.COLUMN_PLAYLIST +
@@ -45,7 +52,7 @@ public class DBPlayer {
         statement.bindString(3, Artist);
         statement.bindLong(4, duration);
         statement.bindString(5, Imagepath);
-        statement.bindString(6, playlist);
+        statement.bindString(6, playlist+",");
         statement.bindString(7, albumName);
         statement.bindLong(8, 0);
         statement.execute();
@@ -55,7 +62,6 @@ public class DBPlayer {
 
     }
 
-    /*Read Songs*/
     public ArrayList<Song> readSongs() {
         ArrayList<Song> songlist = new ArrayList<>();
         String[] columns = {
@@ -91,7 +97,6 @@ public class DBPlayer {
         return songlist;
     }
 
-    /*Update Favourites*/
     public void updateFavourites(long id,int favourite){
 
         ContentValues contentValues = new ContentValues();
@@ -138,13 +143,27 @@ public class DBPlayer {
         return songlist;
     }
 
-    /*Insert Playlist*/
-    public void insertPlaylist(String Name) {
+    public void deleteAllSongs() {
+        mDatabase.delete(PlayerHelper.SONG_TABLE_NAME, null, null);
+        Log.d("Songs", "Deleted");
+        mDatabase.close();
+    }
+
+    /*For Playlists
+     1)Insert A NewPlaylist            -insertNewPlaylist(PlaylistName)
+     2)Delete A Playlist               -deletePlaylist(PlaylistName)
+     3)Read list of playlists          -readPlaylists()
+     4)Read songs from a playlist      -readSongsFromPlaylists(playlistName)
+     5)Add single Song to playlist(s)  -addSongToPlaylist(Song id,String playlistNames ending with comma)
+     6)Add multiple Song to Sing Playlist  */
+
+
+    public void insertNewPlaylist(String PlaylistName) {
         String sql = "INSERT INTO " + PlayerHelper.PLAYLIST_TABLE_NAME + " (" + PlayerHelper.PLAYLIST_COLUMN_NAME + "," + PlayerHelper.COLUMN_NAME +  ") VALUES(?,?);";
         SQLiteStatement statement = mDatabase.compileStatement(sql);
         mDatabase.beginTransaction();
         statement.clearBindings();
-        statement.bindString(1, Name);
+        statement.bindString(1, PlaylistName+",");
         statement.execute();
         mDatabase.setTransactionSuccessful();
         mDatabase.endTransaction();
@@ -152,7 +171,34 @@ public class DBPlayer {
 
     }
 
-    /*Read list of playlists*/
+    public void deletePlaylist(String PlaylistName){
+
+        String whereClause="Name=?";
+        String whereArgs[]={PlaylistName};
+        mDatabase.delete(PlayerHelper.PLAYLIST_TABLE_NAME, whereClause, whereArgs); //Delete this playlist from playlist table
+
+        String[] columns = { PlayerHelper.COLUMN_ID ,PlayerHelper.COLUMN_PLAYLIST };
+        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, null, null, null, null, PlayerHelper.COLUMN_NAME);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String list=cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_PLAYLIST));
+                if(list.contains(PlaylistName+",")){
+                    String newPlaylistsForThisSong = list.replace(PlaylistName+",","");
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(PlayerHelper.COLUMN_PLAYLIST, newPlaylistsForThisSong);
+                    String[] args = {"" + cursor.getLong(cursor.getColumnIndex(PlayerHelper.COLUMN_ID))};
+                    mDatabase.update(PlayerHelper.SONG_TABLE_NAME, contentValues, PlayerHelper.COLUMN_ID + " =? ", args);
+                            //remove occurence of this playlist in songs playlist column
+                }
+            }
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        Log.d(PlaylistName, "Deleted");
+        mDatabase.close();
+    }
+
     public ArrayList<Playlist> readPlaylists() {
         ArrayList<Playlist> playlists = new ArrayList<>();
         String[] columns = {
@@ -173,7 +219,6 @@ public class DBPlayer {
         return playlists;
     }
 
-    /*Read list of songs in a Playlist*/
     public ArrayList<Song> readSongsFromPlaylist(String playlist) {
         ArrayList<Song> playlists = new ArrayList<>();
         String[] columns = {
@@ -214,16 +259,48 @@ public class DBPlayer {
         return playlists;
     }
 
-    /*Add Song to Playlist(s)*/
-    public void addSongToPlaylist(long id,String playlistNames){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(PlayerHelper.COLUMN_PLAYLIST, PlayerHelper.COLUMN_PLAYLIST+playlistNames);
-        String[] args = {"" + id};
-        mDatabase.update(PlayerHelper.SONG_TABLE_NAME, contentValues, PlayerHelper.COLUMN_ID + " =? ", args);
+    public void addSongToPlaylists(long id,String playlistNames){
+
+      // Cursor cursor = mDatabase.rawQuery("UPDATE "+ PlayerHelper.SONG_TABLE_NAME +" "+ PlayerHelper.COLUMN_PLAYLIST +"=" +PlayerHelper.COLUMN_PLAYLIST + playlistNames +"where ID="+id,null);
+       /* String currentlist="";
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                currentlist = cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_PLAYLIST));
+            }while (cursor.moveToNext());
+        }
+        cursor.close();*/
         mDatabase.close();
     }
 
-    /*Read list of Albums*/
+    public void addMultipleSongToSinglePlaylist(String playlistName,long id[]){
+
+/*
+        String[] columns = { PlayerHelper.COLUMN_ID ,PlayerHelper.COLUMN_PLAYLIST };
+        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, null, null, null, null, PlayerHelper.COLUMN_NAME);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String list=cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_PLAYLIST));
+                if(!list.contains(playlistName+",")){
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(PlayerHelper.COLUMN_PLAYLIST,list+playlistName+",");
+                    String[] args = {"" + cursor.getLong(cursor.getColumnIndex(PlayerHelper.COLUMN_ID))};
+                    mDatabase.update(PlayerHelper.SONG_TABLE_NAME, contentValues, PlayerHelper.COLUMN_ID + " =? ", args);
+                }
+            }
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        mDatabase.close();*/
+    }
+
+    /*For Albums
+     1)Read list of Albums
+     2)Read Songs within An Album*/
+
+
     public ArrayList<Album> readAlbums(){
         ArrayList<Album> albumlist = new ArrayList<>();
         String[] columns = {
@@ -248,7 +325,7 @@ public class DBPlayer {
 
         return albumlist;
     }
-    /*Read Songs in an Album*/
+
     public ArrayList<Song> readAlbumSongs(String album) {
         ArrayList<Song> songlist = new ArrayList<>();
         String[] columns = {
@@ -287,7 +364,11 @@ public class DBPlayer {
     }
 
 
-    /*Read list of Artists*/
+    /*For Artists
+     1)Read list of Artists
+     2)Read Songs of an Artist*/
+
+
     public ArrayList<Artist> readArtists(){
         ArrayList<Artist> artistlist = new ArrayList<>();
         String[] columns = {
@@ -312,7 +393,7 @@ public class DBPlayer {
 
         return artistlist;
     }
-    /*Read Songs of an Artist*/
+
     public ArrayList<Song> readArtistSongs(String artist) {
         ArrayList<Song> songlist = new ArrayList<>();
         String[] columns = {
@@ -350,12 +431,6 @@ public class DBPlayer {
         return songlist;
     }
 
-    /*Delete All Songs*/
-    public void deleteAllSongs() {
-        mDatabase.delete(PlayerHelper.SONG_TABLE_NAME, null, null);
-        Log.d("Songs", "Deleted");
-        mDatabase.close();
-    }
 
 
     private class PlayerHelper extends SQLiteOpenHelper {

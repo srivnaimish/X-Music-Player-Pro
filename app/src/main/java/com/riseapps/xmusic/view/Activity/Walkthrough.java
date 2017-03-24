@@ -116,7 +116,7 @@ public class Walkthrough extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             new UpdateSongs(Walkthrough.this).getSongList();
-            new MyApplication(Walkthrough.this).getWritableDatabase().insertPlaylist("All Songs,");
+            new MyApplication(Walkthrough.this).getWritableDatabase().insertNewPlaylist("All Songs");
             songList = new MyApplication(Walkthrough.this).getWritableDatabase().readSongs();
             artistList = new MyApplication(Walkthrough.this).getWritableDatabase().readArtists();
             albumList = new MyApplication(Walkthrough.this).getWritableDatabase().readAlbums();

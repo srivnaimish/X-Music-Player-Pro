@@ -65,7 +65,7 @@ public class UpdateSongs {
                     thisAlbum="Unknown";
                 }
 
-                new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, "All Songs,",thisAlbum, false);
+                new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, "All Songs",thisAlbum, false);
                 x++;
             }
             while (musicCursor.moveToNext());
