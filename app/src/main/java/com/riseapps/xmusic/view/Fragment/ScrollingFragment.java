@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,15 +28,24 @@ import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
 import com.riseapps.xmusic.view.Activity.MainActivity;
+import com.riseapps.xmusic.widgets.MainTextView;
+import com.riseapps.xmusic.widgets.MainTextViewSub;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ScrollingFragment extends Fragment {
 
+    // views
     String Name,Imagepath=null,Action;
     ImageView imageView;
+    private CircleImageView circleAlbumArt;
     TextView title;
+    MainTextViewSub name;
     RecyclerView recyclerView;
+    private Button playAllButton, shuffleButton;
+
     ArrayList<Song> songArrayList;
     NestedFragmentAdapter nestedFragmentAdapter;
     private PlaySongExec playSongExec;
@@ -61,24 +72,45 @@ public class ScrollingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView=inflater.inflate(R.layout.fragment_scrolling, container, false);
         title= (TextView) rootView.findViewById(R.id.textView);
         imageView = (ImageView) rootView.findViewById(R.id.imageView);
         fab= (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
         recyclerView= (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        circleAlbumArt = (CircleImageView) rootView.findViewById(R.id.album_art);
+        name = (MainTextViewSub) rootView.findViewById(R.id.type_name);
+        playAllButton = (Button) rootView.findViewById(R.id.play_all_button);
+        shuffleButton = (Button) rootView.findViewById(R.id.shuffle_button);
 
-        if(Name!=null)
-        title.setText(Name);
-        else
+        if(Name!=null) {
+            title.setText(Name);
+            title.setVisibility(View.GONE);
+            name.setText(Name);
+        }
+
+        else {
             title.setText("Favourites");
+            title.setVisibility(View.GONE);
+            name.setText("Favourites");
+        }
 
         if (Imagepath!=null&&!Imagepath.equalsIgnoreCase("no_image")) {
+
+            //faded image view in background
             Glide.with(getContext()).load(Uri.parse(Imagepath))
                     .crossFade()
                     .into(imageView);
+
+            //circle image view
+            Glide.with(getContext()).load(Uri.parse(Imagepath))
+                    .crossFade()
+                    .into(circleAlbumArt);
         }
         else {
             imageView.setImageResource(R.drawable.empty);
+            circleAlbumArt.setImageResource(R.drawable.empty);
         }
 
         if(Action.equalsIgnoreCase("Album")){
@@ -93,7 +125,7 @@ public class ScrollingFragment extends Fragment {
             songArrayList=new MyApplication(getActivity()).getWritableDatabase().readFavouriteSongs();
 
         int spanCount = 1; // 2 columns
-        int spacing = 22; // 50px
+        int spacing = 20; // 50px
         boolean includeEdge = true;
 
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, includeEdge));
@@ -124,7 +156,7 @@ public class ScrollingFragment extends Fragment {
             }
         }));
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        playAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(songArrayList.size()!=0) {
@@ -138,6 +170,13 @@ public class ScrollingFragment extends Fragment {
                 }
                 else
                     Snackbar.make(fab,"No Songs Here to Play",Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        shuffleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Shuffle songs here", Toast.LENGTH_SHORT).show();
             }
         });
 

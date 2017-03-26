@@ -7,4 +7,5 @@
     <color name="colorMainBackground">#EEEEEE</color>
     <color name="colorWhite">#FFF</color>
     <color name="colorBlack">#000</color>
+    <color name="colorAccentDark">#B71C1C</color>
 </resources>

@@ -29,6 +29,8 @@ import com.riseapps.xmusic.utils.GridItemDecoration;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class AlbumFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
 
@@ -69,7 +71,7 @@ public class AlbumFragment extends Fragment {
         recyclerView.setLayoutManager(grid);
 
         int spanCount = 2;
-        int spacing = 20;
+        int spacing = 12;
 
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setNestedScrollingEnabled(false);

@@ -1,5 +1,6 @@
 package com.riseapps.xmusic.view.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -36,25 +37,7 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
         mSearchView = (BaseMaterialSearchView) findViewById(R.id.sv);
         mCoordinator = (CoordinatorLayout) findViewById(R.id.drawerLayout);
         mSearchView.setMenuItem(mToolbar.getMenu().findItem(R.id.action_search));
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.favourites) {
-                    View v = findViewById(R.id.favourites);
-                    v.startAnimation(new CustomAnimation().likeAnimation(BaseMatSearchViewActivity.this));
-                    FragmentManager fragmentManager=getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                    ScrollingFragment scrollingFragment=new ScrollingFragment();
-                    Bundle bundle=new Bundle();
-                    bundle.putString("Action","Favourites");
-                    scrollingFragment.setArguments(bundle);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.replace(R.id.drawerLayout,scrollingFragment);
-                    fragmentTransaction.commit();
-                }
-                return true;
-            }
-        });
+
         /*mSearchView.postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -55,11 +55,14 @@ public class ArtistAdapter extends RecyclerView.Adapter {
 
             if (!imagepath.equalsIgnoreCase("no_image")) {
                 Glide.with(c).load(Uri.parse(imagepath))
-                        .crossFade()
+                        .centerCrop()
                         .into(((ArtistViewHolder) holder).imageView);
             }
             else {
-                ((ArtistViewHolder) holder).imageView.setImageResource(R.drawable.empty);
+                Glide.with(c).load("")
+                        .placeholder(R.drawable.empty)
+                        .into(((ArtistViewHolder) holder).imageView);
+                //((ArtistViewHolder) holder).imageView.setImageResource(R.drawable.empty);
             }
             ((ArtistViewHolder) holder).artist = artist;
 

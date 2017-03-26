@@ -1,12 +1,12 @@
-package com.riseapps.xmusic.executor;
+package com.riseapps.xmusic.utils;
 
 import android.view.View;
 
 /**
- * Created by naimish on 22/3/17.
+ * Created by kanishk on 25/03/17.
  */
 
-public interface ClickListener {
+public interface RecyclerClickListener {
     void onClick(View view, int position);
     void onLongClick(View view, int position);
 }

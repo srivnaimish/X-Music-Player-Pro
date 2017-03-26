@@ -18,6 +18,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
@@ -47,6 +48,7 @@ import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.ShakeDetector;
+import com.riseapps.xmusic.executor.SongLikedListener;
 import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
@@ -81,6 +83,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     ImageButton play_pause, prev, next, repeat, shuffle;
     ImageView album_art;
     private SeekBar seekBar;
+    private SongLikedListener mListener;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -96,10 +99,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         //setContentView(R.layout.activity_main);
@@ -184,6 +186,29 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     };
 
     private void initiallize() {
+
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.favourites) {
+                    View v = findViewById(R.id.favourites);
+                    v.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
+                    FragmentManager fragmentManager=getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+                    ScrollingFragment scrollingFragment=new ScrollingFragment();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("Action","Favourites");
+                    scrollingFragment.setArguments(bundle);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.replace(R.id.drawerLayout,scrollingFragment);
+                    fragmentTransaction.commit();
+                }
+                else if (item.getItemId() == R.id.settings) {
+                    startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), 1);
+                }
+                return true;
+            }
+        });
 
         toolbarPlayer = (Toolbar) findViewById(R.id.toolbar_player);
         toolbarPlayer.inflateMenu(R.menu.player_menu);
@@ -442,6 +467,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     }
 
+    public void setListener(SongLikedListener mListener) {
+        this.mListener = mListener;
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         SectionsPagerAdapter(FragmentManager fm) {
@@ -507,6 +536,13 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 hideMainPlayer();
             }
         }
+        else if (resultCode == Activity.RESULT_OK) {
+            String str = data.getStringExtra("selected_playlist");
+            Toast.makeText(MainActivity.this, "" + str, Toast.LENGTH_SHORT).show();
+            if (mainPlayer.getVisibility() == View.VISIBLE) {
+                hideMainPlayer();
+            }
+        }
     }
 
     private String[] getTitles() {
@@ -518,7 +554,5 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         /*your logic to fetch titles of all the loaded songs and put it in string array*/
         return array;
     }
-
-
 }
 

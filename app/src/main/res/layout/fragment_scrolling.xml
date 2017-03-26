@@ -8,7 +8,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
+        android:layout_height="320dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -19,6 +19,7 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -26,6 +27,75 @@
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.8" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBlack"
+                android:alpha="0.9"
+                android:gravity="center">
+
+                <com.riseapps.xmusic.widgets.MainTextViewSub
+                    android:id="@+id/type_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name goes here"
+                    android:textColor="@color/whitePrimary"
+                    android:layout_below="@+id/album_art"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="18sp"
+                    android:maxLines="1"
+                    android:layout_margin="12dp"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/album_art"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:srcCompat="@drawable/empty"
+                    android:scaleType="centerCrop"
+                    android:foregroundGravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/type_name"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <Button
+                        android:id="@+id/play_all_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Play All"
+                        android:drawableStart="@drawable/ic_liked"
+                        android:drawablePadding="10dp"
+                        android:enabled="true"
+                        android:background="@drawable/ripple_button"
+                        app:theme="@style/Widget.AppCompat.Button.Colored"
+                        android:drawableLeft="@drawable/ic_liked">
+
+                    </Button>
+
+                    <Button
+                        android:id="@+id/shuffle_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="8dp"
+                        android:text="Shuffle"
+                        android:drawableStart="@drawable/ic_shuffle"
+                        android:enabled="true"
+                        android:drawablePadding="10dp"
+                        android:background="@drawable/ripple_button"
+                        app:theme="@style/Widget.AppCompat.Button.Colored"
+                        android:drawableLeft="@drawable/ic_liked" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

@@ -51,11 +51,15 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
             String imagepath=album.getImagepath();
             if (!imagepath.equalsIgnoreCase("no_image")) {
                 Glide.with(c).load(Uri.parse(imagepath))
-                        .crossFade()
+                        .centerCrop()
                         .into(((AlbumViewHolder) holder).imageView);
             }
             else {
-                ((AlbumViewHolder) holder).imageView.setImageResource(R.drawable.empty);
+                Glide.with(c).load("")
+                        .placeholder(R.drawable.empty)
+                        .into(((AlbumViewHolder) holder).imageView);
+
+                //((AlbumViewHolder) holder).imageView.setImageResource(R.drawable.empty);
             }
             ((AlbumViewHolder)holder).name.setText(name);
             ((AlbumViewHolder) holder).album = album;
@@ -80,13 +84,9 @@ class AlbumViewHolder extends RecyclerView.ViewHolder{
     AlbumViewHolder(View v, Context context) {
         super(v);
         this.ctx = context;
-
         imageView= (ImageView) v.findViewById(R.id.imageView);
         name= (TextView) v.findViewById(R.id.name);
-
-
     }
-
 }
 
 
