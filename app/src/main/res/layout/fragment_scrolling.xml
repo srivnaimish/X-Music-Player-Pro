@@ -70,12 +70,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="Play All"
-                        android:drawableStart="@drawable/ic_liked"
+                        android:drawableStart="@drawable/ic_play_circle_outline_white_24dp"
                         android:drawablePadding="10dp"
                         android:enabled="true"
                         android:background="@drawable/ripple_button"
                         app:theme="@style/Widget.AppCompat.Button.Colored"
-                        android:drawableLeft="@drawable/ic_liked">
+                        android:drawableLeft="@drawable/ic_play_circle_outline_white_24dp">
 
                     </Button>
 
@@ -85,12 +85,12 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="8dp"
                         android:text="Shuffle"
-                        android:drawableStart="@drawable/ic_shuffle"
+                        android:drawableStart="@drawable/ic_shuffle_white_24dp"
                         android:enabled="true"
                         android:drawablePadding="10dp"
                         android:background="@drawable/ripple_button"
                         app:theme="@style/Widget.AppCompat.Button.Colored"
-                        android:drawableLeft="@drawable/ic_liked" />
+                        android:drawableLeft="@drawable/ic_shuffle_white_24dp" />
 
                 </LinearLayout>
 
