@@ -299,8 +299,6 @@ public class DBPlayer {
     /*For Albums
      1)Read list of Albums
      2)Read Songs within An Album*/
-
-
     public ArrayList<Album> readAlbums(){
         ArrayList<Album> albumlist = new ArrayList<>();
         String[] columns = {
@@ -314,8 +312,10 @@ public class DBPlayer {
                 Album album=new Album();
                 album.setName(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_ALBUM)));
                 album.setImagepath(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_IMAGEPATH)));
+                album.setViewType(1);
                 count++;
                 albumlist.add(album);
+                Log.d("album list", " " + album.getViewType() );
             }
             while (cursor.moveToNext());
             cursor.close();
@@ -447,6 +447,7 @@ public class DBPlayer {
         static final String COLUMN_PLAYLIST = "PLAYLIST";
         static final String COLUMN_ALBUM = "ALBUM";
         static final String COLUMN_FAVOURITE = "FAVOURITE";
+        static final String COLUMN_VIEWTYPE = "VIEWTYPE";
 
         static final String PLAYLIST_TABLE_NAME = "PLAYLISTS_LIST";     //Attributes of Playlists
         static final String PLAYLIST_COLUMN_NAME = "NAME";

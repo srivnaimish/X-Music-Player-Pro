@@ -51,21 +51,28 @@ public class ArtistAdapter extends RecyclerView.Adapter {
             Artist artist = (Artist) artistList.get(position);
             String name=artist.getName();
             String imagepath=artist.getImagepath();
-            ((ArtistViewHolder)holder).name.setText(name);
+            if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
+                ((ArtistViewHolder)holder).name.setText(name);
 
-            if (!imagepath.equalsIgnoreCase("no_image")) {
-                Glide.with(c).load(Uri.parse(imagepath))
-                        .centerCrop()
-                        .into(((ArtistViewHolder) holder).imageView);
+                if (!imagepath.equalsIgnoreCase("no_image")) {
+                    Glide.with(c).load(Uri.parse(imagepath))
+                            .centerCrop()
+                            .into(((ArtistViewHolder) holder).imageView);
+                }
+                else {
+                    Glide.with(c).load("")
+                            .placeholder(R.drawable.empty)
+                            .into(((ArtistViewHolder) holder).imageView);
+                    //((ArtistViewHolder) holder).imageView.setImageResource(R.drawable.empty);
+                }
+                ((ArtistViewHolder) holder).artist = artist;
             }
             else {
+                ((ArtistViewHolder)holder).name.setText(name);
                 Glide.with(c).load("")
                         .placeholder(R.drawable.empty)
                         .into(((ArtistViewHolder) holder).imageView);
-                //((ArtistViewHolder) holder).imageView.setImageResource(R.drawable.empty);
             }
-            ((ArtistViewHolder) holder).artist = artist;
-
         }
     }
 

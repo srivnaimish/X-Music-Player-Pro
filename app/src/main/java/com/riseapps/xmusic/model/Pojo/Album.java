@@ -11,6 +11,9 @@ public class Album implements Parcelable{
     private String name;
     private String imagepath;
 
+
+    private int viewType;
+
     public Album() {
     }
 
@@ -50,6 +53,14 @@ public class Album implements Parcelable{
 
     public String getImagepath() {
         return imagepath;
+    }
+
+    public int getViewType() {
+        return viewType;
+    }
+
+    public void setViewType(int viewType) {
+        this.viewType = viewType;
     }
 
     @Override

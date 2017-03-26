@@ -1,6 +1,5 @@
 package com.riseapps.xmusic.executor.RecycleViewAdapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -22,8 +21,6 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.SongLikedListener;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.view.Activity.MainActivity;
-import com.riseapps.xmusic.view.Fragment.SongsFragment;
 
 import java.util.List;
 import java.util.Locale;

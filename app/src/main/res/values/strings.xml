@@ -97,4 +97,6 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
+    <string name="adStringPlaceholder">Ads by Xmusic Pro</string>
+
 </resources>
