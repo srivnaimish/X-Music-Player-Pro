@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -126,9 +128,8 @@ public class ScrollingFragment extends Fragment {
 
         int spanCount = 1; // 2 columns
         int spacing = 20; // 50px
-        boolean includeEdge = true;
 
-        recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, includeEdge));
+        recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
 
@@ -176,7 +177,14 @@ public class ScrollingFragment extends Fragment {
         shuffleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Shuffle songs here", Toast.LENGTH_SHORT).show();
+                if ((((MainActivity) getActivity()).getSongs() != songArrayList)) {
+                    Toast.makeText(getContext(), "Playling All Songs from " + title.getText().toString(), Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).setSongs(songArrayList);
+                    ((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
+                    ((MainActivity) getActivity()).getMusicService().shuffleSongs();
+                }
+                playSongExec = new PlaySongExec(getContext(), 0);
+                playSongExec.startPlaying();
             }
         });
 

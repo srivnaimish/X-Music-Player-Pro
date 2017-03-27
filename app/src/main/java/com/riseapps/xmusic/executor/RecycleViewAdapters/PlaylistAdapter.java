@@ -1,6 +1,7 @@
 package com.riseapps.xmusic.executor.RecycleViewAdapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.model.Pojo.Playlist;
 
 import java.util.List;
@@ -50,6 +53,20 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
             String name=playlist.getName();
             ((PlaylistViewHolder)holder).name.setText(name);
 
+            String imagepath=new MyApplication(c).getWritableDatabase().readFirstSongInPlaylist(name);
+            if (!imagepath.equalsIgnoreCase("no_image")) {
+                Glide.with(c).load(Uri.parse(imagepath))
+                        .crossFade()
+                        .centerCrop()
+                       // .placeholder(R.drawable.empty)
+                        .into(((PlaylistViewHolder) holder).imageView);
+            }
+            else {
+                Glide.with(c).load("")
+                        .crossFade()
+                        //.placeholder(R.drawable.empty)
+                        .into(((PlaylistViewHolder) holder).imageView);
+            }
             ((PlaylistViewHolder) holder).playlist = playlist;
 
         }

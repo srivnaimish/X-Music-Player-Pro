@@ -19,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.ClickListener;
 import com.riseapps.xmusic.executor.MyApplication;
@@ -96,8 +98,8 @@ public class AlbumFragment extends Fragment {
 
             }
         }));
-
-        albumLists=getActivity().getIntent().getParcelableArrayListExtra("albumList");
+        String songJson=getActivity().getIntent().getStringExtra("albumList");
+        albumLists=new Gson().fromJson(songJson, new TypeToken<ArrayList<Album>>() {}.getType());
         albumAdapter = new AlbumsAdapter(getActivity(), albumLists, recyclerView);
         recyclerView.setAdapter(albumAdapter);
 
@@ -127,24 +129,6 @@ public class AlbumFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-   /* private class Async extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-           // getListOfAlbums();
-            albumLists=new MyApplication(getActivity()).getWritableDatabase().readAlbums();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            albumAdapter = new AlbumsAdapter(getActivity(), albumLists, recyclerView);
-            recyclerView.setAdapter(albumAdapter);
-        }
-    }
-*/
 
 
     public interface OnFragmentInteractionListener {

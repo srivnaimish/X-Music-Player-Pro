@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.MyApplication;
@@ -24,6 +26,7 @@ import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.model.Pojo.Song;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class SplashScreen extends AppCompatActivity {
@@ -39,16 +42,28 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-                if (new SharedPreferenceSingelton().getSavedBoolean(SplashScreen.this,"opened_before")) {
-                    new Async().execute();
-
-                } else {
+    protected void onStart() {
+        if (new SharedPreferenceSingelton().getSavedBoolean(SplashScreen.this,"opened_before")) {
+            Log.d("opening","MainActivity");
+            new Async().execute();
+        } else {
+            Log.d("opening","Walkthru");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
                     startActivity(new Intent(SplashScreen.this, Walkthrough.class));
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     finish();
                 }
+            },1500);
+
+        }
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private class Async extends AsyncTask<Void, Void, Void> {
@@ -84,16 +99,19 @@ public class SplashScreen extends AppCompatActivity {
             Artist artistAdOne = new Artist();
             artistAdOne.setName(adString);
             artistAdOne.setImagepath("NoImage");
+            artistAdOne.setViewType(2);
             artistList.add(4, artistAdOne);
 
             Artist artistAdTwo = new Artist();
             artistAdTwo.setName(adString);
             artistAdTwo.setImagepath("NoImage");
+            artistAdTwo.setViewType(2);
             artistList.add(11, artistAdTwo);
 
             Artist artistAdThree = new Artist();
             artistAdThree.setName(adString);
             artistAdThree.setImagepath("NoImage");
+            artistAdThree.setViewType(2);
             artistList.add(17, artistAdThree);
 
             return null;
@@ -102,9 +120,19 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             Intent intent=new Intent(SplashScreen.this, MainActivity.class);
-            intent.putParcelableArrayListExtra("songList",songList);
-            intent.putParcelableArrayListExtra("albumList",albumList);
-            intent.putParcelableArrayListExtra("artistList",artistList);
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<Song>>() {}.getType();
+            String songJson = gson.toJson(songList, type);
+
+            type=new TypeToken<ArrayList<Album>>() {}.getType();
+            String albumJson = gson.toJson(albumList, type);
+
+            type=new TypeToken<ArrayList<Artist>>() {}.getType();
+            String artistJson = gson.toJson(artistList, type);
+
+            intent.putExtra("songList",songJson);
+            intent.putExtra("albumList",albumJson);
+            intent.putExtra("artistList",artistJson);
             startActivity(intent);
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             finish();

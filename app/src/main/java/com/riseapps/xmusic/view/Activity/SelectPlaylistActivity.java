@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.TagToken.customviews.TokenCompleteTextView;
+import com.riseapps.xmusic.executor.MyApplication;
+import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.model.Pojo.Tag;
 import com.riseapps.xmusic.model.xplayertags.TagClass;
 import com.riseapps.xmusic.model.xplayertags.TagViewData;
@@ -214,7 +216,11 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
     }
 
     private void prepareTags() throws Exception {
-        JSONArray jsonArray;
+        ArrayList<Playlist> playlists=new MyApplication(SelectPlaylistActivity.this).getWritableDatabase().readPlaylists();
+        for (int i=0;i<playlists.size();i++){
+            skillFactoryHashMap.put(playlists.get(i).getName(),0);
+        }
+        /*JSONArray jsonArray;
         JSONObject temp;
         try {
             jsonArray = new JSONArray(TagViewData.COUNTRIES);
@@ -224,7 +230,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
             }
         } catch (Exception e) {
             Log.d("error ", e.toString());
-        }
+        }*/
     }
 
     private void setTags() {

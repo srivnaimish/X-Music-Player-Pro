@@ -10,21 +10,20 @@ import android.os.Parcelable;
 
 public class Song implements Parcelable{
     private long ID, duration;
-    private String Name, Artist,Imagepath,playlist;
+    private String Name, Artist,Imagepath;
     private boolean favourite;
 
     public Song(){
 
     }
 
-    public Song(long id, long duration, String name, String artist, String imagepath,String playlist,boolean favourite) {
+    public Song(long id, long duration, String name, String artist, String imagepath,boolean favourite) {
         Name = name;
         ID = id;
         Artist = artist;
         Imagepath = imagepath;
         this.duration = duration;
         this.favourite = favourite;
-        this.playlist=playlist;
     }
 
     protected Song(Parcel in) {
@@ -32,8 +31,6 @@ public class Song implements Parcelable{
         duration = in.readLong();
         Name = in.readString();
         Artist = in.readString();
-        Imagepath = in.readString();
-        playlist = in.readString();
         favourite = in.readByte() != 0;
     }
 
@@ -69,9 +66,6 @@ public class Song implements Parcelable{
         return Imagepath;
     }
 
-    public String getPlaylist() {
-        return playlist;
-    }
 
     public boolean getFavourite(){ return favourite; }
 
@@ -95,9 +89,6 @@ public class Song implements Parcelable{
         this.duration = duration;
     }
 
-    public void setPlaylist(String playlist) {
-        this.playlist = playlist;
-    }
 
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
@@ -116,7 +107,6 @@ public class Song implements Parcelable{
         parcel.writeString(Name);
         parcel.writeString(Artist);
         parcel.writeString(Imagepath);
-        parcel.writeString(playlist);
         parcel.writeByte((byte) (favourite ? 1 : 0));
     }
 }

@@ -11,6 +11,7 @@ public class Artist implements Parcelable {
     private String name;
     private String imagepath;
 
+    private int viewType;
     public Artist(){}
 
     public Artist(String name,String imagepath) {
@@ -21,6 +22,7 @@ public class Artist implements Parcelable {
     protected Artist(Parcel in) {
         name = in.readString();
         imagepath = in.readString();
+        viewType=in.readInt();
     }
 
     public static final Creator<Artist> CREATOR = new Creator<Artist>() {
@@ -51,6 +53,15 @@ public class Artist implements Parcelable {
         return imagepath;
     }
 
+    public int getViewType() {
+        return viewType;
+    }
+
+    public void setViewType(int viewType) {
+        this.viewType = viewType;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -60,5 +71,6 @@ public class Artist implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
         parcel.writeString(imagepath);
+        parcel.writeInt(viewType);
     }
 }

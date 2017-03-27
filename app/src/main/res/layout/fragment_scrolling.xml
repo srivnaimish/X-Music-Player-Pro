@@ -33,7 +33,9 @@
                 android:layout_height="match_parent"
                 android:background="@color/colorBlack"
                 android:alpha="0.9"
-                android:gravity="center">
+                android:gravity="center"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.4">
 
                 <com.riseapps.xmusic.widgets.MainTextViewSub
                     android:id="@+id/type_name"
@@ -74,7 +76,7 @@
                         android:drawablePadding="10dp"
                         android:enabled="true"
                         android:background="@drawable/ripple_button"
-                        app:theme="@style/Widget.AppCompat.Button.Colored"
+                        android:theme="@style/Widget.AppCompat.Button.Colored"
                         android:drawableLeft="@drawable/ic_play_circle_outline_white_24dp">
 
                     </Button>
@@ -89,7 +91,7 @@
                         android:enabled="true"
                         android:drawablePadding="10dp"
                         android:background="@drawable/ripple_button"
-                        app:theme="@style/Widget.AppCompat.Button.Colored"
+                        android:theme="@style/Widget.AppCompat.Button.Colored"
                         android:drawableLeft="@drawable/ic_shuffle_white_24dp" />
 
                 </LinearLayout>

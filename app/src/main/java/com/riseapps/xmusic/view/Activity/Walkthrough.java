@@ -22,6 +22,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AlbumArtChecker;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -32,6 +34,7 @@ import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.model.Pojo.Song;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -116,7 +119,6 @@ public class Walkthrough extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             new UpdateSongs(Walkthrough.this).getSongList();
-            new MyApplication(Walkthrough.this).getWritableDatabase().insertNewPlaylist("All Songs");
             songList = new MyApplication(Walkthrough.this).getWritableDatabase().readSongs();
             artistList = new MyApplication(Walkthrough.this).getWritableDatabase().readArtists();
             albumList = new MyApplication(Walkthrough.this).getWritableDatabase().readAlbums();
@@ -127,9 +129,19 @@ public class Walkthrough extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             new SharedPreferenceSingelton().saveAs(Walkthrough.this,"opened_before",true);
             Intent intent=new Intent(Walkthrough.this, MainActivity.class);
-            intent.putParcelableArrayListExtra("songList",songList);
-            intent.putParcelableArrayListExtra("albumList",albumList);
-            intent.putParcelableArrayListExtra("artistList",artistList);
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<Song>>() {}.getType();
+            String songJson = gson.toJson(songList, type);
+
+            type=new TypeToken<ArrayList<Album>>() {}.getType();
+            String albumJson = gson.toJson(albumList, type);
+
+            type=new TypeToken<ArrayList<Artist>>() {}.getType();
+            String artistJson = gson.toJson(artistList, type);
+
+            intent.putExtra("songList",songJson);
+            intent.putExtra("albumList",albumJson);
+            intent.putExtra("artistList",artistJson);
             startActivity(intent);
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             finish();

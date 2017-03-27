@@ -13,5 +13,18 @@
         android:title="@string/action_favourites"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:icon="@drawable/ic_liked"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/settings"
+        android:title="@string/action_favourites"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:icon="@drawable/ic_settings_black_24dp"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/create_playlist"
+        android:title="@string/action_favourites"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:icon="@drawable/ic_add_"
+        app:showAsAction="always" />
+
 </menu>

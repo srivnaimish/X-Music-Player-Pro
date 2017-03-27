@@ -88,10 +88,30 @@ public class PlaylistFragment extends Fragment {
         }));
 
         playLists=new MyApplication(getActivity()).getWritableDatabase().readPlaylists();
+
         playlistAdapter = new PlaylistAdapter(getActivity(), playLists, recyclerView);
         recyclerView.setAdapter(playlistAdapter);
         return v;
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            View v = getView();
+            if (v != null) {
+                playlistAdapter.notifyDataSetChanged();
+            }
+
+        } else {
+            View v = getView();
+            if (v != null) {
+
+            }
+        }
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

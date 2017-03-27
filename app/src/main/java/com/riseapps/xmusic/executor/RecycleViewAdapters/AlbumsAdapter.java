@@ -52,12 +52,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof AlbumViewHolder) {
             Album album = albumList.get(position);
-            Log.d("viewtype", "" + holder.getItemViewType());
             switch (holder.getItemViewType()) {
                 case 1:
                     String name=album.getName();
                     String imagepath=album.getImagepath();
-                    Log.d("imagepath", " " + imagepath);
+                    //Log.d("imagepath", " " + imagepath);
                     if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
                         if (!imagepath.equalsIgnoreCase("no_image")) {
                             Glide.with(c).load(Uri.parse(imagepath))

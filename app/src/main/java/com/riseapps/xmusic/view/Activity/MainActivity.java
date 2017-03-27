@@ -80,7 +80,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     ImageView album_art_mini;
     //MainPlayer items
     TextView title, artist, currentPosition, totalDuration;
-    ImageButton play_pause, prev, next, repeat, shuffle;
+    public ImageButton play_pause, prev, next, repeat, shuffle;
     ImageView album_art;
     private SeekBar seekBar;
     private SongLikedListener mListener;
@@ -98,6 +98,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +176,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 Color.parseColor("#D32F2F"),
                 Color.parseColor("#F44336"));
         mWaveHelper.start();
+
 
     }
 
@@ -532,16 +534,19 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_CANCELED) {
-            if (mainPlayer.getVisibility() == View.VISIBLE) {
-                hideMainPlayer();
-            }
+
         }
         else if (resultCode == Activity.RESULT_OK) {
             String str = data.getStringExtra("selected_playlist");
-            Toast.makeText(MainActivity.this, "" + str, Toast.LENGTH_SHORT).show();
-            if (mainPlayer.getVisibility() == View.VISIBLE) {
-                hideMainPlayer();
+            if(!str.equalsIgnoreCase("")) {
+                long id=songList.get(musicService.getCurrentIndex()).getID();
+                new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id,str);
+                Toast.makeText(MainActivity.this, "Added to Playlist", Toast.LENGTH_SHORT).show();
             }
+        }
+
+        if (mainPlayer.getVisibility() == View.VISIBLE) {
+            hideMainPlayer();
         }
     }
 

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.ActionModeCallback;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
@@ -67,7 +68,9 @@ public class SongsFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        songList=getActivity().getIntent().getParcelableArrayListExtra("songList");
+
+        String songJson=getActivity().getIntent().getStringExtra("songList");
+        songList=new Gson().fromJson(songJson, new TypeToken<ArrayList<Song>>() {}.getType());
         ((MainActivity) getActivity()).setSongs(songList);
         songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
         recyclerView.setAdapter(songsAdapter);
@@ -97,23 +100,6 @@ public class SongsFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (isVisibleToUser) {
-            View v = getView();
-            if (v != null) {
-                // Toast.makeText(view.getContext(),"visible", Toast.LENGTH_SHORT).show();
-            }
-
-        } else {
-            View v = getView();
-            if (v != null) {
-
-            }
-        }
-    }
 
     private void implemetRecyclerViewListener() {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerClickListener() {
@@ -168,26 +154,6 @@ public class SongsFragment extends Fragment {
             Toast.makeText(getActivity(), "setting null", Toast.LENGTH_SHORT).show();
         }
     }
-
-   /* private class Async extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            songList = new MyApplication(getActivity()).getWritableDatabase().readSongs();
-            ((MainActivity) getActivity()).setSongs(songList);
-            songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
-            Log.d("Songs","Loaded in async "+songList.size());
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            recyclerView.setAdapter(songsAdapter);
-            // ((MainActivity) getActivity()).setRecyclerView(recyclerView);
-            super.onPostExecute(aVoid);
-        }
-    }
-*/
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

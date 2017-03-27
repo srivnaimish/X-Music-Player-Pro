@@ -9,6 +9,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.riseapps.xmusic.component.AlbumArtChecker;
+import com.riseapps.xmusic.view.Activity.Walkthrough;
+
+import java.util.ArrayList;
 
 /**
  * Created by naimish on 21/3/17.
@@ -42,6 +45,7 @@ public class UpdateSongs {
             int album=musicCursor.getColumnIndex
                     (MediaStore.Audio.AudioColumns.ALBUM);
             int x=0;
+            long id=0;
             do {
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
@@ -64,11 +68,14 @@ public class UpdateSongs {
                 if(thisAlbum==null){
                     thisAlbum="Unknown";
                 }
-
-                new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, "All Songs",thisAlbum, false);
+                id=thisId;
+                new MyApplication(context).getWritableDatabase().insertNewPlaylist("All Songs",thisId);
+                new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath,thisAlbum);
                 x++;
             }
             while (musicCursor.moveToNext());
+            new MyApplication(context).getWritableDatabase().insertNewPlaylist("Dubstep",id);
+
             Log.d("Song Insert", "" + x);
             musicCursor.close();
         }

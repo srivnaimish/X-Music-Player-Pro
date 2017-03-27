@@ -25,7 +25,9 @@ public class Album implements Parcelable{
     protected Album(Parcel in) {
         name = in.readString();
         imagepath = in.readString();
+        viewType=in.readInt();
     }
+
 
     public static final Creator<Album> CREATOR = new Creator<Album>() {
         @Override
@@ -63,6 +65,7 @@ public class Album implements Parcelable{
         this.viewType = viewType;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -72,5 +75,6 @@ public class Album implements Parcelable{
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
         parcel.writeString(imagepath);
+        parcel.writeInt(viewType);
     }
 }
