@@ -13,13 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.riseapps.xmusic.R;
-import com.riseapps.xmusic.executor.ClickListener;
+import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.PlaylistAdapter;
 import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.utils.GridItemDecoration;
-import com.riseapps.xmusic.view.Activity.SplashScreen;
 
 import java.util.ArrayList;
 
@@ -86,11 +85,7 @@ public class PlaylistFragment extends Fragment {
 
             }
         }));
-
-        playLists=new MyApplication(getActivity()).getWritableDatabase().readPlaylists();
-
-        playlistAdapter = new PlaylistAdapter(getActivity(), playLists, recyclerView);
-        recyclerView.setAdapter(playlistAdapter);
+        refreshPlaylists();
         return v;
     }
 
@@ -141,5 +136,11 @@ public class PlaylistFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void refreshPlaylists(){
+        playLists=new MyApplication(getActivity()).getWritableDatabase().readPlaylists();
+        playlistAdapter = new PlaylistAdapter(getActivity(), playLists, recyclerView);
+        recyclerView.setAdapter(playlistAdapter);
     }
 }

@@ -1,8 +1,5 @@
 package com.riseapps.xmusic.view.Fragment;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,26 +9,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
-import com.riseapps.xmusic.executor.ClickListener;
-import com.riseapps.xmusic.executor.MyApplication;
+import com.riseapps.xmusic.executor.Interfaces.ArtistRefreshListener;
+import com.riseapps.xmusic.executor.Interfaces.ClickListener;
+import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.ArtistAdapter;
+import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
+import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
+import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.ArrayList;
 
-public class ArtistFragment extends Fragment {
+public class ArtistFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
 
     RecyclerView recyclerView;
     ArrayList<Artist> artistLists=new ArrayList<>();
     ArtistAdapter artistAdapter;
-    private OnFragmentInteractionListener mListener;
 
     public ArtistFragment() {
         // Required empty public constructor
@@ -53,10 +54,7 @@ public class ArtistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment_songs
         View v=inflater.inflate(R.layout.fragment_artist, container, false);
-
-       // new Async().execute();
 
         recyclerView = (RecyclerView) v.findViewById(R.id.artists);
         recyclerView.setHasFixedSize(true);
@@ -94,36 +92,17 @@ public class ArtistFragment extends Fragment {
         artistAdapter = new ArtistAdapter(getActivity(), artistLists, recyclerView);
         recyclerView.setAdapter(artistAdapter);
 
+        ((MainActivity) getActivity()).setArtistRefreshListener(new ArtistRefreshListener() {
+
+            @Override
+            public void OnArtistRefresh(ArrayList<Artist> arrayList) {
+                artistLists=arrayList;
+                artistAdapter.notifyDataSetChanged();
+
+
+            }
+        });
+
         return v;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

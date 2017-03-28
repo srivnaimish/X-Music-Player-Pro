@@ -74,9 +74,61 @@ public class UpdateSongs {
                 x++;
             }
             while (musicCursor.moveToNext());
-            new MyApplication(context).getWritableDatabase().insertNewPlaylist("Dubstep",id);
 
             Log.d("Song Insert", "" + x);
+            musicCursor.close();
+        }
+    }
+
+    public void refreshList() {
+        new MyApplication(context).getWritableDatabase().deleteAllSongs();
+
+        ContentResolver musicResolver = context.getContentResolver();
+        Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
+
+        if (musicCursor != null && musicCursor.moveToFirst()) {
+            //get columns
+            int titleColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.TITLE);
+            int idColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media._ID);
+            int artistColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.ARTIST);
+            int song_duration = musicCursor.getColumnIndex
+                    (MediaStore.Audio.AudioColumns.DURATION);
+            int album=musicCursor.getColumnIndex
+                    (MediaStore.Audio.AudioColumns.ALBUM);
+            int x=0;
+            do {
+                long thisId = musicCursor.getLong(idColumn);
+                String thisTitle = musicCursor.getString(titleColumn);
+                if (thisTitle.length() > textLimit)
+                    thisTitle = thisTitle.substring(0, textLimit) + "...";
+                String thisArtist = musicCursor.getString(artistColumn);
+                if(thisArtist.equalsIgnoreCase("<unknown>")){
+                    thisArtist="Unknown";
+                }
+                if (thisArtist.length() > textLimit)
+                    thisArtist = thisArtist.substring(0, textLimit) + "...";
+
+                String thisAlbum=musicCursor.getString(album);
+                long thisduration = musicCursor.getLong(song_duration);
+
+                String imagepath = "content://media/external/audio/media/" + thisId + "/albumart";
+                if (!new AlbumArtChecker().hasAlbumArt(context, imagepath))
+                    imagepath="no_image";
+
+                if(thisAlbum==null){
+                    thisAlbum="Unknown";
+                }
+                new MyApplication(context).getWritableDatabase().insertNewPlaylist("All Songs",thisId);
+                new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath,thisAlbum);
+                x++;
+            }
+            while (musicCursor.moveToNext());
+            new MyApplication(context).getWritableDatabase().refreshPlaylists();
+            Log.d("Song Updated", "" + x);
             musicCursor.close();
         }
     }

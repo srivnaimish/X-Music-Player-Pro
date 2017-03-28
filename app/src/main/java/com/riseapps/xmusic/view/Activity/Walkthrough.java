@@ -43,7 +43,6 @@ public class Walkthrough extends AppCompatActivity {
     FloatingActionButton fab;
     final int textLimit = 26;
     private static final int REQUEST_PERMISSION = 0;
-    UpdateSongs updateSongs;
 
     ArrayList<Song> songList=new ArrayList<>();
     ArrayList<Album> albumList=new ArrayList<>();
@@ -56,7 +55,7 @@ public class Walkthrough extends AppCompatActivity {
         setContentView(R.layout.activity_walkthrough);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        updateSongs = new UpdateSongs(this);
+
         checkPermission();
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -118,10 +117,49 @@ public class Walkthrough extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            String adString = getResources().getString(R.string.adStringPlaceholder);
             new UpdateSongs(Walkthrough.this).getSongList();
             songList = new MyApplication(Walkthrough.this).getWritableDatabase().readSongs();
             artistList = new MyApplication(Walkthrough.this).getWritableDatabase().readArtists();
             albumList = new MyApplication(Walkthrough.this).getWritableDatabase().readAlbums();
+
+            // Place 3 ads for album fragment
+            Album albumAdOne = new Album();
+            albumAdOne.setName(adString);
+            albumAdOne.setImagepath("NoImage");
+            albumAdOne.setViewType(2);
+            albumList.add(3, albumAdOne);
+
+            Album albumAdTwo = new Album();
+            albumAdTwo.setName(adString);
+            albumAdTwo.setImagepath("NoImage");
+            albumAdTwo.setViewType(2);
+            albumList.add(8, albumAdTwo);
+
+            Album albumAdThree = new Album();
+            albumAdThree.setName(adString);
+            albumAdThree.setImagepath("NoImage");
+            albumAdThree.setViewType(2);
+            albumList.add(13, albumAdThree);
+
+            // Place 3 ads for artist fragment
+            Artist artistAdOne = new Artist();
+            artistAdOne.setName(adString);
+            artistAdOne.setImagepath("NoImage");
+            artistAdOne.setViewType(2);
+            artistList.add(4, artistAdOne);
+
+            Artist artistAdTwo = new Artist();
+            artistAdTwo.setName(adString);
+            artistAdTwo.setImagepath("NoImage");
+            artistAdTwo.setViewType(2);
+            artistList.add(11, artistAdTwo);
+
+            Artist artistAdThree = new Artist();
+            artistAdThree.setName(adString);
+            artistAdThree.setImagepath("NoImage");
+            artistAdThree.setViewType(2);
+            artistList.add(17, artistAdThree);
             return null;
         }
 

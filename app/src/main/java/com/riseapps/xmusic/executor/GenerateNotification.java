@@ -142,34 +142,4 @@ public class GenerateNotification {
     }
 
 }
-class SwitchButtonListener extends BroadcastReceiver {
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        switch (action) {
-            case "play":
-                GenerateNotification.musicService.togglePlay();
-                break;
-            case "next": {
-                int current = GenerateNotification.musicService.getCurrentIndex();
-                int next = current + 1;
-                if (next == GenerateNotification.musicService.songs.size())// If current was the last song, then play the first song in the list
-                    next = 0;
-                GenerateNotification.musicService.setSong(next);
-                GenerateNotification.musicService.togglePlay();
-                break;
-            }
-            case "previous": {
-                int current = GenerateNotification.musicService.getCurrentIndex();
-                int previous = current - 1;
-                if (previous < 0)            // If current was 0, then play the last song in the list
-                    previous = GenerateNotification.musicService.songs.size() - 1;
-                GenerateNotification.musicService.setSong(previous);
-                GenerateNotification.musicService.togglePlay();
-                break;
-            }
-        }
-    }
-}
 

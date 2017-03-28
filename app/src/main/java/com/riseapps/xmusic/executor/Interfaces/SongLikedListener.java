@@ -1,4 +1,4 @@
-package com.riseapps.xmusic.executor;
+package com.riseapps.xmusic.executor.Interfaces;
 
 /**
  * Created by kanishk on 26/03/17.

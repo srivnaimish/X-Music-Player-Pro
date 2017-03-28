@@ -1,46 +1,37 @@
 package com.riseapps.xmusic.view.Fragment;
 
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
-import com.riseapps.xmusic.executor.ClickListener;
-import com.riseapps.xmusic.executor.MyApplication;
+import com.riseapps.xmusic.executor.Interfaces.AlbumRefreshListener;
+import com.riseapps.xmusic.executor.Interfaces.ClickListener;
+import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.AlbumsAdapter;
 import com.riseapps.xmusic.model.Pojo.Album;
+import com.riseapps.xmusic.model.Pojo.Artist;
+import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
+import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class AlbumFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-
 
     RecyclerView recyclerView;
     ArrayList<Album> albumLists=new ArrayList<>();
     AlbumsAdapter albumAdapter;
-    private OnFragmentInteractionListener mListener;
 
     public AlbumFragment() {
         // Required empty public constructor
@@ -62,10 +53,8 @@ public class AlbumFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment_songs
-        View v=inflater.inflate(R.layout.fragment_album, container, false);
 
-        //new Async().execute();
+        View v=inflater.inflate(R.layout.fragment_album, container, false);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.albums);
         recyclerView.setHasFixedSize(true);
@@ -103,36 +92,18 @@ public class AlbumFragment extends Fragment {
         albumAdapter = new AlbumsAdapter(getActivity(), albumLists, recyclerView);
         recyclerView.setAdapter(albumAdapter);
 
+        ((MainActivity) getActivity()).setAlbumRefreshListener(new AlbumRefreshListener() {
+
+            @Override
+            public void OnAlbumRefresh(ArrayList<Album> arrayList) {
+                albumLists=arrayList;
+                albumAdapter.notifyDataSetChanged();
+
+            }
+
+        });
+
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

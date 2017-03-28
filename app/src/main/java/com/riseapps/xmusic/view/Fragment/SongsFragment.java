@@ -1,6 +1,5 @@
 package com.riseapps.xmusic.view.Fragment;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +15,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.ActionModeCallback;
+import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
+import com.riseapps.xmusic.model.Pojo.Album;
+import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.utils.RecyclerClickListener;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
@@ -34,7 +36,6 @@ public class SongsFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<Song> songList=new ArrayList<>();
     SongAdapter songsAdapter;
-    View view;
     Gson gson = new Gson();
    // Async async;
     final int textLimit = 26;
@@ -77,26 +78,17 @@ public class SongsFragment extends Fragment {
 
         implemetRecyclerViewListener();
 
-        /*recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
+        ((MainActivity) getActivity()).setSongRefreshListener(new SongRefreshListener() {
             @Override
-            public void onClick(View view, int position) {
-                //  Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
-                if((((MainActivity) getActivity()).getSongs()!=songList)) {
-                    Toast.makeText(getContext(), "Now Playing All Songs", Toast.LENGTH_SHORT).show();
-                    ((MainActivity) getActivity()).setSongs(songList);
-                    ((MainActivity) getActivity()).getMusicService().setSongs(songList);
-                }
-
+            public void OnSongRefresh(ArrayList<Song> arrayList) {
+                songList=arrayList;
+                ((MainActivity) getActivity()).setSongs(songList);
+                songsAdapter.notifyDataSetChanged();
+                Toast.makeText(getActivity(), "Refreshed", Toast.LENGTH_SHORT).show();
             }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));*/
+        });
       //  async.execute();
 
-        view = rootView;
         return rootView;
     }
 
@@ -105,7 +97,13 @@ public class SongsFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerClickListener() {
             @Override
             public void onClick(View view, int position) {
-                //If ActionMode not null select item
+                if(view.getId()==R.id.name||view.getId()==R.id.artist_mini||view.getId()==R.id.album_art_card) {
+                    if ((((MainActivity) getActivity()).getSongs() != songList)) {
+                        Toast.makeText(getContext(), "Now Playing All Songs", Toast.LENGTH_SHORT).show();
+                        ((MainActivity) getActivity()).setSongs(songList);
+                        ((MainActivity) getActivity()).getMusicService().setSongs(songList);
+                    }
+                }
                 if (actionMode != null)
                     onListItemSelect(position);
             }
@@ -154,8 +152,7 @@ public class SongsFragment extends Fragment {
             Toast.makeText(getActivity(), "setting null", Toast.LENGTH_SHORT).show();
         }
     }
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
+
+
 }

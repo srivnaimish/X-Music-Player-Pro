@@ -1,17 +1,16 @@
 package com.riseapps.xmusic.view.Activity;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
-import android.os.Handler;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
@@ -22,13 +21,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,13 +41,17 @@ import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
-import com.riseapps.xmusic.component.SharedPreferenceSingelton;
+import com.riseapps.xmusic.executor.Interfaces.AlbumRefreshListener;
+import com.riseapps.xmusic.executor.Interfaces.ArtistRefreshListener;
+import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.ShakeDetector;
-import com.riseapps.xmusic.executor.SongLikedListener;
+import com.riseapps.xmusic.executor.Interfaces.SongLikedListener;
 import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.MusicService;
+import com.riseapps.xmusic.model.Pojo.Album;
+import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
@@ -60,17 +61,15 @@ import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 import com.riseapps.xmusic.view.Fragment.SongsFragment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends BaseMatSearchViewActivity implements ScrollingFragment.OnFragmentInteractionListener,SongsFragment.OnFragmentInteractionListener, ArtistFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AlbumFragment.OnFragmentInteractionListener, OnSearchViewListener {
+public class MainActivity extends BaseMatSearchViewActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, OnSearchViewListener {
 
     private ArrayList<Song> songList = new ArrayList<>();
     private MusicService musicService;
     private Intent playIntent;
-    public boolean musicPlaying,isMusicShuffled=false;
+    public boolean musicPlaying, isMusicShuffled = false;
     //Mini & Main player layouts
     private CardView miniPlayer;
     private ConstraintLayout mainPlayer;
@@ -99,6 +98,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
 
+    private SongRefreshListener songRefreshListener;
+    private ArtistRefreshListener artistRefreshListener;
+    private AlbumRefreshListener albumRefreshListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +118,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
             @Override
             public void onShake(int count) {
-                    musicService.togglePlay();
+                musicService.togglePlay();
 
             }
         });
@@ -145,14 +148,13 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isMusicShuffled) {
+                if (isMusicShuffled) {
                     musicService.sortSongs();
-                    isMusicShuffled=false;
+                    isMusicShuffled = false;
                     DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
-                }
-                else {
+                } else {
                     musicService.shuffleSongs();
-                    isMusicShuffled=true;
+                    isMusicShuffled = true;
                     DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 }
             }
@@ -195,18 +197,19 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 if (item.getItemId() == R.id.favourites) {
                     View v = findViewById(R.id.favourites);
                     v.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
-                    FragmentManager fragmentManager=getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                    ScrollingFragment scrollingFragment=new ScrollingFragment();
-                    Bundle bundle=new Bundle();
-                    bundle.putString("Action","Favourites");
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    ScrollingFragment scrollingFragment = new ScrollingFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Action", "Favourites");
                     scrollingFragment.setArguments(bundle);
                     fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.replace(R.id.drawerLayout,scrollingFragment);
+                    fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
                     fragmentTransaction.commit();
-                }
-                else if (item.getItemId() == R.id.settings) {
+                } else if (item.getItemId() == R.id.settings) {
                     startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), 1);
+                } else if (item.getItemId() == R.id.refresh) {
+                    new RefreshAsync().execute();
                 }
                 return true;
             }
@@ -222,14 +225,13 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 if (item.getItemId() == R.id.favouritesPlayer) {
                     View v = findViewById(R.id.favouritesPlayer);
                     v.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
-                    Song song=songList.get(musicService.getCurrentIndex());
-                    if(song.getFavourite()) {
-                        new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(),0);
+                    Song song = songList.get(musicService.getCurrentIndex());
+                    if (song.getFavourite()) {
+                        new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(), 0);
                         song.setFavourite(false);
                         item.setIcon(R.drawable.ic_like);
-                    }
-                    else {
-                        new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(),1);
+                    } else {
+                        new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(), 1);
                         song.setFavourite(true);
                         item.setIcon(R.drawable.ic_liked);
                     }
@@ -293,7 +295,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             musicService = binder.getService();
             musicService.setSongs(songList);
             musicService.setUIControls(seekBar, currentPosition, totalDuration);
-            Log.d("Songs","Connected to service");
+            Log.d("Songs", "Connected to service");
             musicService.setOnSongChangedListener(new MusicService.OnSongChangedListener() {
                 @Override
                 public void onSongChanged(Song song) {
@@ -337,7 +339,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 }
             });
 
-                musicService.setSong(0);
+            musicService.setSong(0);
         }
 
         @Override
@@ -361,7 +363,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     .alpha(1.f)
                     .setDuration(1000)
                     .start();
-            mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
         }
     }
 
@@ -393,12 +395,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             hideMainPlayer();
         } else {
             if (musicPlaying) {
-                if(getSupportFragmentManager().getBackStackEntryCount()>0)
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                     getSupportFragmentManager().popBackStackImmediate();
                 else
-                moveTaskToBack(true);
-            }
-            else {
+                    moveTaskToBack(true);
+            } else {
                 super.onBackPressed();
             }
         }
@@ -419,7 +420,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     void showMainPlayer() {
-     //   mainPlayer.startAnimation(new CustomAnimation().slideShow(MainActivity.this));
+        //   mainPlayer.startAnimation(new CustomAnimation().slideShow(MainActivity.this));
         mainPlayer.setVisibility(View.VISIBLE);
         toolbarPlayer.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.GONE);
@@ -535,12 +536,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_CANCELED) {
 
-        }
-        else if (resultCode == Activity.RESULT_OK) {
+        } else if (resultCode == Activity.RESULT_OK) {
             String str = data.getStringExtra("selected_playlist");
-            if(!str.equalsIgnoreCase("")) {
-                long id=songList.get(musicService.getCurrentIndex()).getID();
-                new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id,str);
+            if (!str.equalsIgnoreCase("")) {
+                long id = songList.get(musicService.getCurrentIndex()).getID();
+                new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id, str);
                 Toast.makeText(MainActivity.this, "Added to Playlist", Toast.LENGTH_SHORT).show();
             }
         }
@@ -551,13 +551,113 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     private String[] getTitles() {
-        ArrayList<Song> list=new MyApplication(this).getWritableDatabase().readSongs();
+        ArrayList<Song> list = new MyApplication(this).getWritableDatabase().readSongs();
         String[] array = new String[list.size()];
         for (int i = 0; i < array.length; i++) {
-            array[i] =list.get(i).getName();
+            array[i] = list.get(i).getName();
         }
         /*your logic to fetch titles of all the loaded songs and put it in string array*/
         return array;
     }
+
+    public void setSongRefreshListener(SongRefreshListener refreshListener){
+        this.songRefreshListener=refreshListener;
+    }
+
+    public void setArtistRefreshListener(ArtistRefreshListener refreshListener){
+        this.artistRefreshListener=refreshListener;
+    }
+
+    public void setAlbumRefreshListener(AlbumRefreshListener refreshListener){
+        this.albumRefreshListener=refreshListener;
+    }
+
+    private class RefreshAsync extends AsyncTask<Void, Void, Void> {
+
+        ArrayList<Song> songs = new ArrayList<>();
+        ArrayList<Artist> artists = new ArrayList<>();
+        ArrayList<Album> albums = new ArrayList<>();
+        private ProgressDialog mDialog;
+
+        @Override
+        protected void onPreExecute() {
+            mDialog = ProgressDialog.show(MainActivity.this, "Please wait...", "Refreshing data ...", true);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String adString = getResources().getString(R.string.adStringPlaceholder);
+            unbindService(musicConnection);
+            stopService(playIntent);
+            mSensorManager.unregisterListener(mShakeDetector);
+            new UpdateSongs(MainActivity.this).refreshList();
+            songs = new MyApplication(MainActivity.this).getWritableDatabase().readSongs();
+            artists = new MyApplication(MainActivity.this).getWritableDatabase().readArtists();
+            albums = new MyApplication(MainActivity.this).getWritableDatabase().readAlbums();
+
+            // Place 3 ads for album fragment
+            Album albumAdOne = new Album();
+            albumAdOne.setName(adString);
+            albumAdOne.setImagepath("NoImage");
+            albumAdOne.setViewType(2);
+            albums.add(3, albumAdOne);
+
+            Album albumAdTwo = new Album();
+            albumAdTwo.setName(adString);
+            albumAdTwo.setImagepath("NoImage");
+            albumAdTwo.setViewType(2);
+            albums.add(8, albumAdTwo);
+
+            Album albumAdThree = new Album();
+            albumAdThree.setName(adString);
+            albumAdThree.setImagepath("NoImage");
+            albumAdThree.setViewType(2);
+            albums.add(13, albumAdThree);
+
+            // Place 3 ads for artist fragment
+            Artist artistAdOne = new Artist();
+            artistAdOne.setName(adString);
+            artistAdOne.setImagepath("NoImage");
+            artistAdOne.setViewType(2);
+            artists.add(4, artistAdOne);
+
+            Artist artistAdTwo = new Artist();
+            artistAdTwo.setName(adString);
+            artistAdTwo.setImagepath("NoImage");
+            artistAdTwo.setViewType(2);
+            artists.add(11, artistAdTwo);
+
+            Artist artistAdThree = new Artist();
+            artistAdThree.setName(adString);
+            artistAdThree.setImagepath("NoImage");
+            artistAdThree.setViewType(2);
+            artists.add(17, artistAdThree);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            songRefreshListener.OnSongRefresh(songs);
+            albumRefreshListener.OnAlbumRefresh(albums);
+            artistRefreshListener.OnArtistRefresh(artists);
+            playIntent = new Intent(MainActivity.this, MusicService.class);
+            startService(playIntent);
+            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
+
+            miniPlayer.setVisibility(View.VISIBLE);
+            miniPlayer.setAlpha(0.f);
+            miniPlayer.animate()
+                    .alpha(1.f)
+                    .setDuration(1000)
+                    .start();
+            mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+            mDialog.dismiss();
+
+            super.onPostExecute(aVoid);
+        }
+    }
+
+
 }
 

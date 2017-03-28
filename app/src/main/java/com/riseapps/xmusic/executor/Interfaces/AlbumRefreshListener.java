@@ -1,0 +1,14 @@
+package com.riseapps.xmusic.executor.Interfaces;
+
+import com.riseapps.xmusic.model.Pojo.Album;
+import com.riseapps.xmusic.model.Pojo.Song;
+
+import java.util.ArrayList;
+
+/**
+ * Created by naimish on 29/3/17.
+ */
+
+public interface AlbumRefreshListener {
+    void OnAlbumRefresh(ArrayList<Album> arrayList);
+}

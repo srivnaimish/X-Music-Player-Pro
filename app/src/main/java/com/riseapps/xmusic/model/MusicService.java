@@ -228,7 +228,7 @@ public class MusicService extends Service implements
         try {
             player.setDataSource(getApplicationContext(), trackUri);
         } catch (Exception e) {
-            Log.e("MUSIC SERVICE", "Error setting data source", e);
+            Toast.makeText(this, "Please Refresh the app", Toast.LENGTH_SHORT).show();
         }
 
         player.prepareAsync();

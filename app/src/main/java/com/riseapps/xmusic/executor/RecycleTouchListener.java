@@ -6,6 +6,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.riseapps.xmusic.executor.Interfaces.ClickListener;
+
 /**
  * Created by naimish on 22/3/17.
  */

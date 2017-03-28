@@ -1,4 +1,4 @@
-package com.riseapps.xmusic.executor;
+package com.riseapps.xmusic.executor.Interfaces;
 
 import android.view.View;
 

@@ -140,8 +140,11 @@ public class DBPlayer {
 
     public void deleteAllSongs() {
         mDatabase.delete(PlayerHelper.SONG_TABLE_NAME, null, null);
-        Log.d("Songs", "Deleted");
+        String whereClause = PlayerHelper.PLAYLIST_COLUMN_NAME+"=?";
+        String whereArgs[] = {"All Songs"};
+        mDatabase.delete(PlayerHelper.PLAYLIST_TABLE_NAME, whereClause, whereArgs); //Delete this playlist from playlist table
         mDatabase.close();
+        Log.d("Songs", "Deleted");
     }
 
 
@@ -160,13 +163,11 @@ public class DBPlayer {
         mDatabase.close();
     }
 
-    public void deletePlaylist(String PlaylistName) {
-
-        String whereClause = "Name=?";
-        String whereArgs[] = {PlaylistName};
-        mDatabase.delete(PlayerHelper.PLAYLIST_TABLE_NAME, whereClause, whereArgs); //Delete this playlist from playlist table
-        Log.d(PlaylistName, "Deleted");
+    public void refreshPlaylists() {
+        mDatabase.execSQL("DELETE FROM PLAYLISTS_LIST WHERE SONG NOT IN " +
+                "(SELECT ID FROM SONGS_LIST)");
         mDatabase.close();
+        Log.d("Playlists","Refreshed");
     }
 
     public ArrayList<Playlist> readPlaylists() {
