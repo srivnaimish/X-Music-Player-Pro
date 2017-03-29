@@ -97,7 +97,9 @@ public class AlbumFragment extends Fragment {
             @Override
             public void OnAlbumRefresh(ArrayList<Album> arrayList) {
                 albumLists=arrayList;
-                albumAdapter.notifyDataSetChanged();
+                albumAdapter = new AlbumsAdapter(getActivity(), albumLists, recyclerView);
+                recyclerView.setAdapter(albumAdapter);
+
 
             }
 

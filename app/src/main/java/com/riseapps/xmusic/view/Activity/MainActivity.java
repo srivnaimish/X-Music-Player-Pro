@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
@@ -29,8 +30,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,6 +91,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar, toolbarPlayer;
+    ProgressBar progressBar;
 
     private WaveHelper mWaveHelper;
 
@@ -190,7 +194,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     };
 
     private void initiallize() {
-
+        progressBar= (ProgressBar) findViewById(R.id.progress);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -334,6 +338,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             play_pause_mini.setImageResource(R.drawable.ic_play);
                             musicPlaying = false;
                             mWaveHelper.cancel();
+
+
                             break;
                     }
                 }
@@ -344,8 +350,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
-
+            play_pause.setImageResource(R.drawable.ic_play);
+            play_pause_mini.setImageResource(R.drawable.ic_play);
+            musicPlaying = false;
+            mWaveHelper.cancel();
         }
     };
 
@@ -577,20 +585,21 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         ArrayList<Song> songs = new ArrayList<>();
         ArrayList<Artist> artists = new ArrayList<>();
         ArrayList<Album> albums = new ArrayList<>();
-        private ProgressDialog mDialog;
 
         @Override
         protected void onPreExecute() {
-            mDialog = ProgressDialog.show(MainActivity.this, "Please wait...", "Refreshing data ...", true);
+            unbindService(musicConnection);
+            stopService(playIntent);
+            mViewPager.setAlpha(0.8f);
+           progressBar.setVisibility(View.VISIBLE);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             super.onPreExecute();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             String adString = getResources().getString(R.string.adStringPlaceholder);
-            unbindService(musicConnection);
-            stopService(playIntent);
-            mSensorManager.unregisterListener(mShakeDetector);
             new UpdateSongs(MainActivity.this).refreshList();
             songs = new MyApplication(MainActivity.this).getWritableDatabase().readSongs();
             artists = new MyApplication(MainActivity.this).getWritableDatabase().readArtists();
@@ -645,15 +654,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             startService(playIntent);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
 
-            miniPlayer.setVisibility(View.VISIBLE);
-            miniPlayer.setAlpha(0.f);
-            miniPlayer.animate()
-                    .alpha(1.f)
-                    .setDuration(1000)
-                    .start();
             mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
-            mDialog.dismiss();
-
+            progressBar.setVisibility(View.GONE);
+            mViewPager.setAlpha(1.0f);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             super.onPostExecute(aVoid);
         }
     }

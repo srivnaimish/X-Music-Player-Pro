@@ -97,9 +97,8 @@ public class ArtistFragment extends Fragment{
             @Override
             public void OnArtistRefresh(ArrayList<Artist> arrayList) {
                 artistLists=arrayList;
-                artistAdapter.notifyDataSetChanged();
-
-
+                artistAdapter = new ArtistAdapter(getActivity(), artistLists, recyclerView);
+                recyclerView.setAdapter(artistAdapter);
             }
         });
 

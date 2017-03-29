@@ -83,8 +83,8 @@ public class SongsFragment extends Fragment {
             public void OnSongRefresh(ArrayList<Song> arrayList) {
                 songList=arrayList;
                 ((MainActivity) getActivity()).setSongs(songList);
-                songsAdapter.notifyDataSetChanged();
-                Toast.makeText(getActivity(), "Refreshed", Toast.LENGTH_SHORT).show();
+                songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
+                recyclerView.setAdapter(songsAdapter);
             }
         });
       //  async.execute();
@@ -97,13 +97,13 @@ public class SongsFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if(view.getId()==R.id.name||view.getId()==R.id.artist_mini||view.getId()==R.id.album_art_card) {
+               /* if(view.getId()==R.id.name||view.getId()==R.id.artist_mini||view.getId()==R.id.album_art_card) {
                     if ((((MainActivity) getActivity()).getSongs() != songList)) {
                         Toast.makeText(getContext(), "Now Playing All Songs", Toast.LENGTH_SHORT).show();
                         ((MainActivity) getActivity()).setSongs(songList);
                         ((MainActivity) getActivity()).getMusicService().setSongs(songList);
                     }
-                }
+                }*/
                 if (actionMode != null)
                     onListItemSelect(position);
             }

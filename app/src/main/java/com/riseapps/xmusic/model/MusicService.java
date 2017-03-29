@@ -156,6 +156,10 @@ public class MusicService extends Service implements
             unregisterReceiver(headsetPlugReceiver);
             headsetPlugReceiver = null;
         }
+        if(mSeekBar!=null)
+        mSeekBar.removeCallbacks(mProgressRunner);
+        onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
+        //Toast.makeText(this, "Removed", Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
 
@@ -227,13 +231,14 @@ public class MusicService extends Service implements
                 currSongID);
         try {
             player.setDataSource(getApplicationContext(), trackUri);
+            player.prepareAsync();
+            mProgressRunner.run();
+            onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
         } catch (Exception e) {
-            Toast.makeText(this, "Please Refresh the app", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error Song Not Found.\nPlease Refresh the SongList", Toast.LENGTH_SHORT).show();
         }
 
-        player.prepareAsync();
-        mProgressRunner.run();
-        onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
+
 
     }
 
