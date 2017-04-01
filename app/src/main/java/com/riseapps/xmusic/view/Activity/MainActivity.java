@@ -1,13 +1,11 @@
 package com.riseapps.xmusic.view.Activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
@@ -46,9 +44,11 @@ import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.executor.Interfaces.AlbumRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ArtistRefreshListener;
+import com.riseapps.xmusic.executor.Interfaces.ContextMenuListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
+import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
 import com.riseapps.xmusic.executor.ShakeDetector;
 import com.riseapps.xmusic.executor.Interfaces.SongLikedListener;
 import com.riseapps.xmusic.executor.UpdateSongs;
@@ -86,11 +86,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     ImageView album_art;
     private SeekBar seekBar;
     private SongLikedListener mListener;
+    private final Context ctx = MainActivity.this;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
-    private Toolbar toolbar, toolbarPlayer;
+    private Toolbar toolbar, toolbarPlayer, toolbarContext;
     ProgressBar progressBar;
 
     private WaveHelper mWaveHelper;
@@ -106,6 +107,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private ArtistRefreshListener artistRefreshListener;
     private AlbumRefreshListener albumRefreshListener;
 
+    private SongsFragment songFragment;
+    private ContextMenuListener clearAll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,8 +185,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 Color.parseColor("#D32F2F"),
                 Color.parseColor("#F44336"));
         mWaveHelper.start();
-
-
     }
 
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
@@ -221,7 +222,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         toolbarPlayer = (Toolbar) findViewById(R.id.toolbar_player);
         toolbarPlayer.inflateMenu(R.menu.player_menu);
-
         toolbarPlayer.setNavigationIcon(R.drawable.ic_back);
         toolbarPlayer.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -250,6 +250,29 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             @Override
             public void onClick(View view) {
                 hideMainPlayer();
+            }
+        });
+
+        toolbarContext = (Toolbar) findViewById(R.id.toolbar_context);
+        toolbarContext.inflateMenu(R.menu.context_menu);
+        toolbarContext.setNavigationIcon(R.drawable.ic_back);
+        toolbarContext.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.favouritesPlayer) {
+                    Toast.makeText(MainActivity.this, "Action 1", Toast.LENGTH_SHORT).show();
+                } else if (item.getItemId() == R.id.playlist) {
+                    Toast.makeText(MainActivity.this, "Action 2", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        });
+        toolbarContext.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toolbarContext.setVisibility(View.GONE);
+                mToolbar.setVisibility(View.VISIBLE);
+                clearAll.onClearAll();
             }
         });
 
@@ -283,7 +306,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         album_art_mini = (ImageView) findViewById(R.id.album_art_mini);
         play_pause_mini = (ImageButton) findViewById(R.id.play_pause_mini);
 
-        miniPlayer = (CardView) findViewById(R.id.mini_player);
+        miniPlayer = (CardView) findViewById(R.id.song_list_card);
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
 
         play_pause.setOnClickListener(togglePlayBtn);
@@ -338,8 +361,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             play_pause_mini.setImageResource(R.drawable.ic_play);
                             musicPlaying = false;
                             mWaveHelper.cancel();
-
-
                             break;
                     }
                 }
@@ -500,7 +521,22 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 case 2:
                     return ArtistFragment.newInstance();
                 case 3:
-                    return SongsFragment.newInstance();
+                    songFragment = SongsFragment.newInstance();
+                    songFragment.setOnShowContextMenuListener(new SongsFragment.OnShowContextMenuListener() {
+                        @Override
+                        public void onShowToolbar() {
+                            Toast.makeText(MainActivity.this, "hello in activity", Toast.LENGTH_SHORT).show();
+                            toolbarContext.setVisibility(View.VISIBLE);
+                            mToolbar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onHideToolbar() {
+                            toolbarContext.setVisibility(View.GONE);
+                            mToolbar.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    return songFragment;
             }
             return PlaylistFragment.newInstance();
         }

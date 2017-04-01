@@ -17,8 +17,6 @@ import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.ActionModeCallback;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
-import com.riseapps.xmusic.model.Pojo.Album;
-import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.utils.RecyclerClickListener;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
@@ -42,6 +40,7 @@ public class SongsFragment extends Fragment {
     //Type type=new TypeToken<ArrayList<Song>>() {}.getType();
     private ActionMode actionMode;
     private ActionModeCallback callback;
+    private OnShowContextMenuListener mListener;
 
     public static SongsFragment newInstance() {
         return new SongsFragment();
@@ -76,7 +75,21 @@ public class SongsFragment extends Fragment {
         songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
         recyclerView.setAdapter(songsAdapter);
 
-        implemetRecyclerViewListener();
+        songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
+            @Override
+            public void onShow() {
+                Toast.makeText(getActivity(), "show", Toast.LENGTH_SHORT).show();
+                mListener.onShowToolbar();
+            }
+
+            @Override
+            public void onHide() {
+                Toast.makeText(getActivity(), "hide", Toast.LENGTH_SHORT).show();
+                mListener.onHideToolbar();
+            }
+        });
+
+        //implemetRecyclerViewListener();
 
         ((MainActivity) getActivity()).setSongRefreshListener(new SongRefreshListener() {
             @Override
@@ -153,6 +166,12 @@ public class SongsFragment extends Fragment {
         }
     }
 
+    public interface OnShowContextMenuListener {
+        void onShowToolbar();
+        void onHideToolbar();
+    }
 
-
+    public void setOnShowContextMenuListener(OnShowContextMenuListener listener) {
+        mListener = listener;
+    }
 }

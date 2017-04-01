@@ -8,4 +8,5 @@
     <color name="colorWhite">#FFF</color>
     <color name="colorBlack">#000</color>
     <color name="colorAccentDark">#B71C1C</color>
+    <color name="colorLongSelection">#B0BEC5</color>
 </resources>

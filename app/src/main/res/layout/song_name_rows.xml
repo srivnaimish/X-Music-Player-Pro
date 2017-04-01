@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/mini_player"
+    android:id="@+id/song_list_card"
     card_view:cardCornerRadius="0dp"
     card_view:cardElevation="0dp">
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
