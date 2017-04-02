@@ -10,6 +10,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
@@ -32,6 +33,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +44,7 @@ import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.AlbumRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ArtistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ContextMenuListener;
@@ -92,7 +95,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar, toolbarPlayer, toolbarContext;
-    ProgressBar progressBar;
+    RelativeLayout progressView;
 
     private WaveHelper mWaveHelper;
 
@@ -167,6 +170,22 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             }
         });
 
+        repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this,"Repeat")) {
+                    new SharedPreferenceSingelton().saveAs(MainActivity.this, "Repeat", false);
+                    Toast.makeText(MainActivity.this, "Song Repeat Off", Toast.LENGTH_SHORT).show();
+                    DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
+                }
+                else {
+                    new SharedPreferenceSingelton().saveAs(MainActivity.this, "Repeat", true);
+                    Toast.makeText(MainActivity.this, "Song Repeat On", Toast.LENGTH_SHORT).show();
+                    DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                }
+            }
+        });
+
         miniPlayer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -195,7 +214,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     };
 
     private void initiallize() {
-        progressBar= (ProgressBar) findViewById(R.id.progress);
+        progressView= (RelativeLayout) findViewById(R.id.progress);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -327,8 +346,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 @Override
                 public void onSongChanged(Song song) {
                     if (!song.getImagepath().equalsIgnoreCase("no_image")) {
-                        Glide.with(MainActivity.this).load(Uri.parse(song.getImagepath())).into(album_art);
-                        Glide.with(MainActivity.this).load(Uri.parse(song.getImagepath())).into(album_art_mini);
+                        Glide.with(MainActivity.this).load(song.getImagepath()).into(album_art);
+                        Glide.with(MainActivity.this).load(song.getImagepath()).into(album_art_mini);
                     } else {
                         album_art.setImageResource(R.drawable.empty);
                         album_art_mini.setImageResource(R.drawable.empty);
@@ -385,13 +404,18 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             playIntent = new Intent(this, MusicService.class);
             startService(playIntent);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    miniPlayer.setVisibility(View.VISIBLE);
+                    miniPlayer.setAlpha(0.f);
+                    miniPlayer.animate()
+                            .alpha(1.f)
+                            .setDuration(1000)
+                            .start();
+                }
+            },3500);
 
-            miniPlayer.setVisibility(View.VISIBLE);
-            miniPlayer.setAlpha(0.f);
-            miniPlayer.animate()
-                    .alpha(1.f)
-                    .setDuration(1000)
-                    .start();
             mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
         }
     }
@@ -627,7 +651,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             unbindService(musicConnection);
             stopService(playIntent);
             mViewPager.setAlpha(0.8f);
-           progressBar.setVisibility(View.VISIBLE);
+           progressView.setVisibility(View.VISIBLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             super.onPreExecute();
@@ -678,20 +702,26 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             artistAdThree.setImagepath("NoImage");
             artistAdThree.setViewType(2);
             artists.add(17, artistAdThree);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    songRefreshListener.OnSongRefresh(songs);
+                    albumRefreshListener.OnAlbumRefresh(albums);
+                    artistRefreshListener.OnArtistRefresh(artists);
+                }
+            });
+
+            playIntent = new Intent(MainActivity.this, MusicService.class);
+            startService(playIntent);
+            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            songRefreshListener.OnSongRefresh(songs);
-            albumRefreshListener.OnAlbumRefresh(albums);
-            artistRefreshListener.OnArtistRefresh(artists);
-            playIntent = new Intent(MainActivity.this, MusicService.class);
-            startService(playIntent);
-            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
 
             mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
-            progressBar.setVisibility(View.GONE);
+            progressView.setVisibility(View.GONE);
             mViewPager.setAlpha(1.0f);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             super.onPostExecute(aVoid);

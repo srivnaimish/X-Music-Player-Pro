@@ -34,10 +34,6 @@ public class SongsFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<Song> songList=new ArrayList<>();
     SongAdapter songsAdapter;
-    Gson gson = new Gson();
-   // Async async;
-    final int textLimit = 26;
-    //Type type=new TypeToken<ArrayList<Song>>() {}.getType();
     private ActionMode actionMode;
     private ActionModeCallback callback;
     private OnShowContextMenuListener mListener;

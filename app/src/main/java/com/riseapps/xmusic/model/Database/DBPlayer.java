@@ -2,7 +2,6 @@ package com.riseapps.xmusic.model.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -16,8 +15,6 @@ import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.model.Pojo.Song;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 
 public class DBPlayer {
@@ -138,13 +135,38 @@ public class DBPlayer {
         return songlist;
     }
 
-    public void deleteAllSongs() {
-        mDatabase.delete(PlayerHelper.SONG_TABLE_NAME, null, null);
-        String whereClause = PlayerHelper.PLAYLIST_COLUMN_NAME+"=?";
-        String whereArgs[] = {"All Songs"};
-        mDatabase.delete(PlayerHelper.PLAYLIST_TABLE_NAME, whereClause, whereArgs); //Delete this playlist from playlist table
+    public boolean isSongPresent(long id){
+        boolean b=false;
+        String[] columns = {
+                PlayerHelper.COLUMN_ID
+        };
+        String args[]={""+id};
+        Cursor cursor=null;
+        try {
+            cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, PlayerHelper.COLUMN_ID+"=?", args, null, null, PlayerHelper.COLUMN_NAME);
+                if (cursor.getCount() > 0) {
+                    cursor.close();
+                    b=true;
+                }
+        }catch (SQLiteException e){
+        }
+        finally {
+            mDatabase.close();
+        }
+        return b;
+    }
+
+    public void deleteSong(long id) {
+        String whereClause = PlayerHelper.COLUMN_ID+"=?";
+        String whereArgs[] = {""+id};
+        mDatabase.delete(PlayerHelper.SONG_TABLE_NAME, whereClause, whereArgs);
+
+        String whereC=PlayerHelper.PLAYLIST_COLUMN_SONG+"=?";
+        String whereA[]={""+id};
+        mDatabase.delete(PlayerHelper.PLAYLIST_TABLE_NAME, whereC, whereA);
+
         mDatabase.close();
-        Log.d("Songs", "Deleted");
+        Log.d("Song", "Deleted");
     }
 
 

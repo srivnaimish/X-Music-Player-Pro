@@ -55,7 +55,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
 
             String imagepath=new MyApplication(c).getWritableDatabase().readFirstSongInPlaylist(name);
             if (!imagepath.equalsIgnoreCase("no_image")) {
-                Glide.with(c).load(Uri.parse(imagepath))
+                Glide.with(c).load(imagepath)
                         .crossFade()
                         .centerCrop()
                        // .placeholder(R.drawable.empty)

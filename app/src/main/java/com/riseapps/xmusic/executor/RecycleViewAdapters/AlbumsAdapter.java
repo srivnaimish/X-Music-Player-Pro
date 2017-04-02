@@ -59,7 +59,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                     //Log.d("imagepath", " " + imagepath);
                     if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
                         if (!imagepath.equalsIgnoreCase("no_image")) {
-                            Glide.with(c).load(Uri.parse(imagepath))
+                            Glide.with(c).load(imagepath)
                                     .centerCrop()
                                     .into(((AlbumViewHolder) holder).imageView);
                         }

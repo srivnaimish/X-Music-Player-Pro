@@ -139,7 +139,7 @@ public class SongAdapter extends RecyclerView.Adapter implements ContextMenuList
                     TimeUnit.MILLISECONDS.toSeconds(time) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))));
             if (!imagepath.equalsIgnoreCase("no_image")) {
-                Glide.with(c).load(Uri.parse(imagepath))
+                Glide.with(c).load(imagepath)
                         .crossFade()
                         .into(((SongViewHolder) holder).iv);
             }

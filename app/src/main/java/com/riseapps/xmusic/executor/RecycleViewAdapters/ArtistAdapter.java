@@ -55,7 +55,7 @@ public class ArtistAdapter extends RecyclerView.Adapter {
                 ((ArtistViewHolder)holder).name.setText(name);
 
                 if (!imagepath.equalsIgnoreCase("no_image")) {
-                    Glide.with(c).load(Uri.parse(imagepath))
+                    Glide.with(c).load(imagepath)
                             .centerCrop()
                             .into(((ArtistViewHolder) holder).imageView);
                 }

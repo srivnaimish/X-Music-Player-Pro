@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.GenerateNotification;
+import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.model.Pojo.Song;
 
 import java.util.ArrayList;
@@ -29,7 +30,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-
 
 
 public class MusicService extends Service implements
@@ -46,7 +46,7 @@ public class MusicService extends Service implements
 
     private OnSongChangedListener onSongChangedListener;
 
-    private boolean isPausedOnCall=false;
+    private boolean isPausedOnCall = false;
     private PhoneStateListener phoneStateListener;
     private TelephonyManager telephonyManager;
 
@@ -79,23 +79,23 @@ public class MusicService extends Service implements
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        telephonyManager= (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        phoneStateListener=new PhoneStateListener(){
+        telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        phoneStateListener = new PhoneStateListener() {
             @Override
             public void onCallStateChanged(int state, String incomingNumber) {
-                switch (state){
+                switch (state) {
                     case TelephonyManager.CALL_STATE_OFFHOOK:
                     case TelephonyManager.CALL_STATE_RINGING:
-                        if(player!=null){
-                            isPausedOnCall=true;
+                        if (player != null) {
+                            isPausedOnCall = true;
                             togglePlay();
                             //pause
                         }
                         break;
                     case TelephonyManager.CALL_STATE_IDLE:
-                        if(player!=null){
-                            if (isPausedOnCall){
-                                isPausedOnCall=false;
+                        if (player != null) {
+                            if (isPausedOnCall) {
+                                isPausedOnCall = false;
                                 togglePlay();
                                 //pause
                             }
@@ -104,14 +104,18 @@ public class MusicService extends Service implements
                 }
             }
         };
-        telephonyManager.listen(phoneStateListener,PhoneStateListener.LISTEN_CALL_STATE);
+        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        int newPos = songPos + 1;
+        int newPos = 0;
+        if (new SharedPreferenceSingelton().getSavedBoolean(this, "Repeat"))
+            newPos = songPos;
+        else
+            newPos = songPos + 1;
         if (newPos == songs.size())
             newPos = 0;
         setSong(newPos);
@@ -135,7 +139,7 @@ public class MusicService extends Service implements
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        mSeekBar=null;
+        mSeekBar = null;
         onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
         player.stop();
         player.reset();
@@ -146,18 +150,18 @@ public class MusicService extends Service implements
 
     @Override
     public void onDestroy() {
-        NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(NOTIFICATION_ID);
         player.release();
-        if(phoneStateListener!=null){
-            telephonyManager.listen(phoneStateListener,PhoneStateListener.LISTEN_NONE);
+        if (phoneStateListener != null) {
+            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
         }
         if (headsetPlugReceiver != null) {
             unregisterReceiver(headsetPlugReceiver);
             headsetPlugReceiver = null;
         }
-        if(mSeekBar!=null)
-        mSeekBar.removeCallbacks(mProgressRunner);
+        if (mSeekBar != null)
+            mSeekBar.removeCallbacks(mProgressRunner);
         onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
         //Toast.makeText(this, "Removed", Toast.LENGTH_SHORT).show();
         super.onDestroy();
@@ -188,7 +192,9 @@ public class MusicService extends Service implements
         this.songs = songs;
     }
 
-    public ArrayList<Song> getSongs(){ return songs;}
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
 
     public void setSong(int songIndex) {
         if (songs.size() <= songIndex || songIndex < 0) // if the list is empty... just return
@@ -202,19 +208,19 @@ public class MusicService extends Service implements
         switch (playerState) {
             case STOPPED:
                 playSong();
-                new GenerateNotification(1).getNotification(this,getInstance());
+                new GenerateNotification(1).getNotification(this, getInstance());
                 break;
             case PAUSED:
                 player.start();
                 onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
                 mProgressRunner.run();
-                new GenerateNotification(1).getNotification(this,getInstance());
+                new GenerateNotification(1).getNotification(this, getInstance());
                 break;
             case PLAYING:
                 player.pause();
                 onSongChangedListener.onPlayerStatusChanged(playerState = PAUSED);
                 mSeekBar.removeCallbacks(mProgressRunner);
-                new GenerateNotification(0).getNotification(this,getInstance());
+                new GenerateNotification(0).getNotification(this, getInstance());
                 break;
         }
     }
@@ -235,14 +241,14 @@ public class MusicService extends Service implements
             mProgressRunner.run();
             onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
         } catch (Exception e) {
+            new MyApplication(this).getWritableDatabase().deleteSong(currSongID);
             Toast.makeText(this, "Error Song Not Found.\nPlease Refresh the SongList", Toast.LENGTH_SHORT).show();
         }
 
 
-
     }
 
-    public void shuffleSongs(){
+    public void shuffleSongs() {
         Collections.shuffle(songs);
     }
 
@@ -320,11 +326,11 @@ public class MusicService extends Service implements
                 return;
             }
             boolean disconnectHeadphones = (intent.getIntExtra("state", 0) == 0);
-            if(player.isPlaying() && disconnectHeadphones){
+            if (player.isPlaying() && disconnectHeadphones) {
                 togglePlay();
             }
 
-           // Toast.makeText(MusicService.this, ""+connectedHeadphones, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(MusicService.this, ""+connectedHeadphones, Toast.LENGTH_SHORT).show();
             // ...
         }
     }
