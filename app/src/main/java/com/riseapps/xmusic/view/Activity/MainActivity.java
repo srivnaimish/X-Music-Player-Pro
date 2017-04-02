@@ -65,6 +65,7 @@ import com.riseapps.xmusic.view.Fragment.ArtistFragment;
 import com.riseapps.xmusic.view.Fragment.PlaylistFragment;
 import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 import com.riseapps.xmusic.view.Fragment.SongsFragment;
+import com.riseapps.xmusic.widgets.MainTextView;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -112,6 +113,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     private SongsFragment songFragment;
     private ContextMenuListener clearAll;
+    private MainTextView toolbar_context_title;
+
+    private ArrayList<Integer> multipleSongSelection = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,7 +218,15 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     };
 
     private void initiallize() {
+
         progressView= (RelativeLayout) findViewById(R.id.progress);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), 1);
+            }
+        });
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -230,8 +242,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
                     fragmentTransaction.commit();
-                } else if (item.getItemId() == R.id.settings) {
-                    startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), 1);
                 } else if (item.getItemId() == R.id.refresh) {
                     new RefreshAsync().execute();
                 }
@@ -272,6 +282,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             }
         });
 
+        toolbar_context_title = (MainTextView) findViewById(R.id.toolbar_context_title);
         toolbarContext = (Toolbar) findViewById(R.id.toolbar_context);
         toolbarContext.inflateMenu(R.menu.context_menu);
         toolbarContext.setNavigationIcon(R.drawable.ic_back);
@@ -291,7 +302,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             public void onClick(View view) {
                 toolbarContext.setVisibility(View.GONE);
                 mToolbar.setVisibility(View.VISIBLE);
-                clearAll.onClearAll();
+                miniPlayer.setVisibility(View.VISIBLE);
+                songRefreshListener.onSongRefresh();
             }
         });
 
@@ -548,16 +560,24 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     songFragment = SongsFragment.newInstance();
                     songFragment.setOnShowContextMenuListener(new SongsFragment.OnShowContextMenuListener() {
                         @Override
-                        public void onShowToolbar() {
-                            Toast.makeText(MainActivity.this, "hello in activity", Toast.LENGTH_SHORT).show();
+                        public void onShowToolbar(int count) {
+                            Toast.makeText(MainActivity.this, "hello in activity " + count, Toast.LENGTH_SHORT).show();
                             toolbarContext.setVisibility(View.VISIBLE);
+                            toolbar_context_title.setText(count + " selected");
                             mToolbar.setVisibility(View.GONE);
+                            miniPlayer.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onShowCount(int count) {
+                            toolbar_context_title.setText(count + " selected");
                         }
 
                         @Override
                         public void onHideToolbar() {
                             toolbarContext.setVisibility(View.GONE);
                             mToolbar.setVisibility(View.VISIBLE);
+                            miniPlayer.setVisibility(View.VISIBLE);
                         }
                     });
                     return songFragment;

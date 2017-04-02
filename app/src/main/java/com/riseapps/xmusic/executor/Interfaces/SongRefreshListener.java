@@ -12,4 +12,5 @@ import java.util.ArrayList;
 
 public interface SongRefreshListener {
     void OnSongRefresh(ArrayList<Song> arrayList);
+    void onSongRefresh();
 }

@@ -1,5 +1,6 @@
 package com.riseapps.xmusic.view.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -7,11 +8,15 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +28,7 @@ import com.riseapps.xmusic.model.Pojo.Tag;
 import com.riseapps.xmusic.model.xplayertags.TagClass;
 import com.riseapps.xmusic.model.xplayertags.TagViewData;
 import com.riseapps.xmusic.utils.TagSelector;
+import com.riseapps.xmusic.widgets.MainTextView;
 import com.riseapps.xmusic.widgets.TagView;
 
 import org.json.JSONArray;
@@ -102,8 +108,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                openDialog();
             }
         });
 
@@ -217,7 +222,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
 
     private void prepareTags() throws Exception {
         ArrayList<Playlist> playlists=new MyApplication(SelectPlaylistActivity.this).getWritableDatabase().readPlaylists();
-        for (int i=0;i<playlists.size();i++){
+        for (int i=0;i<playlists.size();i++) {
             skillFactoryHashMap.put(playlists.get(i).getName(),0);
         }
         /*JSONArray jsonArray;
@@ -234,7 +239,8 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
     }
 
     private void setTags() {
-        skillFactoryHashMap.putAll(hashMap);
+        Log.d("hashmap",  " " + skillFactoryHashMap.toString());
+        //skillFactoryHashMap.putAll(hashMap);
         Iterator it = skillFactoryHashMap.entrySet().iterator();
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry)it.next();
@@ -275,5 +281,37 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
             it.remove();
         }
         Log.d(TAG, "" + str);
+    }
+
+    private void openDialog(){
+        LayoutInflater inflater = LayoutInflater.from(SelectPlaylistActivity.this);
+        View subView = inflater.inflate(R.layout.dialog_layout, null);
+        final EditText subEditText = (EditText)subView.findViewById(R.id.dialogEditText);
+        final MainTextView textInfo = (MainTextView) subEditText.findViewById(R.id.dialog_placeholder);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("AlertDialog");
+        builder.setMessage("AlertDialog Message");
+        builder.setView(subView);
+        AlertDialog alertDialog = builder.create();
+
+        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                skillFactoryHashMap.put(subEditText.getText().toString(), 0);
+                tagGroup = (TagView) findViewById(R.id.tag_group);
+                tags = new ArrayList<>();
+                setTags();
+                Toast.makeText(SelectPlaylistActivity.this, "Created", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(SelectPlaylistActivity.this, "Cancel", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.show();
     }
 }

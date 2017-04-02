@@ -34,6 +34,8 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.inflateMenu(R.menu.main_menu);
+        mToolbar.showOverflowMenu();
+        mToolbar.setNavigationIcon(R.drawable.ic_settings_black_24dp);
         mSearchView = (BaseMaterialSearchView) findViewById(R.id.sv);
         mCoordinator = (CoordinatorLayout) findViewById(R.id.drawerLayout);
         mSearchView.setMenuItem(mToolbar.getMenu().findItem(R.id.action_search));

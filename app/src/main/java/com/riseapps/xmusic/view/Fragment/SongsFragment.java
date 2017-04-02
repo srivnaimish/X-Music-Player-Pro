@@ -73,9 +73,14 @@ public class SongsFragment extends Fragment {
 
         songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
             @Override
-            public void onShow() {
-                Toast.makeText(getActivity(), "show", Toast.LENGTH_SHORT).show();
-                mListener.onShowToolbar();
+            public void onShowFirst(int count) {
+                Toast.makeText(getActivity(), "show " + count, Toast.LENGTH_SHORT).show();
+                mListener.onShowToolbar(count);
+            }
+
+            @Override
+            public void onShow(int count) {
+                mListener.onShowCount(count);
             }
 
             @Override
@@ -85,7 +90,7 @@ public class SongsFragment extends Fragment {
             }
         });
 
-        //implemetRecyclerViewListener();
+        implemetRecyclerViewListener();
 
         ((MainActivity) getActivity()).setSongRefreshListener(new SongRefreshListener() {
             @Override
@@ -94,6 +99,50 @@ public class SongsFragment extends Fragment {
                 ((MainActivity) getActivity()).setSongs(songList);
                 songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
                 recyclerView.setAdapter(songsAdapter);
+                songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
+                    @Override
+                    public void onShowFirst(int count) {
+                        Toast.makeText(getActivity(), "show", Toast.LENGTH_SHORT).show();
+                        mListener.onShowToolbar(count);
+                    }
+
+                    @Override
+                    public void onShow(int count) {
+                        mListener.onShowCount(count);
+                    }
+
+                    @Override
+                    public void onHide() {
+                        Toast.makeText(getActivity(), "hide", Toast.LENGTH_SHORT).show();
+                        mListener.onHideToolbar();
+                    }
+                });
+            }
+
+            @Override
+            public void onSongRefresh() {
+                ((MainActivity) getActivity()).setSongs(songList);
+                songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
+                songsAdapter.removeAllSelection();
+                recyclerView.setAdapter(songsAdapter);
+                songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
+                    @Override
+                    public void onShowFirst(int count) {
+                        Toast.makeText(getActivity(), "show", Toast.LENGTH_SHORT).show();
+                        mListener.onShowToolbar(count);
+                    }
+
+                    @Override
+                    public void onShow(int count) {
+                        mListener.onShowCount(count);
+                    }
+
+                    @Override
+                    public void onHide() {
+                        Toast.makeText(getActivity(), "hide", Toast.LENGTH_SHORT).show();
+                        mListener.onHideToolbar();
+                    }
+                });
             }
         });
       //  async.execute();
@@ -106,13 +155,13 @@ public class SongsFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerClickListener() {
             @Override
             public void onClick(View view, int position) {
-               /* if(view.getId()==R.id.name||view.getId()==R.id.artist_mini||view.getId()==R.id.album_art_card) {
+                if(view.getId()==R.id.name||view.getId()==R.id.artist_mini||view.getId()==R.id.album_art_card) {
                     if ((((MainActivity) getActivity()).getSongs() != songList)) {
                         Toast.makeText(getContext(), "Now Playing All Songs", Toast.LENGTH_SHORT).show();
                         ((MainActivity) getActivity()).setSongs(songList);
                         ((MainActivity) getActivity()).getMusicService().setSongs(songList);
                     }
-                }*/
+                }
                 if (actionMode != null)
                     onListItemSelect(position);
             }
@@ -120,7 +169,7 @@ public class SongsFragment extends Fragment {
             @Override
             public void onLongClick(View view, int position) {
                 //Select item on long click
-                onListItemSelect(position);
+                //onListItemSelect(position);
             }
         }));
     }
@@ -163,7 +212,8 @@ public class SongsFragment extends Fragment {
     }
 
     public interface OnShowContextMenuListener {
-        void onShowToolbar();
+        void onShowToolbar(int count);
+        void onShowCount(int count);
         void onHideToolbar();
     }
 

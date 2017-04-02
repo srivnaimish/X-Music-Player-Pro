@@ -7,28 +7,20 @@
         android:icon="@drawable/ic_search"
         android:title="@string/search"
         app:showAsAction="always"
-        android:orderInCategory="4"/>
+        android:orderInCategory="3"/>
     <item
         android:id="@+id/favourites"
         android:title="@string/action_favourites"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:icon="@drawable/ic_liked"
+        android:icon="@drawable/ic_liked_toolbar"
         app:showAsAction="always"
-        android:orderInCategory="1"/>
-    <item
-        android:id="@+id/settings"
-        android:title="@string/action_settings"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:icon="@drawable/ic_settings_black_24dp"
-        app:showAsAction="always"
-        android:orderInCategory="3"
-         />
+        android:orderInCategory="2"/>
     <item
         android:id="@+id/refresh"
         android:title="Refresh Song List"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:icon="@drawable/ic_refresh_black_24dp"
         app:showAsAction="always"
-        android:orderInCategory="2"/>
+        android:orderInCategory="1"/>
 
 </menu>

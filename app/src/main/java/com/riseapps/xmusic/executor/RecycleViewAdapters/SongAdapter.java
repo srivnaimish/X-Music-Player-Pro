@@ -2,8 +2,6 @@ package com.riseapps.xmusic.executor.RecycleViewAdapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,27 +18,37 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
-import com.riseapps.xmusic.executor.Interfaces.ContextMenuListener;
+import com.riseapps.xmusic.component.TagToken.customviews.CountSpan;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.Interfaces.SongLikedListener;
+import com.riseapps.xmusic.model.Pojo.LongSelectedSong;
 import com.riseapps.xmusic.model.Pojo.Song;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class SongAdapter extends RecyclerView.Adapter implements ContextMenuListener {
+public class SongAdapter extends RecyclerView.Adapter {
 
     private List<Song> songsList;
-    Context c;
+    private Context c, mainActivityContext;
     private SparseBooleanArray mSelectedItemsIds;
     private int position;
     private RecyclerView.ViewHolder holder;
     @SuppressLint("UseSparseArrays")
-    private static HashMap<Integer, Boolean> longPressedSongs = new HashMap<>();
+    private HashMap<Integer, Boolean> longPressedSongs = new HashMap<>();
+    private ArrayList<LongSelectedSong> longSelectedSongs = new ArrayList<>();
     private OnShowContextMenuListener mListener;
+    private static boolean startLongPress;
+    private static int count = 0;
+    private PlaySongExec playSongExec;
+
+    public SongAdapter(Context context) {
+        mainActivityContext = context;
+    }
 
     public SongAdapter(Context context, List<Song> songs, RecyclerView recyclerView) {
         songsList = songs;
@@ -77,39 +85,58 @@ public class SongAdapter extends RecyclerView.Adapter implements ContextMenuList
             ((SongViewHolder) holder).setLongPressListener(new SongViewHolder.OnLongPressListener() {
                 @Override
                 public void onLongPressed(int i) {
-                    mListener.onShow();
+                    startLongPress = true;
+                    count++;
                     if (!longPressedSongs.isEmpty()) {
                         if (longPressedSongs.get(i) != null) {
                             if (!longPressedSongs.get(i)) {
+                                longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
                                 longPressedSongs.put(i, true);
+                                mListener.onShowFirst(longPressedSongs.size());
+                                ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
+                            } else {
+                                longPressedSongs.put(i, false);
+                                ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorWhite));
+                                mListener.onShowFirst(longPressedSongs.size());
+                            }
+                        } else {
+                            longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
+                            longPressedSongs.put(i, true);
+                            ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
+                            mListener.onShowFirst(longPressedSongs.size());
+                        }
+                    } else {
+                        longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
+                        longPressedSongs.put(i, true);
+                        ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
+                        mListener.onShowFirst(longPressedSongs.size());
+                    }
+                }
+
+                @Override
+                public void onPressed(int i) {
+                    if (startLongPress) {
+                        if (longPressedSongs.get(i) != null) {
+                            if (!longPressedSongs.get(i)) {
+                                count++;
+                                longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
+                                longPressedSongs.put(i, true);
+                                mListener.onShow(count);
                                 ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
                             } else {
                                 longPressedSongs.put(i, false);
                                 ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorWhite));
                             }
                         } else {
+                            count++;
+                            longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
                             longPressedSongs.put(i, true);
+                            mListener.onShow(count);
                             ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
                         }
                     } else {
-                        longPressedSongs.put(i, true);
-                        ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
-                    }
-                }
-
-                @Override
-                public void onPressed(int i) {
-                    if (longPressedSongs.get(i) != null) {
-                        if (!longPressedSongs.get(i)) {
-                            longPressedSongs.put(i, true);
-                            ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
-                        } else {
-                            longPressedSongs.put(i, false);
-                            ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorWhite));
-                        }
-                    } else {
-                        longPressedSongs.put(i, true);
-                        ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
+                        playSongExec = new PlaySongExec(c, holder.getAdapterPosition());
+                        playSongExec.startPlaying();
                     }
                 }
 
@@ -122,6 +149,7 @@ public class SongAdapter extends RecyclerView.Adapter implements ContextMenuList
                 @Override
                 public void onFinalClearSelection(int i) {
                     mListener.onHide();
+                    startLongPress = false;
                 }
             });
 
@@ -192,6 +220,14 @@ public class SongAdapter extends RecyclerView.Adapter implements ContextMenuList
         notifyDataSetChanged();
     }
 
+    public void removeAllSelection() {
+        Log.d("Hello" , "Helo" );
+        notifyDataSetChanged();
+        longPressedSongs = new HashMap<>();
+        longSelectedSongs = new ArrayList<>();
+        startLongPress = false;
+    }
+
     //Put or delete selected position into SparseBooleanArray
     public void selectView(int position, boolean value) {
         if (value)
@@ -239,103 +275,74 @@ public class SongAdapter extends RecyclerView.Adapter implements ContextMenuList
             Toast.makeText(c, "hello 2", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onClearAll() {
-        Toast.makeText(c, "clearing all", Toast.LENGTH_SHORT).show();
-    }
-
 
     public interface OnShowContextMenuListener {
-        void onShow();
+        void onShowFirst(int count);
+        void onShow(int count);
         void onHide();
     }
 
     public void setContextMenuListener(OnShowContextMenuListener listener) {
         mListener = listener;
     }
-}
 
-class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    static class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-    ImageView iv;
-    TextView name,artist,duration;
-    ImageButton like;
-    CardView songListCard;
-    private PlaySongExec playSongExec;
-    private Context ctx;
-    Song song;
-    private static boolean longSelectionStart = false;
-    @SuppressLint("UseSparseArrays")
-    private static HashMap<Integer, Boolean> selectionList = new HashMap<>();
+        ImageView iv;
+        TextView name,artist,duration;
+        ImageButton like;
+        CardView songListCard;
+        private PlaySongExec playSongExec;
+        private Context ctx;
+        Song song;
+        private static boolean longSelectionStart = false;
+        @SuppressLint("UseSparseArrays")
+        private static HashMap<Integer, Boolean> selectionList = new HashMap<>();
 
-    private OnLongPressListener mListener;
+        private OnLongPressListener mListener;
 
-    SongViewHolder(View v, Context context) {
-        super(v);
-        this.ctx = context;
-        iv= (ImageView) v.findViewById(R.id.album_art);
-        name= (TextView) v.findViewById(R.id.name);
-        artist= (TextView) v.findViewById(R.id.artist_mini);
-        duration= (TextView) v.findViewById(R.id.duration);
-        like= (ImageButton) v.findViewById(R.id.like);
-        songListCard = (CardView) v.findViewById(R.id.song_list_card);
+        SongAdapter adapter = new SongAdapter(ctx);
 
-        // set listeners
-        name.setOnClickListener(this);
-        iv.setOnClickListener(this);
-        artist.setOnClickListener(this);
-        songListCard.setOnClickListener(this);
+        SongViewHolder(View v, Context context) {
+            super(v);
+            this.ctx = context;
+            iv= (ImageView) v.findViewById(R.id.album_art);
+            name= (TextView) v.findViewById(R.id.name);
+            artist= (TextView) v.findViewById(R.id.artist_mini);
+            duration= (TextView) v.findViewById(R.id.duration);
+            like= (ImageButton) v.findViewById(R.id.like);
+            songListCard = (CardView) v.findViewById(R.id.song_list_card);
 
-        // set longClick listeners
-        songListCard.setOnLongClickListener(this);
-    }
+            // set listeners
+            name.setOnClickListener(this);
+            iv.setOnClickListener(this);
+            artist.setOnClickListener(this);
+            songListCard.setOnClickListener(this);
 
-    @Override
-    public void onClick(View view) {
-        if (!longSelectionStart) {
-            if (view.getId() == R.id.name || view.getId() == R.id.album_art|| view.getId() == R.id.artist) {
-                playSongExec = new PlaySongExec(ctx, getAdapterPosition());
-                playSongExec.startPlaying();
-            }
-        } else {
-            // Song not present in selection list
-            if (selectionList.get(getLayoutPosition()) == null) {
-                mListener.onPressed(getLayoutPosition());
-                selectionList.put(getLayoutPosition(), true);
-                Log.d("long select size", " " + selectionList.size());
-            }
-            // else if song exists already, clear selection.
-            // If map has only this one item, set longSelectionStart to 'false'
-            else {
-                mListener.onClearSelection(getLayoutPosition());
-                selectionList.remove(getLayoutPosition());
-                Log.d("long select size", " " + selectionList.size());
-                if (selectionList.size() == 0) {
-                    selectionList.clear();
-                    longSelectionStart = false;
-                    mListener.onFinalClearSelection(getLayoutPosition());
-                }
-            }
+            // set longClick listeners
+            songListCard.setOnLongClickListener(this);
         }
-    }
 
-    @Override
-    public boolean onLongClick(View v) {
-        selectionList.put(getLayoutPosition(), true);
-        mListener.onLongPressed(getLayoutPosition());
-        longSelectionStart = true;
-        Log.d("long select size init", " " + selectionList.size());
-        return true;
-    }
+        @Override
+        public void onClick(View view) {
+            mListener.onPressed(getLayoutPosition());
+        }
 
-    interface OnLongPressListener {
-        void onLongPressed(int i);
-        void onPressed(int i);
-        void onClearSelection(int i);
-        void onFinalClearSelection(int i);
-    }
+        @Override
+        public boolean onLongClick(View v) {
+            mListener.onLongPressed(getLayoutPosition());
+            return true;
+        }
 
-    void setLongPressListener(OnLongPressListener listener) {
-        mListener = listener;
+        interface OnLongPressListener {
+            void onLongPressed(int i);
+            void onPressed(int i);
+            void onClearSelection(int i);
+            void onFinalClearSelection(int i);
+        }
+
+        void setLongPressListener(OnLongPressListener listener) {
+            mListener = listener;
+        }
     }
 }
