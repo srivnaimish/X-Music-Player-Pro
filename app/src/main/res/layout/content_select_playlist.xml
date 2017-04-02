@@ -19,7 +19,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.riseapps.xmusic.widgets.MainTextViewSub
                 android:id="@+id/skill_select_indicator_text"

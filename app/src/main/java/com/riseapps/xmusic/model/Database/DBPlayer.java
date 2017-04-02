@@ -257,13 +257,35 @@ public class DBPlayer {
 
     public void addSongToPlaylists(long id, String playlistNames) {
         String S[]=convertStringToArray(playlistNames);
-        for(int i=0;i<S.length;i++)
-            insertNewPlaylist(S[i],id);
+        for(int i=0;i<S.length;i++){
+            String sql = "INSERT INTO " + PlayerHelper.PLAYLIST_TABLE_NAME + " (" + PlayerHelper.PLAYLIST_COLUMN_NAME + "," + PlayerHelper.PLAYLIST_COLUMN_SONG + ") VALUES(?,?);";
+            SQLiteStatement statement = mDatabase.compileStatement(sql);
+            mDatabase.beginTransaction();
+            statement.clearBindings();
+            statement.bindString(1, S[i]);
+            statement.bindLong(2, id);
+            statement.execute();
+            mDatabase.setTransactionSuccessful();
+            mDatabase.endTransaction();
+        }
+        mDatabase.close();
+
     }
 
     public void addMultipleSongToSinglePlaylist(String playlistName, long id[]) {
-        for(int i=0;i<id.length;i++)
-            insertNewPlaylist(playlistName,id[i]);
+        for(int i=0;i<id.length;i++){
+                String sql = "INSERT INTO " + PlayerHelper.PLAYLIST_TABLE_NAME + " (" + PlayerHelper.PLAYLIST_COLUMN_NAME + "," + PlayerHelper.PLAYLIST_COLUMN_SONG + ") VALUES(?,?);";
+                SQLiteStatement statement = mDatabase.compileStatement(sql);
+                mDatabase.beginTransaction();
+                statement.clearBindings();
+                statement.bindString(1, playlistName);
+                statement.bindLong(2, id[i]);
+                statement.execute();
+                mDatabase.setTransactionSuccessful();
+                mDatabase.endTransaction();
+
+        }
+        mDatabase.close();
     }
 
     /*For Albums

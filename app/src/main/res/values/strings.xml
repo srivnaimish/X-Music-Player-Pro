@@ -100,5 +100,7 @@
     <string name="adStringPlaceholder">Ads by Xmusic Pro</string>
     <string name="search">Search</string>
     <string name="refreshing_lists">Refreshing Lists…</string>
+    <string name="create_a_new_playlist">Create a New Playlist</string>
+    <string name="name">Name...</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.riseapps.xmusic.view.Activity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +45,8 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
 
     private final String TAG = getClass().getSimpleName();
 
+    FloatingActionButton fab;
+
     private Boolean isLongPressed = false;
     private String coreSkill;
     private View coreSkillView;
@@ -61,6 +65,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
 
     // utils
     private TagSelector tagSelector = new TagSelector(SelectPlaylistActivity.this);
+    private Dialog dialog;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -104,7 +109,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -284,34 +289,33 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
     }
 
     private void openDialog(){
-        LayoutInflater inflater = LayoutInflater.from(SelectPlaylistActivity.this);
-        View subView = inflater.inflate(R.layout.dialog_layout, null);
-        final EditText subEditText = (EditText)subView.findViewById(R.id.dialogEditText);
-        final MainTextView textInfo = (MainTextView) subEditText.findViewById(R.id.dialog_placeholder);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("AlertDialog");
-        builder.setMessage("AlertDialog Message");
-        builder.setView(subView);
-        AlertDialog alertDialog = builder.create();
-
-        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        dialog=new Dialog(SelectPlaylistActivity.this);
+        dialog.setContentView(R.layout.dialog_layout);
+        dialog.show();
+        Button create = (Button) dialog.findViewById(R.id.create);
+        Button cancel = (Button) dialog.findViewById(R.id.cancel);
+        final EditText editText= (EditText) dialog.findViewById(R.id.dialogEditText);
+        create.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                skillFactoryHashMap.put(subEditText.getText().toString(), 0);
-                tagGroup = (TagView) findViewById(R.id.tag_group);
-                tags = new ArrayList<>();
-                setTags();
-                Toast.makeText(SelectPlaylistActivity.this, "Created", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                if(!editText.getText().toString().equalsIgnoreCase("")) {
+                    skillFactoryHashMap.put(editText.getText().toString(), 0);
+                    tagGroup = (TagView) findViewById(R.id.tag_group);
+                    tags = new ArrayList<>();
+                    setTags();
+                    dialog.dismiss();
+                    Toast.makeText(SelectPlaylistActivity.this, "Created", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Snackbar.make(fab,"Please give playlist a Name",Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(SelectPlaylistActivity.this, "Cancel", Toast.LENGTH_LONG).show();
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
-
-        builder.show();
     }
 }

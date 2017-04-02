@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -104,7 +107,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private int mBorderWidth = 5;
 
     private SensorManager mSensorManager;
-    private Sensor mAccelerometer;
+    private Sensor mAccelerometer,mProximity;
+    SensorEventListener proximityListener;
     private ShakeDetector mShakeDetector;
 
     private SongRefreshListener songRefreshListener;
@@ -125,17 +129,36 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         //setContentView(R.layout.activity_main);
         initiallize();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
         mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
 
             @Override
             public void onShake(int count) {
                 musicService.togglePlay();
-
             }
         });
+
+        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        proximityListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                if(sensorEvent.values[0] < 2){
+                    int current = musicService.getCurrentIndex();
+                    int next = current + 1;
+                    if (next == songList.size())// If current was the last song, then play the first song in the list
+                        next = 0;
+                    musicService.setSong(next);
+                    musicService.togglePlay();
+                }
+
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {
+            }
+        };
 
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -429,6 +452,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             },3500);
 
             mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(proximityListener, mProximity, 2 * 1000 * 1000);
         }
     }
 
@@ -439,6 +463,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         //new MyApplication(this).getWritableDatabase().deleteAllSongs();
         //new UpdateSongs(this).fetchSongs();
         mSensorManager.unregisterListener(mShakeDetector);
+        mSensorManager.unregisterListener(proximityListener);
         super.onDestroy();
     }
 
