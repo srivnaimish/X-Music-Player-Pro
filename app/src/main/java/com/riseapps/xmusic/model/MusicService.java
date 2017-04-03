@@ -11,6 +11,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.telephony.PhoneStateListener;
@@ -42,6 +43,7 @@ public class MusicService extends Service implements
 
     private int songPos;
 
+
     private final IBinder musicBind = new MusicBinder();
 
     private OnSongChangedListener onSongChangedListener;
@@ -70,6 +72,12 @@ public class MusicService extends Service implements
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.intent.action.HEADSET_PLUG");
         registerReceiver(headsetPlugReceiver, intentFilter);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("play");
+        intentFilter.addAction("next");
+        intentFilter.addAction("previous");
+        registerReceiver(myReceiver, intentFilter);
+
     }
 
     @Override
@@ -161,8 +169,9 @@ public class MusicService extends Service implements
             headsetPlugReceiver = null;
         }
         if (mSeekBar != null)
-            mSeekBar.removeCallbacks(mProgressRunner);
+            mSeekBar=null;
         onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
+        unregisterReceiver(myReceiver);
         //Toast.makeText(this, "Removed", Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
@@ -226,6 +235,11 @@ public class MusicService extends Service implements
     }
 
     private void playSong() {
+       //
+       //
+      //
+
+        //}
         if (songs.size() <= songPos)
             return;
         player.reset();
@@ -334,5 +348,36 @@ public class MusicService extends Service implements
             // ...
         }
     }
+
+
+    private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch (action) {
+                case "play":
+                    togglePlay();
+                    break;
+                case "next": {
+                    int current = getCurrentIndex();
+                    int next = current + 1;
+                    if (next == songs.size())// If current was the last song, then play the first song in the list
+                        next = 0;
+                    setSong(next);
+                    togglePlay();
+                    break;
+                }
+                case "previous": {
+                    int current = getCurrentIndex();
+                    int previous = current - 1;
+                    if (previous < 0)            // If current was 0, then play the last song in the list
+                        previous = songs.size() - 1;
+                    setSong(previous);
+                    togglePlay();
+                    break;
+                }
+            }
+        }
+    };
 
 }

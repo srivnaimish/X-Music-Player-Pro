@@ -23,7 +23,7 @@ import com.riseapps.xmusic.view.Activity.MainActivity;
  */
 
 public class GenerateNotification {
-    static MusicService musicService;
+    MusicService musicService;
     private int status;
     private static final int NOTIFICATION_ID = 1;
     private Context context;
@@ -34,7 +34,7 @@ public class GenerateNotification {
 
     public void getNotification(Context context,MusicService musicService) {
         this.context=context;
-        GenerateNotification.musicService =musicService;
+        //GenerateNotification.musicService =musicService;
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
@@ -55,16 +55,13 @@ public class GenerateNotification {
         mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
 
-        Intent playIntent = new Intent(context, SwitchButtonListener.class);
-        playIntent.setAction("play");
-        Intent nextIntent = new Intent(context, SwitchButtonListener.class);
-        nextIntent.setAction("next");
-        Intent prevIntent = new Intent(context, SwitchButtonListener.class);
-        prevIntent.setAction("previous");
+        Intent playIntent = new Intent("play");
+        Intent nextIntent = new Intent("next");
+        Intent prevIntent = new Intent("previous");
 
-        PendingIntent pendingPlayIntent = PendingIntent.getBroadcast(context, 0,playIntent, 0);
-        PendingIntent pendingNextIntent = PendingIntent.getBroadcast(context, 0,nextIntent, 0);
-        PendingIntent pendingPrevIntent = PendingIntent.getBroadcast(context, 0,prevIntent, 0);
+        PendingIntent pendingPlayIntent = PendingIntent.getBroadcast(context, 0,playIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingNextIntent = PendingIntent.getBroadcast(context, 0,nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingPrevIntent = PendingIntent.getBroadcast(context, 0,prevIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Song song = musicService.getSongs().get(musicService.getCurrentIndex());
 

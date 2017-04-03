@@ -31,35 +31,28 @@ import java.util.ArrayList;
 
 public class SplashScreen extends AppCompatActivity {
 
-    ArrayList<Song> songList=new ArrayList<>();
-    ArrayList<Album> albumList=new ArrayList<>();
-    ArrayList<Artist> artistList=new ArrayList<>();
-  //  ArrayList<Playlist> playLists=new ArrayList<>();
+    ArrayList<Song> songList = new ArrayList<>();
+    ArrayList<Album> albumList = new ArrayList<>();
+    ArrayList<Artist> artistList = new ArrayList<>();
+
+    //  ArrayList<Playlist> playLists=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-    }
-
-    @Override
-    protected void onStart() {
-        if (new SharedPreferenceSingelton().getSavedBoolean(SplashScreen.this,"opened_before")) {
-            Log.d("opening","MainActivity");
+        //setContentView(R.layout.activity_splash_screen);
+        if (new SharedPreferenceSingelton().getSavedBoolean(SplashScreen.this, "opened_before")) {
+            Log.d("opening", "MainActivity");
             new Async().execute();
         } else {
-            Log.d("opening","Walkthru");
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(SplashScreen.this, Walkthrough.class));
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    finish();
-                }
-            },1500);
-
+            Log.d("opening", "Walkthru");
+            startActivity(new Intent(SplashScreen.this, Walkthrough.class));
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            finish();
         }
-        super.onStart();
+
+
     }
+
 
     @Override
     protected void onResume() {
@@ -119,20 +112,23 @@ public class SplashScreen extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Intent intent=new Intent(SplashScreen.this, MainActivity.class);
+            Intent intent = new Intent(SplashScreen.this, MainActivity.class);
             Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<Song>>() {}.getType();
+            Type type = new TypeToken<ArrayList<Song>>() {
+            }.getType();
             String songJson = gson.toJson(songList, type);
 
-            type=new TypeToken<ArrayList<Album>>() {}.getType();
+            type = new TypeToken<ArrayList<Album>>() {
+            }.getType();
             String albumJson = gson.toJson(albumList, type);
 
-            type=new TypeToken<ArrayList<Artist>>() {}.getType();
+            type = new TypeToken<ArrayList<Artist>>() {
+            }.getType();
             String artistJson = gson.toJson(artistList, type);
 
-            intent.putExtra("songList",songJson);
-            intent.putExtra("albumList",albumJson);
-            intent.putExtra("artistList",artistJson);
+            intent.putExtra("songList", songJson);
+            intent.putExtra("albumList", albumJson);
+            intent.putExtra("artistList", artistJson);
             startActivity(intent);
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             finish();

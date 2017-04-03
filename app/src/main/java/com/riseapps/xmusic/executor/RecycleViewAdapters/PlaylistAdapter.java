@@ -57,6 +57,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
             if (!imagepath.equalsIgnoreCase("no_image")) {
                 Glide.with(c).load(imagepath)
                         .crossFade()
+                        .placeholder(R.drawable.empty)
                         .centerCrop()
                        // .placeholder(R.drawable.empty)
                         .into(((PlaylistViewHolder) holder).imageView);

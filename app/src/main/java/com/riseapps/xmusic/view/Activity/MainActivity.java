@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -53,6 +54,7 @@ import com.riseapps.xmusic.executor.Interfaces.ArtistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ContextMenuListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
+import com.riseapps.xmusic.executor.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
 import com.riseapps.xmusic.executor.ShakeDetector;
@@ -76,56 +78,134 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseMatSearchViewActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, OnSearchViewListener {
 
-    private ArrayList<Song> songList = new ArrayList<>();
-    private MusicService musicService;
-    private Intent playIntent;
     public boolean musicPlaying, isMusicShuffled = false;
-    //Mini & Main player layouts
-    private CardView miniPlayer;
-    private ConstraintLayout mainPlayer;
+    public ImageButton play_pause, prev, next, repeat, shuffle;
     //MiniPlayer items
     TextView title_mini, artist_mini;
     ImageButton play_pause_mini;
     ImageView album_art_mini;
     //MainPlayer items
     TextView title, artist, currentPosition, totalDuration;
-    public ImageButton play_pause, prev, next, repeat, shuffle;
     ImageView album_art;
+    RelativeLayout progressView;
+    Runnable sleepTimer = new Runnable() {
+        @Override
+        public void run() {
+            finish();
+        }
+    };
+    private ArrayList<Song> songList = new ArrayList<>();
+    private MusicService musicService;
+    private Intent playIntent;
+    //Mini & Main player layouts
+    private CardView miniPlayer;
+    private ConstraintLayout mainPlayer;
+    // private final Context ctx = MainActivity.this;
     private SeekBar seekBar;
     private SongLikedListener mListener;
-    private final Context ctx = MainActivity.this;
-
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar, toolbarPlayer, toolbarContext;
-    RelativeLayout progressView;
-
     private WaveHelper mWaveHelper;
-
     private int mBorderColor = Color.parseColor("#000000");
     private int mBorderWidth = 5;
-
+    private boolean firstSongOpened = false;
     private SensorManager mSensorManager;
-    private Sensor mAccelerometer,mProximity;
-    SensorEventListener proximityListener;
+    private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
-
     private SongRefreshListener songRefreshListener;
     private ArtistRefreshListener artistRefreshListener;
     private AlbumRefreshListener albumRefreshListener;
-
     private SongsFragment songFragment;
     private ContextMenuListener clearAll;
     private MainTextView toolbar_context_title;
-
     private ArrayList<Integer> multipleSongSelection = new ArrayList<>();
+    private Handler sleepHandler;
+
+    private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            musicService.togglePlay();
+        }
+    };
+
+    private ServiceConnection musicConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(final ComponentName name, IBinder service) {
+            MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
+            musicService = binder.getService();
+            musicService.setSongs(songList);
+            musicService.setUIControls(seekBar, currentPosition, totalDuration);
+            musicService.setOnSongChangedListener(new MusicService.OnSongChangedListener() {
+                @Override
+                public void onSongChanged(Song song) {
+                    if (!song.getImagepath().equalsIgnoreCase("no_image")) {
+                        Glide.with(MainActivity.this).load(song.getImagepath()).into(album_art);
+                        Glide.with(MainActivity.this).load(song.getImagepath()).into(album_art_mini);
+                    } else {
+                        album_art.setImageResource(R.drawable.empty);
+                        album_art_mini.setImageResource(R.drawable.empty);
+                    }
+
+                    title.setText(song.getName());
+                    title_mini.setText(song.getName());
+
+                    artist.setText(song.getArtist());
+                    artist_mini.setText(song.getArtist());
+
+                    long time = song.getDuration();
+                    totalDuration.setText(String.format(Locale.getDefault(), "%d:%02d",
+                            TimeUnit.MILLISECONDS.toMinutes(time),
+                            TimeUnit.MILLISECONDS.toSeconds(time) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))));
+                }
+
+                @Override
+                public void onPlayerStatusChanged(int status) {
+                    switch (status) {
+                        case MusicService.PLAYING:
+                            play_pause.setImageResource(R.drawable.ic_pause);
+                            play_pause_mini.setImageResource(R.drawable.ic_pause);
+                            musicPlaying = true;
+                            mWaveHelper.start();
+                            if (!firstSongOpened) {
+                                int timer = new SharedPreferenceSingelton().getSavedInt(MainActivity.this, "timer");
+                                if (timer != 0) {
+                                    firstSongOpened = true;
+                                    sleepHandler.postDelayed(sleepTimer, timer * 60 * 1000);
+                                }
+                            }
+                            break;
+                        case MusicService.PAUSED:
+                            play_pause.setImageResource(R.drawable.ic_play);
+                            play_pause_mini.setImageResource(R.drawable.ic_play);
+                            musicPlaying = false;
+                            mWaveHelper.cancel();
+                            break;
+                    }
+                }
+            });
+
+            musicService.setSong(0);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            play_pause.setImageResource(R.drawable.ic_play);
+            play_pause_mini.setImageResource(R.drawable.ic_play);
+            musicPlaying = false;
+            mWaveHelper.cancel();
+            Toast.makeText(MainActivity.this, "Finishing", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        sleepHandler = new Handler();
         //setContentView(R.layout.activity_main);
         initiallize();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -140,46 +220,17 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             }
         });
 
-        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-        proximityListener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent sensorEvent) {
-                if(sensorEvent.values[0] < 2){
-                    int current = musicService.getCurrentIndex();
-                    int next = current + 1;
-                    if (next == songList.size())// If current was the last song, then play the first song in the list
-                        next = 0;
-                    musicService.setSong(next);
-                    musicService.togglePlay();
-                }
-
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {
-            }
-        };
 
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int current = musicService.getCurrentIndex();
-                int previous = current - 1;
-                if (previous < 0)            // If current was 0, then play the last song in the list
-                    previous = songList.size() - 1;
-                musicService.setSong(previous);
-                musicService.togglePlay();
+                changeToPreviousSong();
             }
         });
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int current = musicService.getCurrentIndex();
-                int next = current + 1;
-                if (next == songList.size())// If current was the last song, then play the first song in the list
-                    next = 0;
-                musicService.setSong(next);
-                musicService.togglePlay();
+                changeToNextSong();
             }
         });
         shuffle.setOnClickListener(new View.OnClickListener() {
@@ -200,12 +251,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this,"Repeat")) {
+                if (new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this, "Repeat")) {
                     new SharedPreferenceSingelton().saveAs(MainActivity.this, "Repeat", false);
                     Toast.makeText(MainActivity.this, "Song Repeat Off", Toast.LENGTH_SHORT).show();
                     DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
-                }
-                else {
+                } else {
                     new SharedPreferenceSingelton().saveAs(MainActivity.this, "Repeat", true);
                     Toast.makeText(MainActivity.this, "Song Repeat On", Toast.LENGTH_SHORT).show();
                     DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
@@ -221,6 +271,17 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             }
         });
 
+        album_art.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                changeToPreviousSong();
+            }
+
+            public void onSwipeLeft() {
+                changeToNextSong();
+            }
+
+        });
+
         final WaveView waveView = (WaveView) findViewById(R.id.wave);
         waveView.setBorder(mBorderWidth, mBorderColor);
 
@@ -233,16 +294,27 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         mWaveHelper.start();
     }
 
-    private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            musicService.togglePlay();
-        }
-    };
+    private void changeToPreviousSong() {
+        int current = musicService.getCurrentIndex();
+        int previous = current - 1;
+        if (previous < 0)            // If current was 0, then play the last song in the list
+            previous = songList.size() - 1;
+        musicService.setSong(previous);
+        musicService.togglePlay();
+    }
+
+    private void changeToNextSong() {
+        int current = musicService.getCurrentIndex();
+        int next = current + 1;
+        if (next == songList.size())// If current was the last song, then play the first song in the list
+            next = 0;
+        musicService.setSong(next);
+        musicService.togglePlay();
+    }
 
     private void initiallize() {
 
-        progressView= (RelativeLayout) findViewById(R.id.progress);
+        progressView = (RelativeLayout) findViewById(R.id.progress);
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -368,70 +440,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     }
 
-    private ServiceConnection musicConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(final ComponentName name, IBinder service) {
-            MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
-            musicService = binder.getService();
-            musicService.setSongs(songList);
-            musicService.setUIControls(seekBar, currentPosition, totalDuration);
-            Log.d("Songs", "Connected to service");
-            musicService.setOnSongChangedListener(new MusicService.OnSongChangedListener() {
-                @Override
-                public void onSongChanged(Song song) {
-                    if (!song.getImagepath().equalsIgnoreCase("no_image")) {
-                        Glide.with(MainActivity.this).load(song.getImagepath()).into(album_art);
-                        Glide.with(MainActivity.this).load(song.getImagepath()).into(album_art_mini);
-                    } else {
-                        album_art.setImageResource(R.drawable.empty);
-                        album_art_mini.setImageResource(R.drawable.empty);
-                    }
-
-                    title.setText(song.getName());
-                    title_mini.setText(song.getName());
-
-                    artist.setText(song.getArtist());
-                    artist_mini.setText(song.getArtist());
-
-                    long time = song.getDuration();
-                    totalDuration.setText(String.format(Locale.getDefault(), "%d:%02d",
-                            TimeUnit.MILLISECONDS.toMinutes(time),
-                            TimeUnit.MILLISECONDS.toSeconds(time) -
-                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))));
-                }
-
-                @Override
-                public void onPlayerStatusChanged(int status) {
-                    switch (status) {
-                        case MusicService.PLAYING:
-                            play_pause.setImageResource(R.drawable.ic_pause);
-                            play_pause_mini.setImageResource(R.drawable.ic_pause);
-                            musicPlaying = true;
-                            mWaveHelper.start();
-                            break;
-                        case MusicService.PAUSED:
-                            play_pause.setImageResource(R.drawable.ic_play);
-                            play_pause_mini.setImageResource(R.drawable.ic_play);
-                            musicPlaying = false;
-                            mWaveHelper.cancel();
-                            break;
-                    }
-                }
-            });
-
-            musicService.setSong(0);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            play_pause.setImageResource(R.drawable.ic_play);
-            play_pause_mini.setImageResource(R.drawable.ic_play);
-            musicPlaying = false;
-            mWaveHelper.cancel();
-        }
-    };
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -449,10 +457,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             .setDuration(1000)
                             .start();
                 }
-            },3500);
+            }, 3500);
 
             mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
-            mSensorManager.registerListener(proximityListener, mProximity, 2 * 1000 * 1000);
         }
     }
 
@@ -460,10 +467,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     protected void onDestroy() {
         unbindService(musicConnection);
         stopService(playIntent);
-        //new MyApplication(this).getWritableDatabase().deleteAllSongs();
-        //new UpdateSongs(this).fetchSongs();
         mSensorManager.unregisterListener(mShakeDetector);
-        mSensorManager.unregisterListener(proximityListener);
         super.onDestroy();
     }
 
@@ -564,13 +568,79 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         this.mListener = mListener;
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initCustom() {
+        //getTitles();
+        //String[] arrays = getResources().getStringArray(R.array.query_suggestions);
+        String[] arrays = getTitles();
+        SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView) mSearchView;
+        cast.setSuggestion(arrays);
+        mSearchView.setOnSearchViewListener(this);
+        //super.initCustom();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_CANCELED) {
+
+        } else if (resultCode == Activity.RESULT_OK) {
+            String str = data.getStringExtra("selected_playlist");
+            if (!str.equalsIgnoreCase("")) {
+                long id = songList.get(musicService.getCurrentIndex()).getID();
+                new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id, str);
+                Toast.makeText(MainActivity.this, "Added to Playlist", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if(resultCode==1) {
+            boolean changed = data.getBooleanExtra("TimerChanged", false);
+            if (changed){
+                sleepHandler.removeCallbacks(sleepTimer);
+                int timer = new SharedPreferenceSingelton().getSavedInt(MainActivity.this, "timer");
+                if (timer != 0) {
+                    sleepHandler.postDelayed(sleepTimer, timer * 60 * 1000);
+                }
+            }
+        }
+        if (mainPlayer.getVisibility() == View.VISIBLE) {
+            hideMainPlayer();
+        }
+    }
+
+    private String[] getTitles() {
+        ArrayList<Song> list = new MyApplication(this).getWritableDatabase().readSongs();
+        String[] array = new String[list.size()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = list.get(i).getName();
+        }
+        /*your logic to fetch titles of all the loaded songs and put it in string array*/
+        return array;
+    }
+
+    public void setSongRefreshListener(SongRefreshListener refreshListener) {
+        this.songRefreshListener = refreshListener;
+    }
+
+    public void setArtistRefreshListener(ArtistRefreshListener refreshListener) {
+        this.artistRefreshListener = refreshListener;
+    }
+
+    public void setAlbumRefreshListener(AlbumRefreshListener refreshListener) {
+        this.albumRefreshListener = refreshListener;
+    }
+
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        String tabTitles[] = new String[]{"PLAYLIST", "ALBUM", "ARTISTS", "TRACKS"};
 
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
-        String tabTitles[] = new String[]{"PLAYLIST", "ALBUM", "ARTISTS", "TRACKS"};
 
         @Override
         public Fragment getItem(int position) {
@@ -628,63 +698,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         }
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_main;
-    }
-
-    @Override
-    protected void initCustom() {
-        //getTitles();
-        //String[] arrays = getResources().getStringArray(R.array.query_suggestions);
-        String[] arrays = getTitles();
-        SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView) mSearchView;
-        cast.setSuggestion(arrays);
-        mSearchView.setOnSearchViewListener(this);
-        //super.initCustom();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_CANCELED) {
-
-        } else if (resultCode == Activity.RESULT_OK) {
-            String str = data.getStringExtra("selected_playlist");
-            if (!str.equalsIgnoreCase("")) {
-                long id = songList.get(musicService.getCurrentIndex()).getID();
-                new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id, str);
-                Toast.makeText(MainActivity.this, "Added to Playlist", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        if (mainPlayer.getVisibility() == View.VISIBLE) {
-            hideMainPlayer();
-        }
-    }
-
-    private String[] getTitles() {
-        ArrayList<Song> list = new MyApplication(this).getWritableDatabase().readSongs();
-        String[] array = new String[list.size()];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = list.get(i).getName();
-        }
-        /*your logic to fetch titles of all the loaded songs and put it in string array*/
-        return array;
-    }
-
-    public void setSongRefreshListener(SongRefreshListener refreshListener){
-        this.songRefreshListener=refreshListener;
-    }
-
-    public void setArtistRefreshListener(ArtistRefreshListener refreshListener){
-        this.artistRefreshListener=refreshListener;
-    }
-
-    public void setAlbumRefreshListener(AlbumRefreshListener refreshListener){
-        this.albumRefreshListener=refreshListener;
-    }
-
     private class RefreshAsync extends AsyncTask<Void, Void, Void> {
 
         ArrayList<Song> songs = new ArrayList<>();
@@ -696,7 +709,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             unbindService(musicConnection);
             stopService(playIntent);
             mViewPager.setAlpha(0.8f);
-           progressView.setVisibility(View.VISIBLE);
+            progressView.setVisibility(View.VISIBLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             super.onPreExecute();
@@ -772,6 +785,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             super.onPostExecute(aVoid);
         }
     }
+
 
 
 }
