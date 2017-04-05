@@ -93,8 +93,14 @@ public class MusicService extends Service implements
             public void onCallStateChanged(int state, String incomingNumber) {
                 switch (state) {
                     case TelephonyManager.CALL_STATE_OFFHOOK:
+                        if (player.isPlaying()) {
+                            isPausedOnCall = true;
+                            togglePlay();
+                            //pause
+                        }
+                        break;
                     case TelephonyManager.CALL_STATE_RINGING:
-                        if (player != null) {
+                        if (player.isPlaying()) {
                             isPausedOnCall = true;
                             togglePlay();
                             //pause

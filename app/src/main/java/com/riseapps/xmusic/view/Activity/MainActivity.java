@@ -56,6 +56,7 @@ import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
+import com.riseapps.xmusic.executor.ProximityDetector;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
 import com.riseapps.xmusic.executor.ShakeDetector;
 import com.riseapps.xmusic.executor.Interfaces.SongLikedListener;
@@ -114,6 +115,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+    private ProximityDetector proximityDetector;
     private SongRefreshListener songRefreshListener;
     private ArtistRefreshListener artistRefreshListener;
     private AlbumRefreshListener albumRefreshListener;
@@ -122,6 +124,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private MainTextView toolbar_context_title;
     private ArrayList<Integer> multipleSongSelection = new ArrayList<>();
     private Handler sleepHandler;
+    private Sensor mProximity;
 
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
         @Override
@@ -211,6 +214,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
         mShakeDetector = new ShakeDetector();
         mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
 
@@ -220,6 +225,14 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             }
         });
 
+        proximityDetector=new ProximityDetector(this);
+        proximityDetector.setOnProximityListener(new ProximityDetector.OnProximityListener() {
+            @Override
+            public void onProximity() {
+                ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
+                changeToNextSong();
+            }
+        });
 
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -460,6 +473,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             }, 3500);
 
             mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(proximityDetector, mProximity, 2 * 1000 * 1000);
         }
     }
 
@@ -468,6 +482,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         unbindService(musicConnection);
         stopService(playIntent);
         mSensorManager.unregisterListener(mShakeDetector);
+        mSensorManager.unregisterListener(proximityDetector);
         super.onDestroy();
     }
 
@@ -779,6 +794,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         protected void onPostExecute(Void aVoid) {
 
             mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(proximityDetector,mProximity, 2 * 1000 * 1000);
             progressView.setVisibility(View.GONE);
             mViewPager.setAlpha(1.0f);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

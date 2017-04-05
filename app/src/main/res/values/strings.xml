@@ -15,7 +15,7 @@
     <string name="title_activity_select_playlist">SelectPlaylistActivity</string>
     <string name="playlist_screen_placeholder">You can add this song to MULTIPLE playlists at once.</string>
     <string name="title_activity_walkthrough">Walkthrough</string>
-    <string name="permission_rationale">Need store permission to access Songs</string>
+    <string name="permission_rationale">Need storage permission to access Songs</string>
     <string name="ok">OK</string>
     <string name="simple_fragment_transition">transition</string>
 
@@ -101,6 +101,10 @@
     <string name="search">Search</string>
     <string name="refreshing_lists">Refreshing Lists…</string>
     <string name="create_a_new_playlist">Create a New Playlist</string>
-    <string name="name">Name...</string>
+    <string name="name">Name…</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">START</string>
+    <string name="fetched">Got your Songs</string>
 
 </resources>
