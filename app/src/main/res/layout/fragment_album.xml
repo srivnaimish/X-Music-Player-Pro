@@ -16,7 +16,8 @@
             android:id="@+id/albums"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"/>
+            android:scrollbars="none"
+            android:layout_marginTop="2dp"/>
 
         <TextView
             android:layout_width="wrap_content"

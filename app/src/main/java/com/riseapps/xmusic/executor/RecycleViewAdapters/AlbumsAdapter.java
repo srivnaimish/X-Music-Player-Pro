@@ -1,15 +1,22 @@
 package com.riseapps.xmusic.executor.RecycleViewAdapters;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
@@ -54,7 +61,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
             Album album = albumList.get(position);
             switch (holder.getItemViewType()) {
                 case 1:
-                    String name=album.getName();
+                    String name=album.getName().trim();
                     String imagepath=album.getImagepath();
                     //Log.d("imagepath", " " + imagepath);
                     if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
@@ -65,7 +72,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                         }
                         else {
                             Glide.with(c).load("")
-                                    .placeholder(R.drawable.empty)
+                                    .placeholder(R.drawable.ic_equaliser)
                                     .into(((AlbumViewHolder) holder).imageView);
                         }
                         ((AlbumViewHolder)holder).name.setText(name);
@@ -74,7 +81,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                     else {
                         ((AlbumViewHolder)holder).name.setText(name);
                         Glide.with(c).load("")
-                                .placeholder(R.drawable.empty)
+                                .placeholder(R.drawable.ic_equaliser)
+                                .fitCenter()
                                 .into(((AlbumViewHolder) holder).imageView);
                     }
                     break;
@@ -94,18 +102,68 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
 
 }
 
-class AlbumViewHolder extends RecyclerView.ViewHolder{
+class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
 
-    ImageView imageView;
+    ImageView imageView, optionMenuClose;
     TextView name;
     Context ctx;
     Album album;
+    RelativeLayout optionsMenu;
+    private Animator anim;
+    private static boolean isOpen;
 
-    AlbumViewHolder(View v, Context context) {
-        super(v);
+    AlbumViewHolder(final View view, Context context) {
+        super(view);
         this.ctx = context;
-        imageView= (ImageView) v.findViewById(R.id.imageView);
-        name= (TextView) v.findViewById(R.id.name);
+        imageView= (ImageView) view.findViewById(R.id.imageView);
+        name= (TextView) view.findViewById(R.id.name);
+        /*optionsMenu = (RelativeLayout)view.findViewById(R.id.options_menu);
+        optionMenuClose = (ImageView) view.findViewById(R.id.options_menu_close);*/
+        /*imageView.setOnLongClickListener(this);
+        name.setOnLongClickListener(this);*/
+
+        /*optionMenuClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOpen) {
+                    optionsMenu.setVisibility(View.GONE);
+                    view.setVisibility(View.VISIBLE);
+                    isOpen = false;
+                }
+            }
+        });*/
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        Toast.makeText(ctx, " " + getLayoutPosition(), Toast.LENGTH_SHORT).show();
+        doCircularReveal(v, optionsMenu);
+        return true;
+    }
+
+    private void doCircularReveal(final View v, RelativeLayout menu) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            int x = menu.getLeft() + menu.getWidth() / 2;
+            int y = 0;
+            int startRadius = 0;
+            int hypotenuse = (int) Math.hypot(menu.getWidth(), menu.getHeight());
+            anim = ViewAnimationUtils.createCircularReveal(menu, x, y, startRadius, hypotenuse);
+            anim.setInterpolator(new AccelerateDecelerateInterpolator());
+            anim.setDuration(400);
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    v.setVisibility(View.GONE);
+                    isOpen = true;
+                }
+            });
+            menu.setVisibility(View.VISIBLE);
+            anim.start();
+        }
+        else {
+            menu.setVisibility(View.VISIBLE);
+        }
     }
 }
 

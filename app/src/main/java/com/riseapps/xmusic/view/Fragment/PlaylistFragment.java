@@ -1,8 +1,10 @@
 package com.riseapps.xmusic.view.Fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
@@ -19,6 +25,8 @@ import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.PlaylistAdapter;
 import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.utils.GridItemDecoration;
+import com.riseapps.xmusic.view.Activity.SelectPlaylistActivity;
+import com.riseapps.xmusic.widgets.TagView;
 
 import java.util.ArrayList;
 
@@ -30,6 +38,8 @@ public class PlaylistFragment extends Fragment {
     ArrayList<Playlist> playLists=new ArrayList<>();
     PlaylistAdapter playlistAdapter;
     private OnFragmentInteractionListener mListener;
+    private LinearLayout createPlaylist;
+    private Dialog dialog;
 
     public PlaylistFragment() {
         // Required empty public constructor
@@ -54,13 +64,21 @@ public class PlaylistFragment extends Fragment {
         // Inflate the layout for this fragment_songs
         View v=inflater.inflate(R.layout.fragment_playlist, container, false);
 
+        createPlaylist = (LinearLayout) v.findViewById(R.id.add_playlist);
+        createPlaylist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+        });
+
         recyclerView = (RecyclerView) v.findViewById(R.id.playlists);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
         recyclerView.setLayoutManager(grid);
 
         int spanCount = 2;
-        int spacing = 12;
+        int spacing = 16;
 
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setNestedScrollingEnabled(false);
@@ -142,5 +160,32 @@ public class PlaylistFragment extends Fragment {
         playLists=new MyApplication(getActivity()).getWritableDatabase().readPlaylists();
         playlistAdapter = new PlaylistAdapter(getActivity(), playLists, recyclerView);
         recyclerView.setAdapter(playlistAdapter);
+    }
+
+    private void openDialog(){
+        dialog=new Dialog(getActivity());
+        dialog.setContentView(R.layout.dialog_layout);
+        dialog.show();
+        Button create = (Button) dialog.findViewById(R.id.create);
+        Button cancel = (Button) dialog.findViewById(R.id.cancel);
+        final EditText editText= (EditText) dialog.findViewById(R.id.dialogEditText);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!editText.getText().toString().equalsIgnoreCase("")) {
+                    dialog.dismiss();
+                    Toast.makeText(getActivity(), "Created", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Please give playlist a name", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
     }
 }

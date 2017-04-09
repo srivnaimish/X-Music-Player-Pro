@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.Pojo.Artist;
+import com.riseapps.xmusic.widgets.MainTextViewSub;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class ArtistAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
         View v = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.grid_row, parent, false);
+                R.layout.artist_name_row, parent, false);
         return new ArtistViewHolder(v,c);
 
     }
@@ -49,29 +50,29 @@ public class ArtistAdapter extends RecyclerView.Adapter {
 
         if (holder instanceof ArtistViewHolder) {
             Artist artist = (Artist) artistList.get(position);
-            String name=artist.getName();
+            String name=artist.getName().trim();
             String imagepath=artist.getImagepath();
             if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
                 ((ArtistViewHolder)holder).name.setText(name);
 
-                if (!imagepath.equalsIgnoreCase("no_image")) {
+                /*if (!imagepath.equalsIgnoreCase("no_image")) {
                     Glide.with(c).load(imagepath)
                             .centerCrop()
                             .into(((ArtistViewHolder) holder).imageView);
                 }
                 else {
                     Glide.with(c).load("")
-                            .placeholder(R.drawable.empty)
+                            .placeholder(R.drawable.ic_music_player)
                             .into(((ArtistViewHolder) holder).imageView);
                     //((ArtistViewHolder) holder).imageView.setImageResource(R.drawable.empty);
-                }
+                }*/
                 ((ArtistViewHolder) holder).artist = artist;
             }
             else {
                 ((ArtistViewHolder)holder).name.setText(name);
-                Glide.with(c).load("")
-                        .placeholder(R.drawable.empty)
-                        .into(((ArtistViewHolder) holder).imageView);
+                /*Glide.with(c).load("")
+                        .placeholder(R.drawable.ic_music_player)
+                        .into(((ArtistViewHolder) holder).imageView);*/
             }
         }
     }
@@ -88,6 +89,7 @@ class ArtistViewHolder extends RecyclerView.ViewHolder {
     ImageView imageView;
     TextView name;
     Context ctx;
+    MainTextViewSub artistTextView;
 
     Artist artist;
 
@@ -95,9 +97,7 @@ class ArtistViewHolder extends RecyclerView.ViewHolder {
         super(v);
         this.ctx = context;
 
-        imageView= (ImageView) v.findViewById(R.id.imageView);
         name= (TextView) v.findViewById(R.id.name);
-
     }
 
 }

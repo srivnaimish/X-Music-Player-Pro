@@ -37,7 +37,7 @@ public class ScrollingFragment extends Fragment {
     // views
     String Name,Imagepath=null,Action;
     ImageView imageView;
-    private CircleImageView circleAlbumArt;
+    private ImageView circleAlbumArt;
     TextView title;
     MainTextViewSub name;
     RecyclerView recyclerView;
@@ -76,7 +76,7 @@ public class ScrollingFragment extends Fragment {
         fab= (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
         recyclerView= (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        circleAlbumArt = (CircleImageView) rootView.findViewById(R.id.album_art);
+        circleAlbumArt = (ImageView) rootView.findViewById(R.id.album_art);
         name = (MainTextViewSub) rootView.findViewById(R.id.type_name);
         playAllButton = (Button) rootView.findViewById(R.id.play_all_button);
         shuffleButton = (Button) rootView.findViewById(R.id.shuffle_button);
@@ -107,7 +107,10 @@ public class ScrollingFragment extends Fragment {
         }
         else {
             imageView.setImageResource(R.drawable.empty);
-            circleAlbumArt.setImageResource(R.drawable.empty);
+            Glide.with(getContext()).load(R.drawable.ic_music_player)
+                    .crossFade()
+                    .placeholder(R.drawable.ic_music_player)
+                    .into(circleAlbumArt);
         }
 
         if(Action.equalsIgnoreCase("Album")){

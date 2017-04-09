@@ -329,10 +329,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         progressView = (RelativeLayout) findViewById(R.id.progress);
 
+        mToolbar.setNavigationIcon(R.drawable.ic_settings_black_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), 1);
+                startActivityForResult(new Intent(MainActivity.this, AppSettingActivity.class), 1);
             }
         });
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

@@ -6,16 +6,37 @@
     android:fillViewport="true"
     android:orientation="vertical"
     android:background="@color/colorWhite">
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/add_playlist"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp">
+            <com.riseapps.xmusic.widgets.MainTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                android:text="Create new playlist"
+                android:textAllCaps="true"
+                android:textSize="14sp"
+                android:textColor="@color/whitePrimary"
+                android:gravity="center"/>
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/playlists"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"/>
+            android:scrollbars="none"
+            android:layout_below="@id/add_playlist"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,5 +48,5 @@
             android:id="@+id/no_music"
             android:visibility="gone" />
 
-    </FrameLayout>
+    </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -21,6 +21,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
 
     private List<Playlist> playlistsList;
     Context c;
+    View v;
 
     public PlaylistAdapter(Context context, List<Playlist> playlists, RecyclerView recyclerView) {
         this.playlistsList = playlists;
@@ -39,8 +40,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
-        View v = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.grid_row, parent, false);
+        v = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.playlist_name_row, parent, false);
         return new PlaylistViewHolder(v,c);
 
     }
@@ -50,14 +51,14 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
 
         if (holder instanceof PlaylistViewHolder) {
             final Playlist playlist = (Playlist) playlistsList.get(position);
-            String name=playlist.getName();
+            String name=playlist.getName().trim();
             ((PlaylistViewHolder)holder).name.setText(name);
 
             String imagepath=new MyApplication(c).getWritableDatabase().readFirstSongInPlaylist(name);
-            if (!imagepath.equalsIgnoreCase("no_image")) {
+            /*if (!imagepath.equalsIgnoreCase("no_image")) {
                 Glide.with(c).load(imagepath)
                         .crossFade()
-                        .placeholder(R.drawable.empty)
+                        .placeholder(R.drawable.ic_music_player)
                         .centerCrop()
                        // .placeholder(R.drawable.empty)
                         .into(((PlaylistViewHolder) holder).imageView);
@@ -67,7 +68,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
                         .crossFade()
                         //.placeholder(R.drawable.empty)
                         .into(((PlaylistViewHolder) holder).imageView);
-            }
+            }*/
             ((PlaylistViewHolder) holder).playlist = playlist;
 
         }
@@ -92,7 +93,6 @@ class PlaylistViewHolder extends RecyclerView.ViewHolder{
     PlaylistViewHolder(View v, Context context) {
         super(v);
         this.ctx = context;
-
         imageView= (ImageView) v.findViewById(R.id.imageView);
         name= (TextView) v.findViewById(R.id.name);
 

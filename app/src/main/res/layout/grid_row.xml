@@ -21,7 +21,6 @@
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="155dp"
-            android:scaleType="centerCrop"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -58,4 +57,74 @@
 
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/options_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/option_holder_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="12dp"
+            android:orientation="horizontal">
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/option_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Play next"
+                android:textColor="@color/whitePrimary"
+                android:textAlignment="textStart"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/option_holder_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/option_holder_1"
+            android:gravity="center"
+            android:layout_margin="12dp"
+            android:orientation="horizontal">
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/option_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add to queue"
+                android:textColor="@color/whitePrimary"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/option_holder_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/option_holder_2"
+            android:gravity="center"
+            android:layout_margin="12dp"
+            android:orientation="horizontal">
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/option_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add to Playlist"
+                android:textColor="@color/whitePrimary"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/options_menu_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:srcCompat="@drawable/ic_sync_black_24dp"
+            android:layout_below="@+id/option_holder_3"
+            android:layout_margin="12dp"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
 </android.support.v7.widget.CardView>

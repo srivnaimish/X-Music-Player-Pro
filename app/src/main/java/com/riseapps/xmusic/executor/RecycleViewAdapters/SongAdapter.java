@@ -150,6 +150,7 @@ public class SongAdapter extends RecyclerView.Adapter {
                 public void onFinalClearSelection(int i) {
                     mListener.onHide();
                     startLongPress = false;
+                    count = 0;
                 }
             });
 
@@ -169,10 +170,11 @@ public class SongAdapter extends RecyclerView.Adapter {
             if (!imagepath.equalsIgnoreCase("no_image")) {
                 Glide.with(c).load(imagepath)
                         .crossFade()
+                        .centerCrop()
                         .into(((SongViewHolder) holder).iv);
             }
             else {
-                ((SongViewHolder) holder).iv.setImageResource(R.drawable.empty);
+                ((SongViewHolder) holder).iv.setImageResource(R.drawable.ic_equaliser);
             }
 
             if(song.getFavourite()){
@@ -224,8 +226,9 @@ public class SongAdapter extends RecyclerView.Adapter {
         Log.d("Hello" , "Helo" );
         notifyDataSetChanged();
         longPressedSongs = new HashMap<>();
-        longSelectedSongs = new ArrayList<>();
+        longSelectedSongs.clear();
         startLongPress = false;
+        count = 0;
     }
 
     //Put or delete selected position into SparseBooleanArray
