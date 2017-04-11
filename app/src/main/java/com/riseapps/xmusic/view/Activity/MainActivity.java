@@ -1,14 +1,14 @@
 package com.riseapps.xmusic.view.Activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,7 +27,6 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -36,7 +34,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -57,8 +54,6 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.ProximityDetector;
-import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
-import com.riseapps.xmusic.executor.ShakeDetector;
 import com.riseapps.xmusic.executor.Interfaces.SongLikedListener;
 import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.MusicService;
@@ -89,12 +84,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     TextView title, artist, currentPosition, totalDuration;
     ImageView album_art;
     RelativeLayout progressView;
-    Runnable sleepTimer = new Runnable() {
-        @Override
-        public void run() {
-            finish();
-        }
-    };
     private ArrayList<Song> songList = new ArrayList<>();
     private MusicService musicService;
     private Intent playIntent;
@@ -111,10 +100,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private WaveHelper mWaveHelper;
     private int mBorderColor = Color.parseColor("#000000");
     private int mBorderWidth = 5;
-    private boolean firstSongOpened = false;
     private SensorManager mSensorManager;
-    private Sensor mAccelerometer;
-    private ShakeDetector mShakeDetector;
     private ProximityDetector proximityDetector;
     private SongRefreshListener songRefreshListener;
     private ArtistRefreshListener artistRefreshListener;
@@ -123,16 +109,14 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private ContextMenuListener clearAll;
     private MainTextView toolbar_context_title;
     private ArrayList<Integer> multipleSongSelection = new ArrayList<>();
-    private Handler sleepHandler;
-    private Sensor mProximity;
 
+    private Sensor mProximity;
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             musicService.togglePlay();
         }
     };
-
     private ServiceConnection musicConnection = new ServiceConnection() {
 
         @Override
@@ -173,13 +157,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             play_pause_mini.setImageResource(R.drawable.ic_pause);
                             musicPlaying = true;
                             mWaveHelper.start();
-                            if (!firstSongOpened) {
-                                int timer = new SharedPreferenceSingelton().getSavedInt(MainActivity.this, "timer");
-                                if (timer != 0) {
-                                    firstSongOpened = true;
-                                    sleepHandler.postDelayed(sleepTimer, timer * 60 * 1000);
-                                }
-                            }
                             break;
                         case MusicService.PAUSED:
                             play_pause.setImageResource(R.drawable.ic_play);
@@ -208,22 +185,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        sleepHandler = new Handler();
         //setContentView(R.layout.activity_main);
         initiallize();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-
-        mShakeDetector = new ShakeDetector();
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
-
-            @Override
-            public void onShake(int count) {
-                musicService.togglePlay();
-            }
-        });
 
         proximityDetector=new ProximityDetector(this);
         proximityDetector.setOnProximityListener(new ProximityDetector.OnProximityListener() {
@@ -328,6 +294,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private void initiallize() {
 
         progressView = (RelativeLayout) findViewById(R.id.progress);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("Stop");
+        registerReceiver(stopReceiver, intentFilter);
 
         mToolbar.setNavigationIcon(R.drawable.ic_settings_black_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -472,23 +441,27 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             .start();
                 }
             }, 3500);
-
-            mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
-            mSensorManager.registerListener(proximityDetector, mProximity, 2 * 1000 * 1000);
         }
     }
 
     @Override
     protected void onDestroy() {
+        unregisterReceiver(stopReceiver);
         unbindService(musicConnection);
         stopService(playIntent);
-        mSensorManager.unregisterListener(mShakeDetector);
-        mSensorManager.unregisterListener(proximityDetector);
+        if(new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this,"Pro_controls"))
+            mSensorManager.unregisterListener(proximityDetector);
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
+        boolean b=new SharedPreferenceSingelton().getSavedBoolean(this,"Pro_Controls");
+        if(b) {
+            mSensorManager.registerListener(proximityDetector, mProximity, 2 * 1000 * 1000);
+        }
+        else
+            mSensorManager.unregisterListener(proximityDetector);
 
         if (mainPlayer.getVisibility() == View.VISIBLE) {
             miniPlayer.setVisibility(View.VISIBLE);
@@ -611,16 +584,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 long id = songList.get(musicService.getCurrentIndex()).getID();
                 new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id, str);
                 Toast.makeText(MainActivity.this, "Added to Playlist", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else if(resultCode==1) {
-            boolean changed = data.getBooleanExtra("TimerChanged", false);
-            if (changed){
-                sleepHandler.removeCallbacks(sleepTimer);
-                int timer = new SharedPreferenceSingelton().getSavedInt(MainActivity.this, "timer");
-                if (timer != 0) {
-                    sleepHandler.postDelayed(sleepTimer, timer * 60 * 1000);
-                }
             }
         }
         if (mainPlayer.getVisibility() == View.VISIBLE) {
@@ -793,9 +756,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
-            mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
-            mSensorManager.registerListener(proximityDetector,mProximity, 2 * 1000 * 1000);
             progressView.setVisibility(View.GONE);
             mViewPager.setAlpha(1.0f);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -803,7 +763,15 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         }
     }
 
-
-
+    private final BroadcastReceiver stopReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equalsIgnoreCase("Stop")){
+                Toast.makeText(MainActivity.this, "Stopping Player", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    };
 }
 

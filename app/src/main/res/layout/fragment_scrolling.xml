@@ -76,8 +76,7 @@
                         android:drawablePadding="10dp"
                         android:enabled="true"
                         android:background="@drawable/ripple_button"
-                        android:theme="@style/Widget.AppCompat.Button.Colored"
-                        android:drawableLeft="@drawable/ic_play_circle_outline_white_24dp">
+                        android:theme="@style/Widget.AppCompat.Button.Colored">
 
                     </Button>
 
@@ -85,14 +84,13 @@
                         android:id="@+id/shuffle_button"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
                         android:text="Shuffle"
                         android:drawableStart="@drawable/ic_shuffle_white_24dp"
                         android:enabled="true"
                         android:drawablePadding="10dp"
                         android:background="@drawable/ripple_button"
-                        android:theme="@style/Widget.AppCompat.Button.Colored"
-                        android:drawableLeft="@drawable/ic_shuffle_white_24dp" />
+                        android:theme="@style/Widget.AppCompat.Button.Colored" />
 
                 </LinearLayout>
 

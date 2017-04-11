@@ -69,7 +69,6 @@ public class UpdateSongs {
                 if (thisAlbum == null) {
                     thisAlbum = "Unknown";
                 }
-                id = thisId;
                 new MyApplication(context).getWritableDatabase().insertNewPlaylist("All Songs", thisId);
                 new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, thisAlbum);
                 x++;
@@ -78,6 +77,9 @@ public class UpdateSongs {
 
             Log.d("Song Insert", "" + x);
             musicCursor.close();
+        }
+        else {
+
         }
     }
 

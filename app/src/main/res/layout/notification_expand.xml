@@ -33,7 +33,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:maxLines="1"
         android:scrollHorizontally="true"
-        android:textColor="@color/colorPrimaryFont"
+        android:textColor="@color/textColorPrimary"
         android:textSize="16sp"
         tools:text="TextView" />
 
@@ -53,7 +53,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:maxLines="1"
         android:scrollHorizontally="true"
-        android:textColor="@color/colorPrimaryFont"
+        android:textColor="@color/textColorPrimary"
         android:textSize="14sp"
         tools:text="TextView" />
 

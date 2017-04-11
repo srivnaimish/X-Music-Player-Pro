@@ -4,7 +4,7 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="no_music">No Music Found</string>
+    <string name="no_music">No Music Found on Your Device …</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -106,5 +106,7 @@
     <string name="skip">SKIP</string>
     <string name="start">START</string>
     <string name="fetched">Got your Songs</string>
+    <string name="pro_control">Double Wave Over Phone to Skip Song</string>
+    <string name="cancel">CANCEL</string>
 
 </resources>

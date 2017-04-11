@@ -5,13 +5,13 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fff"
+    android:background="@color/colorWhite"
     tools:context=".view.Activity.SelectPlaylistActivity"
     android:layout_marginTop="60dp">
 
     <ScrollView android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@color/colorWhite"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:fillViewport="true"
@@ -63,7 +63,7 @@
                     android:focusableInTouchMode="true"
                     android:visibility="gone"
                     android:layout_gravity="center_vertical"
-                    android:background="#fff"
+                    android:background="@color/colorWhite"
                     android:layout_marginRight="16dp"/>
 
             </HorizontalScrollView>

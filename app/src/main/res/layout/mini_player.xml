@@ -44,7 +44,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#000"
+            android:background="@color/colorBlack"
             android:alpha="0.2">
 
             <TextView
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/colorPrimaryFont"
+        android:textColor="@color/textColorPrimary"
         app:layout_constraintTop_toTopOf="@+id/album_art_card"
         app:layout_constraintLeft_toRightOf="@+id/album_art_card"
         android:layout_marginLeft="16dp"/>
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/album_art_card"
         android:layout_marginBottom="10dp"
-        android:textColor="@color/colorPrimaryFont"
+        android:textColor="@color/textColorPrimary"
         app:layout_constraintLeft_toLeftOf="@+id/name_mini"
         />
 </android.support.constraint.ConstraintLayout>

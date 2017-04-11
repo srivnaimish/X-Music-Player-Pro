@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Light Theme-->
     <color name="colorPrimary">#fff</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#e74c3c</color>
-    <color name="colorPrimaryFont">#34495e</color>
+    <color name="textColorPrimary">#34495e</color>
     <color name="colorMainBackground">#EEEEEE</color>
     <color name="colorWhite">#FFF</color>
     <color name="colorBlack">#000</color>
     <color name="colorAccentDark">#B71C1C</color>
     <color name="colorLongSelection">#B0BEC5</color>
+    <color name="lightAccent">#efebe9</color>
+    <color name="colorPrimaryFontDark">#2c3e50</color>
+
+    <!--Dark Theme-->
+    <color name="colorPrimaryInverse">#424242</color>
+    <color name="colorPrimaryDarkInverse">#212121</color>
+    <color name="colorPrimaryFontInverse">#fff</color>
 </resources>

@@ -6,7 +6,9 @@
     android:layout_height="wrap_content"
     android:id="@+id/song_list_card"
     card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="0dp">
+    card_view:cardElevation="0dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true">
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -20,7 +22,6 @@
             android:id="@+id/album_art_card"
             android:layout_width="60sp"
             android:layout_height="60sp"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +52,7 @@
             app:layout_constraintLeft_toRightOf="@+id/album_art_card"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:textColor="@color/colorPrimaryFont"
+            android:textColor="@color/textColorPrimary"
             android:textSize="13sp"
             android:textAllCaps="true"/>
 

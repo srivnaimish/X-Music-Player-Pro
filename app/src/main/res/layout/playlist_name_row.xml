@@ -6,7 +6,9 @@
     android:layout_height="60dp"
     android:id="@+id/playlist_list_card"
     card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="4dp">
+    card_view:cardElevation="4dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,7 +31,7 @@
                 android:layout_margin="12dp"
                 android:gravity="center_vertical"
                 android:maxLines="2"
-                android:textColor="@color/colorPrimaryFont"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="15sp"
                 tools:text="TextView"
                 android:textAllCaps="true"/>

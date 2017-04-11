@@ -24,7 +24,7 @@
                 android:text="Add to playlist"
                 android:layout_gravity="center|start"
                 android:id="@+id/toolbar_player_title"
-                android:textColor="@color/colorPrimaryFont"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="18sp"/>
 
         </android.support.v7.widget.Toolbar>
