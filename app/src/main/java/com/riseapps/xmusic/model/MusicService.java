@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.audiofx.Equalizer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
@@ -25,10 +26,12 @@ import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.GenerateNotification;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.view.Activity.AppSettingActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +41,7 @@ public class MusicService extends Service implements
         MediaPlayer.OnCompletionListener {
 
     public MediaPlayer player;
+    public Equalizer equalizer;
     public HeadsetPlugReceiver headsetPlugReceiver;
     public ArrayList<Song> songs;
 
@@ -164,6 +168,7 @@ public class MusicService extends Service implements
 
     @Override
     public void onDestroy() {
+        equalizer.setEnabled(false);
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(NOTIFICATION_ID);
         player.release();
@@ -175,13 +180,12 @@ public class MusicService extends Service implements
             headsetPlugReceiver = null;
         }
         if (mSeekBar != null)
-            mSeekBar=null;
+            mSeekBar = null;
         onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
         unregisterReceiver(myReceiver);
-        //Toast.makeText(this, "Removed", Toast.LENGTH_SHORT).show();
+
         super.onDestroy();
     }
-
 
     public class MusicBinder extends Binder {
         public MusicService getService() {
@@ -197,7 +201,6 @@ public class MusicService extends Service implements
 
         player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
         player.setOnPreparedListener(this);
         player.setOnCompletionListener(this);
         player.setOnErrorListener(this);
@@ -215,6 +218,19 @@ public class MusicService extends Service implements
         if (songs.size() <= songIndex || songIndex < 0) // if the list is empty... just return
             return;
         songPos = songIndex;
+        int x = new SharedPreferenceSingelton().getSavedInt(this, "Preset");
+        equalizer = new Equalizer(0, player.getAudioSessionId());
+        equalizer.setEnabled(true);
+        equalizer.usePreset((short) x);
+
+        AppSettingActivity.setEqualizerPresetListener(new AppSettingActivity.EqualizerPresetListener() {
+            @Override
+            public void OnEqualizerPresetChanged(short value) {
+                equalizer = new Equalizer(0, player.getAudioSessionId());
+                equalizer.setEnabled(true);
+                equalizer.usePreset(value);
+            }
+        });
         playerState = STOPPED;
         onSongChangedListener.onSongChanged(songs.get(songPos));
     }
@@ -241,9 +257,9 @@ public class MusicService extends Service implements
     }
 
     private void playSong() {
-       //
-       //
-      //
+        //
+        //
+        //
 
         //}
         if (songs.size() <= songPos)
@@ -385,5 +401,6 @@ public class MusicService extends Service implements
             }
         }
     };
+
 
 }

@@ -185,13 +185,6 @@ public class DBPlayer {
         mDatabase.close();
     }
 
-    public void refreshPlaylists() {
-        mDatabase.execSQL("DELETE FROM PLAYLISTS_LIST WHERE SONG NOT IN " +
-                "(SELECT ID FROM SONGS_LIST)");
-        mDatabase.close();
-        Log.d("Playlists","Refreshed");
-    }
-
     public ArrayList<Playlist> readPlaylists() {
         ArrayList<Playlist> playlists = new ArrayList<>();
         String[] columns = {
@@ -237,23 +230,6 @@ public class DBPlayer {
         return playlists;
     }
 
-    public String readFirstSongInPlaylist(String playlist) {
-        String s="";
-        String args[]={playlist};
-        Cursor cursor = mDatabase.rawQuery("select IMAGEPATH from SONGS_LIST where ID in (select SONG from PLAYLISTS_LIST where NAME = ?)  ORDER BY NAME", args);
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                s+=cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_IMAGEPATH));
-                break;
-            }
-            while (cursor.moveToNext());
-            cursor.close();
-        }
-        mDatabase.close();
-        if (s.equalsIgnoreCase(""))
-            s="no_image";
-        return s;
-    }
 
     public void addSongToPlaylists(long id, String playlistNames) {
         String S[]=convertStringToArray(playlistNames);
@@ -286,6 +262,14 @@ public class DBPlayer {
 
         }
         mDatabase.close();
+    }
+
+    public void deletePlaylist(String name) {
+        String whereClause = PlayerHelper.PLAYLIST_COLUMN_NAME+"=?";
+        String whereArgs[] = {name};
+        mDatabase.delete(PlayerHelper.PLAYLIST_TABLE_NAME, whereClause, whereArgs);
+        mDatabase.close();
+        Log.d("Playlist", "Deleted");
     }
 
     /*For Albums

@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * Created by naimish on 11/3/17.
  */
 
-public class SongsFragment extends Fragment {
+public class SongsFragment extends Fragment{
 
     RecyclerView recyclerView;
     ArrayList<Song> songList=new ArrayList<>();

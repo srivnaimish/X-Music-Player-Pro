@@ -13,8 +13,4 @@
     <color name="lightAccent">#efebe9</color>
     <color name="colorPrimaryFontDark">#2c3e50</color>
 
-    <!--Dark Theme-->
-    <color name="colorPrimaryInverse">#424242</color>
-    <color name="colorPrimaryDarkInverse">#212121</color>
-    <color name="colorPrimaryFontInverse">#fff</color>
 </resources>

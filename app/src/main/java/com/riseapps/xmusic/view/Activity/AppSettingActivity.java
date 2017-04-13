@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.audiofx.Equalizer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,6 +17,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -23,21 +27,17 @@ import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 
 public class AppSettingActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Switch pro;
     private Dialog dialog;
     private EditText min,hrs;
-    private Toolbar mToolbar;
-    private CoordinatorLayout coordinatorLayout;
-    private CardView setting_equalizer,setting_sleep,setting_theme,setting_share,setting_rate,setting_pro;
+    private static EqualizerPresetListener equalizerPresetListener;
+    private RadioGroup radioButtonGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       // setTheme(R.style.AppTheme_Dark);
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         init();
 
-       // switchToDarkTheme();
     }
 
     public int getLayoutId() {
@@ -47,7 +47,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     private void init() {
 
         // Toolbar
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,15 +56,14 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        setting_pro= (CardView) findViewById(R.id.setting_shake);
-        setting_equalizer = (CardView) findViewById(R.id.setting_equalizer);
-        setting_sleep = (CardView) findViewById(R.id.setting_sleep);
-        setting_theme = (CardView) findViewById(R.id.setting_theme);
-        setting_share = (CardView) findViewById(R.id.setting_share_app);
-        setting_rate = (CardView) findViewById(R.id.setting_rate);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.back);
+        CardView setting_pro = (CardView) findViewById(R.id.setting_shake);
+        CardView setting_equalizer = (CardView) findViewById(R.id.setting_equalizer);
+        CardView setting_sleep = (CardView) findViewById(R.id.setting_sleep);
+        CardView setting_share = (CardView) findViewById(R.id.setting_share_app);
+        CardView setting_rate = (CardView) findViewById(R.id.setting_rate);
 
-        pro = (Switch) findViewById(R.id.setting_pro);
+
+        Switch pro = (Switch) findViewById(R.id.setting_pro);
         if(new SharedPreferenceSingelton().getSavedBoolean(this,"Pro_Controls"))
             pro.setChecked(true);
         else
@@ -85,7 +84,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
         setting_equalizer.setOnClickListener(this);
         setting_sleep.setOnClickListener(this);
-        setting_theme.setOnClickListener(this);
         setting_share.setOnClickListener(this);
         setting_rate.setOnClickListener(this);
 
@@ -96,23 +94,19 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         switch (view.getId()) {
 
             case R.id.setting_equalizer:
-
+                openEqualizerDialog();
                 break;
 
             case R.id.setting_sleep:
                 openSleepDialog();
                 break;
 
-            case R.id.setting_theme:
-
-                break;
-
             case R.id.setting_share_app:
-
+                shareAppLink();
                 break;
 
             case R.id.setting_rate:
-
+                rateApp();
                 break;
 
         }
@@ -159,5 +153,68 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    private void openEqualizerDialog(){
+        dialog=new Dialog(this);
+        dialog.setContentView(R.layout.equalizer_dialog);
+        dialog.show();
+        radioButtonGroup= (RadioGroup) dialog.findViewById(R.id.radio_group);
 
+        int x=new SharedPreferenceSingelton().getSavedInt(AppSettingActivity.this,"Preset");
+        if(x!=0){
+            radioButtonGroup.check((radioButtonGroup.getChildAt(x)).getId());
+        }
+        Button done= (Button) dialog.findViewById(R.id.done);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
+                View radioButton = radioButtonGroup.findViewById(radioButtonID);
+                int idx = radioButtonGroup.indexOfChild(radioButton);
+                equalizerPresetListener.OnEqualizerPresetChanged((short)idx);
+                new SharedPreferenceSingelton().saveAs(AppSettingActivity.this,"Preset",idx);
+                dialog.dismiss();
+            }
+        });
+        Button cancel=(Button) dialog.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        //
+
+    }
+
+    private void shareAppLink(){
+        String message = "https://play.google.com/store/apps/details?id=example.naimish.com.alarm&hl=en";
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(share, "Share via.."));
+    }
+
+    private void rateApp() {
+        final Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
+        final Intent rateAppIntent = new Intent(Intent.ACTION_VIEW, uri);
+
+        if (getPackageManager().queryIntentActivities(rateAppIntent, 0).size() > 0)
+        {
+            startActivity(rateAppIntent);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    public interface EqualizerPresetListener{
+        void OnEqualizerPresetChanged(short value);
+    }
+
+    public static void setEqualizerPresetListener(EqualizerPresetListener listener) {   // Sets a callback to execute when we switch songs.. ie: update UI
+        equalizerPresetListener = listener;
+    }
 }

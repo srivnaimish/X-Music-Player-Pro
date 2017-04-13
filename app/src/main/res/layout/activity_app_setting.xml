@@ -31,6 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="App Settings"
+                    android:textColor="@color/textColorPrimary"
                     android:textAlignment="textStart"
                     android:textSize="16sp" />
 
@@ -58,7 +59,7 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="0dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="1dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -87,7 +88,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Pro Controls"
-
+                                android:textColor="@color/textColorPrimary"
                                 android:textSize="16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
@@ -112,7 +113,7 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="0dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="1dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -138,7 +139,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Equalizer"
-
+                                android:textColor="@color/textColorPrimary"
                                 android:textSize="16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
@@ -163,7 +164,7 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="0dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="1dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -189,7 +190,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Sleep Timer"
-
+                                android:textColor="@color/textColorPrimary"
                                 android:textSize="16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
@@ -204,68 +205,17 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/setting_theme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/setting_sleep"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="0dp"
-                    app:cardElevation="2dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/setting_three_icon"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_margin="12dp"
-                            app:srcCompat="@drawable/ic_change_theme" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="8dp"
-                            android:layout_toEndOf="@id/setting_three_icon"
-                            android:orientation="vertical">
-
-                            <com.riseapps.xmusic.widgets.MainTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Change theme"
-
-                                android:textSize="16sp" />
-
-                            <com.riseapps.xmusic.widgets.MainTextViewSub
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Select the way you want your app to look." />
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
                     android:id="@+id/setting_share_app"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/setting_theme"
+                    android:layout_below="@id/setting_sleep"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="0dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="1dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -291,7 +241,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Share this App!"
-
+                                android:textColor="@color/textColorPrimary"
                                 android:textSize="16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
@@ -317,7 +267,7 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="0dp"
-                    app:cardElevation="2dp">
+                    app:cardElevation="1dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -343,7 +293,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Rate us on Play Store!"
-
+                                android:textColor="@color/textColorPrimary"
                                 android:textSize="16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub

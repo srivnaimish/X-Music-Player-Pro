@@ -41,5 +41,8 @@ dependencies {
     compile 'com.gelitenight.waveview:waveview:1.0.0'
     compile 'com.github.claudiodegio:MsvSearch:1.0.0'
     compile 'com.android.support:support-vector-drawable:25.3.0'
+    compile 'com.google.firebase:firebase-ads:10.2.1'
+
     testCompile 'junit:junit:4.12'
 }
+apply plugin: 'com.google.gms.google-services'

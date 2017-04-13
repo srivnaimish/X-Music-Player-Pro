@@ -109,4 +109,17 @@
     <string name="pro_control">Double Wave Over Phone to Skip Song</string>
     <string name="cancel">CANCEL</string>
 
+    <!--PRESET DIALOG-->
+    <string name="normal_preset">Normal</string>
+    <string name="classical_preset">Classical</string>
+    <string name="dance_preset">Dance</string>
+    <string name="flat_preset">Flat</string>
+    <string name="folk_preset">Folk</string>
+    <string name="heavy_metal_preset">Heavy Metal</string>
+    <string name="hip_hop_preset">Hip Hop</string>
+    <string name="jazz_preset">Jazz</string>
+    <string name="pop_preset">Pop</string>
+    <string name="rock_preset">Rock</string>
+    <string name="select_a_preset">Select A Preset</string>
+
 </resources>

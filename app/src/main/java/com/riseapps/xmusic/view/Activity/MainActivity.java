@@ -303,6 +303,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(MainActivity.this, AppSettingActivity.class), 1);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

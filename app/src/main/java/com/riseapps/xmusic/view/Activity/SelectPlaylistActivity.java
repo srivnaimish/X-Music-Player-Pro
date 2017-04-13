@@ -1,7 +1,6 @@
 package com.riseapps.xmusic.view.Activity;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -9,16 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,13 +24,8 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.model.Pojo.Tag;
 import com.riseapps.xmusic.model.xplayertags.TagClass;
-import com.riseapps.xmusic.model.xplayertags.TagViewData;
 import com.riseapps.xmusic.utils.TagSelector;
-import com.riseapps.xmusic.widgets.MainTextView;
 import com.riseapps.xmusic.widgets.TagView;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -290,7 +281,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
 
     private void openDialog(){
         dialog=new Dialog(SelectPlaylistActivity.this);
-        dialog.setContentView(R.layout.dialog_layout);
+        dialog.setContentView(R.layout.playlist_create_dialog);
         dialog.show();
         Button create = (Button) dialog.findViewById(R.id.create);
         Button cancel = (Button) dialog.findViewById(R.id.cancel);

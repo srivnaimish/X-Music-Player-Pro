@@ -41,10 +41,8 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_splash_screen);
         if (new SharedPreferenceSingelton().getSavedBoolean(SplashScreen.this, "opened_before")) {
-            Log.d("opening", "MainActivity");
             new Async().execute();
         } else {
-            Log.d("opening", "Walkthru");
             startActivity(new Intent(SplashScreen.this, Walkthrough.class));
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             finish();
@@ -64,11 +62,11 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            String adString = getResources().getString(R.string.adStringPlaceholder);
+          //  String adString = getResources().getString(R.string.adStringPlaceholder);
             songList = new MyApplication(SplashScreen.this).getWritableDatabase().readSongs();
             artistList = new MyApplication(SplashScreen.this).getWritableDatabase().readArtists();
             albumList = new MyApplication(SplashScreen.this).getWritableDatabase().readAlbums();
-            if (albumList.size() > 13 && artistList.size()>17) {
+        /*    if (albumList.size() > 13 && artistList.size()>17) {
                 // Place 3 ads for album fragment
                 Album albumAdOne = new Album();
                 albumAdOne.setName(adString);
@@ -106,7 +104,7 @@ public class SplashScreen extends AppCompatActivity {
                 artistAdThree.setImagepath("NoImage");
                 artistAdThree.setViewType(2);
                 artistList.add(17, artistAdThree);
-            }
+            }*/
 
             return null;
         }

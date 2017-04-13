@@ -54,32 +54,19 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
             String name=playlist.getName().trim();
             ((PlaylistViewHolder)holder).name.setText(name);
 
-            String imagepath=new MyApplication(c).getWritableDatabase().readFirstSongInPlaylist(name);
-            /*if (!imagepath.equalsIgnoreCase("no_image")) {
-                Glide.with(c).load(imagepath)
-                        .crossFade()
-                        .placeholder(R.drawable.ic_music_player)
-                        .centerCrop()
-                       // .placeholder(R.drawable.empty)
-                        .into(((PlaylistViewHolder) holder).imageView);
-            }
-            else {
-                Glide.with(c).load("")
-                        .crossFade()
-                        //.placeholder(R.drawable.empty)
-                        .into(((PlaylistViewHolder) holder).imageView);
-            }*/
             ((PlaylistViewHolder) holder).playlist = playlist;
 
         }
     }
 
-
+    public void delete(int position) {
+        playlistsList.remove(position);
+        notifyItemRemoved(position);
+    }
     @Override
     public int getItemCount() {
         return playlistsList.size();
     }
-
 }
 
 class PlaylistViewHolder extends RecyclerView.ViewHolder{
