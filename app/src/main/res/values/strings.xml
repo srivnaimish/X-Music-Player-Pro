@@ -121,5 +121,6 @@
     <string name="pop_preset">Pop</string>
     <string name="rock_preset">Rock</string>
     <string name="select_a_preset">Select A Preset</string>
+    <string name="ad_unit_id">ca-app-pub-2454061641779517/5483543782</string>
 
 </resources>

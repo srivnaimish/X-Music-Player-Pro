@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
@@ -58,14 +60,30 @@ public class AlbumFragment extends Fragment {
 
         recyclerView = (RecyclerView) v.findViewById(R.id.albums);
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
+        final GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
+
+        grid.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch (albumAdapter.getItemViewType(position)) {
+                    case 1:
+                        return 1;
+                    case 0:
+                        return grid.getSpanCount();
+                    default:
+                        return -1;
+                }
+            }
+        });
         recyclerView.setLayoutManager(grid);
 
         int spanCount = 2;
         int spacing = 18;
 
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
+
         recyclerView.setNestedScrollingEnabled(false);
+
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -87,9 +105,13 @@ public class AlbumFragment extends Fragment {
 
             }
         }));
+
         String songJson=getActivity().getIntent().getStringExtra("albumList");
+
         albumLists=new Gson().fromJson(songJson, new TypeToken<ArrayList<Album>>() {}.getType());
+
         albumAdapter = new AlbumsAdapter(getActivity(), albumLists, recyclerView);
+
         recyclerView.setAdapter(albumAdapter);
 
         ((MainActivity) getActivity()).setAlbumRefreshListener(new AlbumRefreshListener() {
@@ -99,11 +121,11 @@ public class AlbumFragment extends Fragment {
                 albumLists=arrayList;
                 albumAdapter = new AlbumsAdapter(getActivity(), albumLists, recyclerView);
                 recyclerView.setAdapter(albumAdapter);
-
-
             }
 
         });
+
+
 
         return v;
     }

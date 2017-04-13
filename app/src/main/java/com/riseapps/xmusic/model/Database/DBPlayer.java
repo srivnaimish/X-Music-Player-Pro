@@ -285,12 +285,18 @@ public class DBPlayer {
         Cursor cursor = mDatabase.query(true, PlayerHelper.SONG_TABLE_NAME, columns, null, null, PlayerHelper.COLUMN_ALBUM, null, PlayerHelper.COLUMN_ALBUM, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                Album album = new Album();
-                album.setName(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_ALBUM)));
-                album.setImagepath(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_IMAGEPATH)));
-                album.setViewType(1);
-                count++;
-                albumlist.add(album);
+
+                    Album album = new Album();
+                    album.setName(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_ALBUM)));
+                    album.setImagepath(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_IMAGEPATH)));
+                    count++;
+                    if(albumlist.size()==3||albumlist.size()==12) {
+                        albumlist.add(album);
+                        albumlist.add(null);
+                    }
+                    else
+                    albumlist.add(album);
+
             }
             while (cursor.moveToNext());
             cursor.close();
@@ -356,7 +362,12 @@ public class DBPlayer {
                 artist.setName(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_ARTIST)));
                 artist.setImagepath(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_IMAGEPATH)));
                 count++;
-                artistlist.add(artist);
+                if(artistlist.size()==5||artistlist.size()==23) {
+                    artistlist.add(artist);
+                    artistlist.add(null);
+                }
+                else
+                    artistlist.add(artist);
             }
             while (cursor.moveToNext());
             cursor.close();

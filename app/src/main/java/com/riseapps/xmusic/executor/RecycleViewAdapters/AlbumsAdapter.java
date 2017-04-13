@@ -3,11 +3,8 @@ package com.riseapps.xmusic.executor.RecycleViewAdapters;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import android.media.Image;
-import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -19,8 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
-import com.riseapps.xmusic.executor.GridAdViewHolder;
 import com.riseapps.xmusic.model.Pojo.Album;
 
 import java.util.List;
@@ -29,6 +27,10 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
 
     private List<Album> albumList;
     Context c;
+
+    private static final int AD_TYPE=0;
+    private static final int NORMAL_TYPE=1;
+
 
     public AlbumsAdapter(Context context, List<Album> albumList, RecyclerView recyclerView) {
         this.albumList = albumList;
@@ -47,7 +49,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
         RecyclerView.ViewHolder vh = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
-            case 1:
+
+            case AD_TYPE:
+                View v1 = inflater.inflate(R.layout.nativ_express_ad_container, parent, false);
+                vh=new AdViewHolder(v1);
+                break;
+            case NORMAL_TYPE:
                 View v = inflater.inflate(R.layout.grid_row, parent, false);
                 vh = new AlbumViewHolder(v, c);
                 break;
@@ -57,10 +64,10 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof AlbumViewHolder) {
+
             Album album = albumList.get(position);
             switch (holder.getItemViewType()) {
-                case 1:
+                case NORMAL_TYPE:
                     String name=album.getName().trim();
                     String imagepath=album.getImagepath();
                     //Log.d("imagepath", " " + imagepath);
@@ -86,18 +93,49 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                                 .into(((AlbumViewHolder) holder).imageView);
                     }
                     break;
+
+                case AD_TYPE:
+                    /*
+                    NativeExpressAdView adView=adViewHolder.adView;
+                    ViewGroup adCardView = (ViewGroup) adViewHolder.itemView;
+                    adCardView.removeAllViews();
+
+                    if(adView.getParent()!=null){
+                        ((ViewGroup)adView.getParent()).removeView(adView);
+                        Toast.makeText(c, "Removed", Toast.LENGTH_SHORT).show();
+                    }
+                    adCardView.addView(adView);*/
+
+                    break;
             }
-        }
+
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return 1;
+    public int getItemViewType(int position)
+    {
+        if(albumList.get(position)==null)
+        return AD_TYPE;
+
+        return NORMAL_TYPE;
     }
 
     @Override
     public int getItemCount() {
         return albumList.size();
+    }
+
+    private class AdViewHolder extends RecyclerView.ViewHolder {
+
+        NativeExpressAdView adView;
+        AdViewHolder(View view) {
+            super(view);
+            adView = (NativeExpressAdView)view.findViewById(R.id.adView);
+            AdRequest request = new AdRequest.Builder()
+                     . addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4")
+                    .build();
+            adView.loadAd(request);
+        }
     }
 
 }
@@ -117,21 +155,6 @@ class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnLongClic
         this.ctx = context;
         imageView= (ImageView) view.findViewById(R.id.imageView);
         name= (TextView) view.findViewById(R.id.name);
-        /*optionsMenu = (RelativeLayout)view.findViewById(R.id.options_menu);
-        optionMenuClose = (ImageView) view.findViewById(R.id.options_menu_close);*/
-        /*imageView.setOnLongClickListener(this);
-        name.setOnLongClickListener(this);*/
-
-        /*optionMenuClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isOpen) {
-                    optionsMenu.setVisibility(View.GONE);
-                    view.setVisibility(View.VISIBLE);
-                    isOpen = false;
-                }
-            }
-        });*/
     }
 
     @Override

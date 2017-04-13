@@ -22,6 +22,8 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 
@@ -45,7 +47,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void init() {
-
         // Toolbar
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);
@@ -175,13 +176,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 dialog.dismiss();
             }
         });
-        Button cancel=(Button) dialog.findViewById(R.id.cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+
         //
 
     }

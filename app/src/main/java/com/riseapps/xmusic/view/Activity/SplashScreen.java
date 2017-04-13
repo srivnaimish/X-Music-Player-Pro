@@ -62,49 +62,9 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-          //  String adString = getResources().getString(R.string.adStringPlaceholder);
             songList = new MyApplication(SplashScreen.this).getWritableDatabase().readSongs();
             artistList = new MyApplication(SplashScreen.this).getWritableDatabase().readArtists();
             albumList = new MyApplication(SplashScreen.this).getWritableDatabase().readAlbums();
-        /*    if (albumList.size() > 13 && artistList.size()>17) {
-                // Place 3 ads for album fragment
-                Album albumAdOne = new Album();
-                albumAdOne.setName(adString);
-                albumAdOne.setImagepath("NoImage");
-                albumAdOne.setViewType(2);
-                albumList.add(3, albumAdOne);
-
-                Album albumAdTwo = new Album();
-                albumAdTwo.setName(adString);
-                albumAdTwo.setImagepath("NoImage");
-                albumAdTwo.setViewType(2);
-                albumList.add(8, albumAdTwo);
-
-                Album albumAdThree = new Album();
-                albumAdThree.setName(adString);
-                albumAdThree.setImagepath("NoImage");
-                albumAdThree.setViewType(2);
-                albumList.add(13, albumAdThree);
-
-                // Place 3 ads for artist fragment
-                Artist artistAdOne = new Artist();
-                artistAdOne.setName(adString);
-                artistAdOne.setImagepath("NoImage");
-                artistAdOne.setViewType(2);
-                artistList.add(4, artistAdOne);
-
-                Artist artistAdTwo = new Artist();
-                artistAdTwo.setName(adString);
-                artistAdTwo.setImagepath("NoImage");
-                artistAdTwo.setViewType(2);
-                artistList.add(11, artistAdTwo);
-
-                Artist artistAdThree = new Artist();
-                artistAdThree.setName(adString);
-                artistAdThree.setImagepath("NoImage");
-                artistAdThree.setViewType(2);
-                artistList.add(17, artistAdThree);
-            }*/
 
             return null;
         }
