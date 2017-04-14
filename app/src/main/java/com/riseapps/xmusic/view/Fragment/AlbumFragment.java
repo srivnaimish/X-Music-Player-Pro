@@ -62,7 +62,7 @@ public class AlbumFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         final GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
 
-        grid.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+       /* grid.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 switch (albumAdapter.getItemViewType(position)) {
@@ -74,7 +74,7 @@ public class AlbumFragment extends Fragment {
                         return -1;
                 }
             }
-        });
+        });*/
         recyclerView.setLayoutManager(grid);
 
         int spanCount = 2;

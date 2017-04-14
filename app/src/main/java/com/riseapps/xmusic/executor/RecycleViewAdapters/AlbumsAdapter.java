@@ -28,9 +28,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
     private List<Album> albumList;
     Context c;
 
-    private static final int AD_TYPE=0;
-    private static final int NORMAL_TYPE=1;
-
 
     public AlbumsAdapter(Context context, List<Album> albumList, RecyclerView recyclerView) {
         this.albumList = albumList;
@@ -48,99 +45,55 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        switch (viewType) {
 
-            case AD_TYPE:
-                View v1 = inflater.inflate(R.layout.nativ_express_ad_container, parent, false);
-                vh=new AdViewHolder(v1);
-                break;
-            case NORMAL_TYPE:
-                View v = inflater.inflate(R.layout.grid_row, parent, false);
-                vh = new AlbumViewHolder(v, c);
-                break;
-        }
+        View v = inflater.inflate(R.layout.grid_row, parent, false);
+        vh = new AlbumViewHolder(v, c);
+
+
         return vh;
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
-            Album album = albumList.get(position);
-            switch (holder.getItemViewType()) {
-                case NORMAL_TYPE:
-                    String name=album.getName().trim();
-                    String imagepath=album.getImagepath();
-                    //Log.d("imagepath", " " + imagepath);
-                    if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
-                        if (!imagepath.equalsIgnoreCase("no_image")) {
-                            Glide.with(c).load(imagepath)
-                                    .centerCrop()
-                                    .into(((AlbumViewHolder) holder).imageView);
-                        }
-                        else {
-                            Glide.with(c).load("")
-                                    .placeholder(R.drawable.ic_equaliser)
-                                    .into(((AlbumViewHolder) holder).imageView);
-                        }
-                        ((AlbumViewHolder)holder).name.setText(name);
-                        ((AlbumViewHolder) holder).album = album;
-                    }
-                    else {
-                        ((AlbumViewHolder)holder).name.setText(name);
-                        Glide.with(c).load("")
-                                .placeholder(R.drawable.ic_equaliser)
-                                .fitCenter()
-                                .into(((AlbumViewHolder) holder).imageView);
-                    }
-                    break;
+        Album album = albumList.get(position);
 
-                case AD_TYPE:
-                    /*
-                    NativeExpressAdView adView=adViewHolder.adView;
-                    ViewGroup adCardView = (ViewGroup) adViewHolder.itemView;
-                    adCardView.removeAllViews();
-
-                    if(adView.getParent()!=null){
-                        ((ViewGroup)adView.getParent()).removeView(adView);
-                        Toast.makeText(c, "Removed", Toast.LENGTH_SHORT).show();
-                    }
-                    adCardView.addView(adView);*/
-
-                    break;
+        String name = album.getName().trim();
+        String imagepath = album.getImagepath();
+        //Log.d("imagepath", " " + imagepath);
+        if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
+            if (!imagepath.equalsIgnoreCase("no_image")) {
+                Glide.with(c).load(imagepath)
+                        .centerCrop()
+                        .into(((AlbumViewHolder) holder).imageView);
+            } else {
+                Glide.with(c).load("")
+                        .placeholder(R.drawable.ic_equaliser)
+                        .into(((AlbumViewHolder) holder).imageView);
             }
+            ((AlbumViewHolder) holder).name.setText(name);
+            ((AlbumViewHolder) holder).album = album;
+        } else {
+            ((AlbumViewHolder) holder).name.setText(name);
+            Glide.with(c).load("")
+                    .placeholder(R.drawable.ic_equaliser)
+                    .fitCenter()
+                    .into(((AlbumViewHolder) holder).imageView);
+        }
+
 
     }
 
-    @Override
-    public int getItemViewType(int position)
-    {
-        if(albumList.get(position)==null)
-        return AD_TYPE;
-
-        return NORMAL_TYPE;
-    }
 
     @Override
     public int getItemCount() {
         return albumList.size();
     }
 
-    private class AdViewHolder extends RecyclerView.ViewHolder {
-
-        NativeExpressAdView adView;
-        AdViewHolder(View view) {
-            super(view);
-            adView = (NativeExpressAdView)view.findViewById(R.id.adView);
-            AdRequest request = new AdRequest.Builder()
-                     . addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4")
-                    .build();
-            adView.loadAd(request);
-        }
-    }
 
 }
 
-class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
+class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
     ImageView imageView, optionMenuClose;
     TextView name;
@@ -153,8 +106,8 @@ class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnLongClic
     AlbumViewHolder(final View view, Context context) {
         super(view);
         this.ctx = context;
-        imageView= (ImageView) view.findViewById(R.id.imageView);
-        name= (TextView) view.findViewById(R.id.name);
+        imageView = (ImageView) view.findViewById(R.id.imageView);
+        name = (TextView) view.findViewById(R.id.name);
     }
 
     @Override
@@ -183,8 +136,7 @@ class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnLongClic
             });
             menu.setVisibility(View.VISIBLE);
             anim.start();
-        }
-        else {
+        } else {
             menu.setVisibility(View.VISIBLE);
         }
     }

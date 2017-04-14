@@ -23,6 +23,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -39,7 +41,10 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         init();
-
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-2454061641779517~3507282989");
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4").build();
+        mAdView.loadAd(adRequest);
     }
 
     public int getLayoutId() {

@@ -43,6 +43,7 @@ import com.bumptech.glide.Glide;
 import com.claudiodegio.msv.OnSearchViewListener;
 import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
+import com.google.android.gms.ads.MobileAds;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -292,6 +293,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     private void initiallize() {
+
+
 
         progressView = (RelativeLayout) findViewById(R.id.progress);
         IntentFilter intentFilter = new IntentFilter();

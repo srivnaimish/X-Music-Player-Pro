@@ -14,9 +14,7 @@ import com.riseapps.xmusic.R;
 public class CustomAnimation {
 
     View V;
-    public Animation slideShow(Context context){
-        return AnimationUtils.loadAnimation(context, R.anim.main_player_show);
-    }
+
 
     public Animation likeAnimation(Context context){
         return AnimationUtils.loadAnimation(context, R.anim.like);

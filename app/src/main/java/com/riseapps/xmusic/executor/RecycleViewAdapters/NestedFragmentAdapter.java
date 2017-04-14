@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.executor.PlaySongExec;
@@ -25,6 +27,9 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
 
     private List<Song> songsList;
     Context c;
+
+    private static final int AD_TYPE=0;
+    private static final int NORMAL_TYPE=1;
 
     public NestedFragmentAdapter(Context context, List<Song> songs, RecyclerView recyclerView) {
         songsList = songs;
@@ -42,10 +47,20 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder vh;
-        View v = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.song_name_rows, parent, false);
-        return new NestedSongViewHolder(v, c);
+        RecyclerView.ViewHolder vh = null;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        switch (viewType) {
+            case AD_TYPE:
+                View v1 = inflater.inflate(R.layout.nativ_express_ad_container, parent, false);
+                vh=new AdViewHolder(v1);
+                break;
+            case NORMAL_TYPE:
+                View v = inflater.inflate(R.layout.song_name_rows, parent, false);
+                vh = new NestedSongViewHolder(v, c);
+                break;
+        }
+        return vh;
+
 
     }
 
@@ -73,6 +88,27 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
         return songsList.size();
     }
 
+    @Override
+    public int getItemViewType(int position)
+    {
+        if(songsList.get(position)==null)
+            return AD_TYPE;
+
+        return NORMAL_TYPE;
+    }
+
+    private class AdViewHolder extends RecyclerView.ViewHolder {
+
+        NativeExpressAdView adView;
+        AdViewHolder(View view) {
+            super(view);
+            adView = (NativeExpressAdView)view.findViewById(R.id.adView);
+            AdRequest request = new AdRequest.Builder()
+                    . addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4")
+                    .build();
+            adView.loadAd(request);
+        }
+    }
 }
 class NestedSongViewHolder extends RecyclerView.ViewHolder {
 
