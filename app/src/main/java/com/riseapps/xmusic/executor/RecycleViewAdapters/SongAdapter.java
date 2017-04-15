@@ -92,24 +92,24 @@ public class SongAdapter extends RecyclerView.Adapter {
                             if (!longPressedSongs.get(i)) {
                                 longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
                                 longPressedSongs.put(i, true);
-                                mListener.onShowFirst(longPressedSongs.size());
+                                mListener.onShowFirst(longPressedSongs.size(), longPressedSongs);
                                 ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
                             } else {
                                 longPressedSongs.put(i, false);
                                 ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorWhite));
-                                mListener.onShowFirst(longPressedSongs.size());
+                                mListener.onShowFirst(longPressedSongs.size(), longPressedSongs);
                             }
                         } else {
                             longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
                             longPressedSongs.put(i, true);
                             ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
-                            mListener.onShowFirst(longPressedSongs.size());
+                            mListener.onShowFirst(longPressedSongs.size(), longPressedSongs);
                         }
                     } else {
                         longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
                         longPressedSongs.put(i, true);
                         ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
-                        mListener.onShowFirst(longPressedSongs.size());
+                        mListener.onShowFirst(longPressedSongs.size(), longPressedSongs);
                     }
                 }
 
@@ -121,7 +121,7 @@ public class SongAdapter extends RecyclerView.Adapter {
                                 count++;
                                 longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
                                 longPressedSongs.put(i, true);
-                                mListener.onShow(count);
+                                mListener.onShow(count, longPressedSongs);
                                 ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
                             } else {
                                 longPressedSongs.put(i, false);
@@ -131,7 +131,7 @@ public class SongAdapter extends RecyclerView.Adapter {
                             count++;
                             longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
                             longPressedSongs.put(i, true);
-                            mListener.onShow(count);
+                            mListener.onShow(count, longPressedSongs);
                             ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
                         }
                     } else {
@@ -280,8 +280,8 @@ public class SongAdapter extends RecyclerView.Adapter {
 
 
     public interface OnShowContextMenuListener {
-        void onShowFirst(int count);
-        void onShow(int count);
+        void onShowFirst(int count, HashMap<Integer, Boolean> list);
+        void onShow(int count, HashMap<Integer, Boolean> list);
         void onHide();
     }
 

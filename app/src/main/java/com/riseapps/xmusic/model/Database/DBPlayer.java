@@ -253,6 +253,7 @@ public class DBPlayer {
 
     public void addMultipleSongToSinglePlaylist(String playlistName, long id[]) {
         for (int i = 0; i < id.length; i++) {
+            Log.d("TAG ARRAY LONG", String.valueOf(id[i]));
             String sql = "INSERT INTO " + PlayerHelper.PLAYLIST_TABLE_NAME + " (" + PlayerHelper.PLAYLIST_COLUMN_NAME + "," + PlayerHelper.PLAYLIST_COLUMN_SONG + ") VALUES(?,?);";
             SQLiteStatement statement = mDatabase.compileStatement(sql);
             mDatabase.beginTransaction();

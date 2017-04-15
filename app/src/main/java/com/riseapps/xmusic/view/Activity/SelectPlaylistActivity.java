@@ -57,6 +57,10 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
     // utils
     private TagSelector tagSelector = new TagSelector(SelectPlaylistActivity.this);
     private Dialog dialog;
+    private String selectionType;
+    private String singlePlaylist;
+    private View singlePlaylistView;
+    private TextView singlePlaylistTextView;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -113,6 +117,11 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Intent intent = getIntent();
+        if (intent != null)
+            selectionType = intent.getStringExtra("selection_type");
+
     }
 
     @Override
@@ -180,20 +189,68 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTagClick(View view, TextView tagView, Tag tag, int position) {
-
-                if (selectedPlaylist.get(tag.text) == null) {
-                    view.setBackground(tagSelector.getSelector(tag));
-                    tagView.setTextColor(getResources().getColor(R.color.colorWhite));
-                    selectedPlaylist.put(tag.text, 1); // tag.text - playlist name
-                } else {
-                    // reset same tag
-                    tagView.setTextColor(getResources().getColor(R.color.colorBlack));
-                    tag.layoutColor = Color.parseColor("#FFFFFF");
-                    tag.tagTextColor = Color.parseColor("#000000");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        view.setBackground(tagSelector.getNormalSelector(tag));
+                if (selectionType.equals("multiple_playlist")) {
+                    if (selectedPlaylist.get(tag.text) == null) {
+                        view.setBackground(tagSelector.getSelector(tag));
+                        tagView.setTextColor(getResources().getColor(R.color.colorWhite));
+                        selectedPlaylist.put(tag.text, 1); // tag.text - playlist name
+                    } else {
+                        // reset same tag
+                        tagView.setTextColor(getResources().getColor(R.color.colorBlack));
+                        tag.layoutColor = Color.parseColor("#FFFFFF");
+                        tag.tagTextColor = Color.parseColor("#000000");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            view.setBackground(tagSelector.getNormalSelector(tag));
+                        }
+                        selectedPlaylist.remove(tag.text);
                     }
-                    selectedPlaylist.remove(tag.text);
+                }
+                else if (selectionType.equals("single_playlist")) {
+                    if (selectedPlaylist.get(tag.text) == null) {
+                        Log.d(TAG, "IF ADD TAG AND SINGLE PLAYLIST " + singlePlaylist);
+                        // CHECK IF ANYTHING ALREADY PRESENT IN HASHMAP
+                        if (selectedPlaylist.size() > 1) {
+                            // reset previous tag
+                            selectedPlaylist.remove(singlePlaylist);
+                            singlePlaylistTextView.setTextColor(getResources().getColor(R.color.colorBlack));
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                singlePlaylistView.setBackground(tagSelector.getNormalSelector(tag));
+                            }
+                            singlePlaylist = tag.text;
+                            Log.d(TAG, "IF RESET PREVIOUS TAG AND SINGLE PLAYLIST " + singlePlaylist);
+                            // ADD TAG
+                            view.setBackground(tagSelector.getSelector(tag));
+                            tagView.setTextColor(getResources().getColor(R.color.colorWhite));
+                            selectedPlaylist.put(tag.text, 1); // tag.text - playlist name
+                            singlePlaylistView = view;
+                            singlePlaylistTextView = tagView;
+                        } else {
+                            singlePlaylist = tag.text;
+                            Log.d(TAG, "IF ADD NEW TAG AND SINGLE PLAYLIST " + singlePlaylist);
+                            // ADD TAG
+                            view.setBackground(tagSelector.getSelector(tag));
+                            tagView.setTextColor(getResources().getColor(R.color.colorWhite));
+                            selectedPlaylist.put(tag.text, 1); // tag.text - playlist name
+                            singlePlaylistView = view;
+                            singlePlaylistTextView = tagView;
+                        }
+                    }
+                    else if (selectedPlaylist.get(tag.text) != null) {
+                        Log.d(TAG, "IF RESET TAG AND SINGLE PLAYLIST " + singlePlaylist);
+                        // RESET TAG
+                        selectedPlaylist.remove(tag.text);
+                        tagView.setTextColor(getResources().getColor(R.color.colorBlack));
+                        tag.layoutColor = Color.parseColor("#FFFFFF");
+                        tag.tagTextColor = Color.parseColor("#000000");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            view.setBackground(tagSelector.getNormalSelector(tag));
+                        }
+                        //singlePlaylist = "";
+                        singlePlaylistTextView.setTextColor(getResources().getColor(R.color.colorBlack));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            singlePlaylistView.setBackground(tagSelector.getNormalSelector(tag));
+                        }
+                    }
                 }
             }
         });

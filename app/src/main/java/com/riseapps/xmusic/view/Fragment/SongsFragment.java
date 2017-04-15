@@ -24,6 +24,7 @@ import com.riseapps.xmusic.utils.RecyclerTouchListener;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by naimish on 11/3/17.
@@ -73,19 +74,20 @@ public class SongsFragment extends Fragment{
 
         songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
             @Override
-            public void onShowFirst(int count) {
-                Toast.makeText(getActivity(), "show " + count, Toast.LENGTH_SHORT).show();
-                mListener.onShowToolbar(count);
+            public void onShowFirst(int count, HashMap<Integer, Boolean> list) {
+                //Toast.makeText(getActivity(), "show first " + list, Toast.LENGTH_SHORT).show();
+                mListener.onShowToolbar(count, list);
             }
 
             @Override
-            public void onShow(int count) {
-                mListener.onShowCount(count);
+            public void onShow(int count, HashMap<Integer, Boolean> list) {
+                //Toast.makeText(getActivity(), "show " + list, Toast.LENGTH_SHORT).show();
+                mListener.onShowCount(count, list);
             }
 
             @Override
             public void onHide() {
-                Toast.makeText(getActivity(), "hide", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "hide", Toast.LENGTH_SHORT).show();
                 mListener.onHideToolbar();
             }
         });
@@ -101,19 +103,20 @@ public class SongsFragment extends Fragment{
                 recyclerView.setAdapter(songsAdapter);
                 songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
                     @Override
-                    public void onShowFirst(int count) {
-                        Toast.makeText(getActivity(), "show", Toast.LENGTH_SHORT).show();
-                        mListener.onShowToolbar(count);
+                    public void onShowFirst(int count, HashMap<Integer, Boolean> list) {
+                        //Toast.makeText(getActivity(), "show first " + list, Toast.LENGTH_SHORT).show();
+                        mListener.onShowToolbar(count, list);
                     }
 
                     @Override
-                    public void onShow(int count) {
-                        mListener.onShowCount(count);
+                    public void onShow(int count, HashMap<Integer, Boolean> list) {
+                        //Toast.makeText(getActivity(), "show " + list, Toast.LENGTH_SHORT).show();
+                        mListener.onShowCount(count, list);
                     }
 
                     @Override
                     public void onHide() {
-                        Toast.makeText(getActivity(), "hide", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "hide", Toast.LENGTH_SHORT).show();
                         mListener.onHideToolbar();
                     }
                 });
@@ -127,19 +130,20 @@ public class SongsFragment extends Fragment{
                 recyclerView.setAdapter(songsAdapter);
                 songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
                     @Override
-                    public void onShowFirst(int count) {
-                        Toast.makeText(getActivity(), "show", Toast.LENGTH_SHORT).show();
-                        mListener.onShowToolbar(count);
+                    public void onShowFirst(int count, HashMap<Integer, Boolean> list) {
+                        //Toast.makeText(getActivity(), "show first " + list, Toast.LENGTH_SHORT).show();
+                        mListener.onShowToolbar(count, list);
                     }
 
                     @Override
-                    public void onShow(int count) {
-                        mListener.onShowCount(count);
+                    public void onShow(int count, HashMap<Integer, Boolean> list) {
+                        //Toast.makeText(getActivity(), "show " + list, Toast.LENGTH_SHORT).show();
+                        mListener.onShowCount(count, list);
                     }
 
                     @Override
                     public void onHide() {
-                        Toast.makeText(getActivity(), "hide", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "hide", Toast.LENGTH_SHORT).show();
                         mListener.onHideToolbar();
                     }
                 });
@@ -212,8 +216,8 @@ public class SongsFragment extends Fragment{
     }
 
     public interface OnShowContextMenuListener {
-        void onShowToolbar(int count);
-        void onShowCount(int count);
+        void onShowToolbar(int count, HashMap<Integer, Boolean> list);
+        void onShowCount(int count, HashMap<Integer, Boolean> list);
         void onHideToolbar();
     }
 

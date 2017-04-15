@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.support.annotation.IntegerRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -70,6 +72,8 @@ import com.riseapps.xmusic.view.Fragment.SongsFragment;
 import com.riseapps.xmusic.widgets.MainTextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -109,7 +113,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private SongsFragment songFragment;
     private ContextMenuListener clearAll;
     private MainTextView toolbar_context_title;
-    private ArrayList<Integer> multipleSongSelection = new ArrayList<>();
+    private static HashMap<Integer, Boolean> multipleSongSelectionList = new HashMap<>();
 
     private Sensor mProximity;
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
@@ -352,6 +356,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     }
                 } else if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
+                    i.putExtra("selection_type", "multiple_playlist");
                     startActivityForResult(i, 1);
                 }
                 return true;
@@ -374,7 +379,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 if (item.getItemId() == R.id.favouritesPlayer) {
                     Toast.makeText(MainActivity.this, "Action 1", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.playlist) {
-                    Toast.makeText(MainActivity.this, "Action 2", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
+                    i.putExtra("selection_type", "single_playlist");
+                    startActivityForResult(i, 2);
                 }
                 return true;
             }
@@ -386,6 +393,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 mToolbar.setVisibility(View.VISIBLE);
                 miniPlayer.setVisibility(View.VISIBLE);
                 songRefreshListener.onSongRefresh();
+                multipleSongSelectionList.clear();
             }
         });
 
@@ -582,12 +590,33 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_CANCELED) {
 
-        } else if (resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             String str = data.getStringExtra("selected_playlist");
             if (!str.equalsIgnoreCase("")) {
                 long id = songList.get(musicService.getCurrentIndex()).getID();
                 new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id, str);
                 Toast.makeText(MainActivity.this, "Added to Playlist", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
+            String str = data.getStringExtra("selected_playlist");
+            if (!str.equalsIgnoreCase("")) {
+                long[] array  = new long[multipleSongSelectionList.size()];
+                int count = 0;
+                Toast.makeText(MainActivity.this, "playlist single " + str, Toast.LENGTH_SHORT).show();
+                Iterator i = multipleSongSelectionList.entrySet().iterator();
+                while (i.hasNext()) {
+                    HashMap.Entry pair = (HashMap.Entry)i.next();
+                    array[count] = Integer.parseInt(pair.getKey().toString());
+                    Log.d("ARRAY ", "" + array[count]);
+                    count++;
+                }
+                new MyApplication(MainActivity.this).getWritableDatabase().addMultipleSongToSinglePlaylist(str.replace(",", ""), array);
+                //Toast.makeText(MainActivity.this, "array " + array[2] , Toast.LENGTH_SHORT).show();
+                multipleSongSelectionList.clear();
+                toolbarContext.setVisibility(View.GONE);
+                mToolbar.setVisibility(View.VISIBLE);
+                miniPlayer.setVisibility(View.VISIBLE);
+                songRefreshListener.onSongRefresh();
             }
         }
         if (mainPlayer.getVisibility() == View.VISIBLE) {
@@ -638,8 +667,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     songFragment = SongsFragment.newInstance();
                     songFragment.setOnShowContextMenuListener(new SongsFragment.OnShowContextMenuListener() {
                         @Override
-                        public void onShowToolbar(int count) {
+                        public void onShowToolbar(int count, HashMap<Integer, Boolean> list) {
                             Toast.makeText(MainActivity.this, "hello in activity " + count, Toast.LENGTH_SHORT).show();
+                            multipleSongSelectionList.putAll(list);
                             toolbarContext.setVisibility(View.VISIBLE);
                             toolbar_context_title.setText(count + " selected");
                             mToolbar.setVisibility(View.GONE);
@@ -647,12 +677,14 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                         }
 
                         @Override
-                        public void onShowCount(int count) {
+                        public void onShowCount(int count, HashMap<Integer, Boolean> list) {
+                            multipleSongSelectionList.putAll(list);
                             toolbar_context_title.setText(count + " selected");
                         }
 
                         @Override
                         public void onHideToolbar() {
+                            multipleSongSelectionList.clear();
                             toolbarContext.setVisibility(View.GONE);
                             mToolbar.setVisibility(View.VISIBLE);
                             miniPlayer.setVisibility(View.VISIBLE);

@@ -6,7 +6,7 @@
     android:layout_height="60dp"
     android:id="@+id/playlist_list_card"
     card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="4dp"
+    card_view:cardElevation="2dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true">
 
