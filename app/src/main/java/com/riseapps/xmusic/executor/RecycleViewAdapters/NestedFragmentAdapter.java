@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
@@ -65,7 +67,7 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof NestedSongViewHolder) {
             Song song = (Song) songsList.get(position);
@@ -79,6 +81,15 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
 
             ((NestedSongViewHolder) holder).song = song;
 
+        }
+        else {
+            ((AdViewHolder)holder).adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    ((AdViewHolder)holder).adView.setVisibility(View.VISIBLE);
+                    super.onAdLoaded();
+                }
+            });
         }
     }
 
@@ -103,6 +114,7 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
         AdViewHolder(View view) {
             super(view);
             adView = (NativeExpressAdView)view.findViewById(R.id.adView);
+            adView.setVisibility(View.GONE);
             AdRequest request = new AdRequest.Builder()
                     . addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4")
                     .build();

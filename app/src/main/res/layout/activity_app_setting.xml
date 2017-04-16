@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -25,7 +26,8 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_below="@+id/statusBar"
                 android:layout_gravity="center"
-                app:layout_scrollFlags="scroll|enterAlways">
+                app:layout_scrollFlags="scroll|enterAlways"
+                >
 
                 <com.riseapps.xmusic.widgets.MainTextView
                     android:id="@+id/toolbar_title"
@@ -44,7 +46,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/appbar">
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -280,7 +281,8 @@
                             android:layout_height="50dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
-                            app:srcCompat="@drawable/ic_like" />
+                            app:srcCompat="@drawable/ic_like"
+                            android:tint="@color/colorPrimaryFontDark"/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -316,13 +318,13 @@
                     ads:adSize="SMART_BANNER"
                     ads:adUnitId="@string/banner_ad_id"
                     android:layout_below="@id/setting_rate"
-                    >
-                </com.google.android.gms.ads.AdView>
+                    android:layout_marginTop="30dp"
+                    />
+
 
             </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
 
-
-        </android.support.v4.widget.NestedScrollView>
 
     </RelativeLayout>
 

@@ -22,6 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -35,6 +36,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     private EditText min,hrs;
     private static EqualizerPresetListener equalizerPresetListener;
     private RadioGroup radioButtonGroup;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +44,16 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         setContentView(getLayoutId());
         init();
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-2454061641779517~3507282989");
-        AdView mAdView = (AdView) findViewById(R.id.adView);
+        mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4").build();
         mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                mAdView.setVisibility(View.VISIBLE);
+                super.onAdLoaded();
+            }
+        });
     }
 
     public int getLayoutId() {
@@ -217,4 +226,5 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     public static void setEqualizerPresetListener(EqualizerPresetListener listener) {   // Sets a callback to execute when we switch songs.. ie: update UI
         equalizerPresetListener = listener;
     }
+
 }

@@ -39,7 +39,8 @@
             android:id="@+id/album_art_mini"
             android:layout_width="60sp"
             android:layout_height="60sp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -82,7 +82,6 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                 finish();
             }
         });
-        toolbar.setElevation(0);
         toolbar.inflateMenu(R.menu.select_playlist_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -242,14 +241,10 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                         tagView.setTextColor(getResources().getColor(R.color.colorBlack));
                         tag.layoutColor = Color.parseColor("#FFFFFF");
                         tag.tagTextColor = Color.parseColor("#000000");
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            view.setBackground(tagSelector.getNormalSelector(tag));
-                        }
+                        view.setBackground(tagSelector.getNormalSelector(tag));
                         //singlePlaylist = "";
                         singlePlaylistTextView.setTextColor(getResources().getColor(R.color.colorBlack));
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            singlePlaylistView.setBackground(tagSelector.getNormalSelector(tag));
-                        }
+                        singlePlaylistView.setBackground(tagSelector.getNormalSelector(tag));
                     }
                 }
             }

@@ -52,6 +52,7 @@ import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.AlbumRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ArtistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ContextMenuListener;
+import com.riseapps.xmusic.executor.Interfaces.PlaylistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.OnSwipeTouchListener;
@@ -62,6 +63,7 @@ import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
+import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
@@ -103,13 +105,14 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private TabLayout tabLayout;
     private Toolbar toolbar, toolbarPlayer, toolbarContext;
     private WaveHelper mWaveHelper;
-    private int mBorderColor = Color.parseColor("#000000");
+    private int mBorderColor = Color.parseColor("#e74c3c");
     private int mBorderWidth = 5;
     private SensorManager mSensorManager;
     private ProximityDetector proximityDetector;
     private SongRefreshListener songRefreshListener;
     private ArtistRefreshListener artistRefreshListener;
     private AlbumRefreshListener albumRefreshListener;
+    private PlaylistRefreshListener playlistRefreshListener;
     private SongsFragment songFragment;
     private ContextMenuListener clearAll;
     private MainTextView toolbar_context_title;
@@ -358,6 +361,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
                     i.putExtra("selection_type", "multiple_playlist");
                     startActivityForResult(i, 1);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
                 return true;
             }
@@ -452,7 +456,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             .setDuration(1000)
                             .start();
                 }
-            }, 3500);
+            }, 2500);
         }
     }
 
@@ -595,23 +599,21 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             if (!str.equalsIgnoreCase("")) {
                 long id = songList.get(musicService.getCurrentIndex()).getID();
                 new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id, str);
-                Toast.makeText(MainActivity.this, "Added to Playlist", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Song Added to Playlist", Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
             String str = data.getStringExtra("selected_playlist");
             if (!str.equalsIgnoreCase("")) {
                 long[] array  = new long[multipleSongSelectionList.size()];
                 int count = 0;
-                Toast.makeText(MainActivity.this, "playlist single " + str, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "playlist name " + str, Toast.LENGTH_SHORT).show();
                 Iterator i = multipleSongSelectionList.entrySet().iterator();
                 while (i.hasNext()) {
                     HashMap.Entry pair = (HashMap.Entry)i.next();
-                    array[count] = Integer.parseInt(pair.getKey().toString());
-                    Log.d("ARRAY ", "" + array[count]);
+                    array[count]=songList.get(Integer.parseInt(pair.getKey().toString())).getID();
                     count++;
                 }
-                new MyApplication(MainActivity.this).getWritableDatabase().addMultipleSongToSinglePlaylist(str.replace(",", ""), array);
-                //Toast.makeText(MainActivity.this, "array " + array[2] , Toast.LENGTH_SHORT).show();
+                 new MyApplication(MainActivity.this).getWritableDatabase().addMultipleSongToSinglePlaylist(str.replace(",", ""), array);
                 multipleSongSelectionList.clear();
                 toolbarContext.setVisibility(View.GONE);
                 mToolbar.setVisibility(View.VISIBLE);
@@ -646,6 +648,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         this.albumRefreshListener = refreshListener;
     }
 
+    public void setPlaylistRefreshListener(PlaylistRefreshListener refreshListener) {
+        this.playlistRefreshListener = refreshListener;
+    }
+
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         String tabTitles[] = new String[]{"PLAYLIST", "ALBUM", "ARTISTS", "TRACKS"};
@@ -668,7 +674,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     songFragment.setOnShowContextMenuListener(new SongsFragment.OnShowContextMenuListener() {
                         @Override
                         public void onShowToolbar(int count, HashMap<Integer, Boolean> list) {
-                            Toast.makeText(MainActivity.this, "hello in activity " + count, Toast.LENGTH_SHORT).show();
                             multipleSongSelectionList.putAll(list);
                             toolbarContext.setVisibility(View.VISIBLE);
                             toolbar_context_title.setText(count + " selected");
@@ -743,6 +748,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     songRefreshListener.OnSongRefresh(songs);
                     albumRefreshListener.OnAlbumRefresh(albums);
                     artistRefreshListener.OnArtistRefresh(artists);
+                    playlistRefreshListener.OnPlaylistRefresh();
                 }
             });
 

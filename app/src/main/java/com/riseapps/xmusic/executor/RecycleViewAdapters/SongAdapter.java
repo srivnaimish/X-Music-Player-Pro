@@ -24,6 +24,7 @@ import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.Interfaces.SongLikedListener;
 import com.riseapps.xmusic.model.Pojo.LongSelectedSong;
 import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.utils.DipToPx;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -174,7 +175,9 @@ public class SongAdapter extends RecyclerView.Adapter {
                         .into(((SongViewHolder) holder).iv);
             }
             else {
-                ((SongViewHolder) holder).iv.setImageResource(R.drawable.ic_equaliser);
+                int padding= DipToPx.dipToPx(c,5);
+                ((SongViewHolder) holder).iv.setImageResource(R.drawable.ic_music_player);
+                ((SongViewHolder) holder).iv.setPadding(padding,padding,padding,padding);
             }
 
             if(song.getFavourite()){

@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,7 +38,8 @@ public class Walkthrough extends AppCompatActivity {
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private int[] layouts;
-    private Button btnSkip, btnNext,btn1,btn2,btn3;
+    private Button btn1,btn2,btn3;
+    private RelativeLayout btnSkip;
 
     Async async = new Async();
     final int textLimit = 26;
@@ -51,14 +53,11 @@ public class Walkthrough extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= 21)
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         setContentView(R.layout.activity_walkthrough);
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        btnSkip = (Button) findViewById(R.id.btn_skip);
-        btnNext = (Button) findViewById(R.id.btn_next);
+        btnSkip = (RelativeLayout) findViewById(R.id.btn_skip);
         btn1= (Button) findViewById(R.id.bt1);
         btn2= (Button) findViewById(R.id.bt2);
         btn3= (Button) findViewById(R.id.bt3);
@@ -79,28 +78,11 @@ public class Walkthrough extends AppCompatActivity {
             }
         });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // checking for last page
-                // if last page home screen will be launched
-                int current = getItem(+1);
-                if (current < layouts.length) {
-                    // move to next screen
-                    viewPager.setCurrentItem(current);
-                } else {
-                    launchHomeScreen();
-                }
-            }
-        });
         checkPermission();
 
 
     }
 
-    private int getItem(int i) {
-        return viewPager.getCurrentItem() + i;
-    }
 
     private void launchHomeScreen() {
         if (async.getStatus() == AsyncTask.Status.FINISHED) {
@@ -129,22 +111,17 @@ public class Walkthrough extends AppCompatActivity {
             if (position == layouts.length - 1) {
                 btn3.setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
                 btn2.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
-                btnNext.setText(getString(R.string.start));
-                btnSkip.setVisibility(View.GONE);
             }
             else if(position==1){
                 // still pages are left
                 btn1.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
                 btn3.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
                 btn2.setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
-                btnNext.setText(getString(R.string.next));
-                btnSkip.setVisibility(View.VISIBLE);
+
             }
             else {
                 btn1.setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
                 btn2.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
-                btnNext.setText(getString(R.string.next));
-                btnSkip.setVisibility(View.VISIBLE);
             }
         }
 

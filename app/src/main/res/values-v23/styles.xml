@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowActionModeOverlay">true</item>
+
+        <item name="actionModeBackground">@color/colorWhite</item>
+
+        <item name="windowActionBar">false</item>
+
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:colorBackground">@color/colorMainBackground</item>
+
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+        <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

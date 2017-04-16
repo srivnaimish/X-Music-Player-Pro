@@ -21,11 +21,13 @@ import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
+import com.riseapps.xmusic.executor.Interfaces.PlaylistRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.PlaylistAdapter;
 import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.utils.GridItemDecoration;
+import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.ArrayList;
 
@@ -37,7 +39,7 @@ public class PlaylistFragment extends Fragment {
     ArrayList<Playlist> playLists=new ArrayList<>();
     PlaylistAdapter playlistAdapter;
     private OnFragmentInteractionListener mListener;
-    private LinearLayout createPlaylist;
+  //  private LinearLayout createPlaylist;
     private Dialog dialog;
 
     public PlaylistFragment() {
@@ -62,6 +64,7 @@ public class PlaylistFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment_songs
         final View v=inflater.inflate(R.layout.fragment_playlist, container, false);
+/*
 
         createPlaylist = (LinearLayout) v.findViewById(R.id.add_playlist);
         createPlaylist.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +73,7 @@ public class PlaylistFragment extends Fragment {
                 openDialog();
             }
         });
+*/
 
         recyclerView = (RecyclerView) v.findViewById(R.id.playlists);
         recyclerView.setHasFixedSize(true);
@@ -118,6 +122,13 @@ public class PlaylistFragment extends Fragment {
             }
         }));
         refreshPlaylists();
+
+        ((MainActivity) getActivity()).setPlaylistRefreshListener(new PlaylistRefreshListener() {
+            @Override
+            public void OnPlaylistRefresh() {
+                refreshPlaylists();
+            }
+        });
         return v;
     }
 
@@ -176,7 +187,7 @@ public class PlaylistFragment extends Fragment {
         recyclerView.setAdapter(playlistAdapter);
     }
 
-    private void openDialog(){
+   /* private void openDialog(){
         dialog=new Dialog(getActivity());
         dialog.setContentView(R.layout.playlist_create_dialog);
         dialog.show();
@@ -201,5 +212,5 @@ public class PlaylistFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-    }
+    }*/
 }

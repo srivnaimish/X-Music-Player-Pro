@@ -15,14 +15,14 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:srcCompat="@drawable/ic_play" />
+            app:srcCompat="@drawable/ic_waving_hand" />
 
         <com.riseapps.xmusic.widgets.MainTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome2"
+            android:text="Wave to Skip"
             android:textColor="@color/textColorPrimary"
-            android:textSize="20sp"
+            android:textSize="23sp"
             android:layout_marginTop="20dp"
             android:textStyle="bold" />
 
@@ -32,10 +32,10 @@
             android:layout_marginTop="5dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="Some Sub Heading"
+            android:text="Switch on the Pro mode in settings and double wave close to your phone to skip to a next song"
             android:textAlignment="center"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="16sp" />
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp" />
 
     </LinearLayout>
 </RelativeLayout>
