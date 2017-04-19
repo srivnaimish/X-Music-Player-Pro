@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Light Theme-->
-    <color name="colorPrimary">#fff</color>
+    <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#000</color>
-    <color name="colorAccent">#e74c3c</color>
+    <color name="colorAccent">#EC644B</color>
     <color name="textColorPrimary">#34495e</color>
     <color name="colorMainBackground">#EEEEEE</color>
     <color name="colorWhite">#FFF</color>
