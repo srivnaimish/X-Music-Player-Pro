@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.riseapps.xmusic.component.AlbumArtChecker;
 import com.riseapps.xmusic.model.Pojo.Song;
@@ -31,7 +32,7 @@ public class UpdateSongs {
     public void getSongList() {
         ContentResolver musicResolver = context.getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
+        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
 
         if (musicCursor != null && musicCursor.moveToFirst()) {
             //get columns
@@ -46,7 +47,6 @@ public class UpdateSongs {
             int album = musicCursor.getColumnIndex
                     (MediaStore.Audio.AudioColumns.ALBUM);
             int x = 0;
-            long id = 0;
             do {
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
@@ -89,7 +89,7 @@ public class UpdateSongs {
 
         ContentResolver musicResolver = context.getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null,  null);
+        Cursor musicCursor = musicResolver.query(musicUri, null, null, null,  MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
 
         if (musicCursor != null && musicCursor.moveToFirst()) {
             //get columns

@@ -38,9 +38,10 @@ import java.util.concurrent.TimeUnit;
 
 public class MusicService extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
-        MediaPlayer.OnCompletionListener {
+        MediaPlayer.OnCompletionListener, AudioManager.OnAudioFocusChangeListener {
 
     public MediaPlayer player;
+    private AudioManager audioManager;
     public Equalizer equalizer;
     public HeadsetPlugReceiver headsetPlugReceiver;
     public ArrayList<Song> songs;
@@ -71,6 +72,7 @@ public class MusicService extends Service implements
         super.onCreate();
         songPos = 0;
         player = new MediaPlayer();
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         initMusicPlayer();
         headsetPlugReceiver = new HeadsetPlugReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -168,6 +170,7 @@ public class MusicService extends Service implements
 
     @Override
     public void onDestroy() {
+        audioManager.abandonAudioFocus(this);
         equalizer.setEnabled(false);
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(NOTIFICATION_ID);
@@ -187,6 +190,27 @@ public class MusicService extends Service implements
         super.onDestroy();
     }
 
+    @Override
+    public void onAudioFocusChange(int i) {
+        switch (i) {
+            case AudioManager.AUDIOFOCUS_GAIN:
+                player.setVolume(1.0f, 1.0f);
+                break;
+
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                togglePlay();
+                break;
+
+            case AudioManager.AUDIOFOCUS_LOSS:
+                togglePlay();
+                break;
+
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                if (player.isPlaying()) player.setVolume(0.1f, 0.1f);
+                break;
+        }
+    }
+
     public class MusicBinder extends Binder {
         public MusicService getService() {
             return MusicService.this;
@@ -204,6 +228,8 @@ public class MusicService extends Service implements
         player.setOnPreparedListener(this);
         player.setOnCompletionListener(this);
         player.setOnErrorListener(this);
+
+        audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
     }
 
     public void setSongs(ArrayList<Song> songs) {

@@ -344,10 +344,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         toolbarPlayer.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                Song song = songList.get(musicService.getCurrentIndex());
                 if (item.getItemId() == R.id.favouritesPlayer) {
                     View v = findViewById(R.id.favouritesPlayer);
                     v.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
-                    Song song = songList.get(musicService.getCurrentIndex());
                     if (song.getFavourite()) {
                         new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(), 0);
                         song.setFavourite(false);
@@ -362,6 +362,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     i.putExtra("selection_type", "multiple_playlist");
                     startActivityForResult(i, 1);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                } else if(item.getItemId()==R.id.youtube){
+                    Intent intent=new Intent(Intent.ACTION_SEARCH);
+                    intent.setPackage("com.google.android.youtube");
+                    intent.putExtra("query",song.getName());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
                 return true;
             }
@@ -456,7 +462,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             .setDuration(1000)
                             .start();
                 }
-            }, 2500);
+            }, 1500);
         }
     }
 
@@ -600,13 +606,13 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 long id = songList.get(musicService.getCurrentIndex()).getID();
                 new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id, str);
                 Toast.makeText(MainActivity.this, "Song Added to Playlist", Toast.LENGTH_SHORT).show();
+                playlistRefreshListener.OnPlaylistRefresh();
             }
         } else if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
             String str = data.getStringExtra("selected_playlist");
             if (!str.equalsIgnoreCase("")) {
                 long[] array  = new long[multipleSongSelectionList.size()];
                 int count = 0;
-                Toast.makeText(MainActivity.this, "playlist name " + str, Toast.LENGTH_SHORT).show();
                 Iterator i = multipleSongSelectionList.entrySet().iterator();
                 while (i.hasNext()) {
                     HashMap.Entry pair = (HashMap.Entry)i.next();
@@ -614,6 +620,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     count++;
                 }
                  new MyApplication(MainActivity.this).getWritableDatabase().addMultipleSongToSinglePlaylist(str.replace(",", ""), array);
+                playlistRefreshListener.OnPlaylistRefresh();
                 multipleSongSelectionList.clear();
                 toolbarContext.setVisibility(View.GONE);
                 mToolbar.setVisibility(View.VISIBLE);

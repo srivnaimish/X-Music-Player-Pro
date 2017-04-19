@@ -125,5 +125,6 @@
 
     <string name="ad_unit_id">ca-app-pub-2454061641779517/5483543782</string>
     <string name="banner_ad_id">ca-app-pub-2454061641779517/4255659381</string>
+    <string name="action_youtube">Search this Song on Youtube</string>
 
 </resources>

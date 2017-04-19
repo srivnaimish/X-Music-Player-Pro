@@ -175,9 +175,7 @@ public class SongAdapter extends RecyclerView.Adapter {
                         .into(((SongViewHolder) holder).iv);
             }
             else {
-                int padding= DipToPx.dipToPx(c,5);
                 ((SongViewHolder) holder).iv.setImageResource(R.drawable.ic_music_player);
-                ((SongViewHolder) holder).iv.setPadding(padding,padding,padding,padding);
             }
 
             if(song.getFavourite()){

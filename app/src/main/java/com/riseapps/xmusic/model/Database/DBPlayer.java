@@ -68,7 +68,7 @@ public class DBPlayer {
                 PlayerHelper.COLUMN_IMAGEPATH,
                 PlayerHelper.COLUMN_FAVOURITE
         };
-        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, null, null, null, null, PlayerHelper.COLUMN_NAME);
+        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, null, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 Song song = new Song();
@@ -143,7 +143,7 @@ public class DBPlayer {
         String args[] = {"" + id};
         Cursor cursor = null;
         try {
-            cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, PlayerHelper.COLUMN_ID + "=?", args, null, null, PlayerHelper.COLUMN_NAME);
+            cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, PlayerHelper.COLUMN_ID + "=?", args, null, null, null);
             if (cursor.getCount() > 0) {
                 cursor.close();
                 b = true;
@@ -323,7 +323,7 @@ public class DBPlayer {
         };
         String whereClause = "ALBUM=?";
         String whereArgs[] = {album};
-        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, whereClause, whereArgs, null, null, PlayerHelper.COLUMN_NAME);
+        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, whereClause, whereArgs, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 Song song = new Song();
@@ -399,7 +399,7 @@ public class DBPlayer {
         };
         String whereClause = "ARTIST=?";
         String whereArgs[] = {artist};
-        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, whereClause, whereArgs, null, null, PlayerHelper.COLUMN_NAME);
+        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, whereClause, whereArgs, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 Song song = new Song();
@@ -493,17 +493,6 @@ public class DBPlayer {
             this.close();
             super.finalize();
         }
-    }
-
-    public static String convertArrayToString(String[] array) {
-        String str = "";
-        for (int i = 0; i < array.length; i++) {
-            str = str + array[i];
-            if (i < array.length - 1) {
-                str = str + strSeparator;
-            }
-        }
-        return str;
     }
 
     public static String[] convertStringToArray(String str) {

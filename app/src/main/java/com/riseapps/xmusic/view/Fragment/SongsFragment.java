@@ -32,8 +32,10 @@ import java.util.HashMap;
 
 public class SongsFragment extends Fragment{
 
+    boolean loaded=false;
     RecyclerView recyclerView;
-    ArrayList<Song> songList=new ArrayList<>();
+    ArrayList<Song> songMainList=new ArrayList<>();
+    ArrayList<Song> songAllList=new ArrayList<>();
     SongAdapter songsAdapter;
     private ActionMode actionMode;
     private ActionModeCallback callback;
@@ -67,27 +69,34 @@ public class SongsFragment extends Fragment{
         recyclerView.setLayoutManager(layoutManager);
 
         String songJson=getActivity().getIntent().getStringExtra("songList");
-        songList=new Gson().fromJson(songJson, new TypeToken<ArrayList<Song>>() {}.getType());
-        ((MainActivity) getActivity()).setSongs(songList);
-        songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
+        songAllList=new Gson().fromJson(songJson, new TypeToken<ArrayList<Song>>() {}.getType());
+        ((MainActivity) getActivity()).setSongs(songAllList);
+
+        if(songAllList.size()>6){
+            String songSubJson=getActivity().getIntent().getStringExtra("songSubList");
+            songMainList=new Gson().fromJson(songSubJson, new TypeToken<ArrayList<Song>>() {}.getType());
+
+        }
+        else {
+            songMainList=songAllList;
+        }
+        songsAdapter = new SongAdapter(getActivity(), songMainList, recyclerView);
+
         recyclerView.setAdapter(songsAdapter);
 
         songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
             @Override
             public void onShowFirst(int count, HashMap<Integer, Boolean> list) {
-                //Toast.makeText(getActivity(), "show first " + list, Toast.LENGTH_SHORT).show();
                 mListener.onShowToolbar(count, list);
             }
 
             @Override
             public void onShow(int count, HashMap<Integer, Boolean> list) {
-                //Toast.makeText(getActivity(), "show " + list, Toast.LENGTH_SHORT).show();
                 mListener.onShowCount(count, list);
             }
 
             @Override
             public void onHide() {
-                //Toast.makeText(getActivity(), "hide", Toast.LENGTH_SHORT).show();
                 mListener.onHideToolbar();
             }
         });
@@ -97,9 +106,9 @@ public class SongsFragment extends Fragment{
         ((MainActivity) getActivity()).setSongRefreshListener(new SongRefreshListener() {
             @Override
             public void OnSongRefresh(ArrayList<Song> arrayList) {
-                songList=arrayList;
-                ((MainActivity) getActivity()).setSongs(songList);
-                songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
+                songMainList=arrayList;
+                ((MainActivity) getActivity()).setSongs(songMainList);
+                songsAdapter = new SongAdapter(getActivity(), songMainList, recyclerView);
                 recyclerView.setAdapter(songsAdapter);
                 songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
                     @Override
@@ -124,8 +133,8 @@ public class SongsFragment extends Fragment{
 
             @Override
             public void onSongRefresh() {
-                ((MainActivity) getActivity()).setSongs(songList);
-                songsAdapter = new SongAdapter(getActivity(), songList, recyclerView);
+                ((MainActivity) getActivity()).setSongs(songMainList);
+                songsAdapter = new SongAdapter(getActivity(), songMainList, recyclerView);
                 songsAdapter.removeAllSelection();
                 recyclerView.setAdapter(songsAdapter);
                 songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
@@ -149,21 +158,34 @@ public class SongsFragment extends Fragment{
                 });
             }
         });
-      //  async.execute();
+        //  async.execute();
 
         return rootView;
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser&&!loaded){
+            if(songAllList.size()>6){
+                for(int i=6;i<songAllList.size();i++)
+                    songMainList.add(songAllList.get(i));
+
+                songsAdapter.notifyDataSetChanged();
+            }
+            loaded=true;
+        }
+    }
 
     private void implemetRecyclerViewListener() {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerClickListener() {
             @Override
             public void onClick(View view, int position) {
                 if(view.getId()==R.id.name||view.getId()==R.id.artist_mini||view.getId()==R.id.album_art_card) {
-                    if ((((MainActivity) getActivity()).getSongs() != songList)) {
+                    if ((((MainActivity) getActivity()).getSongs() != songMainList)) {
                         Toast.makeText(getContext(), "Now Playing All Songs", Toast.LENGTH_SHORT).show();
-                        ((MainActivity) getActivity()).setSongs(songList);
-                        ((MainActivity) getActivity()).getMusicService().setSongs(songList);
+                        ((MainActivity) getActivity()).setSongs(songMainList);
+                        ((MainActivity) getActivity()).getMusicService().setSongs(songMainList);
                     }
                 }
                 if (actionMode != null)

@@ -5,13 +5,20 @@
         android:title="@string/action_favourites"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:icon="@drawable/ic_like"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/youtube"
+        android:title="@string/action_youtube"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:icon="@drawable/ic_youtube_symbol"
+        app:showAsAction="always"
         />
     <item
         android:id="@+id/playlist"
         android:title="@string/action_playlist"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:icon="@drawable/ic_playlist"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         />
 </menu>
