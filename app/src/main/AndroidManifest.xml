@@ -31,11 +31,9 @@
 
         <activity
             android:name=".view.Activity.SelectPlaylistActivity"
-            android:label="@string/title_activity_select_playlist"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".view.Activity.Walkthrough"
-            android:label="@string/title_activity_walkthrough"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".view.Activity.SplashScreen"

@@ -16,7 +16,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Stop Music After"
+        android:text="@string/stop_music_after"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:gravity="center"
@@ -43,7 +43,7 @@
             android:layout_weight=".5"
             android:background="@color/lightAccent"
             android:inputType="number"
-            android:text="0"
+            android:text="@string/zero"
             android:maxLength="2"
             android:gravity="center"
             android:textColor="@color/textColorPrimary" />
@@ -54,7 +54,7 @@
             android:layout_height="match_parent"
             android:layout_weight=".5"
             android:background="@color/lightAccent"
-            android:text="0"
+            android:text="@string/zero"
             android:maxLength="1"
             android:inputType="number"
             android:gravity="center"
@@ -80,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:text="Hours"
+            android:text="@string/hours"
             android:textAlignment="center" />
 
         <com.riseapps.xmusic.widgets.MainTextViewSub
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight=".5"
-            android:text="Minutes"
+            android:text="@string/minutes"
             android:textAlignment="center" />
     </LinearLayout>
 
@@ -101,7 +101,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/ok"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         app:layout_constraintLeft_toLeftOf="@+id/linearLayout2" />
 
     <Button
@@ -109,7 +109,7 @@
         style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginTop="0dp"
         android:text="@string/cancel"
         app:layout_constraintRight_toRightOf="@+id/linearLayout2"

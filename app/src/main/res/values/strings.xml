@@ -1,115 +1,61 @@
 <resources>
     <string name="app_name">Xmusic Pro</string>
 
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="no_music">No Music Found on Your Device …</string>
+    <!--WALKTHROUGH-->
+    <string name="fragment1_heading">Add to Playlist(s)</string>
+    <string name="fragment1_subHeading">Just select the tracks you want to add to a playlist from track list</string>
+    <string name="fragment2_heading">Wave to Skip</string>
+    <string name="fragment2_subHeading">Switch on the Pro mode in settings and double wave close to your phone to skip to a next song</string>
+    <string name="fragment3_heading">Time your playback</string>
+    <string name="fragment3_subHeading">Just set a timer to stop the music after some time through Settings</string>
+    <string name="permission_rationale">The app will not be retrieve your Songs…Please Give the Permission</string>
+    <string name="start_now">START NOW</string>
+    <string name="fetched">Got your Songs</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- MENU ITEMS -->
     <string name="action_favourites">Favourites</string>
-    <string name="action_settings">Settings</string>
     <string name="action_playlist">Add to Playlist</string>
+    <string name="action_youtube">Search this Song on Youtube</string>
+    <string name="action_refresh">Refresh Songs</string>
+    <string name="action_search">Search for a Song</string>
 
-    <string name="title_activity_select_playlist">SelectPlaylistActivity</string>
-    <string name="playlist_screen_placeholder">You can add this song to MULTIPLE playlists at once.</string>
-    <string name="title_activity_walkthrough">Walkthrough</string>
-    <string name="permission_rationale">Need storage permission to access Songs</string>
-    <string name="ok">OK</string>
-    <string name="simple_fragment_transition">transition</string>
-
-    <!--  Action Mode Menu Items -->
-    <string name="delete">Delete</string>
-    <string name="copy">Copy</string>
-    <string name="forward">Forward</string>
-    <string name="title_activity_settings">Settings</string>
-
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
-
-    <string name="adStringPlaceholder">Ads by Xmusic Pro</string>
-    <string name="search">Search</string>
+    <!--MAINACTIVITY-->
+    <string name="TAB1">PLAYLIST</string>
+    <string name="TAB2">ALBUMS</string>
+    <string name="TAB3">ARTISTS</string>
+    <string name="TAB4">TRACKS</string>
     <string name="refreshing_lists">Refreshing Lists…</string>
+
+    <!--PLAYLIST SELECT ACTIVITY-->
+    <string name="playlist_screen_placeholder">You can add this song to MULTIPLE playlists at once.</string>
+
+    <!--EXTRAS-->
+    <string name="no_music">No Music Found on Your Device …</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="play_all">Play All</string>
+    <string name="shuffle">Shuffle</string>
+
+    <!--SETTINGS-->
+    <string name="settings_title">App Settings</string>
+    <string name="pro_controls_heading">Pro Controls</string>
+    <string name="pro_control_subHeading">Double Wave Over Phone to Skip Song</string>
+    <string name="equalizer_heading">Equalizer</string>
+    <string name="equalizer_subHeading">Select the way you want to listen to your songs</string>
+    <string name="sleep_timer_heading">Sleep Timer</string>
+    <string name="sleep_timer_subHeading">Turn of the music player automatically.</string>
+    <string name="share_app_heading">Share this App !</string>
+    <string name="share_app_subHeading"><![CDATA[Spread the word to your family & friends]]></string>
+    <string name="rate_us_heading">Rate us on Play Store!</string>
+    <string name="rate_us_subHeading">Show us some love and give us 5 stars</string>
+
+    <!--CREATE PLAYLIST DIALOG-->
     <string name="create_a_new_playlist">Create a New Playlist</string>
     <string name="name">Name…</string>
-    <string name="next">NEXT</string>
-    <string name="skip">START NOW</string>
-    <string name="start">START</string>
-    <string name="fetched">Got your Songs</string>
-    <string name="pro_control">Double Wave Over Phone to Skip Song</string>
-    <string name="cancel">CANCEL</string>
+    <string name="create">CREATE</string>
 
-    <!--PRESET DIALOG-->
+    <!--EQUALIZER PRESET DIALOG-->
+    <string name="select_a_preset">Select A Preset</string>
     <string name="normal_preset">Normal</string>
     <string name="classical_preset">Classical</string>
     <string name="dance_preset">Dance</string>
@@ -120,11 +66,16 @@
     <string name="jazz_preset">Jazz</string>
     <string name="pop_preset">Pop</string>
     <string name="rock_preset">Rock</string>
-    <string name="select_a_preset">Select A Preset</string>
 
+    <!--SLEEP TIME DIALOG-->
+    <string name="stop_music_after">Stop Music After</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
+    <string name="zero">0</string>
 
+    <!--AD UNIT ID'S-->
     <string name="ad_unit_id">ca-app-pub-2454061641779517/5483543782</string>
     <string name="banner_ad_id">ca-app-pub-2454061641779517/4255659381</string>
-    <string name="action_youtube">Search this Song on Youtube</string>
+
 
 </resources>

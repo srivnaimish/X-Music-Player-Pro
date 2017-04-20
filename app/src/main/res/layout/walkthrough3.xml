@@ -20,7 +20,7 @@
         <com.riseapps.xmusic.widgets.MainTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time your playback"
+            android:text="@string/fragment3_heading"
             android:textColor="@color/textColorPrimary"
             android:textSize="23sp"
             android:layout_marginTop="20dp"
@@ -32,7 +32,7 @@
             android:layout_marginTop="5dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="Just set a timer to stop the music after some time through Settings"
+            android:text="@string/fragment3_subHeading"
             android:textAlignment="center"
             android:textColor="@color/colorBlack"
             android:textSize="15sp" />

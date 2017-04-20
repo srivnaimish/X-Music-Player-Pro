@@ -50,7 +50,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="17dp"
             app:layout_constraintLeft_toRightOf="@+id/album_art_card"
-            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:textColor="@color/textColorPrimary"
             android:textSize="13sp"
@@ -64,7 +63,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/album_art_card"
             android:layout_marginBottom="13dp"
             app:layout_constraintLeft_toRightOf="@+id/album_art_card"
-            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:textSize="13sp"/>
 
@@ -88,7 +86,6 @@
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="8dp"
-            android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
             android:background="@null"
             app:layout_constraintRight_toRightOf="parent"

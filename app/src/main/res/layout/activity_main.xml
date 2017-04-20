@@ -28,7 +28,8 @@
                 android:layout_below="@+id/statusBar"
                 android:layout_gravity="center"
                 android:background="@color/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways">
+                app:layout_scrollFlags="scroll|enterAlways"
+                android:theme="@style/ToolbarTheme">
 
                 <com.riseapps.xmusic.widgets.MainTextView
                     android:id="@+id/toolbar_title"
@@ -55,6 +56,7 @@
                 android:background="@color/colorPrimary"
                 android:gravity="top"
                 android:visibility="gone"
+                android:theme="@style/ToolbarTheme"
                 app:layout_scrollFlags="scroll|enterAlways">
 
                 <com.riseapps.xmusic.widgets.MainTextView
@@ -76,6 +78,7 @@
                 android:background="@color/colorPrimary"
                 android:gravity="top"
                 android:visibility="gone"
+                android:theme="@style/ToolbarTheme"
                 app:layout_scrollFlags="scroll|enterAlways">
 
                 <com.riseapps.xmusic.widgets.MainTextView

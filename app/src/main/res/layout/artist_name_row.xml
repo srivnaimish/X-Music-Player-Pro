@@ -43,7 +43,7 @@
             android:layout_alignBottom="@+id/artist_art_card"
             android:layout_toEndOf="@+id/artist_art_card"
             android:layout_alignTop="@+id/artist_art_card"
-            android:layout_marginLeft="12sp"
+            android:layout_marginStart="12sp"
             android:gravity="center_vertical">
 
             <com.riseapps.xmusic.widgets.MainTextView
@@ -55,7 +55,7 @@
                 android:textSize="14sp"
                 android:maxLines="2"
                 android:textAllCaps="true"
-                android:layout_marginRight="18dp"/>
+                android:layout_marginEnd="18dp"/>
 
         </LinearLayout>
 

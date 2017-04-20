@@ -61,7 +61,7 @@ public class SongsFragment extends Fragment{
         int spanCount = 1; // 2 columns
         int spacing = 1; // 50px
         boolean includeEdge = true;
-        recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, includeEdge));
+        recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

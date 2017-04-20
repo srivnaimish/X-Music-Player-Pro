@@ -368,6 +368,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     intent.putExtra("query",song.getName());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+                    Toast.makeText(MainActivity.this, "Opening Youtube", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
@@ -489,7 +490,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             miniPlayer.setVisibility(View.VISIBLE);
             mViewPager.setVisibility(View.VISIBLE);
             tabLayout.setVisibility(View.VISIBLE);
-            mainPlayer.setVisibility(View.GONE);
+            hideMainPlayer();
         }
         super.onResume();
     }
@@ -536,7 +537,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     void hideMainPlayer() {
         mainPlayer.setVisibility(View.GONE);
-
         miniPlayer.setVisibility(View.VISIBLE);
         mViewPager.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.VISIBLE);
@@ -661,7 +661,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        String tabTitles[] = new String[]{"PLAYLIST", "ALBUM", "ARTISTS", "TRACKS"};
+        String tabTitles[] = new String[]{getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3), getResources().getString(R.string.TAB4)};
 
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
