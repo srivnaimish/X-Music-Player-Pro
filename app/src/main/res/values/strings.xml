@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Xmusic Pro</string>
+    <string name="app_name" translatable="false">Xmusic Pro</string>
 
     <!--WALKTHROUGH-->
     <string name="fragment1_heading">Add to Playlist(s)</string>
@@ -8,7 +8,7 @@
     <string name="fragment2_subHeading">Switch on the Pro mode in settings and double wave close to your phone to skip to a next song</string>
     <string name="fragment3_heading">Time your playback</string>
     <string name="fragment3_subHeading">Just set a timer to stop the music after some time through Settings</string>
-    <string name="permission_rationale">The app will not be retrieve your Songs…Please Give the Permission</string>
+    <string name="permission_rationale">The app will not be able toretrieve your Songs…Please Give the Permission</string>
     <string name="start_now">START NOW</string>
     <string name="fetched">Got your Songs</string>
 
@@ -74,8 +74,8 @@
     <string name="zero">0</string>
 
     <!--AD UNIT ID'S-->
-    <string name="ad_unit_id">ca-app-pub-2454061641779517/5483543782</string>
-    <string name="banner_ad_id">ca-app-pub-2454061641779517/4255659381</string>
+    <string name="ad_unit_id" translatable="false">ca-app-pub-2454061641779517/5483543782</string>
+    <string name="banner_ad_id" translatable="false">ca-app-pub-2454061641779517/4255659381</string>
 
 
 </resources>
