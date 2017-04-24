@@ -55,7 +55,7 @@
             android:layout_weight=".5"
             android:background="@color/lightAccent"
             android:text="@string/zero"
-            android:maxLength="1"
+            android:maxLength="2"
             android:inputType="number"
             android:gravity="center"
             android:layout_marginStart="10dp"
