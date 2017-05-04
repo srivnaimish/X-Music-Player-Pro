@@ -44,7 +44,7 @@ public class SongAdapter extends RecyclerView.Adapter {
     private ArrayList<LongSelectedSong> longSelectedSongs = new ArrayList<>();
     private OnShowContextMenuListener mListener;
     private static boolean startLongPress;
-    private static int count = 0;
+    private int count = 0;
     private PlaySongExec playSongExec;
 
     public SongAdapter(Context context) {
@@ -118,14 +118,16 @@ public class SongAdapter extends RecyclerView.Adapter {
                 public void onPressed(int i) {
                     if (startLongPress) {
                         if (longPressedSongs.get(i) != null) {
-                            if (!longPressedSongs.get(i)) {
+                            if (longPressedSongs.get(i) != null && !longPressedSongs.get(i)) {
                                 count++;
                                 longSelectedSongs.add(new LongSelectedSong(((SongViewHolder) holder).songListCard, true));
                                 longPressedSongs.put(i, true);
                                 mListener.onShow(count, longPressedSongs);
                                 ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorLongSelection));
                             } else {
-                                longPressedSongs.put(i, false);
+                                longPressedSongs.remove(i);
+                                count--;
+                                mListener.onShow(count, longPressedSongs);
                                 ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorWhite));
                             }
                         } else {
@@ -144,6 +146,8 @@ public class SongAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClearSelection(int i) {
                     longPressedSongs.remove(i);
+                    count--;
+                    mListener.onShow(count, longPressedSongs);
                     ((SongViewHolder) holder).songListCard.setBackgroundColor(c.getResources().getColor(R.color.colorWhite));
                 }
 
@@ -175,7 +179,7 @@ public class SongAdapter extends RecyclerView.Adapter {
                         .into(((SongViewHolder) holder).iv);
             }
             else {
-                ((SongViewHolder) holder).iv.setImageResource(R.drawable.ic_music_player);
+                ((SongViewHolder) holder).iv.setImageResource(R.drawable.empty);
             }
 
             if(song.getFavourite()){

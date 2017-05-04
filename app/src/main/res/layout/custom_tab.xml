@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.riseapps.xmusic.widgets.MainTextView
+    <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/custom_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:textColor="@color/textColorPrimary"
         />
 </LinearLayout>

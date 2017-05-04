@@ -20,6 +20,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.Pojo.Album;
+import com.riseapps.xmusic.utils.RandomAlbumArt;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
 
     private List<Album> albumList;
     Context c;
-
+    private RandomAlbumArt randomAlbumArt;
 
     public AlbumsAdapter(Context context, List<Album> albumList, RecyclerView recyclerView) {
         this.albumList = albumList;
@@ -38,6 +39,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                     .getLayoutManager();
             c = context;
         }
+
+        randomAlbumArt = new RandomAlbumArt();
+
     }
 
 
@@ -67,7 +71,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                         .centerCrop()
                         .into(((AlbumViewHolder) holder).imageView);
             } else {
-                Glide.with(c).load("")
+                Glide.with(c).load(randomAlbumArt.getArt())
+                        .centerCrop()
                         .placeholder(R.drawable.ic_equaliser)
                         .into(((AlbumViewHolder) holder).imageView);
             }
@@ -75,9 +80,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
             ((AlbumViewHolder) holder).album = album;
         } else {
             ((AlbumViewHolder) holder).name.setText(name);
-            Glide.with(c).load("")
+            Glide.with(c).load(randomAlbumArt.getArt())
                     .placeholder(R.drawable.ic_equaliser)
-                    .fitCenter()
+                    .centerCrop()
                     .into(((AlbumViewHolder) holder).imageView);
         }
 

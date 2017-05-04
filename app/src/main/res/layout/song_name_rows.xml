@@ -52,8 +52,7 @@
             app:layout_constraintLeft_toRightOf="@+id/album_art_card"
             android:layout_marginStart="16dp"
             android:textColor="@color/textColorPrimary"
-            android:textSize="13sp"
-            android:textAllCaps="true"/>
+            android:textSize="14sp"/>
 
         <com.riseapps.xmusic.widgets.MainTextViewSub
             android:id="@+id/artist"

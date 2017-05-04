@@ -32,9 +32,8 @@
                 android:gravity="center_vertical"
                 android:maxLines="2"
                 android:textColor="@color/textColorPrimary"
-                android:textSize="15sp"
-                tools:text="TextView"
-                android:textAllCaps="true"/>
+                android:textSize="14sp"
+                tools:text="TextView"/>
         </LinearLayout>
 
         <ImageView

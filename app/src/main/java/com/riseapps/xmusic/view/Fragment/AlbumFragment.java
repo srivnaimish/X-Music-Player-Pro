@@ -65,7 +65,7 @@ public class AlbumFragment extends Fragment {
         recyclerView.setLayoutManager(grid);
 
         int spanCount = 2;
-        int spacing = 18;
+        int spacing = 4;
 
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
 

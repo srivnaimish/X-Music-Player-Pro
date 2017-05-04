@@ -1,5 +1,6 @@
 package com.riseapps.xmusic.view.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -189,6 +190,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         }
     };
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -300,8 +302,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     private void initiallize() {
-
-
 
         progressView = (RelativeLayout) findViewById(R.id.progress);
         IntentFilter intentFilter = new IntentFilter();
@@ -501,11 +501,26 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             hideMainPlayer();
         } else {
             if (musicPlaying) {
+                if (toolbarContext.isShown()) {
+                    toolbarContext.setVisibility(View.GONE);
+                    mToolbar.setVisibility(View.VISIBLE);
+                    miniPlayer.setVisibility(View.VISIBLE);
+                    songRefreshListener.onSongRefresh();
+                    multipleSongSelectionList.clear();
+                }
                 if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                     getSupportFragmentManager().popBackStackImmediate();
                 else
                     moveTaskToBack(true);
-            } else {
+            }
+            else if (toolbarContext.isShown()) {
+                toolbarContext.setVisibility(View.GONE);
+                mToolbar.setVisibility(View.VISIBLE);
+                miniPlayer.setVisibility(View.VISIBLE);
+                songRefreshListener.onSongRefresh();
+                multipleSongSelectionList.clear();
+            }
+            else {
                 super.onBackPressed();
             }
         }

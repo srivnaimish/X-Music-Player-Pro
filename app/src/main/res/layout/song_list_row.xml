@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="90dp"
     android:id="@+id/song_list_card"
     android:layout_alignParentStart="true"
     card_view:cardCornerRadius="0dp"
@@ -16,7 +16,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_margin="4dp">
 
         <android.support.v7.widget.CardView
             android:id="@+id/album_art_card"
@@ -51,8 +52,7 @@
             app:layout_constraintLeft_toRightOf="@+id/album_art_card"
             android:layout_marginStart="16dp"
             android:textColor="@color/textColorPrimary"
-            android:textSize="13sp"
-            android:textAllCaps="true"/>
+            android:textSize="14sp"/>
 
         <com.riseapps.xmusic.widgets.MainTextViewSub
             android:id="@+id/artist_mini"

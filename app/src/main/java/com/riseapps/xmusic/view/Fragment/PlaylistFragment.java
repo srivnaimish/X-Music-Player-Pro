@@ -81,7 +81,7 @@ public class PlaylistFragment extends Fragment {
         recyclerView.setLayoutManager(grid);
 
         int spanCount = 2;
-        int spacing = 16;
+        int spacing = 8;
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override

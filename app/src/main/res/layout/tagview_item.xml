@@ -5,7 +5,7 @@
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
-    <com.riseapps.xmusic.widgets.MainTextViewSub
+    <com.riseapps.xmusic.widgets.MainTextView
         android:id="@+id/tv_tag_item_contain"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
