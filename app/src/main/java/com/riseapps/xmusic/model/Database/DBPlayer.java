@@ -218,12 +218,7 @@ public class DBPlayer {
                     song.setFavourite(true);
                 else
                     song.setFavourite(false);
-
-                if (playlists.size() == 0 ||playlists.size() ==11) {
-                    playlists.add(song);
-                    playlists.add(null);
-                } else
-                    playlists.add(song);
+                playlists.add(song);
 
             }
             while (cursor.moveToNext());
@@ -338,11 +333,7 @@ public class DBPlayer {
                 else
                     song.setFavourite(false);
 
-                if (songlist.size() == 0 || songlist.size() == 7) {
-                    songlist.add(song);
-                    songlist.add(null);
-                } else
-                    songlist.add(song);
+                songlist.add(song);
             }
             while (cursor.moveToNext());
             cursor.close();
@@ -371,11 +362,6 @@ public class DBPlayer {
                 artist.setName(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_ARTIST)));
                 artist.setImagepath(cursor.getString(cursor.getColumnIndex(PlayerHelper.COLUMN_IMAGEPATH)));
                 count++;
-                /*if(artistlist.size()==5||artistlist.size()==23) {
-                    artistlist.add(artist);
-                    artistlist.add(null);
-                }
-                else*/
                 artistlist.add(artist);
             }
             while (cursor.moveToNext());
@@ -413,11 +399,8 @@ public class DBPlayer {
                     song.setFavourite(true);
                 else
                     song.setFavourite(false);
-                if (songlist.size() == 0 || songlist.size() == 7) {
-                    songlist.add(song);
-                    songlist.add(null);
-                } else
-                    songlist.add(song);
+
+                songlist.add(song);
             }
             while (cursor.moveToNext());
             cursor.close();

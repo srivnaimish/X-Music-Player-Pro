@@ -78,6 +78,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseMatSearchViewActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, OnSearchViewListener {
@@ -158,6 +159,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))));
                 }
 
+
                 @Override
                 public void onPlayerStatusChanged(int status) {
                     switch (status) {
@@ -201,7 +203,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
-        proximityDetector=new ProximityDetector(this);
+        proximityDetector = new ProximityDetector(this);
         proximityDetector.setOnProximityListener(new ProximityDetector.OnProximityListener() {
             @Override
             public void onProximity() {
@@ -225,13 +227,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isMusicShuffled) {
-                    musicService.sortSongs();
-                    isMusicShuffled = false;
+                if (new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this, "Shuffle")) {
+                    new SharedPreferenceSingelton().saveAs(MainActivity.this, "Shuffle", false);
                     DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
                 } else {
-                    musicService.shuffleSongs();
-                    isMusicShuffled = true;
+                    new SharedPreferenceSingelton().saveAs(MainActivity.this, "Shuffle", true);
                     DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 }
             }
@@ -293,10 +293,15 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     private void changeToNextSong() {
-        int current = musicService.getCurrentIndex();
-        int next = current + 1;
-        if (next == songList.size())// If current was the last song, then play the first song in the list
-            next = 0;
+        int next;
+        if (new SharedPreferenceSingelton().getSavedBoolean(this, "Shuffle")) {
+            next = new Random().nextInt(songList.size());
+        } else {
+            int current = musicService.getCurrentIndex();
+            next = current + 1;
+            if (next == songList.size())// If current was the last song, then play the first song in the list
+                next = 0;
+        }
         musicService.setSong(next);
         musicService.togglePlay();
     }
@@ -362,10 +367,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     i.putExtra("selection_type", "multiple_playlist");
                     startActivityForResult(i, 1);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                } else if(item.getItemId()==R.id.youtube){
-                    Intent intent=new Intent(Intent.ACTION_SEARCH);
+                } else if (item.getItemId() == R.id.youtube) {
+                    Intent intent = new Intent(Intent.ACTION_SEARCH);
                     intent.setPackage("com.google.android.youtube");
-                    intent.putExtra("query",song.getName());
+                    intent.putExtra("query", song.getName());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     Toast.makeText(MainActivity.this, "Opening Youtube", Toast.LENGTH_SHORT).show();
@@ -472,18 +477,17 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         unregisterReceiver(stopReceiver);
         unbindService(musicConnection);
         stopService(playIntent);
-        if(new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this,"Pro_controls"))
+        if (new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this, "Pro_controls"))
             mSensorManager.unregisterListener(proximityDetector);
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
-        boolean b=new SharedPreferenceSingelton().getSavedBoolean(this,"Pro_Controls");
-        if(b) {
+        boolean b = new SharedPreferenceSingelton().getSavedBoolean(this, "Pro_Controls");
+        if (b) {
             mSensorManager.registerListener(proximityDetector, mProximity, 2 * 1000 * 1000);
-        }
-        else
+        } else
             mSensorManager.unregisterListener(proximityDetector);
 
         if (mainPlayer.getVisibility() == View.VISIBLE) {
@@ -512,15 +516,13 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     getSupportFragmentManager().popBackStackImmediate();
                 else
                     moveTaskToBack(true);
-            }
-            else if (toolbarContext.isShown()) {
+            } else if (toolbarContext.isShown()) {
                 toolbarContext.setVisibility(View.GONE);
                 mToolbar.setVisibility(View.VISIBLE);
                 miniPlayer.setVisibility(View.VISIBLE);
                 songRefreshListener.onSongRefresh();
                 multipleSongSelectionList.clear();
-            }
-            else {
+            } else {
                 super.onBackPressed();
             }
         }
@@ -626,15 +628,15 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         } else if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
             String str = data.getStringExtra("selected_playlist");
             if (!str.equalsIgnoreCase("")) {
-                long[] array  = new long[multipleSongSelectionList.size()];
+                long[] array = new long[multipleSongSelectionList.size()];
                 int count = 0;
                 Iterator i = multipleSongSelectionList.entrySet().iterator();
                 while (i.hasNext()) {
-                    HashMap.Entry pair = (HashMap.Entry)i.next();
-                    array[count]=songList.get(Integer.parseInt(pair.getKey().toString())).getID();
+                    HashMap.Entry pair = (HashMap.Entry) i.next();
+                    array[count] = songList.get(Integer.parseInt(pair.getKey().toString())).getID();
                     count++;
                 }
-                 new MyApplication(MainActivity.this).getWritableDatabase().addMultipleSongToSinglePlaylist(str.replace(",", ""), array);
+                new MyApplication(MainActivity.this).getWritableDatabase().addMultipleSongToSinglePlaylist(str.replace(",", ""), array);
                 playlistRefreshListener.OnPlaylistRefresh();
                 multipleSongSelectionList.clear();
                 toolbarContext.setVisibility(View.GONE);
@@ -793,7 +795,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(action.equalsIgnoreCase("Stop")){
+            if (action.equalsIgnoreCase("Stop")) {
                 Toast.makeText(MainActivity.this, "Stopping Player", Toast.LENGTH_SHORT).show();
                 finish();
             }

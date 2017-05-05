@@ -11,7 +11,7 @@
         android:layout_height="64dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:background="#337180"
+        android:background="#67809F"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:layout_marginEnd="2dp"

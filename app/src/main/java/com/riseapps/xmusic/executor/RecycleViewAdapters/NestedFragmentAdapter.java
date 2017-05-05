@@ -102,7 +102,7 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position)
     {
-        if(songsList.get(position)==null)
+        if(position==1||position==9)
             return AD_TYPE;
 
         return NORMAL_TYPE;

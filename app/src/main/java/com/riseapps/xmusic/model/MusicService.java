@@ -38,16 +38,14 @@ import java.util.concurrent.TimeUnit;
 
 public class MusicService extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
-        MediaPlayer.OnCompletionListener, AudioManager.OnAudioFocusChangeListener {
+        MediaPlayer.OnCompletionListener {
 
     public MediaPlayer player;
-    private AudioManager audioManager;
     public Equalizer equalizer;
     public HeadsetPlugReceiver headsetPlugReceiver;
     public ArrayList<Song> songs;
 
     private int songPos;
-
 
     private final IBinder musicBind = new MusicBinder();
 
@@ -72,7 +70,6 @@ public class MusicService extends Service implements
         super.onCreate();
         songPos = 0;
         player = new MediaPlayer();
-        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         initMusicPlayer();
         headsetPlugReceiver = new HeadsetPlugReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -102,14 +99,14 @@ public class MusicService extends Service implements
                         if (player.isPlaying()) {
                             isPausedOnCall = true;
                             togglePlay();
-                            //pause
+
                         }
                         break;
                     case TelephonyManager.CALL_STATE_RINGING:
                         if (player.isPlaying()) {
                             isPausedOnCall = true;
                             togglePlay();
-                            //pause
+
                         }
                         break;
                     case TelephonyManager.CALL_STATE_IDLE:
@@ -117,7 +114,7 @@ public class MusicService extends Service implements
                             if (isPausedOnCall) {
                                 isPausedOnCall = false;
                                 togglePlay();
-                                //pause
+
                             }
                         }
 
@@ -170,7 +167,6 @@ public class MusicService extends Service implements
 
     @Override
     public void onDestroy() {
-        audioManager.abandonAudioFocus(this);
         equalizer.setEnabled(false);
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(NOTIFICATION_ID);
@@ -188,27 +184,6 @@ public class MusicService extends Service implements
         unregisterReceiver(myReceiver);
 
         super.onDestroy();
-    }
-
-    @Override
-    public void onAudioFocusChange(int i) {
-        switch (i) {
-            case AudioManager.AUDIOFOCUS_GAIN:
-                player.setVolume(1.0f, 1.0f);
-                break;
-
-            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                togglePlay();
-                break;
-
-            case AudioManager.AUDIOFOCUS_LOSS:
-                togglePlay();
-                break;
-
-            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                if (player.isPlaying()) player.setVolume(0.1f, 0.1f);
-                break;
-        }
     }
 
     public class MusicBinder extends Binder {
@@ -229,7 +204,6 @@ public class MusicService extends Service implements
         player.setOnCompletionListener(this);
         player.setOnErrorListener(this);
 
-        audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
     }
 
     public void setSongs(ArrayList<Song> songs) {
@@ -241,6 +215,7 @@ public class MusicService extends Service implements
     }
 
     public void setSong(int songIndex) {
+
         if (songs.size() <= songIndex || songIndex < 0) // if the list is empty... just return
             return;
         songPos = songIndex;
@@ -258,6 +233,7 @@ public class MusicService extends Service implements
             }
         });
         playerState = STOPPED;
+
         onSongChangedListener.onSongChanged(songs.get(songPos));
     }
 
@@ -283,11 +259,7 @@ public class MusicService extends Service implements
     }
 
     private void playSong() {
-        //
-        //
-        //
 
-        //}
         if (songs.size() <= songPos)
             return;
         player.reset();
@@ -308,19 +280,6 @@ public class MusicService extends Service implements
         }
 
 
-    }
-
-    public void shuffleSongs() {
-        Collections.shuffle(songs);
-    }
-
-    public void sortSongs() {
-        Collections.sort(songs, new Comparator<Song>() {
-            @Override
-            public int compare(Song song, Song t1) {
-                return song.getName().compareTo(t1.getName());
-            }
-        });
     }
 
     public interface OnSongChangedListener {

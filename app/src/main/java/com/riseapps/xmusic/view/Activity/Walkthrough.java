@@ -1,6 +1,7 @@
 package com.riseapps.xmusic.view.Activity;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -49,6 +50,7 @@ public class Walkthrough extends AppCompatActivity {
     ArrayList<Album> albumList = new ArrayList<>();
     ArrayList<Artist> artistList = new ArrayList<>();
     private Intent intent;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,18 +88,31 @@ public class Walkthrough extends AppCompatActivity {
 
     private void launchHomeScreen() {
         if (async.getStatus() == AsyncTask.Status.FINISHED) {
-            startActivity(intent);
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            finish();
+            if(songList.size()==0){
+                openEmptyStateDialog();
+            }
+            else{
+                new SharedPreferenceSingelton().saveAs(Walkthrough.this, "opened_before", true);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finish();
+            }
+
         } else {
             Snackbar.make(viewPager, R.string.fetched,
                     Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.ok, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                            finish();
+                            if(songList.size()==0){
+                                openEmptyStateDialog();
+                            }
+                            else{
+                                new SharedPreferenceSingelton().saveAs(Walkthrough.this, "opened_before", true);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                finish();
+                            }
                         }
                     }).show();
         }
@@ -235,7 +250,6 @@ public class Walkthrough extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            new SharedPreferenceSingelton().saveAs(Walkthrough.this, "opened_before", true);
             intent = new Intent(Walkthrough.this, MainActivity.class);
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<Song>>() {
@@ -258,5 +272,12 @@ public class Walkthrough extends AppCompatActivity {
             intent.putExtra("albumList", albumJson);
             intent.putExtra("artistList", artistJson);
         }
+    }
+
+    public void openEmptyStateDialog(){
+        dialog=new Dialog(this);
+        dialog.setContentView(R.layout.empty_state_dialog);
+        dialog.show();
+
     }
 }

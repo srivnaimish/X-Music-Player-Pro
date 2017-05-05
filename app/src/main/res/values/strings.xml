@@ -78,7 +78,7 @@
     <!--AD UNIT ID'S-->
     <string name="ad_unit_id" translatable="false">ca-app-pub-2454061641779517/5483543782</string>
     <string name="banner_ad_id" translatable="false">ca-app-pub-2454061641779517/4255659381</string>
-
+    <string name="empty_state_message">Oops..No Media Found !!</string>
 
 
 </resources>

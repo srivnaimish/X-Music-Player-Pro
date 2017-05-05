@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
@@ -179,10 +180,10 @@ public class ScrollingFragment extends Fragment {
                     Toast.makeText(getContext(), "Playling All Songs from " + title.getText().toString(), Toast.LENGTH_SHORT).show();
                     ((MainActivity) getActivity()).setSongs(songArrayList);
                     ((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
-                    ((MainActivity) getActivity()).getMusicService().shuffleSongs();
                 }
                 playSongExec = new PlaySongExec(getContext(), 0);
                 playSongExec.startPlaying();
+                new SharedPreferenceSingelton().saveAs(getActivity(), "Shuffle", true);
             }
         });
 
