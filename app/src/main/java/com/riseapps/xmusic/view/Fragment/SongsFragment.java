@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,12 @@ import com.riseapps.xmusic.utils.GridItemDecoration;
 import com.riseapps.xmusic.utils.RecyclerTouchListener;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -80,6 +87,18 @@ public class SongsFragment extends Fragment{
         else {
             songMainList=songAllList;
         }
+
+        /*try {
+            songMainList = getDummyData();
+            ((MainActivity) getActivity()).setSongs(songMainList);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+
+        Gson gson = new Gson();
+        String json = gson.toJson(songMainList);
+        Log.d("song main", " " + json + " size " + songMainList.size() );
+
         songsAdapter = new SongAdapter(getActivity(), songMainList, recyclerView);
 
         recyclerView.setAdapter(songsAdapter);
@@ -235,6 +254,28 @@ public class SongsFragment extends Fragment{
             actionMode = null;
             Toast.makeText(getActivity(), "setting null", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public ArrayList<Song> getDummyData() throws JSONException {
+        String dummyData = loadJSONFromAsset();
+        songAllList=new Gson().fromJson(dummyData, new TypeToken<ArrayList<Song>>() {}.getType());
+        return songAllList;
+    }
+
+    public String loadJSONFromAsset() {
+        String json;
+        try {
+            InputStream is = getActivity().getAssets().open("dummy.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 
     public interface OnShowContextMenuListener {

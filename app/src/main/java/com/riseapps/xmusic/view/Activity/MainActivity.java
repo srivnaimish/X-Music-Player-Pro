@@ -432,6 +432,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         tabLayout.setupWithViewPager(mViewPager);
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
+            assert tab != null;
             tab.setCustomView(mSectionsPagerAdapter.getTabView(i));
         }
 
@@ -758,6 +759,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class RefreshAsync extends AsyncTask<Void, Void, Void> {
 
         ArrayList<Song> songs = new ArrayList<>();

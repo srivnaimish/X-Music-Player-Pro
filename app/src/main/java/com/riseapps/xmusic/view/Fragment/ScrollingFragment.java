@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
@@ -29,6 +31,10 @@ import com.riseapps.xmusic.utils.GridItemDecoration;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 import com.riseapps.xmusic.widgets.MainTextViewSub;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -52,6 +58,7 @@ public class ScrollingFragment extends Fragment {
 
 
     private OnFragmentInteractionListener mListener;
+    private ArrayList<Song> songAllList;
 
     public ScrollingFragment() {
         // Required empty public constructor
@@ -107,8 +114,12 @@ public class ScrollingFragment extends Fragment {
                     .into(circleAlbumArt);
         }
         else {
-            imageView.setImageResource(R.drawable.empty);
-            Glide.with(getContext()).load(R.drawable.ic_music_player)
+            //imageView.setImageResource(R.drawable.empty);
+            Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/04/19/05/07/turntable-1337986_960_720.jpg")
+                    .crossFade()
+                    .placeholder(R.drawable.ic_music_player)
+                    .into(imageView);
+            Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/04/19/05/07/turntable-1337986_960_720.jpg")
                     .crossFade()
                     .placeholder(R.drawable.ic_music_player)
                     .into(circleAlbumArt);
@@ -121,6 +132,12 @@ public class ScrollingFragment extends Fragment {
             songArrayList=new MyApplication(getActivity()).getWritableDatabase().readArtistSongs(Name);
         else if(Action.equalsIgnoreCase("Playlists")){
             songArrayList=new MyApplication(getActivity()).getWritableDatabase().readSongsFromPlaylist(Name);
+            /*try {
+                songArrayList = getDummyData();
+                ((MainActivity) getActivity()).setSongs(songArrayList);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }*/
         }
         else
             songArrayList=new MyApplication(getActivity()).getWritableDatabase().readFavouriteSongs();
@@ -217,5 +234,27 @@ public class ScrollingFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public ArrayList<Song> getDummyData() throws JSONException {
+        String dummyData = loadJSONFromAsset();
+        songAllList=new Gson().fromJson(dummyData, new TypeToken<ArrayList<Song>>() {}.getType());
+        return songAllList;
+    }
+
+    public String loadJSONFromAsset() {
+        String json;
+        try {
+            InputStream is = getActivity().getAssets().open("dummy.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 }
