@@ -187,30 +187,5 @@ public class PlaylistFragment extends Fragment {
         recyclerView.setAdapter(playlistAdapter);
     }
 
-   /* private void openDialog(){
-        dialog=new Dialog(getActivity());
-        dialog.setContentView(R.layout.playlist_create_dialog);
-        dialog.show();
-        Button create = (Button) dialog.findViewById(R.id.create);
-        Button cancel = (Button) dialog.findViewById(R.id.cancel);
-        final EditText editText= (EditText) dialog.findViewById(R.id.dialogEditText);
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!editText.getText().toString().equalsIgnoreCase("")) {
-                    dialog.dismiss();
-                    Toast.makeText(getActivity(), "Created", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(getActivity(), "Please give playlist a name", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-    }*/
+
 }

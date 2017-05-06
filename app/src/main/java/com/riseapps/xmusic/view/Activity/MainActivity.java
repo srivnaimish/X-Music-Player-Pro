@@ -46,6 +46,9 @@ import com.bumptech.glide.Glide;
 import com.claudiodegio.msv.OnSearchViewListener;
 import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
@@ -82,6 +85,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseMatSearchViewActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, OnSearchViewListener {
+
+    InterstitialAd interstitial;
 
     public boolean musicPlaying, isMusicShuffled = false;
     public ImageButton play_pause, prev, next, repeat, shuffle;
@@ -307,6 +312,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     private void initiallize() {
+        interstitial = new InterstitialAd(this);
+        interstitial.setAdUnitId("ca-app-pub-2454061641779517/5252774182");
 
         progressView = (RelativeLayout) findViewById(R.id.progress);
         IntentFilter intentFilter = new IntentFilter();
@@ -368,6 +375,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     startActivityForResult(i, 1);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 } else if (item.getItemId() == R.id.youtube) {
+                    if(musicPlaying){
+                        musicService.togglePlay();
+                    }
                     Intent intent = new Intent(Intent.ACTION_SEARCH);
                     intent.setPackage("com.google.android.youtube");
                     intent.putExtra("query", song.getName());
@@ -503,6 +513,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     public void onBackPressed() {
         if (mainPlayer.getVisibility() == View.VISIBLE) {
             hideMainPlayer();
+            if(interstitial.isLoaded())
+            showInterstitial();
+
         } else {
             if (musicPlaying) {
                 if (toolbarContext.isShown()) {
@@ -544,6 +557,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     void showMainPlayer() {
         //   mainPlayer.startAnimation(new CustomAnimation().slideShow(MainActivity.this));
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4").build();
+        interstitial.loadAd(adRequest);
         mainPlayer.setVisibility(View.VISIBLE);
         toolbarPlayer.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.GONE);
@@ -801,5 +817,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             }
         }
     };
+
+    private void showInterstitial() {
+        if (interstitial.isLoaded()) {
+            interstitial.show();
+        }
+    }
 }
 
