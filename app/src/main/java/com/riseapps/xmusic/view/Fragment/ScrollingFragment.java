@@ -159,7 +159,7 @@ public class ScrollingFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 if((((MainActivity) getActivity()).getSongs()!=songArrayList)) {
-                    Toast.makeText(getContext(), "Now Playing from "+title.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.now_playing)+" "+title.getText().toString(), Toast.LENGTH_SHORT).show();
                     ((MainActivity) getActivity()).setSongs(songArrayList);
                     ((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
                 }
@@ -178,7 +178,7 @@ public class ScrollingFragment extends Fragment {
             public void onClick(View view) {
                 if(songArrayList.size()!=0) {
                     if ((((MainActivity) getActivity()).getSongs() != songArrayList)) {
-                        Toast.makeText(getContext(), "Playling All Songs from " + title.getText().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getContext().getString(R.string.playing_all)+" " + title.getText().toString(), Toast.LENGTH_SHORT).show();
                         ((MainActivity) getActivity()).setSongs(songArrayList);
                         ((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
                     }
@@ -194,7 +194,7 @@ public class ScrollingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if ((((MainActivity) getActivity()).getSongs() != songArrayList)) {
-                    Toast.makeText(getContext(), "Playling All Songs from " + title.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.playing_all)+" " + title.getText().toString(), Toast.LENGTH_SHORT).show();
                     ((MainActivity) getActivity()).setSongs(songArrayList);
                     ((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
                 }

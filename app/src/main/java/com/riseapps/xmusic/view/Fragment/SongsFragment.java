@@ -202,7 +202,7 @@ public class SongsFragment extends Fragment{
             public void onClick(View view, int position) {
                 if(view.getId()==R.id.name||view.getId()==R.id.artist_mini||view.getId()==R.id.album_art_card) {
                     if ((((MainActivity) getActivity()).getSongs() != songMainList)) {
-                        Toast.makeText(getContext(), "Now Playing All Songs", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getContext().getString(R.string.now_playing_all), Toast.LENGTH_SHORT).show();
                         ((MainActivity) getActivity()).setSongs(songMainList);
                         ((MainActivity) getActivity()).getMusicService().setSongs(songMainList);
                     }
@@ -252,7 +252,7 @@ public class SongsFragment extends Fragment{
     public void setNullToActionMode() {
         if (actionMode != null) {
             actionMode = null;
-            Toast.makeText(getActivity(), "setting null", Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(getActivity(), "setting null", Toast.LENGTH_SHORT).show();
         }
     }
 

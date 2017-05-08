@@ -193,7 +193,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             play_pause_mini.setImageResource(R.drawable.ic_play);
             musicPlaying = false;
             mWaveHelper.cancel();
-            Toast.makeText(MainActivity.this, "Finishing", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -247,11 +246,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             public void onClick(View view) {
                 if (new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this, "Repeat")) {
                     new SharedPreferenceSingelton().saveAs(MainActivity.this, "Repeat", false);
-                    Toast.makeText(MainActivity.this, "Song Repeat Off", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.song_repeat_off_toast), Toast.LENGTH_SHORT).show();
                     DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
                 } else {
                     new SharedPreferenceSingelton().saveAs(MainActivity.this, "Repeat", true);
-                    Toast.makeText(MainActivity.this, "Song Repeat On", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.song_repeat_on_toast), Toast.LENGTH_SHORT).show();
                     DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 }
             }
@@ -383,7 +382,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     intent.putExtra("query", song.getName());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    Toast.makeText(MainActivity.this, "Opening Youtube", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.opening_youtube), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
@@ -403,7 +402,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.favouritesPlayer) {
-                    Toast.makeText(MainActivity.this, "Action 1", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(MainActivity.this, "Action 1", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
                     i.putExtra("selection_type", "single_playlist");
@@ -544,7 +543,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        Toast.makeText(this, "helo", Toast.LENGTH_SHORT).show();
     }
 
     public ArrayList<Song> getSongs() {
@@ -596,7 +594,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         for (Song song : songList) {
             if (song.getName().equalsIgnoreCase(s)) {
                 new PlaySongExec(this, songList.indexOf(song)).startPlaying();
-                // Toast.makeText(this, ""+songList.indexOf(song), Toast.LENGTH_SHORT).show();
             }
         }
         //startActivity(new Intent(this, ScrollingActivity.class));
@@ -638,7 +635,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             if (!str.equalsIgnoreCase("")) {
                 long id = songList.get(musicService.getCurrentIndex()).getID();
                 new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id, str);
-                Toast.makeText(MainActivity.this, "Song Added to Playlist", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.song_added_to_playlist), Toast.LENGTH_SHORT).show();
                 playlistRefreshListener.OnPlaylistRefresh();
             }
         } else if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
@@ -813,7 +810,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equalsIgnoreCase("Stop")) {
-                Toast.makeText(MainActivity.this, "Stopping Player", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.stopping_player), Toast.LENGTH_SHORT).show();
                 finish();
             }
         }

@@ -88,11 +88,11 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
             public void onClick(View view) {
                 if(new SharedPreferenceSingelton().getSavedBoolean(AppSettingActivity.this,"Pro_Controls")) {
                     new SharedPreferenceSingelton().saveAs(AppSettingActivity.this,"Pro_Controls",false);
-                    Toast.makeText(AppSettingActivity.this, "Pro Controls Deactivated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AppSettingActivity.this, getString(R.string.Pro_Controls_Deactivated_Toast), Toast.LENGTH_SHORT).show();
                 }
                 else {
                     new SharedPreferenceSingelton().saveAs(AppSettingActivity.this,"Pro_Controls",true);
-                    Toast.makeText(AppSettingActivity.this, "Pro Controls Activated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AppSettingActivity.this, getString(R.string.Pro_Controls_Activated_Toast), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -141,7 +141,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 String h=hrs.getText().toString();
                 String m=min.getText().toString();
                 if((h+m).equalsIgnoreCase("00")||(h+m).equalsIgnoreCase("0")||(h+m).equalsIgnoreCase("")){
-                    Toast.makeText(AppSettingActivity.this, "Invalid Time", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AppSettingActivity.this, getString(R.string.Invalid_Time_Toast), Toast.LENGTH_SHORT).show();
                 }
                 else
                 {

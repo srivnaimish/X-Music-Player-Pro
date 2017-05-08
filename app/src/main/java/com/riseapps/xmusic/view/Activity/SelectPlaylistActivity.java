@@ -78,7 +78,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                  * This hashmap contains all the selected items.*/
                 Intent i = new Intent();
                 setResult(RESULT_CANCELED, i);
-                Toast.makeText(SelectPlaylistActivity.this, "Oops, you didn't select any playlist for your song!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SelectPlaylistActivity.this, getString(R.string.did_not_select), Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -88,7 +88,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_done) {
                     if (selectedPlaylist.size() < 1) {
-                        Toast.makeText(SelectPlaylistActivity.this, "You must select at least 1 playlist", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SelectPlaylistActivity.this, getString(R.string.select_atleast_one), Toast.LENGTH_SHORT).show();
                     }
                     else {
                         selectedPlaylist.remove("A");
@@ -347,7 +347,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                     tags = new ArrayList<>();
                     setTags();
                     dialog.dismiss();
-                    Toast.makeText(SelectPlaylistActivity.this, "Created", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SelectPlaylistActivity.this, getString(R.string.created), Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Snackbar.make(fab,"Please give playlist a Name",Snackbar.LENGTH_SHORT).show();

@@ -57,4 +57,17 @@
     <string name="start_now">अभी शुरू करो</string>
     <string name="stop_music_after">इस समय के बाद संगीत बंद करो</string>
     <string name="swipe_right_or_left_to_change_the_song">गाने को बदलने के लिए दाएं या बाएं स्वाइप करें</string>
+    <string name="Invalid_Time_Toast">अमान्य समय</string>
+    <string name="Pro_Controls_Deactivated_Toast">प्रो नियंत्रण निष्क्रिय</string>
+    <string name="Pro_Controls_Activated_Toast">प्रो नियंत्रण सक्रिय</string>
+    <string name="created">बन गया</string>
+    <string name="did_not_select">ओह, आपने अपने गीत के लिए किसी भी प्लेलिस्ट का चयन नहीं किया!</string>
+    <string name="playing_all">सभी गाने बजाना</string>
+    <string name="select_atleast_one">आपको कम से कम 1 प्लेलिस्ट का चयन करना होगा</string>
+    <string name="song_added_to_playlist">गीत प्लेलिस्ट में जोड़ा गया</string>
+    <string name="song_repeat_off_toast">गीत दोहराना बंद</string>
+    <string name="song_repeat_on_toast">गाने दोबारा  प्रारंभ</string>
+    <string name="stopping_player">संगीत बंद कर दिया</string>
+    <string name="now_playing_all">अब सभी गाने बाजा  रहे हैं</string>
+    <string name="opening_youtube">यूट्यूब खोल रहा है</string>
 </resources>
