@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Xmusic Pro</string>
+    <string name="app_name" >Xmusic Pro</string>
 
     <!--WALKTHROUGH-->
     <string name="fragment1_heading">Add to Playlist(s)</string>
@@ -8,7 +8,7 @@
     <string name="fragment2_subHeading">Switch on the Pro mode in settings and double wave close to your phone to skip to a next song</string>
     <string name="fragment3_heading">Time your playback</string>
     <string name="fragment3_subHeading">Just set a timer to stop the music after some time through Settings</string>
-    <string name="permission_rationale">The app will not be able toretrieve your Songs…Please Give the Permission</string>
+    <string name="permission_rationale">The app will not be able to retrieve your Songs…Please Give the Permission</string>
     <string name="start_now">START NOW</string>
     <string name="fetched">Got your Songs</string>
 
@@ -27,27 +27,27 @@
     <string name="now_playing">Now Playing</string>
     <string name="refreshing_lists">Refreshing Lists…</string>
 
-
     <!--PLAYLIST SELECT ACTIVITY-->
     <string name="playlist_screen_placeholder">You can add this song to MULTIPLE playlists at once.</string>
 
     <!--EXTRAS-->
-    <string name="no_music">No Music Found on Your Device …</string>
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
     <string name="play_all">Play All</string>
     <string name="shuffle">Shuffle</string>
+    <string name="empty_state_message">Oops..No Media Found !!</string>
+    <string name="swipe_right_or_left_to_change_the_song">Swipe Right or Left to change the Song</string>
 
     <!--SETTINGS-->
     <string name="settings_title">App Settings</string>
     <string name="pro_controls_heading">Pro Controls</string>
-    <string name="pro_control_subHeading">Double Wave Over Phone to Skip Song</string>
+    <string name="pro_control_subHeading">Double Wave close to proximity sensor to Skip Song</string>
     <string name="equalizer_heading">Equalizer</string>
     <string name="equalizer_subHeading">Select the way you want to listen to your songs</string>
     <string name="sleep_timer_heading">Sleep Timer</string>
-    <string name="sleep_timer_subHeading">Turn of the music player automatically.</string>
-    <string name="share_app_heading">Share this App !</string>
-    <string name="share_app_subHeading"><![CDATA[Spread the word to your family & friends]]></string>
+    <string name="sleep_timer_subHeading">Turn off the music player automatically.</string>
+    <string name="share_app_heading">Ads getting in your way?</string>
+    <string name="share_app_subHeading">Get our full version for better experience</string>
     <string name="rate_us_heading">Rate us on Play Store!</string>
     <string name="rate_us_subHeading">Show us some love and give us 5 stars</string>
 
@@ -73,12 +73,11 @@
     <string name="stop_music_after">Stop Music After</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
-    <string name="zero">0</string>
+    <string name="zero" translatable="false">0</string>
 
     <!--AD UNIT ID'S-->
     <string name="ad_unit_id" translatable="false">ca-app-pub-2454061641779517/5483543782</string>
     <string name="banner_ad_id" translatable="false">ca-app-pub-2454061641779517/4255659381</string>
-    <string name="empty_state_message">Oops..No Media Found !!</string>
 
 
 </resources>

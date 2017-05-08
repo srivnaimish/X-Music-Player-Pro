@@ -45,7 +45,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         init();
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-2454061641779517~3507282989");
         mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4").build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         mAdView.setAdListener(new AdListener() {
             @Override
@@ -199,11 +199,14 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void shareAppLink(){
-        String message = "https://play.google.com/store/apps/details?id=example.naimish.com.alarm&hl=en";
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.putExtra(Intent.EXTRA_TEXT, message);
-        startActivity(Intent.createChooser(share, "Share via.."));
+        final Uri uri = Uri.parse("market://details?id=com.riseapps.xmusicunlocked");
+        final Intent rateAppIntent = new Intent(Intent.ACTION_VIEW, uri);
+
+        if (getPackageManager().queryIntentActivities(rateAppIntent, 0).size() > 0)
+        {
+            startActivity(rateAppIntent);
+        }
+
     }
 
     private void rateApp() {

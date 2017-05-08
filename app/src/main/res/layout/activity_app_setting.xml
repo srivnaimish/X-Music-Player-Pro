@@ -225,7 +225,7 @@
                             android:layout_height="50dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
-                            app:srcCompat="@drawable/ic_share" />
+                            app:srcCompat="@drawable/ic_payment" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"

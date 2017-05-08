@@ -102,9 +102,9 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position)
     {
-        if(position==1||position==9)
+        if(position==1||position==9) {
             return AD_TYPE;
-
+        }
         return NORMAL_TYPE;
     }
 
@@ -116,7 +116,6 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
             adView = (NativeExpressAdView)view.findViewById(R.id.adView);
             adView.setVisibility(View.GONE);
             AdRequest request = new AdRequest.Builder()
-                    . addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4")
                     .build();
             adView.loadAd(request);
         }

@@ -107,7 +107,6 @@ public class ArtistAdapter extends RecyclerView.Adapter {
             super(view);
             adView = (NativeExpressAdView) view.findViewById(R.id.adView);
             AdRequest request = new AdRequest.Builder()
-                    .addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4")
                     .build();
             adView.loadAd(request);
         }

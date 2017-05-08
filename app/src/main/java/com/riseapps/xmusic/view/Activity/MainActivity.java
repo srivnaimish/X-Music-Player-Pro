@@ -558,8 +558,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     void showMainPlayer() {
         //   mainPlayer.startAnimation(new CustomAnimation().slideShow(MainActivity.this));
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("1BB6AD3C4E832E63122601E2E4752AF4").build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         interstitial.loadAd(adRequest);
         mainPlayer.setVisibility(View.VISIBLE);
         toolbarPlayer.setVisibility(View.VISIBLE);
