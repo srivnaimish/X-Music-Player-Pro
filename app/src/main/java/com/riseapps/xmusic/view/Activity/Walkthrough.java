@@ -19,7 +19,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,6 +43,7 @@ public class Walkthrough extends AppCompatActivity {
     private int[] layouts;
     private Button btn1,btn2,btn3;
     private RelativeLayout btnSkip;
+    private LinearLayout loading;
 
     Async async = new Async();
     final int textLimit = 26;
@@ -64,6 +67,9 @@ public class Walkthrough extends AppCompatActivity {
         btn2= (Button) findViewById(R.id.bt2);
         btn3= (Button) findViewById(R.id.bt3);
 
+
+        loading= (LinearLayout) findViewById(R.id.loading);
+
         layouts = new int[]{
                 R.layout.walkthrough1,
                 R.layout.walkthrough2,
@@ -76,7 +82,14 @@ public class Walkthrough extends AppCompatActivity {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchHomeScreen();
+                if(async.getStatus()== AsyncTask.Status.FINISHED){
+                    launchHomeScreen();
+                }
+                else {
+                    if(loading.getVisibility()==View.GONE)
+                    loading.setVisibility(View.VISIBLE);
+                }
+
             }
         });
 
@@ -87,7 +100,7 @@ public class Walkthrough extends AppCompatActivity {
 
 
     private void launchHomeScreen() {
-        if (async.getStatus() == AsyncTask.Status.FINISHED) {
+        //if (async.getStatus() == AsyncTask.Status.FINISHED) {
             if(songList.size()==0){
                 openEmptyStateDialog();
             }
@@ -98,7 +111,7 @@ public class Walkthrough extends AppCompatActivity {
                 finish();
             }
 
-        } else {
+        /*} else {
             Snackbar.make(viewPager, R.string.fetched,
                     Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.ok, new View.OnClickListener() {
@@ -115,7 +128,7 @@ public class Walkthrough extends AppCompatActivity {
                             }
                         }
                     }).show();
-        }
+        }*/
 
     }
 
@@ -271,6 +284,9 @@ public class Walkthrough extends AppCompatActivity {
             intent.putExtra("songList", songJson);
             intent.putExtra("albumList", albumJson);
             intent.putExtra("artistList", artistJson);
+
+            if(loading.getVisibility()==View.VISIBLE)
+                launchHomeScreen();
         }
     }
 

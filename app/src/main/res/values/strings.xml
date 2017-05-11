@@ -72,6 +72,7 @@
     <string name="create">CREATE</string>
 
     <!--EQUALIZER PRESET DIALOG-->
+    <string name="select_a_preset">Select a Preset</string>
     <string name="normal_preset">Normal</string>
     <string name="classical_preset">Classical</string>
     <string name="dance_preset">Dance</string>
@@ -92,7 +93,7 @@
     <!--AD UNIT ID'S-->
     <string name="ad_unit_id" translatable="false">ca-app-pub-2454061641779517/5483543782</string>
     <string name="banner_ad_id" translatable="false">ca-app-pub-2454061641779517/4255659381</string>
-    <string name="select_a_preset">Select a Preset</string>
+
 
 
 </resources>
