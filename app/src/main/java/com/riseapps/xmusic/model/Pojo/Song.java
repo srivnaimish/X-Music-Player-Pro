@@ -3,6 +3,8 @@ package com.riseapps.xmusic.model.Pojo;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by naimish on 4/1/17.
@@ -24,6 +26,12 @@ public class Song implements Parcelable{
         Imagepath = imagepath;
         this.duration = duration;
         this.favourite = favourite;
+    }
+
+    public Song(Song song){
+        if(song==null)
+            Log.d("Null","yes");
+
     }
 
     protected Song(Parcel in) {

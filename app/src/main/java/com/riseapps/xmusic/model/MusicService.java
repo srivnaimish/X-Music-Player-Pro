@@ -216,8 +216,14 @@ public class MusicService extends Service implements
 
     public void setSong(int songIndex) {
 
-        if (songs.size() <= songIndex || songIndex < 0) // if the list is empty... just return
+        if (songs.size() <= songIndex || songIndex < 0 ) // if the list is empty... just return
             return;
+        if(songs.get(songIndex)==null) {
+            songIndex++;
+            if(songIndex==songs.size())
+                songIndex=0;
+        }
+
         songPos = songIndex;
         int x = new SharedPreferenceSingelton().getSavedInt(this, "Preset");
         equalizer = new Equalizer(0, player.getAudioSessionId());

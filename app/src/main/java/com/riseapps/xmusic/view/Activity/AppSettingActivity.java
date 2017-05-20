@@ -70,36 +70,16 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 finish();
             }
         });
-
-        CardView setting_pro = (CardView) findViewById(R.id.setting_shake);
         CardView setting_equalizer = (CardView) findViewById(R.id.setting_equalizer);
         CardView setting_sleep = (CardView) findViewById(R.id.setting_sleep);
-        CardView setting_share = (CardView) findViewById(R.id.setting_share_app);
+        CardView setting_share_app = (CardView) findViewById(R.id.setting_share);
+        CardView setting_unlock = (CardView) findViewById(R.id.setting_unlocked);
         CardView setting_rate = (CardView) findViewById(R.id.setting_rate);
-
-
-        Switch pro = (Switch) findViewById(R.id.setting_pro);
-        if(new SharedPreferenceSingelton().getSavedBoolean(this,"Pro_Controls"))
-            pro.setChecked(true);
-        else
-            pro.setChecked(false);
-        pro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(new SharedPreferenceSingelton().getSavedBoolean(AppSettingActivity.this,"Pro_Controls")) {
-                    new SharedPreferenceSingelton().saveAs(AppSettingActivity.this,"Pro_Controls",false);
-                    Toast.makeText(AppSettingActivity.this, getString(R.string.Pro_Controls_Deactivated_Toast), Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    new SharedPreferenceSingelton().saveAs(AppSettingActivity.this,"Pro_Controls",true);
-                    Toast.makeText(AppSettingActivity.this, getString(R.string.Pro_Controls_Activated_Toast), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         setting_equalizer.setOnClickListener(this);
         setting_sleep.setOnClickListener(this);
-        setting_share.setOnClickListener(this);
+        setting_share_app.setOnClickListener(this);
+        setting_unlock.setOnClickListener(this);
         setting_rate.setOnClickListener(this);
 
     }
@@ -116,8 +96,12 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 openSleepDialog();
                 break;
 
-            case R.id.setting_share_app:
+            case R.id.setting_share:
                 shareAppLink();
+                break;
+
+            case R.id.setting_unlocked:
+                gotoUnlockedVersion();
                 break;
 
             case R.id.setting_rate:
@@ -198,7 +182,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void shareAppLink(){
+    private void gotoUnlockedVersion(){
         final Uri uri = Uri.parse("market://details?id=com.riseapps.xmusicunlocked");
         final Intent rateAppIntent = new Intent(Intent.ACTION_VIEW, uri);
 
@@ -207,6 +191,14 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
             startActivity(rateAppIntent);
         }
 
+    }
+
+    private void shareAppLink(){
+        String message = "https://play.google.com/store/apps/details?id=com.riseapps.xmusic";
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(share, "Share via.."));
     }
 
     private void rateApp() {

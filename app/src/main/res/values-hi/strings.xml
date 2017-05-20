@@ -19,13 +19,12 @@
     <string name="empty_state_message">कोई गीत नहीं मिला</string>
     <string name="equalizer_heading">तुल्यकारक</string>
     <string name="equalizer_subHeading">जिस तरह से आप गाने सुनना चाहते हैं उसे चुनें</string>
-    <string name="fetched">आपके गाने मिल गए</string>
     <string name="flat_preset">समतल</string>
     <string name="folk_preset">लोक</string>
-    <string name="fragment1_heading">प्लेलिस्ट में जोड़ें</string>
-    <string name="fragment1_subHeading">उन गीतों को चुनें जिन्हें आप गीत सूची से एक प्लेलिस्ट में जोड़ना चाहते हैं</string>
-    <string name="fragment2_heading">गीत छोड़ने के लिए तरंग</string>
-    <string name="fragment2_subHeading">अगली गीत पर जाने के लिए सेटिंग में प्रो मोड और अपने फोन के करीब दोहरी तरंग करें</string>
+    <string name="fragment1_heading">यूट्यूब पर खोज</string>
+    <string name="fragment1_subHeading">उस गीत को खोजें, जिसे आप सुन रहे हैं, सीधे यूट्यूब पर</string>
+    <string name="fragment2_heading">संगीत के लिए तुल्यकारक</string>
+    <string name="fragment2_subHeading">सेटिंग में उपलब्ध कई प्रिसेट्स से चुनें</string>
     <string name="fragment3_subHeading">सेटिंग्स के माध्यम से कुछ समय बाद संगीत को रोकने के लिए एक टाइमर सेट करें</string>
     <string name="fragment3_heading">समय पर संगीत बंद</string>
     <string name="heavy_metal_preset">भारी धुन</string>
@@ -41,8 +40,6 @@
     <string name="play_all">सब शुरू करो</string>
     <string name="playlist_screen_placeholder">आप एक बार में कई प्लेलिस्ट को इस गीत को जोड़ सकते हैं</string>
     <string name="pop_preset">पॉप</string>
-    <string name="pro_control_subHeading">गाना छोड़ने के लिए निकटता सेंसर के करीब डबल वेव</string>
-    <string name="pro_controls_heading">पेशेवर नियंत्रण</string>
     <string name="rate_us_heading">प्ले स्टोर पर हमें रेट करें!</string>
     <string name="rate_us_subHeading">हमें कुछ प्यार और 5 सितारों दे</string>
     <string name="refreshing_lists">रीफ़्रेश सूची …</string>
@@ -58,16 +55,14 @@
     <string name="stop_music_after">इस समय के बाद संगीत बंद करो</string>
     <string name="swipe_right_or_left_to_change_the_song">गाने को बदलने के लिए दाएं या बाएं स्वाइप करें</string>
     <string name="Invalid_Time_Toast">अमान्य समय</string>
-    <string name="Pro_Controls_Deactivated_Toast">प्रो नियंत्रण निष्क्रिय</string>
-    <string name="Pro_Controls_Activated_Toast">प्रो नियंत्रण सक्रिय</string>
     <string name="created">बन गया</string>
-    <string name="did_not_select">ओह, आपने अपने गीत के लिए किसी भी प्लेलिस्ट का चयन नहीं किया!</string>
+    <string name="did_not_select">आपने अपने गीत के लिए किसी भी प्लेलिस्ट का चयन नहीं किया!</string>
     <string name="playing_all">सभी गाने बजाना</string>
     <string name="select_atleast_one">आपको कम से कम 1 प्लेलिस्ट का चयन करना होगा</string>
     <string name="song_added_to_playlist">गीत प्लेलिस्ट में जोड़ा गया</string>
     <string name="song_repeat_off_toast">गीत दोहराना बंद</string>
     <string name="song_repeat_on_toast">गाने दोबारा  प्रारंभ</string>
-    <string name="stopping_player">संगीत बंद कर दिया</string>
-    <string name="now_playing_all">अब सभी गाने बाजा  रहे हैं</string>
     <string name="opening_youtube">यूट्यूब खोल रहा है</string>
+    <string name="recomment_it_to_others">इसे दूसरों के लिए सुझाएं</string>
+    <string name="share_app">ऐप साझा करें</string>
 </resources>

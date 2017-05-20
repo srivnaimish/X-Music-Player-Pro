@@ -211,9 +211,6 @@ public class SongAdapter extends RecyclerView.Adapter {
         }
     }
 
-    /***
-     * Methods required for do selections, remove selections, etc.
-     */
 
     //Toggle selection methods
     public void toggleSelection(int position) {

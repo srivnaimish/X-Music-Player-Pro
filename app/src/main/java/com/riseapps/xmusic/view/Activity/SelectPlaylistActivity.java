@@ -18,6 +18,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.TagToken.customviews.TokenCompleteTextView;
 import com.riseapps.xmusic.executor.MyApplication;
@@ -38,12 +42,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
 
     FloatingActionButton fab;
 
-    private Boolean isLongPressed = false;
-    private String coreSkill;
-    private View coreSkillView;
-    private Tag coreSkillTag;
-    private int coreSkillPosition;
-    private TextView coreSkillTextView;
+    private AdView mAdView;
     private String str = "";
 
     Tag tag;
@@ -70,6 +69,17 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_back);
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-2454061641779517~3507282989");
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                mAdView.setVisibility(View.VISIBLE);
+                super.onAdLoaded();
+            }
+        });
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,50 +149,6 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         prepareTags();
         setTags();
         selectedPlaylist.put("A", 0);
-        /*tagGroup.setOnTagLongClickListener(new TagView.OnTagLongClickListener() {
-            @Override
-            public void onTagLongClick(View view, TextView tagView, Tag tag, int position) {
-
-                if (!isLongPressed && coreSkill == null) {
-                    tagView.setTextColor(getResources().getColor(R.color.colorWhite));
-                    view.setBackground(tagSelector.getLongSelector(tag));
-                    isLongPressed = true;
-                    coreSkill = tag.text;
-                    coreSkillView = view;
-                    coreSkillTextView = tagView;
-                    coreSkillTag = tag;
-                    coreSkillPosition = position;
-                } else {
-                    if ((tag.text).equals(coreSkill)) {
-                        // reset same tag
-                        tagView.setTextColor(getResources().getColor(R.color.colorAccent));
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            view.setBackground(tagSelector.getNormalSelector(tag));
-                        }
-                        isLongPressed = false;
-                        coreSkill = null;
-                    }
-                    else {
-                        // set this tag
-                        tagView.setTextColor(getResources().getColor(R.color.colorWhite));
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            view.setBackground(tagSelector.getLongSelector(tag));
-                        }
-                        // reset previous tag
-                        coreSkillTextView.setTextColor(getResources().getColor(R.color.colorAccent));
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            coreSkillView.setBackground(tagSelector.getNormalSelector(tag));
-                        }
-                        isLongPressed = true;
-                        coreSkill = tag.text;
-                        coreSkillView = view;
-                        coreSkillTextView = tagView;
-                        coreSkillTag = tag;
-                        coreSkillPosition = position;
-                    }
-                }
-            }
-        });*/
 
         tagGroup.setOnTagClickListener(new TagView.OnTagClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -250,22 +216,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
             }
         });
 
-        /*tagGroup.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
-            @Override
-            public void onTagDeleted(final TagView view, final Tag tag, final int position) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(SelectPlaylistActivity.this);
-                builder.setMessage("\"" + tag.text + "\" will be delete. Are you sure?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        view.remove(position);
-                        Toast.makeText(SelectPlaylistActivity.this, "\"" + tag.text + "\" deleted", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                builder.setNegativeButton("No", null);
-                builder.show();
-            }
-        });*/
+
     }
 
     private void prepareTags() throws Exception {
@@ -273,17 +224,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         for (int i=0;i<playlists.size();i++) {
             skillFactoryHashMap.put(playlists.get(i).getName(),0);
         }
-        /*JSONArray jsonArray;
-        JSONObject temp;
-        try {
-            jsonArray = new JSONArray(TagViewData.COUNTRIES);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                temp = jsonArray.getJSONObject(i);
-                skillFactoryHashMap.put(temp.getString("name"), 0);
-            }
-        } catch (Exception e) {
-            Log.d("error ", e.toString());
-        }*/
+
     }
 
     private void setTags() {

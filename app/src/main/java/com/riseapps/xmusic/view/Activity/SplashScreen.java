@@ -35,7 +35,6 @@ public class SplashScreen extends AppCompatActivity {
     ArrayList<Album> albumList = new ArrayList<>();
     ArrayList<Artist> artistList = new ArrayList<>();
 
-    //  ArrayList<Playlist> playLists=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +76,7 @@ public class SplashScreen extends AppCompatActivity {
             }.getType();
             String songJson = gson.toJson(songList, type);
             if(songList.size()>6) {
-                String songSubJson = gson.toJson(songList.subList(0, 6), type);
+                String songSubJson = gson.toJson(songList.subList(0, 10), type);
                 intent.putExtra("songSubList", songSubJson);
             }
             type = new TypeToken<ArrayList<Album>>() {

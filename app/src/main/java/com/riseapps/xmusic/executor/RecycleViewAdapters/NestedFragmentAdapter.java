@@ -102,10 +102,7 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position)
     {
-        if(position==1||position==9) {
-            return AD_TYPE;
-        }
-        return NORMAL_TYPE;
+        return (position==1||position==9)? AD_TYPE : NORMAL_TYPE;
     }
 
     private class AdViewHolder extends RecyclerView.ViewHolder {

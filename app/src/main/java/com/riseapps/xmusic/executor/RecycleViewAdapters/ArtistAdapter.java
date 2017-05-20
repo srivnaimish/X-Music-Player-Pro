@@ -22,8 +22,6 @@ import java.util.List;
 
 public class ArtistAdapter extends RecyclerView.Adapter {
 
-    private static final int AD_TYPE = 0;
-    private static final int NORMAL_TYPE = 1;
     private List<Artist> artistList;
     Context c;
 
@@ -45,17 +43,10 @@ public class ArtistAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        switch (viewType) {
 
-            case AD_TYPE:
-                View v1 = inflater.inflate(R.layout.nativ_express_ad_container, parent, false);
-                vh = new AdViewHolder(v1);
-                break;
-            case NORMAL_TYPE:
-                View v = inflater.inflate(R.layout.artist_name_row, parent, false);
-                vh = new ArtistViewHolder(v, c);
-                break;
-        }
+        View v = inflater.inflate(R.layout.artist_name_row, parent, false);
+        vh = new ArtistViewHolder(v, c);
+
         return vh;
 
     }
@@ -73,14 +64,6 @@ public class ArtistAdapter extends RecyclerView.Adapter {
             } else {
                 ((ArtistViewHolder) holder).name.setText(name);
             }
-        } else {
-            ((ArtistAdapter.AdViewHolder) holder).adView.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    ((ArtistAdapter.AdViewHolder) holder).adView.setVisibility(View.VISIBLE);
-                    super.onAdLoaded();
-                }
-            });
         }
 
     }
@@ -91,26 +74,7 @@ public class ArtistAdapter extends RecyclerView.Adapter {
         return artistList.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position==2)
-            return AD_TYPE;
 
-        return NORMAL_TYPE;
-    }
-
-    private class AdViewHolder extends RecyclerView.ViewHolder {
-
-        NativeExpressAdView adView;
-
-        AdViewHolder(View view) {
-            super(view);
-            adView = (NativeExpressAdView) view.findViewById(R.id.adView);
-            AdRequest request = new AdRequest.Builder()
-                    .build();
-            adView.loadAd(request);
-        }
-    }
 }
 
 class ArtistViewHolder extends RecyclerView.ViewHolder {

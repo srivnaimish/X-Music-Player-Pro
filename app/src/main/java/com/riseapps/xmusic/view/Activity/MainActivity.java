@@ -9,14 +9,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Vibrator;
-import android.support.annotation.IntegerRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -29,7 +25,6 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -46,10 +41,8 @@ import com.bumptech.glide.Glide;
 import com.claudiodegio.msv.OnSearchViewListener;
 import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -61,13 +54,11 @@ import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
-import com.riseapps.xmusic.executor.ProximityDetector;
 import com.riseapps.xmusic.executor.Interfaces.SongLikedListener;
 import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
-import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
@@ -114,8 +105,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private WaveHelper mWaveHelper;
     private int mBorderColor = Color.parseColor("#e74c3c");
     private int mBorderWidth = 5;
-    private SensorManager mSensorManager;
-    private ProximityDetector proximityDetector;
     private SongRefreshListener songRefreshListener;
     private ArtistRefreshListener artistRefreshListener;
     private AlbumRefreshListener albumRefreshListener;
@@ -125,7 +114,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private MainTextView toolbar_context_title;
     private static HashMap<Integer, Boolean> multipleSongSelectionList = new HashMap<>();
 
-    private Sensor mProximity;
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -203,18 +191,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
         initiallize();
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-
-        proximityDetector = new ProximityDetector(this);
-        proximityDetector.setOnProximityListener(new ProximityDetector.OnProximityListener() {
-            @Override
-            public void onProximity() {
-                ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
-                changeToNextSong();
-            }
-        });
 
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -487,18 +463,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         unregisterReceiver(stopReceiver);
         unbindService(musicConnection);
         stopService(playIntent);
-        if (new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this, "Pro_controls"))
-            mSensorManager.unregisterListener(proximityDetector);
+
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
-        boolean b = new SharedPreferenceSingelton().getSavedBoolean(this, "Pro_Controls");
-        if (b) {
-            mSensorManager.registerListener(proximityDetector, mProximity, 2 * 1000 * 1000);
-        } else
-            mSensorManager.unregisterListener(proximityDetector);
 
         if (mainPlayer.getVisibility() == View.VISIBLE) {
             miniPlayer.setVisibility(View.VISIBLE);
@@ -555,7 +525,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     void showMainPlayer() {
-        //   mainPlayer.startAnimation(new CustomAnimation().slideShow(MainActivity.this));
         AdRequest adRequest = new AdRequest.Builder().build();
         interstitial.loadAd(adRequest);
         mainPlayer.setVisibility(View.VISIBLE);
@@ -810,7 +779,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equalsIgnoreCase("Stop")) {
-                Toast.makeText(MainActivity.this, getString(R.string.stopping_player), Toast.LENGTH_SHORT).show();
                 finish();
             }
         }

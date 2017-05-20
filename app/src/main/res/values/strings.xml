@@ -2,15 +2,14 @@
     <string name="app_name" >Xmusic Pro</string>
 
     <!--WALKTHROUGH-->
-    <string name="fragment1_heading">Add to Playlist(s)</string>
-    <string name="fragment1_subHeading">Just select the tracks you want to add to a playlist from track list</string>
-    <string name="fragment2_heading">Wave to Skip</string>
-    <string name="fragment2_subHeading">Switch on the Pro mode in settings and double wave close to your phone to skip to a next song</string>
-    <string name="fragment3_heading">Time your playback</string>
-    <string name="fragment3_subHeading">Just set a timer to stop the music after some time through Settings</string>
+    <string name="fragment1_heading">Search on Youtube</string>
+    <string name="fragment1_subHeading">Search the song you are listening to,directly on Youtube</string>
+    <string name="fragment2_heading">Enhance your Music</string>
+    <string name="fragment2_subHeading">Select from multiple presets available in Settings</string>
+    <string name="fragment3_heading">Timer for your music</string>
+    <string name="fragment3_subHeading">Set a timer to stop the music after some time through Settings</string>
     <string name="permission_rationale">The app will not be able to retrieve your Songs…Please Give the Permission</string>
     <string name="start_now">START NOW</string>
-    <string name="fetched">Got your Songs</string>
 
     <!-- MENU ITEMS -->
     <string name="action_favourites">Favourites</string>
@@ -30,13 +29,12 @@
     <string name="song_repeat_on_toast">Song Repeat On</string>
     <string name="opening_youtube">Opening Youtube</string>
     <string name="song_added_to_playlist">Song Added to Playlist</string>
-    <string name="stopping_player">Stopping Player</string>
-    <string name="now_playing_all">Now Playing All Songs</string>
+
 
 
     <!--PLAYLIST SELECT ACTIVITY-->
     <string name="playlist_screen_placeholder">You can add this song to MULTIPLE playlists at once.</string>
-    <string name="did_not_select">Oops, you didn\'t select any playlist for your song!</string>
+    <string name="did_not_select">You didn\'t select any playlist for your song!</string>
     <string name="select_atleast_one">You must select at least 1 playlist</string>
     <string name="created">Created</string>
 
@@ -45,25 +43,22 @@
     <string name="cancel">CANCEL</string>
     <string name="play_all">Play All</string>
     <string name="shuffle">Shuffle</string>
-    <string name="empty_state_message">Oops..No Media Found !!</string>
+    <string name="empty_state_message">Sorry..No Songs Found !!</string>
     <string name="swipe_right_or_left_to_change_the_song">Swipe Right or Left to change the Song</string>
     <string name="playing_all">Playling All Songs from</string>
 
     <!--SETTINGS-->
     <string name="settings_title">App Settings</string>
-    <string name="pro_controls_heading">Pro Controls</string>
-    <string name="pro_control_subHeading">Double Wave close to proximity sensor to Skip Song</string>
     <string name="equalizer_heading">Equalizer</string>
     <string name="equalizer_subHeading">Select the way you want to listen to your songs</string>
     <string name="sleep_timer_heading">Sleep Timer</string>
     <string name="sleep_timer_subHeading">Turn off the music player automatically.</string>
     <string name="share_app_heading">Ads getting in your way?</string>
-    <string name="share_app_subHeading">Get our full version for better experience</string>
+    <string name="share_app_subHeading">Get ad-free full version with more equalizer presets</string>
+    <string name="share_app">Share App</string>
+    <string name="recomment_it_to_others">Recommend it to others</string>
     <string name="rate_us_heading">Rate us on Play Store!</string>
     <string name="rate_us_subHeading">Show us some love and give us 5 stars</string>
-
-    <string name="Pro_Controls_Activated_Toast">Pro Controls Activated</string>
-    <string name="Pro_Controls_Deactivated_Toast">Pro Controls Deactivated</string>
     <string name="Invalid_Time_Toast">Invalid Time</string>
 
     <!--CREATE PLAYLIST DIALOG-->
@@ -85,7 +80,7 @@
     <string name="rock_preset">Rock</string>
 
     <!--SLEEP TIME DIALOG-->
-    <string name="stop_music_after">Stop Music After</string>
+    <string name="stop_music_after">Stop Music</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
     <string name="zero" translatable="false">0</string>

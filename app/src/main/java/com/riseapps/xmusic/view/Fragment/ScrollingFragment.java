@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
+import com.riseapps.xmusic.executor.CheckConnectivity;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
@@ -152,6 +153,11 @@ public class ScrollingFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
+        if(new CheckConnectivity().isNetworkAvailable(getActivity())) {
+            songArrayList.add(1, null);
+            if(songArrayList.size()>10)
+                songArrayList.add(9,null);
+        }
         nestedFragmentAdapter = new NestedFragmentAdapter(getActivity(), songArrayList, recyclerView);
         recyclerView.setAdapter(nestedFragmentAdapter);
 

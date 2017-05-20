@@ -42,18 +42,17 @@ public class Walkthrough extends AppCompatActivity {
     private MyViewPagerAdapter myViewPagerAdapter;
     private int[] layouts;
     private Button btn1,btn2,btn3;
-    private RelativeLayout btnSkip;
     private LinearLayout loading;
 
     Async async = new Async();
-    final int textLimit = 26;
     private static final int REQUEST_PERMISSION = 0;
+    String[] permissionsRequired = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE};
 
     ArrayList<Song> songList = new ArrayList<>();
     ArrayList<Album> albumList = new ArrayList<>();
     ArrayList<Artist> artistList = new ArrayList<>();
     private Intent intent;
-    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class Walkthrough extends AppCompatActivity {
         setContentView(R.layout.activity_walkthrough);
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        btnSkip = (RelativeLayout) findViewById(R.id.btn_skip);
+        RelativeLayout btnSkip = (RelativeLayout) findViewById(R.id.btn_skip);
         btn1= (Button) findViewById(R.id.bt1);
         btn2= (Button) findViewById(R.id.bt2);
         btn3= (Button) findViewById(R.id.bt3);
@@ -201,22 +200,23 @@ public class Walkthrough extends AppCompatActivity {
     public void checkPermission() {
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            if (ContextCompat.checkSelfPermission(this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[0])
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this,permissionsRequired[1])) {
                     Snackbar.make(findViewById(android.R.id.content),
-                            "Permission needed to Access Songs",
+                            "Permissions needed to Access Songs and to stop/play music during call",
                             Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     ActivityCompat.requestPermissions(Walkthrough.this,
-                                            new String[]{Manifest.permission
-                                                    .WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                                           permissionsRequired,
                                             REQUEST_PERMISSION);
                                 }
                             }).show();
                 } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
+                    ActivityCompat.requestPermissions(this, permissionsRequired, REQUEST_PERMISSION);
                 }
             } else {
                 async.execute();
@@ -227,11 +227,10 @@ public class Walkthrough extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_PERMISSION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //updateSongs.fetchSongs();
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     async.execute();
                 } else {
                     Snackbar.make(viewPager, R.string.permission_rationale,
@@ -240,7 +239,7 @@ public class Walkthrough extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     ActivityCompat.requestPermissions(Walkthrough.this,
-                                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                            permissionsRequired,
                                             REQUEST_PERMISSION);
                                 }
                             }).show();
@@ -268,8 +267,8 @@ public class Walkthrough extends AppCompatActivity {
             Type type = new TypeToken<ArrayList<Song>>() {
             }.getType();
             String songJson = gson.toJson(songList, type);
-            if(songList.size()>6) {
-                String songSubJson = gson.toJson(songList.subList(0, 6), type);
+            if(songList.size()>10) {
+                String songSubJson = gson.toJson(songList.subList(0, 10), type);
                 intent.putExtra("songSubList", songSubJson);
             }
 
@@ -291,7 +290,7 @@ public class Walkthrough extends AppCompatActivity {
     }
 
     public void openEmptyStateDialog(){
-        dialog=new Dialog(this);
+        Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.empty_state_dialog);
         dialog.show();
 
