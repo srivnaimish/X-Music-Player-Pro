@@ -1,14 +1,18 @@
 package com.riseapps.xmusic.view.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -16,7 +20,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.ActionModeCallback;
-import com.riseapps.xmusic.executor.CheckConnectivity;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
@@ -39,8 +42,8 @@ import java.util.HashMap;
 
 public class SongsFragment extends Fragment {
 
-    boolean loaded = false;
-    ProgressBar progress;
+    ProgressBar progressBar;
+    NestedScrollView nestedScrollView;
     RecyclerView recyclerView;
     ArrayList<Song> songMainList = new ArrayList<>();
     ArrayList<Song> songAllList = new ArrayList<>();
@@ -64,14 +67,14 @@ public class SongsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
-        //  async = new Async();
-        progress = (ProgressBar) rootView.findViewById(R.id.progress);
+        nestedScrollView = (NestedScrollView) rootView.findViewById(R.id.nestedScrollView);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         String songJson = getActivity().getIntent().getStringExtra("songList");
         songAllList = new Gson().fromJson(songJson, new TypeToken<ArrayList<Song>>() {
         }.getType());
         ((MainActivity) getActivity()).setSongs(songAllList);
 
-        if (songAllList.size() > 10) {
+        if (songAllList.size() > 20) {
             String songSubJson = getActivity().getIntent().getStringExtra("songSubList");
             songMainList = new Gson().fromJson(songSubJson, new TypeToken<ArrayList<Song>>() {
             }.getType());
@@ -79,22 +82,51 @@ public class SongsFragment extends Fragment {
         } else {
             songMainList = songAllList;
         }
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.songs);
         int spanCount = 1; // 2 columns
         int spacing = 1; // 50px
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
-        layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-        recyclerView.setLayoutManager(layoutManager);
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         songsAdapter = new SongAdapter(getActivity(), songMainList, recyclerView);
 
-        recyclerView.setAdapter(songsAdapter);
+        nestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                View view = (View) nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
+                int diff = (view.getBottom() - (nestedScrollView.getHeight() + nestedScrollView
+                        .getScrollY()));
 
+                if (diff == 0) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (songMainList.size() < songAllList.size()) {
+                                int x = 0, y = 0;
+                                if ((songAllList.size() - songMainList.size()) >= 30) {
+                                    x = songMainList.size();
+                                    y = x + 30;
+                                } else {
+                                    x = songMainList.size();
+                                    y = x + songAllList.size() - songMainList.size();
+                                }
+                                for (int i = x; i < y; i++) {
+                                    songMainList.add(songAllList.get(i));
+                                    songsAdapter.notifyDataSetChanged();/*
+                           */
+                                }
+                            }
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }, 1500);
+
+
+                }
+            }
+        });
+        recyclerView.setAdapter(songsAdapter);
 
         songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
             @Override
@@ -116,15 +148,17 @@ public class SongsFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if(actionMode==null) {
+
                     if ((((MainActivity) getActivity()).getSongs() != songMainList)) {
                         ((MainActivity) getActivity()).setSongs(songMainList);
                         ((MainActivity) getActivity()).getMusicService().setSongs(songMainList);
+                        new PlaySongExec(getContext(), position).startPlaying();
                     }
-                    new PlaySongExec(getContext(), position).startPlaying();
-                }
-                else
+
+
+                if (actionMode != null)
                     onListItemSelect(position);
+
             }
 
             @Override
@@ -187,7 +221,6 @@ public class SongsFragment extends Fragment {
                 });
             }
         });
-        //  async.execute();
 
         return rootView;
     }
@@ -195,16 +228,7 @@ public class SongsFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser&&!loaded){
-            if(songAllList.size()>10){
-                for(int i=10;i<songAllList.size();i++)
-                    songMainList.add(songAllList.get(i));
-                songsAdapter.notifyDataSetChanged();
-            }
-            loaded=true;
-        }
     }
-
 
     //List item select method
     private void onListItemSelect(int position) {

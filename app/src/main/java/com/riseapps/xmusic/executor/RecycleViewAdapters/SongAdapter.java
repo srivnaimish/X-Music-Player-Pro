@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,19 +17,15 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
-import com.riseapps.xmusic.component.TagToken.customviews.CountSpan;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.Interfaces.SongLikedListener;
 import com.riseapps.xmusic.model.Pojo.LongSelectedSong;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.utils.DipToPx;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class SongAdapter extends RecyclerView.Adapter {
 
@@ -53,13 +48,8 @@ public class SongAdapter extends RecyclerView.Adapter {
 
     public SongAdapter(Context context, List<Song> songs, RecyclerView recyclerView) {
         songsList = songs;
-        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-
-            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
-                    .getLayoutManager();
-            c = context;
-
-        }
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        c = context;
         mSelectedItemsIds = new SparseBooleanArray();
     }
 
@@ -69,10 +59,8 @@ public class SongAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder vh;
-        View v = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.song_list_row, parent, false);
-        return new SongViewHolder(v, c);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_list_row, parent, false);
+        return new SongViewHolder(view,c);
     }
 
     @Override
@@ -161,33 +149,24 @@ public class SongAdapter extends RecyclerView.Adapter {
 
             String name = song.getName();
             String artist = song.getArtist();
-            long time = song.getDuration();
             String imagepath = song.getImagepath();
 
             ((SongViewHolder) holder).name.setText(name);
 
             ((SongViewHolder) holder).artist.setText(artist);
 
-            ((SongViewHolder) holder).duration.setText(String.format(Locale.getDefault(), "%d:%02d",
-                    TimeUnit.MILLISECONDS.toMinutes(time),
-                    TimeUnit.MILLISECONDS.toSeconds(time) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))));
-            if (!imagepath.equalsIgnoreCase("no_image")) {
+            if (!imagepath.equalsIgnoreCase("no_image"))
                 Glide.with(c).load(imagepath)
-                        .crossFade()
-                        .centerCrop()
-                        .into(((SongViewHolder) holder).iv);
-            }
-            else {
+                    .crossFade()
+                    .centerCrop()
+                    .into(((SongViewHolder) holder).iv);
+            else
                 ((SongViewHolder) holder).iv.setImageResource(R.drawable.empty);
-            }
 
-            if(song.getFavourite()){
+            if(song.getFavourite())
                 ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);
-            }
-            else {
+             else
                 ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
-            }
 
             ((SongViewHolder) holder).like.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,8 +177,7 @@ public class SongAdapter extends RecyclerView.Adapter {
                         new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),0);
                         ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
                         song.setFavourite(false);
-                    }
-                    else {
+                    } else {
                         new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),1);
                         ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);
                         song.setFavourite(true);
@@ -225,7 +203,6 @@ public class SongAdapter extends RecyclerView.Adapter {
     }
 
     public void removeAllSelection() {
-        Log.d("Hello" , "Helo" );
         notifyDataSetChanged();
         longPressedSongs = new HashMap<>();
         longSelectedSongs.clear();
@@ -257,26 +234,22 @@ public class SongAdapter extends RecyclerView.Adapter {
     SongLikedListener l = new SongLikedListener() {
         @Override
         public void onSongLiked(boolean status) {
-            Toast.makeText(c, " "  + status, Toast.LENGTH_SHORT).show();
         }
     };
 
     public void onSongLiked(boolean status) {
         final Song song = songsList.get(position);
         if (status) {
-            Toast.makeText(c, "hello 1", Toast.LENGTH_SHORT).show();
-            if(song.getFavourite()){
+            if (song.getFavourite()) {
                 //new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),0);
                 ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
                 //song.setFavourite(false);
-            }
-            else {
+            } else {
                 //new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),1);
                 ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);
                 //song.setFavourite(true);
             }
-        }
-        else
+        } else
             Toast.makeText(c, "hello 2", Toast.LENGTH_SHORT).show();
     }
 
@@ -294,7 +267,7 @@ public class SongAdapter extends RecyclerView.Adapter {
     static class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         ImageView iv;
-        TextView name,artist,duration;
+        TextView name, artist;
         ImageButton like;
         CardView songListCard;
         private PlaySongExec playSongExec;
@@ -306,15 +279,12 @@ public class SongAdapter extends RecyclerView.Adapter {
 
         private OnLongPressListener mListener;
 
-        SongAdapter adapter = new SongAdapter(ctx);
-
         SongViewHolder(View v, Context context) {
             super(v);
             this.ctx = context;
             iv= (ImageView) v.findViewById(R.id.album_art);
             name= (TextView) v.findViewById(R.id.name);
             artist= (TextView) v.findViewById(R.id.artist_mini);
-            duration= (TextView) v.findViewById(R.id.duration);
             like= (ImageButton) v.findViewById(R.id.like);
             songListCard = (CardView) v.findViewById(R.id.song_list_card);
 

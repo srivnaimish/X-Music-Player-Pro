@@ -483,8 +483,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     public void onBackPressed() {
         if (mainPlayer.getVisibility() == View.VISIBLE) {
             hideMainPlayer();
-            if(interstitial.isLoaded())
-            showInterstitial();
+            /*if(interstitial.isLoaded())
+            showInterstitial();*/
 
         } else {
             if (musicPlaying) {
@@ -536,6 +536,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     void hideMainPlayer() {
+        if(interstitial.isLoaded())
+            showInterstitial();
         mainPlayer.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.VISIBLE);
         mViewPager.setVisibility(View.VISIBLE);

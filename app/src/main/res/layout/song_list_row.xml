@@ -65,17 +65,6 @@
             android:layout_marginStart="16dp"
             android:textSize="13sp"/>
 
-        <com.riseapps.xmusic.widgets.MainTextViewSub
-            android:id="@+id/duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="TextView"
-            app:layout_constraintLeft_toRightOf="@+id/artist_mini"
-            app:layout_constraintTop_toTopOf="@+id/artist_mini"
-            app:layout_constraintBottom_toBottomOf="@+id/artist_mini"
-            android:textSize="13sp"
-            android:visibility="gone"/>
-
         <ImageButton
             android:id="@+id/like"
             android:layout_width="wrap_content"
