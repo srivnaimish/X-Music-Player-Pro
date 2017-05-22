@@ -55,7 +55,6 @@
     <string name="sleep_timer_subHeading">Turn off the music player automatically.</string>
     <string name="share_app_heading">Ads getting in your way?</string>
     <string name="share_app_subHeading">Get ad-free full version with more equalizer presets</string>
-    <string name="share_app">Share App</string>
     <string name="recomment_it_to_others">Recommend it to others</string>
     <string name="rate_us_heading">Rate us on Play Store!</string>
     <string name="rate_us_subHeading">Show us some love and give us 5 stars</string>
@@ -76,7 +75,7 @@
     <string name="heavy_metal_preset">Heavy Metal</string>
     <string name="hip_hop_preset">Hip Hop</string>
     <string name="jazz_preset">Jazz</string>
-    <string name="pop_preset">Pop</string>
+    <string name="pop_preset">Pop music</string>
     <string name="rock_preset">Rock</string>
 
     <!--SLEEP TIME DIALOG-->
@@ -88,7 +87,7 @@
     <!--AD UNIT ID'S-->
     <string name="ad_unit_id" translatable="false">ca-app-pub-2454061641779517/5483543782</string>
     <string name="banner_ad_id" translatable="false">ca-app-pub-2454061641779517/4255659381</string>
-
+    <string name="share_app">Share App</string>
 
 
 </resources>

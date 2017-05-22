@@ -74,7 +74,7 @@ public class SongsFragment extends Fragment {
         }.getType());
         ((MainActivity) getActivity()).setSongs(songAllList);
 
-        if (songAllList.size() > 20) {
+        if (songAllList.size() > 30) {
             String songSubJson = getActivity().getIntent().getStringExtra("songSubList");
             songMainList = new Gson().fromJson(songSubJson, new TypeToken<ArrayList<Song>>() {
             }.getType());

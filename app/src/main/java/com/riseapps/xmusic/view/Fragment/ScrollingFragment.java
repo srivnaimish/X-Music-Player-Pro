@@ -116,14 +116,15 @@ public class ScrollingFragment extends Fragment {
         }
         else {
             //imageView.setImageResource(R.drawable.empty);
+
+            Glide.with(getContext()).load(R.drawable.ic_music_player)
+                    .crossFade()
+                    .placeholder(R.drawable.ic_music_player)
+                    .into(circleAlbumArt);
             Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/04/19/05/07/turntable-1337986_960_720.jpg")
                     .crossFade()
                     .placeholder(R.drawable.ic_music_player)
                     .into(imageView);
-            Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/04/19/05/07/turntable-1337986_960_720.jpg")
-                    .crossFade()
-                    .placeholder(R.drawable.ic_music_player)
-                    .into(circleAlbumArt);
         }
 
         if(Action.equalsIgnoreCase("Album")){
@@ -153,7 +154,7 @@ public class ScrollingFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        if(new CheckConnectivity().isNetworkAvailable(getActivity())) {
+        if(new CheckConnectivity().isNetworkAvailable(getActivity())&&songArrayList.size()!=0) {
             songArrayList.add(1, null);
             if(songArrayList.size()>10)
                 songArrayList.add(9,null);
