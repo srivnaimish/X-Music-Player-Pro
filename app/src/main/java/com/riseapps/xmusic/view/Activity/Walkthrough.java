@@ -110,25 +110,6 @@ public class Walkthrough extends AppCompatActivity {
                 finish();
             }
 
-        /*} else {
-            Snackbar.make(viewPager, R.string.fetched,
-                    Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.ok, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if(songList.size()==0){
-                                openEmptyStateDialog();
-                            }
-                            else{
-                                new SharedPreferenceSingelton().saveAs(Walkthrough.this, "opened_before", true);
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                                finish();
-                            }
-                        }
-                    }).show();
-        }*/
-
     }
 
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {

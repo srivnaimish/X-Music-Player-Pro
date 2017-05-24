@@ -5,10 +5,10 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.riseapps.xmusic"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 25
-        versionCode 7
-        versionName "1.0.6"
+        versionCode 8
+        versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

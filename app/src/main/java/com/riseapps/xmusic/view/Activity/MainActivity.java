@@ -152,7 +152,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))));
                 }
 
-
                 @Override
                 public void onPlayerStatusChanged(int status) {
                     switch (status) {

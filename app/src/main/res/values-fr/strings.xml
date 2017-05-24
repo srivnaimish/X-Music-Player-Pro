@@ -5,7 +5,7 @@
     <string name="TAB1">PLAYLIST</string>
     <string name="TAB2">ALBUMS</string>
     <string name="TAB3">ARTISTES</string>
-    <string name="TAB4">CHANSONS</string>
+    <string name="TAB4">TITRES</string>
     <string name="action_favourites">Favoris</string>
     <string name="action_playlist">Ajouter à la playlist</string>
     <string name="action_refresh">Actualiser les morceaux</string>
@@ -55,7 +55,7 @@
     <string name="share_app">Partager l\'application</string>
     <string name="share_app_heading">Des annonces se mettent sur votre chemin?</string>
     <string name="share_app_subHeading">Obtenez une version complète sans publicité avec plus de préréglages d\'égaliseur</string>
-    <string name="shuffle">Mélanger</string>
+    <string name="shuffle">Tout Lifre En Mode Aléatoire</string>
     <string name="sleep_timer_heading">Minuterie de sommeil</string>
     <string name="sleep_timer_subHeading">Éteignez le lecteur de musique automatiquement.</string>
     <string name="song_added_to_playlist">Chanson ajoutée à la liste de lecture</string>
