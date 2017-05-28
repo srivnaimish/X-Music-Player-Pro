@@ -75,14 +75,9 @@ public class SplashScreen extends AppCompatActivity {
             Type type = new TypeToken<ArrayList<Song>>() {
             }.getType();
             String songJson = gson.toJson(songList, type);
-            if(songList.size()>30) {
-                String songSubJson = gson.toJson(songList.subList(0, 30), type);
-                intent.putExtra("songSubList", songSubJson);
-            }
             type = new TypeToken<ArrayList<Album>>() {
             }.getType();
             String albumJson = gson.toJson(albumList, type);
-
             type = new TypeToken<ArrayList<Artist>>() {
             }.getType();
             String artistJson = gson.toJson(artistList, type);

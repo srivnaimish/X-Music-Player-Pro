@@ -65,26 +65,26 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
         String name = album.getName().trim();
         String imagepath = album.getImagepath();
         //Log.d("imagepath", " " + imagepath);
-        if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
-            if (!imagepath.equalsIgnoreCase("no_image")) {
-                Glide.with(c).load(imagepath)
-                        .centerCrop()
-                        .into(((AlbumViewHolder) holder).imageView);
-            } else {
-                Glide.with(c).load(randomAlbumArt.getArt())
-                        .centerCrop()
-                        .placeholder(R.drawable.ic_equaliser)
-                        .into(((AlbumViewHolder) holder).imageView);
-            }
-            ((AlbumViewHolder) holder).name.setText(name);
-            ((AlbumViewHolder) holder).album = album;
+        if (!imagepath.equalsIgnoreCase("no_image")) {
+            Glide.with(c).load(imagepath)
+                    .centerCrop()
+                    .into(((AlbumViewHolder) holder).imageView);
+        } else {
+            Glide.with(c).load(R.drawable.ic_splash)
+                    .placeholder(R.drawable.ic_music_player)
+                    .into(((AlbumViewHolder) holder).imageView);
+        }
+        ((AlbumViewHolder) holder).name.setText(name);
+        ((AlbumViewHolder) holder).album = album;
+      /*  if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
+
         } else {
             ((AlbumViewHolder) holder).name.setText(name);
             Glide.with(c).load(randomAlbumArt.getArt())
                     .placeholder(R.drawable.ic_equaliser)
                     .centerCrop()
                     .into(((AlbumViewHolder) holder).imageView);
-        }
+        }*/
 
 
     }

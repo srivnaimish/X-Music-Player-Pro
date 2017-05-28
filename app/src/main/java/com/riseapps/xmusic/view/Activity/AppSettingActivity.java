@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
@@ -32,17 +33,22 @@ import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 
 public class AppSettingActivity extends AppCompatActivity implements View.OnClickListener {
 
+    InterstitialAd interstitial;
     private Dialog dialog;
     private EditText min,hrs;
     private static EqualizerPresetListener equalizerPresetListener;
     private RadioGroup radioButtonGroup;
     private AdView mAdView;
+    AdRequest adRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
+        adRequest = new AdRequest.Builder().build();
         init();
+        interstitial = new InterstitialAd(this);
+        interstitial.setAdUnitId("ca-app-pub-2454061641779517/5252774182");
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-2454061641779517~3507282989");
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -89,10 +95,13 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         switch (view.getId()) {
 
             case R.id.setting_equalizer:
+
+                interstitial.loadAd(adRequest);
                 openEqualizerDialog();
                 break;
 
             case R.id.setting_sleep:
+                interstitial.loadAd(adRequest);
                 openSleepDialog();
                 break;
 
@@ -142,6 +151,8 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP, d, pi);
                     dialog.dismiss();
                 }
+                if(interstitial.isLoaded())
+                    showInterstitial();
 
             }
         });
@@ -150,6 +161,8 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                if(interstitial.isLoaded())
+                    showInterstitial();
             }
         });
 
@@ -175,6 +188,8 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 equalizerPresetListener.OnEqualizerPresetChanged((short)idx);
                 new SharedPreferenceSingelton().saveAs(AppSettingActivity.this,"Preset",idx);
                 dialog.dismiss();
+                if(interstitial.isLoaded())
+                    showInterstitial();
             }
         });
 
@@ -223,6 +238,12 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     public static void setEqualizerPresetListener(EqualizerPresetListener listener) {   // Sets a callback to execute when we switch songs.. ie: update UI
         equalizerPresetListener = listener;
+    }
+
+    private void showInterstitial() {
+        if (interstitial.isLoaded()) {
+            interstitial.show();
+        }
     }
 
 }

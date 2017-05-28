@@ -77,7 +77,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseMatSearchViewActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, OnSearchViewListener {
 
-    InterstitialAd interstitial;
+
 
     public boolean musicPlaying, isMusicShuffled = false;
     public ImageButton play_pause, prev, next, repeat, shuffle;
@@ -286,9 +286,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     private void initiallize() {
-        interstitial = new InterstitialAd(this);
-        interstitial.setAdUnitId("ca-app-pub-2454061641779517/5252774182");
-
         progressView = (RelativeLayout) findViewById(R.id.progress);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Stop");
@@ -482,9 +479,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     public void onBackPressed() {
         if (mainPlayer.getVisibility() == View.VISIBLE) {
             hideMainPlayer();
-            /*if(interstitial.isLoaded())
-            showInterstitial();*/
-
         } else {
             if (musicPlaying) {
                 if (toolbarContext.isShown()) {
@@ -524,8 +518,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     void showMainPlayer() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        interstitial.loadAd(adRequest);
         mainPlayer.setVisibility(View.VISIBLE);
         toolbarPlayer.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.GONE);
@@ -535,8 +527,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     void hideMainPlayer() {
-        if(interstitial.isLoaded())
-            showInterstitial();
         mainPlayer.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.VISIBLE);
         mViewPager.setVisibility(View.VISIBLE);
@@ -785,10 +775,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         }
     };
 
-    private void showInterstitial() {
-        if (interstitial.isLoaded()) {
-            interstitial.show();
-        }
-    }
+
 }
 

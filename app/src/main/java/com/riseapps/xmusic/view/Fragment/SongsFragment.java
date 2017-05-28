@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.ActionModeCallback;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
@@ -75,10 +76,7 @@ public class SongsFragment extends Fragment {
         ((MainActivity) getActivity()).setSongs(songAllList);
 
         if (songAllList.size() > 30) {
-            String songSubJson = getActivity().getIntent().getStringExtra("songSubList");
-            songMainList = new Gson().fromJson(songSubJson, new TypeToken<ArrayList<Song>>() {
-            }.getType());
-
+            songMainList = new ArrayList<>(songAllList.subList(0,30));
         } else {
             songMainList = songAllList;
         }
@@ -149,10 +147,11 @@ public class SongsFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
 
-                    if ((((MainActivity) getActivity()).getSongs() != songMainList)) {
-                        ((MainActivity) getActivity()).setSongs(songMainList);
-                        ((MainActivity) getActivity()).getMusicService().setSongs(songMainList);
+                    if ((((MainActivity) getActivity()).getSongs() != songMainList)||(((MainActivity) getActivity()).getSongs() != songAllList)) {
+                        ((MainActivity) getActivity()).setSongs(songAllList);
+                        ((MainActivity) getActivity()).getMusicService().setSongs(songAllList);
                         new PlaySongExec(getContext(), position).startPlaying();
+                        new SharedPreferenceSingelton().saveAs(getContext(), "Shuffle", false);
                     }
 
 
@@ -169,8 +168,13 @@ public class SongsFragment extends Fragment {
         ((MainActivity) getActivity()).setSongRefreshListener(new SongRefreshListener() {
             @Override
             public void OnSongRefresh(ArrayList<Song> arrayList) {
-                songMainList = arrayList;
-                ((MainActivity) getActivity()).setSongs(songMainList);
+                songAllList = arrayList;
+                if (songAllList.size() > 30) {
+                    songMainList = new ArrayList<>(songAllList.subList(0,30));
+                } else {
+                    songMainList = songAllList;
+                }
+                ((MainActivity) getActivity()).setSongs(songAllList);
                 songsAdapter = new SongAdapter(getActivity(), songMainList, recyclerView);
                 recyclerView.setAdapter(songsAdapter);
                 songsAdapter.setContextMenuListener(new SongAdapter.OnShowContextMenuListener() {
