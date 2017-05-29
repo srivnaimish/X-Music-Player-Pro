@@ -134,7 +134,7 @@
                 android:visibility="gone"
                 card_view:cardBackgroundColor="@color/colorPrimary"
                 card_view:cardCornerRadius="0dp"
-                card_view:cardElevation="18dp">
+                card_view:cardElevation="25dp">
 
                 <include layout="@layout/mini_player" />
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Xmusique  Pro</string>
+    <string name="app_name">Rise Music</string>
     <string name="Invalid_Time_Toast">Temps invalide</string>
     <string name="TAB1">PLAYLIST</string>
     <string name="TAB2">ALBUMS</string>

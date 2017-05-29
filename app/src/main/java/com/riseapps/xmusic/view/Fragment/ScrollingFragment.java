@@ -46,7 +46,6 @@ public class ScrollingFragment extends Fragment {
     String Name,Imagepath=null,Action;
     ImageView imageView;
     private ImageView circleAlbumArt;
-    TextView title;
     MainTextViewSub name;
     RecyclerView recyclerView;
     private Button playAllButton, shuffleButton;
@@ -80,7 +79,6 @@ public class ScrollingFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView=inflater.inflate(R.layout.fragment_scrolling, container, false);
-        title= (TextView) rootView.findViewById(R.id.textView);
         imageView = (ImageView) rootView.findViewById(R.id.imageView);
         fab= (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
@@ -91,14 +89,10 @@ public class ScrollingFragment extends Fragment {
         shuffleButton = (Button) rootView.findViewById(R.id.shuffle_button);
 
         if(Name!=null) {
-            title.setText(Name);
-            title.setVisibility(View.GONE);
             name.setText(Name);
         }
 
         else {
-            title.setText("Favourites");
-            title.setVisibility(View.GONE);
             name.setText("Favourites");
         }
 
@@ -166,7 +160,7 @@ public class ScrollingFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 if((((MainActivity) getActivity()).getSongs()!=songArrayList)) {
-                    Toast.makeText(getContext(), getContext().getString(R.string.now_playing)+" "+title.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.now_playing)+" "+name.getText().toString(), Toast.LENGTH_SHORT).show();
                     ((MainActivity) getActivity()).setSongs(songArrayList);
                     ((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
                 }
@@ -185,7 +179,7 @@ public class ScrollingFragment extends Fragment {
             public void onClick(View view) {
                 if(songArrayList.size()!=0) {
                     if ((((MainActivity) getActivity()).getSongs() != songArrayList)) {
-                        Toast.makeText(getContext(), getContext().getString(R.string.playing_all)+" " + title.getText().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getContext().getString(R.string.playing_all)+" " + name.getText().toString(), Toast.LENGTH_SHORT).show();
                         ((MainActivity) getActivity()).setSongs(songArrayList);
                         ((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
                     }
@@ -201,7 +195,7 @@ public class ScrollingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if ((((MainActivity) getActivity()).getSongs() != songArrayList)) {
-                    Toast.makeText(getContext(), getContext().getString(R.string.playing_all)+" " + title.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getString(R.string.playing_all)+" " + name.getText().toString(), Toast.LENGTH_SHORT).show();
                     ((MainActivity) getActivity()).setSongs(songArrayList);
                     ((MainActivity) getActivity()).getMusicService().setSongs(songArrayList);
                 }
