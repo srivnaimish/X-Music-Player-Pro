@@ -77,11 +77,11 @@ public class PlaylistFragment extends Fragment {
 
         recyclerView = (RecyclerView) v.findViewById(R.id.playlists);
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
+        GridLayoutManager grid = new GridLayoutManager(v.getContext(), 1);
         recyclerView.setLayoutManager(grid);
 
-        int spanCount = 2;
-        int spacing = 8;
+        int spanCount = 1;
+        int spacing = 4;
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override

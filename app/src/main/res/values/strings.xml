@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" >Rise Music</string>
+    <string name="app_name" >Xmusic Pro</string>
 
     <!--WALKTHROUGH-->
     <string name="fragment1_heading">Search on Youtube</string>
@@ -49,6 +49,9 @@
 
     <!--SETTINGS-->
     <string name="settings_title">App Settings</string>
+
+    <string name="pro_controls_heading">Pro Controls</string>
+    <string name="pro_control_subHeading">Double Wave close to proximity sensor to Skip Song</string>
     <string name="equalizer_heading">Equalizer</string>
     <string name="equalizer_subHeading">Select the way you want to listen to your songs</string>
     <string name="sleep_timer_heading">Sleep Timer</string>

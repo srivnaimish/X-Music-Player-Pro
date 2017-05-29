@@ -156,8 +156,8 @@ public class MusicService extends Service implements
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
+       // onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
         mSeekBar = null;
-        onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
         player.stop();
         player.reset();
         player.release();
@@ -228,6 +228,7 @@ public class MusicService extends Service implements
         int x = new SharedPreferenceSingelton().getSavedInt(this, "Preset");
         equalizer = new Equalizer(0, player.getAudioSessionId());
         equalizer.setEnabled(true);
+        if(equalizer.getNumberOfPresets()>0)
         equalizer.usePreset((short) x);
 
         AppSettingActivity.setEqualizerPresetListener(new AppSettingActivity.EqualizerPresetListener() {

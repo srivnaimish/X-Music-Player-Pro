@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.audiofx.Equalizer;
 import android.net.Uri;
 import android.os.Build;
@@ -30,6 +31,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
+import com.riseapps.xmusic.model.MusicService;
 
 public class AppSettingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,6 +42,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     private RadioGroup radioButtonGroup;
     private AdView mAdView;
     AdRequest adRequest;
+    SharedPreferenceSingelton sharedPreferenceSingelton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,8 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     private void init() {
         // Toolbar
+        sharedPreferenceSingelton=new SharedPreferenceSingelton();
+
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -76,11 +81,38 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 finish();
             }
         });
+        CardView setting_pro = (CardView) findViewById(R.id.setting_shake);
         CardView setting_equalizer = (CardView) findViewById(R.id.setting_equalizer);
         CardView setting_sleep = (CardView) findViewById(R.id.setting_sleep);
         CardView setting_share_app = (CardView) findViewById(R.id.setting_share);
         CardView setting_unlock = (CardView) findViewById(R.id.setting_unlocked);
         CardView setting_rate = (CardView) findViewById(R.id.setting_rate);
+
+        if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_PROXIMITY)){
+            setting_pro.setVisibility(View.GONE);
+            //Toast.makeText(this, "Has", Toast.LENGTH_SHORT).show();
+        }
+
+        Switch pro = (Switch) findViewById(R.id.setting_pro);
+        if(sharedPreferenceSingelton.getSavedBoolean(this,"Pro_Controls"))
+            pro.setChecked(true);
+        else
+            pro.setChecked(false);
+        pro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(sharedPreferenceSingelton.getSavedBoolean(AppSettingActivity.this,"Pro_Controls")) {
+                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Pro_Controls",false);
+                    MainActivity.mSensorManager.unregisterListener(MainActivity.proximityDetector);
+                    Toast.makeText(AppSettingActivity.this, "Pro Controls Deactivated", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Pro_Controls",true);
+                    MainActivity.mSensorManager.registerListener(MainActivity.proximityDetector, MainActivity.mProximity, 2 * 1000 * 1000);
+                    Toast.makeText(AppSettingActivity.this, "Pro Controls Activated", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         setting_equalizer.setOnClickListener(this);
         setting_sleep.setOnClickListener(this);
@@ -174,7 +206,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         dialog.show();
         radioButtonGroup= (RadioGroup) dialog.findViewById(R.id.radio_group);
 
-        int x=new SharedPreferenceSingelton().getSavedInt(AppSettingActivity.this,"Preset");
+        int x=sharedPreferenceSingelton.getSavedInt(AppSettingActivity.this,"Preset");
         if(x!=0){
             radioButtonGroup.check((radioButtonGroup.getChildAt(x)).getId());
         }
@@ -186,7 +218,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 View radioButton = radioButtonGroup.findViewById(radioButtonID);
                 int idx = radioButtonGroup.indexOfChild(radioButton);
                 equalizerPresetListener.OnEqualizerPresetChanged((short)idx);
-                new SharedPreferenceSingelton().saveAs(AppSettingActivity.this,"Preset",idx);
+                sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Preset",idx);
                 dialog.dismiss();
                 if(interstitial.isLoaded())
                     showInterstitial();

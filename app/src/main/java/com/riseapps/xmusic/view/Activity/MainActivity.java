@@ -9,10 +9,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -41,8 +44,6 @@ import com.bumptech.glide.Glide;
 import com.claudiodegio.msv.OnSearchViewListener;
 import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -55,11 +56,13 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.Interfaces.SongLikedListener;
+import com.riseapps.xmusic.executor.ProximityDetector;
 import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.widgets.EqualizerView;
 import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
 import com.riseapps.xmusic.view.Fragment.ArtistFragment;
@@ -78,7 +81,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends BaseMatSearchViewActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, OnSearchViewListener {
 
 
-
+    public EqualizerView equalizerView;
     public boolean musicPlaying, isMusicShuffled = false;
     public ImageButton play_pause, prev, next, repeat, shuffle;
     //MiniPlayer items
@@ -112,6 +115,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private SongsFragment songFragment;
     private ContextMenuListener clearAll;
     private MainTextView toolbar_context_title;
+
+    public static SensorManager mSensorManager;
+    public static ProximityDetector proximityDetector;
+    public static Sensor mProximity;
+
     private static HashMap<Integer, Boolean> multipleSongSelectionList = new HashMap<>();
 
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
@@ -160,12 +168,16 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             play_pause_mini.setImageResource(R.drawable.ic_pause);
                             musicPlaying = true;
                             mWaveHelper.start();
+                            equalizerView.animateBars();
+                            equalizerView.setVisibility(View.VISIBLE);
                             break;
                         case MusicService.PAUSED:
                             play_pause.setImageResource(R.drawable.ic_play);
                             play_pause_mini.setImageResource(R.drawable.ic_play);
                             musicPlaying = false;
                             mWaveHelper.cancel();
+                            equalizerView.setVisibility(View.GONE);
+                            equalizerView.stopBars();
                             break;
                     }
                 }
@@ -260,6 +272,17 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 Color.parseColor("#D32F2F"),
                 Color.parseColor("#F44336"));
         mWaveHelper.start();
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        proximityDetector = new ProximityDetector(this);
+        proximityDetector.setOnProximityListener(new ProximityDetector.OnProximityListener() {
+            @Override
+            public void onProximity() {
+                ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
+                changeToNextSong();
+            }
+        });
     }
 
     private void changeToPreviousSong() {
@@ -431,6 +454,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         play_pause.setOnClickListener(togglePlayBtn);
         play_pause_mini.setOnClickListener(togglePlayBtn);
 
+        equalizerView = (EqualizerView) findViewById(R.id.equalizer_view);
+
     }
 
     @Override
@@ -459,13 +484,16 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         unregisterReceiver(stopReceiver);
         unbindService(musicConnection);
         stopService(playIntent);
-
+        if (new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this, "Pro_controls"))
+            mSensorManager.unregisterListener(proximityDetector);
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
-
+        if (new SharedPreferenceSingelton().getSavedBoolean(this, "Pro_Controls")) {
+            mSensorManager.registerListener(proximityDetector, mProximity, 2 * 1000 * 1000);
+        }
         if (mainPlayer.getVisibility() == View.VISIBLE) {
             miniPlayer.setVisibility(View.VISIBLE);
             mViewPager.setVisibility(View.VISIBLE);
@@ -518,6 +546,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     void showMainPlayer() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+            getSupportFragmentManager().popBackStackImmediate();
         mainPlayer.setVisibility(View.VISIBLE);
         toolbarPlayer.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.GONE);

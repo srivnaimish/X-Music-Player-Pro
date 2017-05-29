@@ -52,11 +52,64 @@
                 android:layout_below="@id/appbar">
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/setting_shake"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="4dp"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <Switch
+                            android:id="@+id/setting_pro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_margin="12dp"
+                            android:switchMinWidth="43dp"
+                            android:layout_centerVertical="true"
+                            android:thumb="@drawable/customswitchselector"
+                            android:track="@drawable/custom_switch_background" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="8dp"
+                            android:layout_toEndOf="@id/setting_pro"
+                            android:orientation="vertical">
+
+                            <com.riseapps.xmusic.widgets.MainTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pro_controls_heading"
+                                android:textColor="@color/textColorPrimary"
+                                android:textSize="16sp" />
+
+                            <com.riseapps.xmusic.widgets.MainTextViewSub
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pro_control_subHeading" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
                     android:id="@+id/setting_equalizer"
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
                     android:layout_marginTop="4dp"
                     android:clickable="true"
+                    android:layout_below="@id/setting_shake"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="0dp">
