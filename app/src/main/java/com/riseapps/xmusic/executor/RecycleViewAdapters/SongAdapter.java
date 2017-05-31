@@ -168,22 +168,7 @@ public class SongAdapter extends RecyclerView.Adapter {
              else
                 ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
 
-            ((SongViewHolder) holder).like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // Toast.makeText(getContext(), "Added to Favourites", Toast.LENGTH_SHORT).show();
-                    ((SongViewHolder) holder).like.startAnimation(new CustomAnimation().likeAnimation(c));
-                    if(song.getFavourite()){
-                        new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),0);
-                        ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
-                        song.setFavourite(false);
-                    } else {
-                        new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),1);
-                        ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);
-                        song.setFavourite(true);
-                    }
-                }
-            });
+           /* ((SongViewHolder) holder).*/
 
             ((SongViewHolder) holder).song = song;
         }
@@ -293,7 +278,22 @@ public class SongAdapter extends RecyclerView.Adapter {
             iv.setOnClickListener(this);
             artist.setOnClickListener(this);
             songListCard.setOnClickListener(this);
-
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Toast.makeText(getContext(), "Added to Favourites", Toast.LENGTH_SHORT).show();
+                    like.startAnimation(new CustomAnimation().likeAnimation(ctx));
+                    if(song.getFavourite()){
+                        new MyApplication(ctx).getWritableDatabase().updateFavourites(song.getID(),0);
+                        like.setImageResource(R.drawable.ic_like);
+                        song.setFavourite(false);
+                    } else {
+                        new MyApplication(ctx).getWritableDatabase().updateFavourites(song.getID(),1);
+                        like.setImageResource(R.drawable.ic_liked);
+                        song.setFavourite(true);
+                    }
+                }
+            });
             // set longClick listeners
             songListCard.setOnLongClickListener(this);
         }

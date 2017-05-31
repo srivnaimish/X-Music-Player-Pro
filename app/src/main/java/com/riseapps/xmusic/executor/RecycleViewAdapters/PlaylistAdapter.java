@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
@@ -67,22 +69,26 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return playlistsList.size();
     }
-}
 
-class PlaylistViewHolder extends RecyclerView.ViewHolder{
+    private class PlaylistViewHolder extends RecyclerView.ViewHolder{
 
-    ImageView imageView;
-    TextView name;
-    Context ctx;
+        ImageView imageView;
+        TextView name;
+        ImageButton delete;
+        Context ctx;
 
-    Playlist playlist;
+        Playlist playlist;
 
-    PlaylistViewHolder(View v, Context context) {
-        super(v);
-        this.ctx = context;
-        imageView= (ImageView) v.findViewById(R.id.imageView);
-        name= (TextView) v.findViewById(R.id.name);
+        PlaylistViewHolder(View v, Context context) {
+            super(v);
+            this.ctx = context;
+            imageView= (ImageView) v.findViewById(R.id.imageView);
+            name= (TextView) v.findViewById(R.id.name);
+            delete= (ImageButton) v.findViewById(R.id.delete);
+        }
 
     }
 }
+
+
 

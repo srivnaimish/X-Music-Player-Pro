@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
@@ -215,7 +216,8 @@ public class MusicService extends Service implements
     }
 
     public void setSong(int songIndex) {
-
+        if (new SharedPreferenceSingelton().getSavedBoolean(this, "Shuffle"))
+            songIndex = new Random().nextInt(songs.size());
         if (songs.size() <= songIndex || songIndex < 0 ) // if the list is empty... just return
             return;
         if(songs.get(songIndex)==null) {

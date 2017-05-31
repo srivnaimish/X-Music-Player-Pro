@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -92,6 +94,7 @@ public class PlaylistFragment extends Fragment {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 new MyApplication(getActivity()).getWritableDatabase().deletePlaylist(playLists.get(viewHolder.getAdapterPosition()).getName());
                 playlistAdapter.delete(viewHolder.getAdapterPosition());
+                Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -102,18 +105,38 @@ public class PlaylistFragment extends Fragment {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
-            public void onClick(View view, int position) {
-                FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                ScrollingFragment scrollingFragment=new ScrollingFragment();
-                Bundle bundle=new Bundle();
-                bundle.putString("Name",playLists.get(position).getName());
-             //   bundle.putString("Imagepath",playLists.get(position).getImagepath());
-                bundle.putString("Action","Playlists");
-                scrollingFragment.setArguments(bundle);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.replace(R.id.drawerLayout,scrollingFragment);
-                fragmentTransaction.commit();
+            public void onClick(View view, final int position) {
+                CardView cardView= (CardView) view.findViewById(R.id.playlist_list_card);
+                ImageButton delete= (ImageButton) view.findViewById(R.id.delete);
+
+                View.OnClickListener onClickListener=new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(v.getId()==R.id.delete){
+                            new MyApplication(getContext()).getWritableDatabase().deletePlaylist(playLists.get(position).getName());
+                            playlistAdapter.delete(position);
+                            Toast.makeText(getContext(), "Playlist Deleted", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(v.getId()==R.id.playlist_list_card){
+                            FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+                            ScrollingFragment scrollingFragment=new ScrollingFragment();
+                            Bundle bundle=new Bundle();
+                            bundle.putString("Name",playLists.get(position).getName());
+                            //   bundle.putString("Imagepath",playLists.get(position).getImagepath());
+                            bundle.putString("Action","Playlists");
+                            scrollingFragment.setArguments(bundle);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.replace(R.id.drawerLayout,scrollingFragment);
+                            fragmentTransaction.commit();
+                        }
+
+                    }
+                };
+                cardView.setOnClickListener(onClickListener);
+                delete.setOnClickListener(onClickListener);
+
+
             }
 
             @Override

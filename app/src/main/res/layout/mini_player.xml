@@ -80,7 +80,13 @@
         android:textColor="@color/textColorPrimary"
         app:layout_constraintTop_toTopOf="@+id/album_art_card"
         app:layout_constraintLeft_toRightOf="@+id/album_art_card"
-        />
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:ellipsize="marquee"
+        app:layout_constraintRight_toLeftOf="@+id/equalizer_view"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/artist_mini"
@@ -90,5 +96,12 @@
         android:layout_marginBottom="5dp"
         android:textColor="@color/textColorPrimary"
         app:layout_constraintLeft_toLeftOf="@+id/name_mini"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:ellipsize="marquee"
+        app:layout_constraintRight_toLeftOf="@+id/equalizer_view"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintHorizontal_bias="0.0"
         />
 </android.support.constraint.ConstraintLayout>

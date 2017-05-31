@@ -64,4 +64,5 @@
     <string name="start_now">COMMENCEZ MAINTENANT</string>
     <string name="stop_music_after">Arrêtez la musique</string>
     <string name="swipe_right_or_left_to_change_the_song">Faites glisser vers la droite ou vers la gauche pour changer la chanson</string>
+    <string name="pro_control_subHeading">Appuyez deux fois sur ou sur le capteur de proximité pour la prochaine chanson</string>
 </resources>

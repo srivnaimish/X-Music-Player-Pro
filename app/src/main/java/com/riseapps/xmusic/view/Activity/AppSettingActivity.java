@@ -168,6 +168,9 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 if((h+m).equalsIgnoreCase("00")||(h+m).equalsIgnoreCase("0")||(h+m).equalsIgnoreCase("")){
                     Toast.makeText(AppSettingActivity.this, getString(R.string.Invalid_Time_Toast), Toast.LENGTH_SHORT).show();
                 }
+                else if(h.equalsIgnoreCase("")||m.equalsIgnoreCase("")){
+                    Toast.makeText(AppSettingActivity.this, getString(R.string.Invalid_Time_Toast), Toast.LENGTH_SHORT).show();
+                }
                 else
                 {
                     d=System.currentTimeMillis()+(Integer.parseInt(h)*60*60*1000)+(Integer.parseInt(m)*60*1000);

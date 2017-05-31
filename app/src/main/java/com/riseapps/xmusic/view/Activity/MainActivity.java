@@ -28,6 +28,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -44,6 +45,8 @@ import com.bumptech.glide.Glide;
 import com.claudiodegio.msv.OnSearchViewListener;
 import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -120,7 +123,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     public static ProximityDetector proximityDetector;
     public static Sensor mProximity;
 
+    private SharedPreferenceSingelton sharedPreferenceSingleton=new SharedPreferenceSingelton();
+
     private static HashMap<Integer, Boolean> multipleSongSelectionList = new HashMap<>();
+    ArrayList<Song> completeList;
 
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
         @Override
@@ -195,6 +201,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         }
     };
 
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,11 +225,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this, "Shuffle")) {
-                    new SharedPreferenceSingelton().saveAs(MainActivity.this, "Shuffle", false);
+                Toast.makeText(MainActivity.this, ""+sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Shuffle"), Toast.LENGTH_SHORT).show();
+                if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Shuffle")) {
+                    sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", false);
                     DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
                 } else {
-                    new SharedPreferenceSingelton().saveAs(MainActivity.this, "Shuffle", true);
+                    sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", true);
                     DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 }
             }
@@ -231,12 +239,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this, "Repeat")) {
-                    new SharedPreferenceSingelton().saveAs(MainActivity.this, "Repeat", false);
+                if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Repeat")) {
+                    sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat", false);
                     Toast.makeText(MainActivity.this, getString(R.string.song_repeat_off_toast), Toast.LENGTH_SHORT).show();
                     DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
                 } else {
-                    new SharedPreferenceSingelton().saveAs(MainActivity.this, "Repeat", true);
+                    sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat", true);
                     Toast.makeText(MainActivity.this, getString(R.string.song_repeat_on_toast), Toast.LENGTH_SHORT).show();
                     DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 }
@@ -280,7 +288,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             @Override
             public void onProximity() {
                 ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
-                changeToNextSong();
+                if(musicPlaying)
+                    changeToNextSong();
+                else
+                    musicService.togglePlay();
             }
         });
     }
@@ -296,19 +307,17 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     private void changeToNextSong() {
         int next;
-        if (new SharedPreferenceSingelton().getSavedBoolean(this, "Shuffle")) {
-            next = new Random().nextInt(songList.size());
-        } else {
-            int current = musicService.getCurrentIndex();
-            next = current + 1;
-            if (next == songList.size())// If current was the last song, then play the first song in the list
-                next = 0;
-        }
+        int current = musicService.getCurrentIndex();
+        next = current + 1;
+        if (next == songList.size())// If current was the last song, then play the first song in the list
+            next = 0;
         musicService.setSong(next);
         musicService.togglePlay();
     }
 
     private void initiallize() {
+        completeList=new Gson().fromJson(getIntent().getStringExtra("songList"), new TypeToken<ArrayList<Song>>() {}.getType());
+
         progressView = (RelativeLayout) findViewById(R.id.progress);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Stop");
@@ -481,17 +490,19 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     @Override
     protected void onDestroy() {
+        sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle",false);
+        sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat",false);
         unregisterReceiver(stopReceiver);
         unbindService(musicConnection);
         stopService(playIntent);
-        if (new SharedPreferenceSingelton().getSavedBoolean(MainActivity.this, "Pro_controls"))
+        if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Pro_controls"))
             mSensorManager.unregisterListener(proximityDetector);
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
-        if (new SharedPreferenceSingelton().getSavedBoolean(this, "Pro_Controls")) {
+        if (sharedPreferenceSingleton.getSavedBoolean(this, "Pro_Controls")) {
             mSensorManager.registerListener(proximityDetector, mProximity, 2 * 1000 * 1000);
         }
         if (mainPlayer.getVisibility() == View.VISIBLE) {
@@ -581,12 +592,15 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     @Override
     public boolean onQueryTextSubmit(String s) {
-        for (Song song : songList) {
-            if (song.getName().equalsIgnoreCase(s)) {
+
+        for (Song song : completeList) {
+            if (song!=null && song.getName().equalsIgnoreCase(s)) {
+                musicService.setSongs(completeList);
+                setSongs(completeList);
                 new PlaySongExec(this, songList.indexOf(song)).startPlaying();
+
             }
         }
-        //startActivity(new Intent(this, ScrollingActivity.class));
         return false;
     }
 
@@ -754,6 +768,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         @Override
         protected void onPreExecute() {
+            musicService.togglePlay();
             unbindService(musicConnection);
             stopService(playIntent);
             mViewPager.setAlpha(0.8f);

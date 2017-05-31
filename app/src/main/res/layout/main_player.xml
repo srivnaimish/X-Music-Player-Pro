@@ -148,6 +148,7 @@
             android:maxLines="1"/>
     </LinearLayout>
 
+
     <ImageButton
         android:id="@+id/play_pause"
         android:layout_width="wrap_content"

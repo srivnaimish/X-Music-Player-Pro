@@ -65,4 +65,5 @@
     <string name="opening_youtube">यूट्यूब खोल रहा है</string>
     <string name="recomment_it_to_others">इसे दूसरों के लिए सुझाएं</string>
     <string name="share_app">ऐप साझा करें</string>
+    <string name="pro_control_subHeading">अगले गीत के लिए निकटता सेंसर पर डबल टैप करें या स्वाइप करें</string>
 </resources>

@@ -64,4 +64,5 @@
     <string name="start_now">EMPEZAR AHORA</string>
     <string name="stop_music_after">Música de Parada</string>
     <string name="swipe_right_or_left_to_change_the_song">Desliza hacia la derecha o hacia la izquierda para cambiar la canción</string>
+    <string name="pro_control_subHeading">Toque dos veces o deslice el sensor de proximidad para la siguiente canción</string>
 </resources>
