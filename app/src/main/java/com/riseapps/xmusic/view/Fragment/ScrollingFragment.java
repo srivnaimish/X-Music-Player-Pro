@@ -2,12 +2,14 @@ package com.riseapps.xmusic.view.Fragment;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,7 +48,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ScrollingFragment extends Fragment {
 
-
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
     ProgressBar progressBar;
     NestedScrollView nestedScrollView;
     // views
@@ -121,15 +125,24 @@ public class ScrollingFragment extends Fragment {
         }
         else {
             //imageView.setImageResource(R.drawable.empty);
+            if (Build.VERSION.SDK_INT >21) {
+                Glide.with(getContext()).load(R.drawable.ic_music_player)
+                        .crossFade()
+                        .placeholder(R.drawable.ic_music_player)
+                        .into(circleAlbumArt);
+                Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/09/08/21/09/piano-1655558_960_720.jpg")
+                        .crossFade()
+                        .placeholder(R.drawable.ic_music_player)
+                        .into(imageView);
+            }
+            else {
+                circleAlbumArt.setImageResource(R.drawable.ic_play);
+                Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/09/08/21/09/piano-1655558_960_720.jpg")
+                        .crossFade()
+                        .placeholder(R.drawable.ic_splash)
+                        .into(imageView);
+            }
 
-            Glide.with(getContext()).load(R.drawable.ic_music_player)
-                    .crossFade()
-                    .placeholder(R.drawable.ic_music_player)
-                    .into(circleAlbumArt);
-            Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/09/08/21/09/piano-1655558_960_720.jpg")
-                    .crossFade()
-                    .placeholder(R.drawable.ic_music_player)
-                    .into(imageView);
         }
 
         if(Action.equalsIgnoreCase("Album")){

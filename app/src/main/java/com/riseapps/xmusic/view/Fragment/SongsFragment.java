@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +43,9 @@ import java.util.HashMap;
  */
 
 public class SongsFragment extends Fragment {
-
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
     ProgressBar progressBar;
     NestedScrollView nestedScrollView;
     RecyclerView recyclerView;

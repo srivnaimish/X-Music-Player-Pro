@@ -51,7 +51,7 @@ public class GenerateNotification {
         else
             mBuilder.setOngoing(true);
 
-        mBuilder.setSmallIcon(R.drawable.ic_play);
+        mBuilder.setSmallIcon(R.drawable.ic_notification);
         mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
 
@@ -103,11 +103,11 @@ public class GenerateNotification {
         if(status==0)
             contentView.setImageViewResource(R.id.play_pause,R.drawable.ic_notification_play);
         else
-            contentView.setImageViewResource(R.id.play_pause,R.drawable.ic_pause_notification);
+            contentView.setImageViewResource(R.id.play_pause,R.drawable.ic_notification_pause);
 
         contentView.setTextViewText(R.id.track, song.getName());
-        contentView.setImageViewResource(R.id.prev,R.drawable.ic_prev);
-        contentView.setImageViewResource(R.id.next,R.drawable.ic_next);
+        contentView.setImageViewResource(R.id.prev,R.drawable.ic_notification_left);
+        contentView.setImageViewResource(R.id.next,R.drawable.ic_notification_right);
         if(song.getImagepath().equalsIgnoreCase("no_image"))
             contentView.setImageViewResource(R.id.imageView,R.drawable.empty);
 
@@ -124,10 +124,10 @@ public class GenerateNotification {
         if(status==0)
             expandedView.setImageViewResource(R.id.play_pause,R.drawable.ic_notification_play);
         else
-            expandedView.setImageViewResource(R.id.play_pause,R.drawable.ic_pause_notification);
+            expandedView.setImageViewResource(R.id.play_pause,R.drawable.ic_notification_pause);
 
-        expandedView.setImageViewResource(R.id.prev,R.drawable.ic_prev);
-        expandedView.setImageViewResource(R.id.next,R.drawable.ic_next);
+        expandedView.setImageViewResource(R.id.prev,R.drawable.ic_notification_left);
+        expandedView.setImageViewResource(R.id.next,R.drawable.ic_notification_right);
 
         if(song.getImagepath().equalsIgnoreCase("no_image"))
             expandedView.setImageViewResource(R.id.imageView,R.drawable.empty);

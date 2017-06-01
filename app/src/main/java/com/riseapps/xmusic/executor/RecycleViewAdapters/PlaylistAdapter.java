@@ -52,7 +52,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof PlaylistViewHolder) {
-            final Playlist playlist = (Playlist) playlistsList.get(position);
+            Playlist playlist = (Playlist) playlistsList.get(position);
             String name=playlist.getName().trim();
             ((PlaylistViewHolder)holder).name.setText(name);
 

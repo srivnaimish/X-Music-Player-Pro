@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,7 +37,9 @@ import java.util.ArrayList;
 
 public class PlaylistFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
-
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
     RecyclerView recyclerView;
     ArrayList<Playlist> playLists=new ArrayList<>();
     PlaylistAdapter playlistAdapter;

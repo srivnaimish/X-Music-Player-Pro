@@ -18,21 +18,6 @@
     <style name="ToolbarTheme" parent="AppTheme">
         
     </style>
-    <!--
-        <style name="AppTheme.NoActionBarColored">
-            <item name="colorPrimary">@color/colorPrimary</item>
-            <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-            <item name="colorAccent">@color/colorAccent</item>
-            <item name="windowActionBar">false</item>
-            <item name="windowNoTitle">true</item>
-            <item name="windowActionModeOverlay">true</item>
-            &lt;!&ndash;  For Custom Action Mode Background Color/Drawable &ndash;&gt;
-            <item name="actionModeBackground">@color/colorAccent</item>
-        </style>
-
-        <style name="AppTheme.NoActionBarColored.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-        <style name="AppTheme.NoActionBarColored.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>

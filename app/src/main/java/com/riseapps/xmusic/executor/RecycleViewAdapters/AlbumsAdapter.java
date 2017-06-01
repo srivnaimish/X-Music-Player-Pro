@@ -76,17 +76,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
         }
         ((AlbumViewHolder) holder).name.setText(name);
         ((AlbumViewHolder) holder).album = album;
-      /*  if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
-
-        } else {
-            ((AlbumViewHolder) holder).name.setText(name);
-            Glide.with(c).load(randomAlbumArt.getArt())
-                    .placeholder(R.drawable.ic_equaliser)
-                    .centerCrop()
-                    .into(((AlbumViewHolder) holder).imageView);
-        }*/
-
-
     }
 
 

@@ -165,7 +165,7 @@ public class SongAdapter extends RecyclerView.Adapter {
 
             if(song.getFavourite())
                 ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);
-             else
+            else
                 ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
 
            /* ((SongViewHolder) holder).*/

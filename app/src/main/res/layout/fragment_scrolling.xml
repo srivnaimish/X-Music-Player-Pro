@@ -73,10 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="@string/play_all"
-                        android:drawableStart="@drawable/ic_play_circle_outline_white_24dp"
-                        android:drawablePadding="10dp"
                         android:enabled="true"
-                        android:background="@drawable/ripple_button"
                         android:theme="@style/Widget.AppCompat.Button.Colored">
 
                     </Button>
@@ -87,10 +84,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="8dp"
                         android:text="@string/shuffle"
-                        android:drawableStart="@drawable/ic_shuffle_white_24dp"
                         android:enabled="true"
-                        android:drawablePadding="10dp"
-                        android:background="@drawable/ripple_button"
                         android:theme="@style/Widget.AppCompat.Button.Colored" />
 
                 </LinearLayout>

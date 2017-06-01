@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -35,6 +36,9 @@ import com.riseapps.xmusic.model.MusicService;
 
 public class AppSettingActivity extends AppCompatActivity implements View.OnClickListener {
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
     InterstitialAd interstitial;
     private Dialog dialog;
     private EditText min,hrs;
