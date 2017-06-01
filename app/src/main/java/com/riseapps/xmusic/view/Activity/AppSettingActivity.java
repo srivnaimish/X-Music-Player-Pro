@@ -186,7 +186,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, d, pi);
-                    else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                    else
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP, d, pi);
                     dialog.dismiss();
                 }

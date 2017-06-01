@@ -5,17 +5,17 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.riseapps.xmusic"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 25
-        versionCode 13
-        versionName "1.0.12"
+        versionCode 14
+        versionName "1.0.13"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),'proguard-rules.pro'
         }
     }
