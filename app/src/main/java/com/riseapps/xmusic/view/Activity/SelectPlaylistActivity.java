@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.TagToken.customviews.TokenCompleteTextView;
@@ -45,7 +44,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
 
     FloatingActionButton fab;
 
-    private AdView mAdView;
+   // private AdView mAdView;
     private String str = "";
 
     Tag tag;
@@ -72,7 +71,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_back);
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-2454061641779517~3507282989");
+       /* MobileAds.initialize(getApplicationContext(), "ca-app-pub-2454061641779517~3507282989");
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -82,7 +81,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                 mAdView.setVisibility(View.VISIBLE);
                 super.onAdLoaded();
             }
-        });
+        });*/
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

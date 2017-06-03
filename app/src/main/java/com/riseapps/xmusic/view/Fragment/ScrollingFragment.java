@@ -147,11 +147,7 @@ public class ScrollingFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        if (new CheckConnectivity().isNetworkAvailable(getActivity()) && songAllArrayList.size() != 0) {
-            songAllArrayList.add(1, null);
-            if (songAllArrayList.size() > 10)
-                songAllArrayList.add(9, null);
-        }
+
         if (songAllArrayList.size() > 20) {
             songMainArrayList = new ArrayList<>(songAllArrayList.subList(0, 20));
 

@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:text="@string/flat_preset" />
 
-       <!-- <RadioButton
+        <RadioButton
             android:id="@+id/folk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
             android:id="@+id/rock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/rock_preset" />-->
+            android:text="@string/rock_preset" />
     </RadioGroup>
 
     <Button

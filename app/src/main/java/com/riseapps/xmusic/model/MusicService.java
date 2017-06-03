@@ -171,7 +171,10 @@ public class MusicService extends Service implements
         equalizer.setEnabled(false);
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(NOTIFICATION_ID);
-        player.release();
+        if (mSeekBar != null)
+            mSeekBar = null;
+        onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
+        unregisterReceiver(myReceiver);
         if (phoneStateListener != null) {
             telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
         }
@@ -179,10 +182,7 @@ public class MusicService extends Service implements
             unregisterReceiver(headsetPlugReceiver);
             headsetPlugReceiver = null;
         }
-        if (mSeekBar != null)
-            mSeekBar = null;
-        onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
-        unregisterReceiver(myReceiver);
+        player.release();
 
         super.onDestroy();
     }

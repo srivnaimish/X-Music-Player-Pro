@@ -40,23 +40,13 @@
         android:layout_gravity="bottom">
         <include layout="@layout/content_select_playlist" />
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/banner_ad_id"
-            android:layout_alignParentBottom="true"
-            />
-
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:layout_above="@id/adView"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             app:srcCompat="@drawable/ic_add"
             app:elevation="5dp"/>

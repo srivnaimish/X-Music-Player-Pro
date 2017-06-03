@@ -24,12 +24,6 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.model.MusicService;
@@ -39,21 +33,22 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-    InterstitialAd interstitial;
+    /*InterstitialAd interstitial;*/
     private Dialog dialog;
     private EditText min,hrs;
     private static EqualizerPresetListener equalizerPresetListener;
     private RadioGroup radioButtonGroup;
-    private AdView mAdView;
-    AdRequest adRequest;
+   /* private AdView mAdView;
+    AdRequest adRequest;*/
     SharedPreferenceSingelton sharedPreferenceSingelton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-        adRequest = new AdRequest.Builder().build();
         init();
+       /* adRequest = new AdRequest.Builder().build();
+
         interstitial = new InterstitialAd(this);
         interstitial.setAdUnitId("ca-app-pub-2454061641779517/5252774182");
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-2454061641779517~3507282989");
@@ -66,7 +61,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 mAdView.setVisibility(View.VISIBLE);
                 super.onAdLoaded();
             }
-        });
+        });*/
     }
 
     public int getLayoutId() {
@@ -89,7 +84,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         CardView setting_equalizer = (CardView) findViewById(R.id.setting_equalizer);
         CardView setting_sleep = (CardView) findViewById(R.id.setting_sleep);
         CardView setting_share_app = (CardView) findViewById(R.id.setting_share);
-        CardView setting_unlock = (CardView) findViewById(R.id.setting_unlocked);
         CardView setting_rate = (CardView) findViewById(R.id.setting_rate);
 
         if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_PROXIMITY)){
@@ -121,7 +115,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         setting_equalizer.setOnClickListener(this);
         setting_sleep.setOnClickListener(this);
         setting_share_app.setOnClickListener(this);
-        setting_unlock.setOnClickListener(this);
+
         setting_rate.setOnClickListener(this);
 
     }
@@ -132,12 +126,12 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.setting_equalizer:
 
-                interstitial.loadAd(adRequest);
+                /*interstitial.loadAd(adRequest);*/
                 openEqualizerDialog();
                 break;
 
             case R.id.setting_sleep:
-                interstitial.loadAd(adRequest);
+               /* interstitial.loadAd(adRequest);*/
                 openSleepDialog();
                 break;
 
@@ -145,9 +139,9 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 shareAppLink();
                 break;
 
-            case R.id.setting_unlocked:
+           /* case R.id.setting_unlocked:
                 gotoUnlockedVersion();
-                break;
+                break;*/
 
             case R.id.setting_rate:
                 rateApp();
@@ -186,12 +180,14 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, d, pi);
-                    else
+                    else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP, d, pi);
+                    else
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, d, pi);
                     dialog.dismiss();
                 }
-                if(interstitial.isLoaded())
-                    showInterstitial();
+                /*if(interstitial.isLoaded())
+                    showInterstitial();*/
 
             }
         });
@@ -200,8 +196,8 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                if(interstitial.isLoaded())
-                    showInterstitial();
+                /*if(interstitial.isLoaded())
+                    showInterstitial();*/
             }
         });
 
@@ -227,23 +223,12 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 equalizerPresetListener.OnEqualizerPresetChanged((short)idx);
                 sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Preset",idx);
                 dialog.dismiss();
-                if(interstitial.isLoaded())
-                    showInterstitial();
+                /*if(interstitial.isLoaded())
+                    showInterstitial();*/
             }
         });
 
         //
-
-    }
-
-    private void gotoUnlockedVersion(){
-        final Uri uri = Uri.parse("market://details?id=com.riseapps.xmusicunlocked");
-        final Intent rateAppIntent = new Intent(Intent.ACTION_VIEW, uri);
-
-        if (getPackageManager().queryIntentActivities(rateAppIntent, 0).size() > 0)
-        {
-            startActivity(rateAppIntent);
-        }
 
     }
 
@@ -279,10 +264,10 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         equalizerPresetListener = listener;
     }
 
-    private void showInterstitial() {
+   /* private void showInterstitial() {
         if (interstitial.isLoaded()) {
             interstitial.show();
         }
-    }
+    }*/
 
 }
