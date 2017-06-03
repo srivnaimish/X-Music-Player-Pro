@@ -256,12 +256,27 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             }
         });
 
-        miniPlayer.setOnTouchListener(new View.OnTouchListener() {
+       /* miniPlayer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 showMainPlayer();
                 return false;
             }
+        });*/
+
+        miniPlayer.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeRight() {
+                changeToPreviousSong();
+            }
+
+            public void onSwipeLeft() {
+                changeToNextSong();
+            }
+
+            public void onSwipeDown() {
+                showMainPlayer();
+            }
+
         });
 
         album_art.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
@@ -271,6 +286,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
             public void onSwipeLeft() {
                 changeToNextSong();
+            }
+
+            public void onSwipeDown() {
+                hideMainPlayer();
             }
 
         });

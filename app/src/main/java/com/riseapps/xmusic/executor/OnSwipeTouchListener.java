@@ -23,6 +23,10 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     public void onSwipeRight() {
     }
 
+    public void onSwipeDown(){
+    }
+
+
     public boolean onTouch(View v, MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
     }
@@ -38,6 +42,12 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
         }
 
         @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            onSwipeDown();
+            return super.onSingleTapUp(e);
+        }
+
+        @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             float distanceX = e2.getX() - e1.getX();
             float distanceY = e2.getY() - e1.getY();
@@ -48,7 +58,12 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
                     onSwipeLeft();
                 return true;
             }
+            else if(Math.abs(distanceX) < Math.abs(distanceY) && Math.abs(distanceY) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD){
+                if(distanceY>0)
+                    onSwipeDown();
+            }
             return false;
         }
+
     }
 }

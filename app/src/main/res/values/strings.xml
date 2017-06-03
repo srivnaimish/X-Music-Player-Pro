@@ -24,7 +24,7 @@
     <string name="TAB3">ARTISTS</string>
     <string name="TAB4">TRACKS</string>
     <string name="now_playing">Now Playing</string>
-    <string name="refreshing_lists">Refreshing Lists…</string>
+    <string name="refreshing_lists">Refreshing Lists…Please Wait</string>
     <string name="song_repeat_off_toast">Song Repeat Off</string>
     <string name="song_repeat_on_toast">Song Repeat On</string>
     <string name="opening_youtube">Opening Youtube</string>

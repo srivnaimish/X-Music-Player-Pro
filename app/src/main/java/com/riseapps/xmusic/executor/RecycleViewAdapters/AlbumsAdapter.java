@@ -68,10 +68,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
         if (!imagepath.equalsIgnoreCase("no_image")) {
             Glide.with(c).load(imagepath)
                     .centerCrop()
+                    .dontAnimate()
                     .into(((AlbumViewHolder) holder).imageView);
         } else {
             Glide.with(c).load(R.drawable.ic_splash)
                     .placeholder(R.drawable.ic_splash)
+                    .dontAnimate()
                     .into(((AlbumViewHolder) holder).imageView);
         }
         ((AlbumViewHolder) holder).name.setText(name);
