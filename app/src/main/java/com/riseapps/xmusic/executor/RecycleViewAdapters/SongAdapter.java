@@ -157,10 +157,11 @@ public class SongAdapter extends RecyclerView.Adapter {
 
             if (!imagepath.equalsIgnoreCase("no_image"))
                 Glide.with(c).load(imagepath)
-                     .dontAnimate()
-                    .centerCrop()
-                    .placeholder(R.drawable.empty)
-                    .into(((SongViewHolder) holder).iv);
+                        .dontAnimate()
+                        .centerCrop()
+                        .into(((SongViewHolder) holder).iv);
+            else
+                ((SongViewHolder) holder).iv.setImageResource(R.drawable.empty);
 
             if(song.getFavourite())
                 ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);

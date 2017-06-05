@@ -68,6 +68,7 @@ public class AlbumFragment extends Fragment {
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
 
         String albumJson = getActivity().getIntent().getStringExtra("albumList");
+        getActivity().getIntent().removeExtra("albumList");
         albumAllList = new Gson().fromJson(albumJson, new TypeToken<ArrayList<Album>>() {
         }.getType());
 

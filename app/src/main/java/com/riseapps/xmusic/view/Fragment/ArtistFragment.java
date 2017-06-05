@@ -70,6 +70,7 @@ public class ArtistFragment extends Fragment{
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
 
         String artistJson=getActivity().getIntent().getStringExtra("artistList");
+        getActivity().getIntent().removeExtra("artistList");
         artistAllList=new Gson().fromJson(artistJson, new TypeToken<ArrayList<Artist>>() {}.getType());
 
         if (artistAllList.size() > 20) {

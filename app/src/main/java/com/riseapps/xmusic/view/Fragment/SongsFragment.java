@@ -74,6 +74,7 @@ public class SongsFragment extends Fragment {
         nestedScrollView = (NestedScrollView) rootView.findViewById(R.id.nestedScrollView);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         String songJson = getActivity().getIntent().getStringExtra("songList");
+        getActivity().getIntent().removeExtra("songList");
         songAllList = new Gson().fromJson(songJson, new TypeToken<ArrayList<Song>>() {
         }.getType());
         ((MainActivity) getActivity()).setSongs(songAllList);
