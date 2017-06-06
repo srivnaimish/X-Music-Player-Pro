@@ -29,7 +29,7 @@ public class UpdateSongs {
     }
 
 
-    public void getSongList() {
+    public boolean getSongList() {
         ContentResolver musicResolver = context.getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
@@ -77,10 +77,9 @@ public class UpdateSongs {
 
             Log.d("Song Insert", "" + x);
             musicCursor.close();
+            return true;
         }
-        else {
-
-        }
+        return false;
     }
 
     public void refreshList() {

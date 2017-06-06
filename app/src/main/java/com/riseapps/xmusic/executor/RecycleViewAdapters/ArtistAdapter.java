@@ -11,9 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.widgets.MainTextViewSub;

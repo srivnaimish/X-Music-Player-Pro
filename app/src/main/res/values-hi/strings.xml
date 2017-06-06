@@ -46,8 +46,6 @@
     <string name="rock_preset">रॉक संगीत</string>
     <string name="select_a_preset">एक प्रीसेट चुनें</string>
     <string name="settings_title">एप्लिकेशन सेटिंग</string>
-    <string name="share_app_heading">आपके रास्ते में विज्ञापन हो रहे हैं?</string>
-    <string name="share_app_subHeading">बेहतर अनुभव के लिए हमारा पूरा संस्करण प्राप्त करें</string>
     <string name="shuffle">मिश्रण</string>
     <string name="sleep_timer_heading">सोने का टाइमर</string>
     <string name="sleep_timer_subHeading">संगीत को स्वचालित रूप से बंद करें</string>

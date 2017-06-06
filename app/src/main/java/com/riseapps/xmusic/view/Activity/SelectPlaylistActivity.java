@@ -19,9 +19,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.TagToken.customviews.TokenCompleteTextView;
 import com.riseapps.xmusic.executor.MyApplication;

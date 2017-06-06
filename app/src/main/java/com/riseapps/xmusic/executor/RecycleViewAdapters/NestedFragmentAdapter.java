@@ -13,9 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.NativeExpressAdView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.executor.PlaySongExec;

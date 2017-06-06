@@ -53,8 +53,6 @@
     <string name="select_atleast_one">Vous devez sélectionner au moins 1 playlist</string>
     <string name="settings_title">Paramètres de l\'application</string>
     <string name="share_app">Partager l\'application</string>
-    <string name="share_app_heading">Des annonces se mettent sur votre chemin?</string>
-    <string name="share_app_subHeading">Obtenez une version complète sans publicité avec plus de préréglages d\'égaliseur</string>
     <string name="shuffle">Tout Lifre En Mode Aléatoire</string>
     <string name="sleep_timer_heading">Minuterie de sommeil</string>
     <string name="sleep_timer_subHeading">Éteignez le lecteur de musique automatiquement.</string>

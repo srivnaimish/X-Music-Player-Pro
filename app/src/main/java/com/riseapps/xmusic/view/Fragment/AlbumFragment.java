@@ -16,8 +16,6 @@ import android.view.ViewTreeObserver;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;

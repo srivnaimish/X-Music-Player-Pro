@@ -43,6 +43,7 @@ public class Walkthrough extends AppCompatActivity {
     private int[] layouts;
     private Button btn1,btn2,btn3;
     private LinearLayout loading;
+    boolean songs_present;
 
     Async async = new Async();
     private static final int REQUEST_PERMISSION = 0;
@@ -100,7 +101,7 @@ public class Walkthrough extends AppCompatActivity {
 
     private void launchHomeScreen() {
         //if (async.getStatus() == AsyncTask.Status.FINISHED) {
-            if(songList.size()==0){
+            if(!songs_present){
                 openEmptyStateDialog();
             }
             else{
@@ -233,8 +234,9 @@ public class Walkthrough extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            new UpdateSongs(Walkthrough.this).getSongList();
-            songList = new MyApplication(Walkthrough.this).getWritableDatabase().readSongs();
+            songs_present=new UpdateSongs(Walkthrough.this).getSongList();
+
+            //songList = new MyApplication(Walkthrough.this).getWritableDatabase().readSongs();
             artistList = new MyApplication(Walkthrough.this).getWritableDatabase().readArtists();
             albumList = new MyApplication(Walkthrough.this).getWritableDatabase().readAlbums();
 
@@ -245,16 +247,15 @@ public class Walkthrough extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             intent = new Intent(Walkthrough.this, MainActivity.class);
             Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<Song>>() {
-            }.getType();
-            String songJson = gson.toJson(songList, type);
-            type = new TypeToken<ArrayList<Album>>() {
+
+           // String songJson = gson.toJson(songList, type);
+            Type type = new TypeToken<ArrayList<Album>>() {
             }.getType();
             String albumJson = gson.toJson(albumList, type);
             type = new TypeToken<ArrayList<Artist>>() {
             }.getType();
             String artistJson = gson.toJson(artistList, type);
-            intent.putExtra("songList", songJson);
+           // intent.putExtra("songList", songJson);
             intent.putExtra("albumList", albumJson);
             intent.putExtra("artistList", artistJson);
             if(loading.getVisibility()==View.VISIBLE)

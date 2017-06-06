@@ -340,7 +340,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     private void initiallize() {
-        completeList=new Gson().fromJson(getIntent().getStringExtra("songList"), new TypeToken<ArrayList<Song>>() {}.getType());
+        completeList=new MyApplication(MainActivity.this).getWritableDatabase().readSongs();;
 
         progressView = (RelativeLayout) findViewById(R.id.progress);
         IntentFilter intentFilter = new IntentFilter();

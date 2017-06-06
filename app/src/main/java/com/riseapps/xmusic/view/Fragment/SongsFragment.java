@@ -23,6 +23,7 @@ import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.ActionModeCallback;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
+import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
 import com.riseapps.xmusic.utils.RecyclerClickListener;
@@ -30,6 +31,7 @@ import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
 import com.riseapps.xmusic.utils.RecyclerTouchListener;
 import com.riseapps.xmusic.view.Activity.MainActivity;
+import com.riseapps.xmusic.view.Activity.SplashScreen;
 
 import org.json.JSONException;
 
@@ -73,10 +75,10 @@ public class SongsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
         nestedScrollView = (NestedScrollView) rootView.findViewById(R.id.nestedScrollView);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        String songJson = getActivity().getIntent().getStringExtra("songList");
+      //  String songJson = getActivity().getIntent().getStringExtra("songList");
         getActivity().getIntent().removeExtra("songList");
-        songAllList = new Gson().fromJson(songJson, new TypeToken<ArrayList<Song>>() {
-        }.getType());
+        songAllList = new MyApplication(getContext()).getWritableDatabase().readSongs();/*new Gson().fromJson(songJson, new TypeToken<ArrayList<Song>>() {
+        }.getType());*/
         ((MainActivity) getActivity()).setSongs(songAllList);
 
         if (songAllList.size() > 30) {

@@ -39,7 +39,7 @@
     <string name="now_playing">Jugando ahora</string>
     <string name="ok">DE ACUERDO</string>
     <string name="opening_youtube">Abrir Youtube</string>
-    <string name="permission_rationale">La aplicación no podrá recuperar sus canciones ... Por favor, dé el permiso</string>
+    <string name="permission_rationale">La aplicación no podrá recuperar sus canciones … Por favor, dé el permiso</string>
     <string name="play_all">Jugar todo</string>
     <string name="playing_all">Reproducción de todas las canciones de</string>
     <string name="playlist_screen_placeholder">Puede agregar esta canción a MÚLTIPLES listas de reproducción a la vez.</string>
@@ -47,14 +47,12 @@
     <string name="rate_us_heading">¡Califícanos en Play Store!</string>
     <string name="rate_us_subHeading">Muéstranos un poco de amor y danos 5 estrellas</string>
     <string name="recomment_it_to_others">Recomiéndalo a otros</string>
-    <string name="refreshing_lists">Listas de actualización ...</string>
+    <string name="refreshing_lists">Listas de actualización …</string>
     <string name="rock_preset">La música rock</string>
     <string name="select_a_preset">Seleccione un Preset</string>
     <string name="select_atleast_one">Debe seleccionar al menos una lista de reproducción</string>
     <string name="settings_title">Configuraciones de la aplicación</string>
     <string name="share_app">Compartir Aplicación</string>
-    <string name="share_app_heading">Anuncios de obtener en su camino?</string>
-    <string name="share_app_subHeading">Obtenga la versión completa para una mejor experiencia</string>
     <string name="shuffle">Barajar</string>
     <string name="sleep_timer_heading">Tiempo de dormir</string>
     <string name="sleep_timer_subHeading">Apague el reproductor de música automáticamente.</string>
