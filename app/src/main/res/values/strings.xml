@@ -55,10 +55,16 @@
     <string name="equalizer_subHeading">Select the way you want to listen to your songs</string>
     <string name="sleep_timer_heading">Sleep Timer</string>
     <string name="sleep_timer_subHeading">Turn off the music player automatically.</string>
+    <string name="help_heading">Help Us Translate</string>
+    <string name="help_subHeading">We need help in translating the app to your native language</string>
+    <string name="share_app">Share App</string>
     <string name="recomment_it_to_others">Recommend it to others</string>
     <string name="rate_us_heading">Rate us on Play Store!</string>
     <string name="rate_us_subHeading">Show us some love and give us 5 stars</string>
     <string name="Invalid_Time_Toast">Invalid Time</string>
+    <string name="translation_help">Translation Help</string>
+    <string name="translation_help_sub">Thank you for showing interest in translation of X Music Player Pro! .\n\n If you wish to translate, drop us a mail at riseappalarm@gmail.com to improve or add your language in our app</string>
+
 
     <!--CREATE PLAYLIST DIALOG-->
     <string name="create_a_new_playlist">Create a New Playlist</string>
@@ -85,7 +91,6 @@
     <string name="zero" translatable="false">0</string>
 
     <!--AD UNIT ID'S-->
-    <string name="share_app">Share App</string>
 
 
 </resources>

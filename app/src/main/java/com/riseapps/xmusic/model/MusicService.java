@@ -41,6 +41,8 @@ public class MusicService extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
         MediaPlayer.OnCompletionListener {
 
+    public SharedPreferenceSingelton sharedPreferenceSingelton;
+
     public MediaPlayer player;
     public Equalizer equalizer;
     public HeadsetPlugReceiver headsetPlugReceiver;
@@ -69,6 +71,7 @@ public class MusicService extends Service implements
     public void onCreate() {
 
         super.onCreate();
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
         songPos = 0;
         player = new MediaPlayer();
         initMusicPlayer();
@@ -130,7 +133,7 @@ public class MusicService extends Service implements
     @Override
     public void onCompletion(MediaPlayer mp) {
         int newPos = 0;
-        if (new SharedPreferenceSingelton().getSavedBoolean(this, "Repeat"))
+        if (sharedPreferenceSingelton.getSavedBoolean(this, "Repeat"))
             newPos = songPos;
         else
             newPos = songPos + 1;
@@ -157,7 +160,7 @@ public class MusicService extends Service implements
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-       // onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
+        // onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
         mSeekBar = null;
         player.stop();
         player.reset();
@@ -216,22 +219,22 @@ public class MusicService extends Service implements
     }
 
     public void setSong(int songIndex) {
-        if (new SharedPreferenceSingelton().getSavedBoolean(this, "Shuffle"))
+        if (sharedPreferenceSingelton.getSavedBoolean(this, "Shuffle"))
             songIndex = new Random().nextInt(songs.size());
-        if (songs.size() <= songIndex || songIndex < 0 ) // if the list is empty... just return
+        if (songs.size() <= songIndex || songIndex < 0) // if the list is empty... just return
             return;
-        if(songs.get(songIndex)==null) {
+        if (songs.get(songIndex) == null) {
             songIndex++;
-            if(songIndex==songs.size())
-                songIndex=0;
+            if (songIndex == songs.size())
+                songIndex = 0;
         }
 
         songPos = songIndex;
-        int x = new SharedPreferenceSingelton().getSavedInt(this, "Preset");
+        int x = sharedPreferenceSingelton.getSavedInt(this, "Preset");
         equalizer = new Equalizer(0, player.getAudioSessionId());
         equalizer.setEnabled(true);
-        if(equalizer.getNumberOfPresets()>0)
-        equalizer.usePreset((short) x);
+        if (equalizer.getNumberOfPresets() > 0)
+            equalizer.usePreset((short) x);
 
         AppSettingActivity.setEqualizerPresetListener(new AppSettingActivity.EqualizerPresetListener() {
             @Override

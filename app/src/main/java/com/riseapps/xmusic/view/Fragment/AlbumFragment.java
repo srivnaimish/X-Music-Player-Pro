@@ -1,5 +1,7 @@
 package com.riseapps.xmusic.view.Fragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -34,12 +37,12 @@ public class AlbumFragment extends Fragment {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-    ProgressBar progressBar;
-    NestedScrollView nestedScrollView;
+
     RecyclerView recyclerView;
     ArrayList<Album> albumMainList = new ArrayList<>();
     ArrayList<Album> albumAllList=new ArrayList<>();
     AlbumsAdapter albumAdapter;
+    LinearLayout background;
 
     public AlbumFragment() {
         // Required empty public constructor
@@ -62,8 +65,11 @@ public class AlbumFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v=inflater.inflate(R.layout.fragment_album, container, false);
-        nestedScrollView = (NestedScrollView) v.findViewById(R.id.nestedScrollView);
-        progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+        background= (LinearLayout) v.findViewById(R.id.background);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.BOTTOM_TOP,
+                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
+        background.setBackground(gd);
 
         String albumJson = getActivity().getIntent().getStringExtra("albumList");
         getActivity().getIntent().removeExtra("albumList");
@@ -85,43 +91,14 @@ public class AlbumFragment extends Fragment {
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
         recyclerView.setLayoutManager(grid);
         albumAdapter = new AlbumsAdapter(getActivity(), albumMainList, recyclerView);
-
-        nestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollChanged() {
-                View view = (View) nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
-                int diff = (view.getBottom() - (nestedScrollView.getHeight() + nestedScrollView
-                        .getScrollY()));
-
-                if (diff == 0) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (albumMainList.size() < albumAllList.size()) {
-                                int x = 0, y = 0;
-                                if ((albumAllList.size() - albumMainList.size()) >= 20) {
-                                    x = albumMainList.size();
-                                    y = x + 20;
-                                } else {
-                                    x = albumMainList.size();
-                                    y = x + albumAllList.size() - albumMainList.size();
-                                }
-                                for (int i = x; i < y; i++) {
-                                    albumMainList.add(albumAllList.get(i));
-                                    albumAdapter.notifyDataSetChanged();/*
-                           */
-                                }
-                            }
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }, 1500);
-
-
-                }
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1))
+                    onScrolledToBottom();
             }
         });
-
         recyclerView.setAdapter(albumAdapter);
 
         ((MainActivity) getActivity()).setAlbumRefreshListener(new AlbumRefreshListener() {
@@ -164,6 +141,23 @@ public class AlbumFragment extends Fragment {
 
 
         return v;
+    }
+    private void onScrolledToBottom() {
+        if (albumMainList.size() < albumAllList.size()) {
+            int x = 0, y = 0;
+            if ((albumAllList.size() - albumMainList.size()) >= 20) {
+                x = albumMainList.size();
+                y = x + 20;
+            } else {
+                x = albumMainList.size();
+                y = x + albumAllList.size() - albumMainList.size();
+            }
+            for (int i = x; i < y; i++) {
+                albumMainList.add(albumAllList.get(i));
+            }
+            albumAdapter.notifyDataSetChanged();
+        }
+
     }
 
 }

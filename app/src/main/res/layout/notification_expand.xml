@@ -5,6 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="110dp"
     android:background="@color/whitePrimary">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FF000000"
+        android:alpha="0.1">
+        <ImageView
+            android:id="@+id/notification_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            />
+    </RelativeLayout>
+
 
     <ImageView
         android:id="@+id/imageView"

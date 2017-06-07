@@ -4,14 +4,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.riseapps.xmusic.component.AlbumArtChecker;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.view.Activity.Walkthrough;
 
 import java.util.ArrayList;
 
@@ -27,7 +24,6 @@ public class UpdateSongs {
     public UpdateSongs(Context context) {
         this.context = context;
     }
-
 
     public boolean getSongList() {
         ContentResolver musicResolver = context.getContentResolver();
@@ -74,7 +70,6 @@ public class UpdateSongs {
                 x++;
             }
             while (musicCursor.moveToNext());
-
             Log.d("Song Insert", "" + x);
             musicCursor.close();
             return true;

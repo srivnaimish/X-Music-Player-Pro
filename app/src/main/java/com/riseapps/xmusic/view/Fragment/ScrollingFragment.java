@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +37,7 @@ import com.riseapps.xmusic.executor.RecycleViewAdapters.NestedFragmentAdapter;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
 import com.riseapps.xmusic.view.Activity.MainActivity;
+import com.riseapps.xmusic.widgets.MainTextView;
 import com.riseapps.xmusic.widgets.MainTextViewSub;
 
 import org.json.JSONException;
@@ -59,6 +61,7 @@ public class ScrollingFragment extends Fragment {
     ImageView imageView;
     private ImageView circleAlbumArt;
     MainTextViewSub name;
+    MainTextView empty;
     RecyclerView recyclerView;
     private Button playAllButton, shuffleButton;
 
@@ -92,11 +95,11 @@ public class ScrollingFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_scrolling, container, false);
         nestedScrollView = (NestedScrollView) rootView.findViewById(R.id.nestedScrollView);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-
         imageView = (ImageView) rootView.findViewById(R.id.imageView);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         circleAlbumArt = (ImageView) rootView.findViewById(R.id.album_art);
         name = (MainTextViewSub) rootView.findViewById(R.id.type_name);
+        empty = (MainTextView) rootView.findViewById(R.id.empty);
         playAllButton = (Button) rootView.findViewById(R.id.play_all_button);
         shuffleButton = (Button) rootView.findViewById(R.id.shuffle_button);
 
@@ -137,6 +140,9 @@ public class ScrollingFragment extends Fragment {
         } else
             songAllArrayList = new MyApplication(getActivity()).getWritableDatabase().readFavouriteSongs();
 
+        if (songAllArrayList.size() == 0) {
+            empty.setVisibility(View.VISIBLE);
+        }
         int spanCount = 1; // 2 columns
         int spacing = 20; // 50px
 
@@ -240,7 +246,7 @@ public class ScrollingFragment extends Fragment {
                     playSongExec = new PlaySongExec(getContext(), 0);
                     playSongExec.startPlaying();
                     new SharedPreferenceSingelton().saveAs(getActivity(), "Shuffle", true);
-                }else{
+                } else {
                     Snackbar.make(nestedScrollView, "No Songs Here to Play", Snackbar.LENGTH_SHORT).show();
                 }
             }

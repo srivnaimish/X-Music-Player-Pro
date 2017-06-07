@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.executor.MyApplication;
@@ -159,10 +160,10 @@ public class SongAdapter extends RecyclerView.Adapter {
                 Glide.with(c).load(imagepath)
                         .dontAnimate()
                         .centerCrop()
+                        .override(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL)
                         .into(((SongViewHolder) holder).iv);
             else
                 ((SongViewHolder) holder).iv.setImageResource(R.drawable.empty);
-
             if(song.getFavourite())
                 ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);
             else

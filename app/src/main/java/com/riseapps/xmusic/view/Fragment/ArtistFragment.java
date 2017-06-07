@@ -1,5 +1,7 @@
 package com.riseapps.xmusic.view.Fragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -8,11 +10,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -37,13 +41,11 @@ public class ArtistFragment extends Fragment{
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    ProgressBar progressBar;
-    NestedScrollView nestedScrollView;
-
     RecyclerView recyclerView;
     ArrayList<Artist> artistAllList=new ArrayList<>();
     ArrayList<Artist> artistMainList=new ArrayList<>();
     ArtistAdapter artistAdapter;
+    LinearLayout background;
 
     public ArtistFragment() {
         // Required empty public constructor
@@ -66,15 +68,17 @@ public class ArtistFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_artist, container, false);
-        nestedScrollView = (NestedScrollView) v.findViewById(R.id.nestedScrollView);
-        progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
-
+        background= (LinearLayout) v.findViewById(R.id.background);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.BOTTOM_TOP,
+                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
+        background.setBackground(gd);
         String artistJson=getActivity().getIntent().getStringExtra("artistList");
         getActivity().getIntent().removeExtra("artistList");
         artistAllList=new Gson().fromJson(artistJson, new TypeToken<ArrayList<Artist>>() {}.getType());
 
-        if (artistAllList.size() > 20) {
-            artistMainList = new ArrayList<>(artistAllList.subList(0,20));
+        if (artistAllList.size() > 50) {
+            artistMainList = new ArrayList<>(artistAllList.subList(0,50));
 
         } else {
             artistMainList = artistAllList;
@@ -90,45 +94,16 @@ public class ArtistFragment extends Fragment{
         recyclerView.setLayoutManager(grid);
         artistAdapter = new ArtistAdapter(getActivity(), artistMainList, recyclerView);
 
-        nestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollChanged() {
-                View view = (View) nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
-                int diff = (view.getBottom() - (nestedScrollView.getHeight() + nestedScrollView
-                        .getScrollY()));
-
-                if (diff == 0) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (artistMainList.size() < artistAllList.size()) {
-                                int x = 0, y = 0;
-                                if ((artistAllList.size() - artistMainList.size()) >= 20) {
-                                    x = artistMainList.size();
-                                    y = x + 20;
-                                } else {
-                                    x = artistMainList.size();
-                                    y = x + artistAllList.size() - artistMainList.size();
-                                }
-
-                                for (int i = x; i < y; i++) {
-                                    artistMainList.add(artistAllList.get(i));
-                                    artistAdapter.notifyDataSetChanged();
-
-                                }
-                            }
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }, 1500);
-
-
-                }
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1))
+                    onScrolledToBottom();
             }
         });
+
         recyclerView.setAdapter(artistAdapter);
-
-
 
         ((MainActivity) getActivity()).setArtistRefreshListener(new ArtistRefreshListener() {
 
@@ -169,5 +144,23 @@ public class ArtistFragment extends Fragment{
         }));
 
         return v;
+    }
+    private void onScrolledToBottom() {
+        if (artistMainList.size() < artistAllList.size()) {
+            int x, y;
+            if ((artistAllList.size() - artistMainList.size()) >= 20) {
+                x = artistMainList.size();
+                y = x + 20;
+            } else {
+                x = artistMainList.size();
+                y = x + artistAllList.size() - artistMainList.size();
+            }
+
+            for (int i = x; i < y; i++) {
+                artistMainList.add(artistAllList.get(i));
+            }
+            artistAdapter.notifyDataSetChanged();
+        }
+
     }
 }

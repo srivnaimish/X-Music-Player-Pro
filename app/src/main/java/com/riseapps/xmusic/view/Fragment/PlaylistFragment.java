@@ -2,12 +2,15 @@ package com.riseapps.xmusic.view.Fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
@@ -40,11 +43,12 @@ public class PlaylistFragment extends Fragment {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+    NestedScrollView nestedScrollView;
     RecyclerView recyclerView;
     ArrayList<Playlist> playLists=new ArrayList<>();
     PlaylistAdapter playlistAdapter;
     private OnFragmentInteractionListener mListener;
-  //  private LinearLayout createPlaylist;
+    //  private LinearLayout createPlaylist;
     private Dialog dialog;
 
     public PlaylistFragment() {
@@ -69,16 +73,11 @@ public class PlaylistFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment_songs
         final View v=inflater.inflate(R.layout.fragment_playlist, container, false);
-/*
-
-        createPlaylist = (LinearLayout) v.findViewById(R.id.add_playlist);
-        createPlaylist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog();
-            }
-        });
-*/
+        nestedScrollView= (NestedScrollView) v.findViewById(R.id.nestedScrollView);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.BOTTOM_TOP,
+                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
+        nestedScrollView.setBackground(gd);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.playlists);
         recyclerView.setHasFixedSize(true);

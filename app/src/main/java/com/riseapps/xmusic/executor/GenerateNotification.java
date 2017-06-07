@@ -16,6 +16,7 @@ import com.bumptech.glide.request.target.NotificationTarget;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.utils.BlurTransformation;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 
 /**
@@ -90,6 +91,15 @@ public class GenerateNotification {
                             context,
                             expandedView,
                             R.id.imageView,
+                            notification,
+                            NOTIFICATION_ID));
+            Glide.with(context.getApplicationContext()) // safer!
+                    .load(Uri.parse(song.getImagepath()))
+                    .asBitmap()
+                    .into(new NotificationTarget(
+                            context,
+                            expandedView,
+                            R.id.notification_background,
                             notification,
                             NOTIFICATION_ID));
         }

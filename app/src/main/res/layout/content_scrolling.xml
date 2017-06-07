@@ -29,6 +29,18 @@
             android:indeterminate="true"
             android:visibility="gone"
             />
+        <com.riseapps.xmusic.widgets.MainTextView
+            android:id="@+id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_state_message"
+            android:layout_marginTop="40dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:textColor="@color/colorPrimaryFontDark"
+
+            />
     </RelativeLayout>
 
 </android.support.v4.widget.NestedScrollView>

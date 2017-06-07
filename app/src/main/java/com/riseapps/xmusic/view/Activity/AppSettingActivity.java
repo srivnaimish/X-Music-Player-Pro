@@ -33,13 +33,10 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-    /*InterstitialAd interstitial;*/
     private Dialog dialog;
     private EditText min,hrs;
     private static EqualizerPresetListener equalizerPresetListener;
     private RadioGroup radioButtonGroup;
-   /* private AdView mAdView;
-    AdRequest adRequest;*/
     SharedPreferenceSingelton sharedPreferenceSingelton;
 
     @Override
@@ -47,21 +44,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         init();
-       /* adRequest = new AdRequest.Builder().build();
-
-        interstitial = new InterstitialAd(this);
-        interstitial.setAdUnitId("ca-app-pub-2454061641779517/5252774182");
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-2454061641779517~3507282989");
-        mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                mAdView.setVisibility(View.VISIBLE);
-                super.onAdLoaded();
-            }
-        });*/
     }
 
     public int getLayoutId() {
@@ -126,22 +108,16 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.setting_equalizer:
 
-                /*interstitial.loadAd(adRequest);*/
                 openEqualizerDialog();
                 break;
 
             case R.id.setting_sleep:
-               /* interstitial.loadAd(adRequest);*/
                 openSleepDialog();
                 break;
 
             case R.id.setting_share:
                 shareAppLink();
                 break;
-
-           /* case R.id.setting_unlocked:
-                gotoUnlockedVersion();
-                break;*/
 
             case R.id.setting_rate:
                 rateApp();
@@ -250,6 +226,12 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    public void helpUsTranslate(View v){
+        dialog=new Dialog(this);
+        dialog.setContentView(R.layout.translation);
+        dialog.show();
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -264,10 +246,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         equalizerPresetListener = listener;
     }
 
-   /* private void showInterstitial() {
-        if (interstitial.isLoaded()) {
-            interstitial.show();
-        }
-    }*/
+
 
 }

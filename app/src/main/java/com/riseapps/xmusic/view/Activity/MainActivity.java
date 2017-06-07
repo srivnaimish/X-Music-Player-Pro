@@ -47,8 +47,6 @@ import com.bumptech.glide.Glide;
 import com.claudiodegio.msv.OnSearchViewListener;
 import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -67,6 +65,7 @@ import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.utils.BlurTransformation;
 import com.riseapps.xmusic.widgets.EqualizerView;
 import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
@@ -193,8 +192,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     }
                 }
             });
-
-            musicService.setSong(0);
+            int x=sharedPreferenceSingleton.getSavedInt(MainActivity.this,"Last_Song");
+            musicService.setSong(x);
         }
 
         @Override
@@ -340,8 +339,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     private void initiallize() {
-        completeList=new MyApplication(MainActivity.this).getWritableDatabase().readSongs();;
-
         progressView = (RelativeLayout) findViewById(R.id.progress);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Stop");
@@ -454,6 +451,14 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(View page, float position) {
+                final float normalizedposition = Math.abs(Math.abs(position) - 1);
+                page.setScaleX(normalizedposition / 2 + 0.5f);
+                page.setScaleY(normalizedposition / 2 + 0.5f);
+            }
+        });
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -498,17 +503,18 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             playIntent = new Intent(this, MusicService.class);
             startService(playIntent);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
-            new Handler().postDelayed(new Runnable() {
+            /*new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    miniPlayer.setVisibility(View.VISIBLE);
-                    miniPlayer.setAlpha(0.f);
-                    miniPlayer.animate()
-                            .alpha(1.f)
-                            .setDuration(1000)
-                            .start();
+
                 }
-            }, 1500);
+            }, 1500);*/
+            miniPlayer.setVisibility(View.VISIBLE);
+            miniPlayer.setAlpha(0.f);
+            miniPlayer.animate()
+                    .alpha(1.f)
+                    .setDuration(1000)
+                    .start();
         }
     }
 
@@ -516,11 +522,13 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     protected void onDestroy() {
         sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle",false);
         sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat",false);
+        sharedPreferenceSingleton.saveAs(this,"Last_Song",musicService.getCurrentIndex());
         unregisterReceiver(stopReceiver);
         unbindService(musicConnection);
         stopService(playIntent);
         if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Pro_controls"))
             mSensorManager.unregisterListener(proximityDetector);
+
         super.onDestroy();
     }
 
@@ -577,8 +585,14 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     public void setSongs(ArrayList<Song> songList) {
         this.songList = songList;
-
     }
+
+    public ArrayList<Song> getCompleteSongList(){
+        completeList=new MyApplication(MainActivity.this).getWritableDatabase().readSongs();
+        setSongs(completeList);
+        return completeList;
+    }
+
 
     void showMainPlayer() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0)
@@ -719,7 +733,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        String tabTitles[] = new String[]{getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3), getResources().getString(R.string.TAB4)};
+        String tabTitles[] = new String[]{getResources().getString(R.string.TAB4),getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
 
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -729,12 +743,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return PlaylistFragment.newInstance();
-                case 1:
-                    return AlbumFragment.newInstance();
-                case 2:
-                    return ArtistFragment.newInstance();
-                case 3:
                     songFragment = SongsFragment.newInstance();
                     songFragment.setOnShowContextMenuListener(new SongsFragment.OnShowContextMenuListener() {
                         @Override
@@ -761,6 +769,13 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                         }
                     });
                     return songFragment;
+                case 1:
+                    return PlaylistFragment.newInstance();
+                case 2:
+                    return AlbumFragment.newInstance();
+                case 3:
+                    return ArtistFragment.newInstance();
+
             }
             return PlaylistFragment.newInstance();
         }
@@ -792,6 +807,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         @Override
         protected void onPreExecute() {
+            if(musicPlaying)
             musicService.togglePlay();
             unbindService(musicConnection);
             stopService(playIntent);
