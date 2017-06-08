@@ -18,8 +18,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/size100dp"
+            android:layout_height="@dimen/size100dp"
             app:srcCompat="@drawable/ic_not_found"
             android:tint="@color/colorPrimaryFontDark"/>
 
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="@string/empty_state_message"
             android:textColor="@color/textColorPrimary"
-            android:textSize="23sp"
+            android:textSize="@dimen/size23sp"
             android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
             android:textStyle="bold" />

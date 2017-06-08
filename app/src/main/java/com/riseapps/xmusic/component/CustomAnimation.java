@@ -20,4 +20,8 @@ public class CustomAnimation {
         return AnimationUtils.loadAnimation(context, R.anim.like);
     }
 
+    public Animation big_likeAnimation(Context context){
+        return AnimationUtils.loadAnimation(context, R.anim.big_like);
+    }
+
 }

@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -109,7 +110,7 @@ public class PlaylistFragment extends Fragment {
             @Override
             public void onClick(View view, final int position) {
                 CardView cardView= (CardView) view.findViewById(R.id.playlist_list_card);
-                ImageButton delete= (ImageButton) view.findViewById(R.id.delete);
+                ImageView delete= (ImageView) view.findViewById(R.id.delete);
 
                 View.OnClickListener onClickListener=new View.OnClickListener() {
                     @Override

@@ -8,15 +8,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -30,10 +30,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -65,7 +63,6 @@ import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.utils.BlurTransformation;
 import com.riseapps.xmusic.widgets.EqualizerView;
 import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
@@ -79,7 +76,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseMatSearchViewActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, OnSearchViewListener {
@@ -97,7 +93,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     ImageView album_art_mini;
     //MainPlayer items
     TextView title, artist, currentPosition, totalDuration;
-    ImageView album_art;
+    ImageView album_art,liked;
     RelativeLayout progressView;
     private ArrayList<Song> songList = new ArrayList<>();
     private MusicService musicService;
@@ -255,14 +251,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             }
         });
 
-       /* miniPlayer.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                showMainPlayer();
-                return false;
-            }
-        });*/
-
         miniPlayer.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
             public void onSwipeRight() {
                 changeToPreviousSong();
@@ -287,8 +275,19 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 changeToNextSong();
             }
 
-            public void onSwipeDown() {
-                hideMainPlayer();
+            public void onDoubleTapping() {
+                Song song = songList.get(musicService.getCurrentIndex());
+                if (song.getFavourite()) {
+                    new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(), 0);
+                    song.setFavourite(false);
+                    Toast.makeText(MainActivity.this, "Song Removed from Favourites", Toast.LENGTH_SHORT).show();
+                } else {
+                    new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(), 1);
+                    liked.setVisibility(View.VISIBLE);
+                    liked.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
+                    liked.setVisibility(View.INVISIBLE);
+                    song.setFavourite(true);
+                }
             }
 
         });
@@ -381,19 +380,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Song song = songList.get(musicService.getCurrentIndex());
-                if (item.getItemId() == R.id.favouritesPlayer) {
-                    View v = findViewById(R.id.favouritesPlayer);
-                    v.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
-                    if (song.getFavourite()) {
-                        new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(), 0);
-                        song.setFavourite(false);
-                        item.setIcon(R.drawable.ic_like);
-                    } else {
-                        new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(), 1);
-                        song.setFavourite(true);
-                        item.setIcon(R.drawable.ic_liked);
-                    }
-                } else if (item.getItemId() == R.id.playlist) {
+                if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
                     i.putExtra("selection_type", "multiple_playlist");
                     startActivityForResult(i, 1);
@@ -408,6 +395,22 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     Toast.makeText(MainActivity.this, getString(R.string.opening_youtube), Toast.LENGTH_SHORT).show();
+                }
+                else if(item.getItemId() == R.id.share) {
+                    Uri mediaContentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                    String[] projection = new String[] { MediaStore.Audio.Media.DATA};
+                    String selection = MediaStore.Audio.Media._ID + "=?";
+                    String[] selectionArgs = new String[] {"" + song.getID()}; //This is the id you are looking for
+                    Cursor mediaCursor = getContentResolver().query(mediaContentUri, projection, selection, selectionArgs, null);
+                    if (mediaCursor != null && mediaCursor.getCount() >= 0) {
+                        mediaCursor.moveToPosition(0);
+                        String path = mediaCursor.getString(mediaCursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                        Uri uri = Uri.parse("file:///" + path);
+                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.setType("audio/*");
+                        share.putExtra(Intent.EXTRA_STREAM, uri);
+                        startActivity(Intent.createChooser(share, "Share Sound File"));
+                    }
                 }
                 return true;
             }
@@ -470,7 +473,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         title = (TextView) findViewById(R.id.name);
         artist = (TextView) findViewById(R.id.artist);
-
+        liked= (ImageView) findViewById(R.id.liked);
         album_art = (ImageView) findViewById(R.id.album_art);
         play_pause = (ImageButton) findViewById(R.id.play_pause);
         next = (ImageButton) findViewById(R.id.next);
@@ -503,12 +506,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             playIntent = new Intent(this, MusicService.class);
             startService(playIntent);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
-            /*new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                }
-            }, 1500);*/
             miniPlayer.setVisibility(View.VISIBLE);
             miniPlayer.setAlpha(0.f);
             miniPlayer.animate()

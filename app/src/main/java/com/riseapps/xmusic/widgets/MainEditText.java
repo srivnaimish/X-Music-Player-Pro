@@ -37,7 +37,7 @@ public class MainEditText extends EditText {
         //Typeface font = FontCache.getTypeface("fonts/Mada/Mada-Regular.ttf", context);
         //Typeface font = FontCache.getTypeface("fonts/Montserrat/Montserrat-Medium.ttf", context);
         //Typeface font = FontCache.getTypeface("fonts/Work_Sans/WorkSans-Regular.ttf", context);
-        Typeface font = FontCache.getTypeface("fonts/Mada/Mada-Medium.ttf", context);
+        Typeface font = FontCache.getTypeface("fonts/Meera_Inimai/MeeraInimai-Regular.ttf", context);
         setTypeface(font);
     }
 }

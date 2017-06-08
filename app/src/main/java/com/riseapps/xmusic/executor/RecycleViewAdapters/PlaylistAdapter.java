@@ -74,7 +74,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
 
         ImageView imageView;
         TextView name;
-        ImageButton delete;
+        ImageView delete;
         Context ctx;
 
         Playlist playlist;
@@ -84,7 +84,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
             this.ctx = context;
             imageView= (ImageView) v.findViewById(R.id.imageView);
             name= (TextView) v.findViewById(R.id.name);
-            delete= (ImageButton) v.findViewById(R.id.delete);
+            delete= (ImageView) v.findViewById(R.id.delete);
         }
 
     }

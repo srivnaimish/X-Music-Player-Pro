@@ -12,7 +12,7 @@
     <string name="start_now">START NOW</string>
 
     <!-- MENU ITEMS -->
-    <string name="action_favourites">Favourites</string>
+    <string name="action_favourites">Add to Favourites</string>
     <string name="action_playlist">Add to Playlist</string>
     <string name="action_youtube">Search this Song on Youtube</string>
     <string name="action_refresh">Refresh Songs</string>
@@ -89,6 +89,7 @@
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
     <string name="zero" translatable="false">0</string>
+    <string name="action_share">Share this Song</string>
 
     <!--AD UNIT ID'S-->
 

@@ -27,7 +27,7 @@
                 android:layout_gravity="center|start"
                 android:id="@+id/toolbar_player_title"
                 android:textColor="@color/textColorPrimary"
-                android:textSize="18sp"/>
+                android:textSize="@dimen/size16sp"/>
 
         </android.support.v7.widget.Toolbar>
 

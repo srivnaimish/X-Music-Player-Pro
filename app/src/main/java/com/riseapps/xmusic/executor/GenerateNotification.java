@@ -16,7 +16,6 @@ import com.bumptech.glide.request.target.NotificationTarget;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.utils.BlurTransformation;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 
 /**

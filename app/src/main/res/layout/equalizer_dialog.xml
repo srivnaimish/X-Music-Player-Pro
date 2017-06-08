@@ -2,26 +2,30 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="220dp"
+    android:layout_width="@dimen/size250dp"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
-
-    <com.riseapps.xmusic.widgets.MainTextView
-        android:id="@+id/dialog_placeholder"
-        android:layout_width="wrap_content"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/ll"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="@string/select_a_preset"
-        android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorAccent"
+        android:padding="7dp">
+        <com.riseapps.xmusic.widgets.MainTextView
+            android:id="@+id/dialog_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_a_preset"
+            android:textColor="@color/whitePrimary"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/size14sp"
+            />
+    </RelativeLayout>
+
 
     <RadioGroup
         android:id="@+id/radio_group"
@@ -33,7 +37,7 @@
         android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_placeholder"
+        app:layout_constraintTop_toBottomOf="@+id/ll"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp">
 
@@ -43,60 +47,75 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:checked="true"
-            android:text="@string/normal_preset" />
+            android:text="@string/normal_preset"
+            android:textSize="@dimen/size14sp"/>
 
         <RadioButton
             android:id="@+id/classical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/classical_preset" />
+            android:text="@string/classical_preset"
+            android:textSize="@dimen/size14sp"
+            android:layout_marginStart="100dp"/>
 
         <RadioButton
             android:id="@+id/dance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dance_preset" />
+            android:text="@string/dance_preset"
+            android:textSize="@dimen/size14sp"/>
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/flat_preset" />
+            android:text="@string/flat_preset"
+            android:textSize="@dimen/size14sp"
+            android:layout_marginStart="100dp"/>
 
         <RadioButton
             android:id="@+id/folk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/folk_preset" />
+            android:text="@string/folk_preset"
+            android:textSize="@dimen/size14sp"/>
 
         <RadioButton
             android:id="@+id/heavy_metal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/heavy_metal_preset" />
+            android:text="@string/heavy_metal_preset"
+            android:layout_marginStart="100dp"
+            android:textSize="@dimen/size14sp"/>
 
         <RadioButton
             android:id="@+id/hip_hop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hip_hop_preset" />
+            android:text="@string/hip_hop_preset"
+            android:textSize="@dimen/size14sp"/>
 
         <RadioButton
             android:id="@+id/jazz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/jazz_preset" />
+            android:text="@string/jazz_preset"
+            android:layout_marginStart="100dp"
+            android:textSize="@dimen/size14sp"/>
 
         <RadioButton
             android:id="@+id/pop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pop_preset" />
+            android:text="@string/pop_preset"
+            android:textSize="@dimen/size14sp"/>
 
         <RadioButton
             android:id="@+id/rock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/rock_preset" />
+            android:text="@string/rock_preset"
+            android:layout_marginStart="100dp"
+            android:textSize="@dimen/size14sp"/>
     </RadioGroup>
 
     <Button

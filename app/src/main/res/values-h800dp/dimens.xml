@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_player_image_height">400dp</dimen>
+    <dimen name="player_art">350dp</dimen>
+    <dimen name="size16sp">25sp</dimen>
+    <dimen name="size13sp">20sp</dimen>
+    <dimen name="size150dp">240dp</dimen>
+    <dimen name="size290dp">350dp</dimen>
+    <dimen name="size100dp">150dp</dimen>
+    <dimen name="size14sp">21sp</dimen>
+    <dimen name="size17dp">20dp</dimen>
+    <dimen name="size16dp">32dp</dimen>
+    <dimen name="size12sp">18sp</dimen>
+    <dimen name="size50dp">60dp</dimen>
+    <dimen name="size8dp">16dp</dimen>
+    <dimen name="size38dp">48dp</dimen>
+    <dimen name="size30dp">40dp</dimen>
+    <dimen name="size25dp">30dp</dimen>
+    <dimen name="size66dp">76dp</dimen>
+    <dimen name="size24dp">35dp</dimen>
+    <dimen name="size26sp">40sp</dimen>
+    <dimen name="size23sp">35sp</dimen>
+    <dimen name="size250dp">280dp</dimen>
+    <dimen name="size20sp">32sp</dimen>
+    <dimen name="size15sp">25sp</dimen>
+    <dimen name="size18sp">24sp</dimen>
+</resources>

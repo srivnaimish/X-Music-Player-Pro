@@ -38,7 +38,7 @@
                     android:text="@string/app_name"
                     android:textAlignment="textStart"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/size16sp"
                     android:layout_marginTop="3dp"/>
 
             </android.support.v7.widget.Toolbar>
@@ -67,7 +67,7 @@
                     android:layout_gravity="center|start"
                     android:text="@string/now_playing"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/size16sp"
                     android:layout_marginTop="3dp"/>
 
             </android.support.v7.widget.Toolbar>
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/size16sp"
                     android:layout_marginTop="3dp"/>
 
             </android.support.v7.widget.Toolbar>
@@ -106,7 +106,9 @@
                 app:tabPaddingEnd="-1dp"
                 app:tabPaddingStart="-1dp"
                 app:tabSelectedTextColor="@color/colorAccent"
-                app:tabTextColor="@color/colorAccent" />
+                app:tabMaxWidth="0dp"
+                app:tabGravity="fill"
+                app:tabMode="fixed"/>
 
         </android.support.design.widget.AppBarLayout>
 

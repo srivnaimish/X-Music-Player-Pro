@@ -6,4 +6,26 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="player_art">250dp</dimen>
+    <dimen name="size16sp">16sp</dimen>
+    <dimen name="size13sp">13sp</dimen>
+    <dimen name="size150dp">150dp</dimen>
+    <dimen name="size290dp">290dp</dimen>
+    <dimen name="size100dp">100dp</dimen>
+    <dimen name="size14sp">14sp</dimen>
+    <dimen name="size17dp">17dp</dimen>
+    <dimen name="size16dp">16dp</dimen>
+    <dimen name="size12sp">12sp</dimen>
+    <dimen name="size50dp">50dp</dimen>
+    <dimen name="size8dp">8dp</dimen>
+    <dimen name="size38dp">38dp</dimen>
+    <dimen name="size30dp">30dp</dimen>
+    <dimen name="size25dp">25dp</dimen>
+    <dimen name="size66dp">66dp</dimen>
+    <dimen name="size24dp">24dp</dimen>
+    <dimen name="size26sp">26sp</dimen>
+    <dimen name="size23sp">23sp</dimen>
+    <dimen name="size250dp">250dp</dimen>
+    <dimen name="size20sp">20sp</dimen>
+    <dimen name="size15sp">15sp</dimen>
+    <dimen name="size18sp">18sp</dimen>
 </resources>

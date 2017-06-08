@@ -8,6 +8,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/custom_token_shape"
     android:textColor="@android:color/white"
-    android:textSize="16sp"
+    android:textSize="@dimen/size16sp"
     android:maxLines="1"
     android:ellipsize="end"/>

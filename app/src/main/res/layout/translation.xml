@@ -22,8 +22,8 @@
             android:layout_height="wrap_content"
             android:text="@string/translation_help"
             android:layout_gravity="center_vertical"
-            android:textColor="#000"
-            android:textSize="20sp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/size20sp"
             android:layout_marginStart="4dp"
             />
     </LinearLayout>
@@ -37,6 +37,6 @@
         android:layout_marginEnd="18dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="50dp"
-        android:textSize="15sp"
+        android:textSize="@dimen/size15sp"
         />
 </RelativeLayout>

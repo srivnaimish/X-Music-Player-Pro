@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:layout_marginBottom="66dp">
+    android:layout_marginBottom="@dimen/size66dp">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="290dp"
+        android:layout_height="@dimen/size290dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -45,14 +45,14 @@
                     android:textColor="@color/whitePrimary"
                     android:layout_below="@+id/album_art"
                     android:layout_centerHorizontal="true"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/size18sp"
                     android:maxLines="1"
                     android:layout_margin="12dp"/>
 
                 <ImageView
                     android:id="@+id/album_art"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/size100dp"
+                    android:layout_height="@dimen/size100dp"
                     app:srcCompat="@drawable/empty"
                     android:scaleType="centerCrop"
                     android:foregroundGravity="center"

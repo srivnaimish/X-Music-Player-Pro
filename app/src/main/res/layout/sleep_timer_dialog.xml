@@ -21,6 +21,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:gravity="center"
         android:textAlignment="center"
+        android:textSize="@dimen/size14sp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -46,6 +47,7 @@
             android:text="@string/zero"
             android:maxLength="2"
             android:gravity="center"
+            android:textSize="@dimen/size14sp"
             android:textColor="@color/textColorPrimary" />
 
         <com.riseapps.xmusic.widgets.MainEditText
@@ -59,6 +61,7 @@
             android:inputType="number"
             android:gravity="center"
             android:layout_marginStart="10dp"
+            android:textSize="@dimen/size14sp"
             android:textColor="@color/textColorPrimary" />
     </LinearLayout>
 
@@ -81,6 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:text="@string/hours"
+            android:textSize="@dimen/size14sp"
             android:textAlignment="center" />
 
         <com.riseapps.xmusic.widgets.MainTextViewSub
@@ -90,6 +94,7 @@
             android:layout_marginStart="10dp"
             android:layout_weight=".5"
             android:text="@string/minutes"
+            android:textSize="@dimen/size14sp"
             android:textAlignment="center" />
     </LinearLayout>
 

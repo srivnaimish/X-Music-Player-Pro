@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/token_background"
     android:textColor="@android:color/white"
-    android:textSize="26sp"
+    android:textSize="@dimen/size26sp"
     android:maxLines="1"
     android:ellipsize="end"
     android:padding="10dp"/>

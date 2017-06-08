@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.media.audiofx.Equalizer;
 import android.net.Uri;
 import android.os.Build;
@@ -38,6 +40,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     private static EqualizerPresetListener equalizerPresetListener;
     private RadioGroup radioButtonGroup;
     SharedPreferenceSingelton sharedPreferenceSingelton;
+    CoordinatorLayout back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     private void init() {
         // Toolbar
         sharedPreferenceSingelton=new SharedPreferenceSingelton();
-
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -67,7 +69,11 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         CardView setting_sleep = (CardView) findViewById(R.id.setting_sleep);
         CardView setting_share_app = (CardView) findViewById(R.id.setting_share);
         CardView setting_rate = (CardView) findViewById(R.id.setting_rate);
-
+        back= (CoordinatorLayout) findViewById(R.id.back);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.BOTTOM_TOP,
+                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
+        back.setBackground(gd);
         if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_PROXIMITY)){
             setting_pro.setVisibility(View.GONE);
             //Toast.makeText(this, "Has", Toast.LENGTH_SHORT).show();

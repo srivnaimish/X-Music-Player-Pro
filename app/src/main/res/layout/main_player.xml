@@ -8,7 +8,6 @@
     android:layout_below="@id/appbar"
     android:layout_marginTop="2dp"
     android:animateLayoutChanges="true"
-    android:visibility="gone"
     android:background="#FFF">
     <android.support.constraint.ConstraintLayout
         android:id="@+id/imageContainer"
@@ -19,37 +18,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_bias="1.0">
 
-        <com.riseapps.xmusic.widgets.MainTextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/swipe_right_or_left_to_change_the_song"
-            android:alpha="0.7"
-
-            android:layout_marginTop="17dp"
-            app:layout_constraintTop_toBottomOf="@+id/album_art_card"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="8dp"
-            android:textSize="12sp"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
         <RelativeLayout
             android:id="@+id/album_art_card"
             android:layout_width="@dimen/player_art"
             android:layout_height="@dimen/player_art"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/size8dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginTop="@dimen/size8dp"
+            android:layout_marginLeft="@dimen/size8dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="@dimen/size8dp"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="@dimen/size8dp"
+            android:layout_marginEnd="@dimen/size8dp"
             >
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -66,8 +48,34 @@
                 android:layout_marginTop="0dp"
                 app:layout_constraintHorizontal_bias="1.0"
                 android:alpha="0.5"/>
+            <ImageView
+                android:id="@+id/liked"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:srcCompat="@drawable/ic_liked"
+                android:tint="@color/colorAccentDark"
+                android:layout_centerVertical="true"
+                android:alpha="0.8"
+                android:visibility="invisible"
+                android:layout_centerHorizontal="true"/>
 
         </RelativeLayout>
+
+        <com.riseapps.xmusic.widgets.MainTextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/swipe_right_or_left_to_change_the_song"
+            android:alpha="0.9"
+            android:layout_marginTop="@dimen/size17dp"
+            app:layout_constraintTop_toBottomOf="@+id/album_art_card"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/size8dp"
+            android:layout_marginRight="@dimen/size8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="@dimen/size8dp"
+            android:textSize="@dimen/size12sp"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -76,23 +84,24 @@
         android:id="@+id/seekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="@dimen/size8dp"
         app:layout_constraintRight_toRightOf="@+id/imageContainer"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="@dimen/size8dp"
         app:layout_constraintLeft_toLeftOf="@+id/imageContainer"
         app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/size16dp"
         app:layout_constraintTop_toBottomOf="@+id/imageContainer"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginStart="@dimen/size8dp"
+        android:layout_marginEnd="@dimen/size8dp" />
 
     <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/currentPosition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/size8dp"
+        android:layout_marginTop="@dimen/size8dp"
         tools:text="0:00"
+        android:textSize="@dimen/size14sp"
         app:layout_constraintTop_toBottomOf="@+id/seekBar"
         app:layout_constraintLeft_toLeftOf="@+id/seekBar" />
 
@@ -100,9 +109,10 @@
         android:id="@+id/totalDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/size8dp"
+        android:layout_marginTop="@dimen/size8dp"
         tools:text="4:30"
+        android:textSize="@dimen/size14sp"
         app:layout_constraintTop_toBottomOf="@+id/seekBar"
         app:layout_constraintRight_toRightOf="@+id/seekBar" />
 
@@ -112,12 +122,12 @@
         android:orientation="vertical"
         android:id="@+id/linearlayout"
         app:layout_constraintTop_toBottomOf="@+id/currentPosition"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="@dimen/size8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="@dimen/size8dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        android:layout_marginStart="@dimen/size8dp"
+        android:layout_marginEnd="@dimen/size8dp">
 
         <com.riseapps.xmusic.widgets.MainTextView
             android:id="@+id/name"
@@ -127,7 +137,7 @@
             android:layout_marginBottom="6sp"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/colorPrimaryFontDark"
-            android:textSize="16sp"
+            android:textSize="@dimen/size16sp"
             android:gravity="center_vertical"
             android:textAlignment="center"
             android:textAllCaps="true"
@@ -143,7 +153,7 @@
             android:textAlignment="center"
             android:gravity="center_vertical"
             android:textColor="#636363"
-            android:textSize="16sp"
+            android:textSize="@dimen/size16sp"
             tools:text="Song Artist"
             android:maxLines="1"/>
     </LinearLayout>
@@ -151,15 +161,15 @@
 
     <ImageButton
         android:id="@+id/play_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/size50dp"
+        android:layout_height="@dimen/size50dp"
         app:srcCompat="@drawable/ic_play"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/size8dp"
         app:layout_constraintTop_toBottomOf="@+id/linearlayout"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/size8dp"
         android:background="@drawable/ripple" />
 
     <ImageButton
@@ -169,14 +179,14 @@
         android:background="@drawable/ripple"
         app:srcCompat="@drawable/ic_prev"
         app:layout_constraintLeft_toRightOf="@+id/shuffle"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="@dimen/size8dp"
         app:layout_constraintRight_toLeftOf="@+id/play_pause"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="@dimen/size8dp"
         app:layout_constraintTop_toTopOf="@+id/play_pause"
         android:layout_marginTop="16dp"
         app:layout_constraintHorizontal_bias="0.505"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginStart="@dimen/size8dp"
+        android:layout_marginEnd="@dimen/size8dp" />
 
     <ImageButton
         android:id="@+id/next"
@@ -189,7 +199,7 @@
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintTop_toTopOf="@+id/play_pause"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/size8dp"
         android:layout_marginEnd="16dp" />
 
     <ImageButton

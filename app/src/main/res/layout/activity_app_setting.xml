@@ -35,7 +35,7 @@
                     android:text="@string/settings_title"
                     android:textColor="@color/textColorPrimary"
                     android:textAlignment="textStart"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/size16sp" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -89,12 +89,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/pro_controls_heading"
                                 android:textColor="@color/textColorPrimary"
-                                android:textSize="16sp" />
+                                android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/pro_control_subHeading" />
+                                android:text="@string/pro_control_subHeading"
+                                android:textSize="@dimen/size14sp"/>
 
                         </LinearLayout>
 
@@ -139,12 +140,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/equalizer_heading"
                                 android:textColor="@color/textColorPrimary"
-                                android:textSize="16sp" />
+                                android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/equalizer_subHeading" />
+                                android:text="@string/equalizer_subHeading"
+                                android:textSize="@dimen/size14sp"/>
 
                         </LinearLayout>
 
@@ -189,12 +191,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/sleep_timer_heading"
                                 android:textColor="@color/textColorPrimary"
-                                android:textSize="16sp" />
+                                 android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/sleep_timer_subHeading" />
+                                android:text="@string/sleep_timer_subHeading"
+                                android:textSize="@dimen/size14sp"/>
 
                         </LinearLayout>
 
@@ -240,12 +243,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/help_heading"
                                 android:textColor="@color/textColorPrimary"
-                                android:textSize="16sp" />
+                                 android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/help_subHeading" />
+                                android:text="@string/help_subHeading"
+                                android:textSize="@dimen/size14sp"/>
 
                         </LinearLayout>
 
@@ -291,12 +295,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/rate_us_heading"
                                 android:textColor="@color/textColorPrimary"
-                                android:textSize="16sp" />
+                                 android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/rate_us_subHeading" />
+                                android:text="@string/rate_us_subHeading"
+                                android:textSize="@dimen/size14sp"/>
 
                         </LinearLayout>
 
@@ -342,12 +347,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/share_app"
                                 android:textColor="@color/textColorPrimary"
-                                android:textSize="16sp" />
+                                 android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/recomment_it_to_others" />
+                                android:text="@string/recomment_it_to_others"
+                                android:textSize="@dimen/size14sp"/>
 
                         </LinearLayout>
 
