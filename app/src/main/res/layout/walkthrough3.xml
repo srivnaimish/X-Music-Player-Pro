@@ -13,17 +13,17 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/size100dp"
+            android:layout_height="@dimen/size100dp"
             app:srcCompat="@drawable/ic_sleep_timer" />
 
         <com.riseapps.xmusic.widgets.MainTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:text="@string/fragment3_heading"
             android:textColor="@color/textColorPrimary"
-            android:textSize="23sp"
-            android:layout_marginTop="30dp"
+            android:textSize="@dimen/size23sp"
             android:textStyle="bold" />
 
         <com.riseapps.xmusic.widgets.MainTextViewSub
@@ -35,7 +35,7 @@
             android:text="@string/fragment3_subHeading"
             android:textAlignment="center"
             android:textColor="@color/colorBlack"
-            android:textSize="15sp" />
+            android:textSize="@dimen/size15sp" />
 
     </LinearLayout>
 </RelativeLayout>

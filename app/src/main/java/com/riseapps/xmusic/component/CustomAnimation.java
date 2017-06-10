@@ -24,4 +24,12 @@ public class CustomAnimation {
         return AnimationUtils.loadAnimation(context, R.anim.big_like);
     }
 
+    public Animation slide_up(Context context){
+        return AnimationUtils.loadAnimation(context, R.anim.slide_up);
+    }
+
+    public Animation slide_down(Context context){
+        return AnimationUtils.loadAnimation(context, R.anim.slide_down);
+    }
+
 }

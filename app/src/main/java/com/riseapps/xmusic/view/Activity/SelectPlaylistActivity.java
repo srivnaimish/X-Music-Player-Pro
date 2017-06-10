@@ -37,11 +37,12 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-    private final String TAG = getClass().getSimpleName();
 
+    private final String TAG = getClass().getSimpleName();
+    TextView hint;
     FloatingActionButton fab;
 
-   // private AdView mAdView;
+    // private AdView mAdView;
     private String str = "";
 
     Tag tag;
@@ -67,18 +68,8 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         setContentView(R.layout.activity_select_playlist);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+        hint = (TextView) findViewById(R.id.hint);
         toolbar.setNavigationIcon(R.drawable.ic_back);
-       /* MobileAds.initialize(getApplicationContext(), "ca-app-pub-2454061641779517~3507282989");
-        mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                mAdView.setVisibility(View.VISIBLE);
-                super.onAdLoaded();
-            }
-        });*/
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,8 +89,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                 if (item.getItemId() == R.id.action_done) {
                     if (selectedPlaylist.size() < 1) {
                         Toast.makeText(SelectPlaylistActivity.this, getString(R.string.select_atleast_one), Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         selectedPlaylist.remove("A");
                         convertHashmapToString();
                         Intent i = new Intent();
@@ -168,8 +158,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                         }
                         selectedPlaylist.remove(tag.text);
                     }
-                }
-                else if (selectionType.equals("single_playlist")) {
+                } else if (selectionType.equals("single_playlist")) {
                     if (selectedPlaylist.get(tag.text) == null) {
                         Log.d(TAG, "IF ADD TAG AND SINGLE PLAYLIST " + singlePlaylist);
                         // CHECK IF ANYTHING ALREADY PRESENT IN HASHMAP
@@ -198,8 +187,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                             singlePlaylistView = view;
                             singlePlaylistTextView = tagView;
                         }
-                    }
-                    else if (selectedPlaylist.get(tag.text) != null) {
+                    } else if (selectedPlaylist.get(tag.text) != null) {
                         Log.d(TAG, "IF RESET TAG AND SINGLE PLAYLIST " + singlePlaylist);
                         // RESET TAG
                         selectedPlaylist.remove(tag.text);
@@ -219,19 +207,19 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
     }
 
     private void prepareTags() throws Exception {
-        ArrayList<Playlist> playlists=new MyApplication(SelectPlaylistActivity.this).getWritableDatabase().readPlaylists();
-        for (int i=0;i<playlists.size();i++) {
-            skillFactoryHashMap.put(playlists.get(i).getName(),0);
+        ArrayList<Playlist> playlists = new MyApplication(SelectPlaylistActivity.this).getWritableDatabase().readPlaylists();
+        for (int i = 0; i < playlists.size(); i++) {
+            skillFactoryHashMap.put(playlists.get(i).getName(), 0);
         }
 
     }
 
     private void setTags() {
-        Log.d("hashmap",  " " + skillFactoryHashMap.toString());
+        Log.d("hashmap", " " + skillFactoryHashMap.toString());
         //skillFactoryHashMap.putAll(hashMap);
         Iterator it = skillFactoryHashMap.entrySet().iterator();
         while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry)it.next();
+            HashMap.Entry pair = (HashMap.Entry) it.next();
             String tagName = pair.getKey().toString();
             int status = Integer.parseInt(pair.getValue().toString());
             Log.d(TAG, "int value " + status);
@@ -241,19 +229,15 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                 tag.layoutColor = Color.parseColor(String.valueOf(R.color.colorAccent));
                 tag.tagTextColor = Color.parseColor("#ffffff");
                 selectedPlaylist.put(tagName, 2);
-            }
-            else if (hashMap.containsKey(tagName) && status == 0) {
+            } else if (hashMap.containsKey(tagName) && status == 0) {
                 continue;
-            }
-            else if (hashMap.containsKey(tagName) && status == 1) {
+            } else if (hashMap.containsKey(tagName) && status == 1) {
                 tag.layoutColor = Color.parseColor("#3F51B5");
                 tag.tagTextColor = Color.parseColor("#ffffff");
                 selectedPlaylist.put(tagName, 1);
-            }
-            else if (!hashMap.containsKey(tagName) && status == 0) {
+            } else if (!hashMap.containsKey(tagName) && status == 0) {
                 tag.layoutColor = Color.parseColor("#ffffff");
-            }
-            else {
+            } else {
                 tag.layoutColor = Color.parseColor("#ffffff");
             }
             tags.add(tag);
@@ -264,33 +248,34 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
     private void convertHashmapToString() {
         Iterator it = selectedPlaylist.entrySet().iterator();
         while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry)it.next();
+            HashMap.Entry pair = (HashMap.Entry) it.next();
             str = str + pair.getKey() + ",";
             it.remove();
         }
         Log.d(TAG, "" + str);
     }
 
-    private void openDialog(){
-        dialog=new Dialog(SelectPlaylistActivity.this);
+    private void openDialog() {
+        dialog = new Dialog(SelectPlaylistActivity.this);
         dialog.setContentView(R.layout.playlist_create_dialog);
         dialog.show();
         Button create = (Button) dialog.findViewById(R.id.create);
         Button cancel = (Button) dialog.findViewById(R.id.cancel);
-        final EditText editText= (EditText) dialog.findViewById(R.id.dialogEditText);
+        final EditText editText = (EditText) dialog.findViewById(R.id.dialogEditText);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!editText.getText().toString().equalsIgnoreCase("")) {
+                if (!editText.getText().toString().equalsIgnoreCase("")) {
                     skillFactoryHashMap.put(editText.getText().toString(), 0);
                     tagGroup = (TagView) findViewById(R.id.tag_group);
                     tags = new ArrayList<>();
                     setTags();
                     dialog.dismiss();
                     Toast.makeText(SelectPlaylistActivity.this, getString(R.string.created), Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Snackbar.make(fab,"Please give playlist a Name",Snackbar.LENGTH_SHORT).show();
+                    if (hint.getVisibility() == View.GONE)
+                        hint.setVisibility(View.VISIBLE);
+                } else {
+                    Snackbar.make(fab, "Please give playlist a Name", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });

@@ -49,7 +49,7 @@ public class UpdateSongs {
                 if (thisTitle.length() > textLimit)
                     thisTitle = thisTitle.substring(0, textLimit) + "...";
                 String thisArtist = musicCursor.getString(artistColumn);
-                if (thisArtist.equalsIgnoreCase("<unknown>")) {
+                if (thisArtist==null||thisArtist.equalsIgnoreCase("<unknown>")) {
                     thisArtist = "Unknown";
                 }
                 if (thisArtist.length() > textLimit)

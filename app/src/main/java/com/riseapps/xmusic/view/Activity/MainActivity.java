@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
@@ -93,7 +94,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     ImageView album_art_mini;
     //MainPlayer items
     TextView title, artist, currentPosition, totalDuration;
-    ImageView album_art,liked;
+    ImageView album_art, liked;
     RelativeLayout progressView;
     private ArrayList<Song> songList = new ArrayList<>();
     private MusicService musicService;
@@ -123,7 +124,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     public static ProximityDetector proximityDetector;
     public static Sensor mProximity;
 
-    private SharedPreferenceSingelton sharedPreferenceSingleton=new SharedPreferenceSingelton();
+    private SharedPreferenceSingelton sharedPreferenceSingleton = new SharedPreferenceSingelton();
 
     private static HashMap<Integer, Boolean> multipleSongSelectionList = new HashMap<>();
     ArrayList<Song> completeList;
@@ -188,7 +189,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     }
                 }
             });
-            int x=sharedPreferenceSingleton.getSavedInt(MainActivity.this,"Last_Song");
+            int x = sharedPreferenceSingleton.getSavedInt(MainActivity.this, "Last_Song");
             musicService.setSong(x);
         }
 
@@ -225,7 +226,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, ""+sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Shuffle"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "" + sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Shuffle"), Toast.LENGTH_SHORT).show();
                 if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Shuffle")) {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", false);
                     DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
@@ -286,6 +287,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     liked.setVisibility(View.VISIBLE);
                     liked.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
                     liked.setVisibility(View.INVISIBLE);
+                    Toast.makeText(MainActivity.this, "Song Added to Favourites", Toast.LENGTH_SHORT).show();
                     song.setFavourite(true);
                 }
             }
@@ -310,7 +312,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             @Override
             public void onProximity() {
                 ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
-                if(musicPlaying)
+                if (musicPlaying)
                     changeToNextSong();
                 else
                     musicService.togglePlay();
@@ -386,7 +388,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     startActivityForResult(i, 1);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 } else if (item.getItemId() == R.id.youtube) {
-                    if(musicPlaying){
+                    if (musicPlaying) {
                         musicService.togglePlay();
                     }
                     Intent intent = new Intent(Intent.ACTION_SEARCH);
@@ -395,12 +397,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     Toast.makeText(MainActivity.this, getString(R.string.opening_youtube), Toast.LENGTH_SHORT).show();
-                }
-                else if(item.getItemId() == R.id.share) {
+                } else if (item.getItemId() == R.id.share) {
                     Uri mediaContentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                    String[] projection = new String[] { MediaStore.Audio.Media.DATA};
+                    String[] projection = new String[]{MediaStore.Audio.Media.DATA};
                     String selection = MediaStore.Audio.Media._ID + "=?";
-                    String[] selectionArgs = new String[] {"" + song.getID()}; //This is the id you are looking for
+                    String[] selectionArgs = new String[]{"" + song.getID()}; //This is the id you are looking for
                     Cursor mediaCursor = getContentResolver().query(mediaContentUri, projection, selection, selectionArgs, null);
                     if (mediaCursor != null && mediaCursor.getCount() >= 0) {
                         mediaCursor.moveToPosition(0);
@@ -430,7 +431,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.favouritesPlayer) {
-                   // Toast.makeText(MainActivity.this, "Action 1", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this, "Action 1", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
                     i.putExtra("selection_type", "single_playlist");
@@ -473,7 +474,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         title = (TextView) findViewById(R.id.name);
         artist = (TextView) findViewById(R.id.artist);
-        liked= (ImageView) findViewById(R.id.liked);
+        liked = (ImageView) findViewById(R.id.liked);
         album_art = (ImageView) findViewById(R.id.album_art);
         play_pause = (ImageButton) findViewById(R.id.play_pause);
         next = (ImageButton) findViewById(R.id.next);
@@ -490,6 +491,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         play_pause_mini = (ImageButton) findViewById(R.id.play_pause_mini);
 
         miniPlayer = (CardView) findViewById(R.id.song_list_card);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[]{Color.parseColor("#f5f5f5"), Color.parseColor("#FFFFFF")});
+        miniPlayer.setBackground(gd);
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
 
         play_pause.setOnClickListener(togglePlayBtn);
@@ -517,9 +522,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     @Override
     protected void onDestroy() {
-        sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle",false);
-        sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat",false);
-        sharedPreferenceSingleton.saveAs(this,"Last_Song",musicService.getCurrentIndex());
+        sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", false);
+        sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat", false);
+        sharedPreferenceSingleton.saveAs(this, "Last_Song", musicService.getCurrentIndex());
         unregisterReceiver(stopReceiver);
         unbindService(musicConnection);
         stopService(playIntent);
@@ -584,8 +589,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         this.songList = songList;
     }
 
-    public ArrayList<Song> getCompleteSongList(){
-        completeList=new MyApplication(MainActivity.this).getWritableDatabase().readSongs();
+    public ArrayList<Song> getCompleteSongList() {
+        completeList = new MyApplication(MainActivity.this).getWritableDatabase().readSongs();
         setSongs(completeList);
         return completeList;
     }
@@ -594,15 +599,19 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     void showMainPlayer() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0)
             getSupportFragmentManager().popBackStackImmediate();
+        miniPlayer.setVisibility(View.GONE);
         mainPlayer.setVisibility(View.VISIBLE);
         toolbarPlayer.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.GONE);
         mViewPager.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.GONE);
         mToolbar.setVisibility(View.GONE);
+        mainPlayer.startAnimation(new CustomAnimation().slide_up(MainActivity.this));
+
     }
 
     void hideMainPlayer() {
+        mainPlayer.startAnimation(new CustomAnimation().slide_down(MainActivity.this));
         mainPlayer.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.VISIBLE);
         mViewPager.setVisibility(View.VISIBLE);
@@ -629,7 +638,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     public boolean onQueryTextSubmit(String s) {
 
         for (Song song : completeList) {
-            if (song!=null && song.getName().equalsIgnoreCase(s)) {
+            if (song != null && song.getName().equalsIgnoreCase(s)) {
                 musicService.setSongs(completeList);
                 setSongs(completeList);
                 new PlaySongExec(this, songList.indexOf(song)).startPlaying();
@@ -730,7 +739,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        String tabTitles[] = new String[]{getResources().getString(R.string.TAB4),getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
+        String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
 
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -804,8 +813,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         @Override
         protected void onPreExecute() {
-            if(musicPlaying)
-            musicService.togglePlay();
+            if (musicPlaying)
+                musicService.togglePlay();
             unbindService(musicConnection);
             stopService(playIntent);
             mViewPager.setAlpha(0.8f);

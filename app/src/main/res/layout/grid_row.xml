@@ -6,18 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentStart="true"
-    card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="1dp"
+    android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:clickable="true">
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="1dp">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageView"
@@ -25,8 +24,7 @@
             android:layout_height="@dimen/size150dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/linearlayout"
@@ -47,16 +45,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp"
                 android:fontFamily="sans-serif-light"
+                android:maxLines="1"
                 android:textAlignment="center"
                 android:textColor="@color/black_55"
                 android:textSize="@dimen/size13sp"
-                tools:text="Song Name"
-                android:maxLines="1"/>
+                tools:text="Song Name" />
 
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>

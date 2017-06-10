@@ -17,7 +17,6 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
             android:theme="@style/AppTheme.AppBarOverlay"
             app:elevation="0dp">
 
@@ -28,18 +27,18 @@
                 android:layout_below="@+id/statusBar"
                 android:layout_gravity="center_vertical"
                 android:background="@color/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:theme="@style/ToolbarTheme">
+                android:theme="@style/ToolbarTheme"
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <com.riseapps.xmusic.widgets.MainTextView
                     android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
                     android:text="@string/app_name"
                     android:textAlignment="textStart"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="@dimen/size16sp"
-                    android:layout_marginTop="3dp"/>
+                    android:textSize="@dimen/size16sp" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -56,8 +55,8 @@
                 android:layout_below="@+id/statusBar"
                 android:background="@color/colorPrimary"
                 android:gravity="top"
-                android:visibility="gone"
                 android:theme="@style/ToolbarTheme"
+                android:visibility="gone"
                 app:layout_scrollFlags="scroll|enterAlways">
 
                 <com.riseapps.xmusic.widgets.MainTextView
@@ -65,10 +64,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
+                    android:layout_marginTop="3dp"
                     android:text="@string/now_playing"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="@dimen/size16sp"
-                    android:layout_marginTop="3dp"/>
+                    android:textSize="@dimen/size16sp" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -79,8 +78,8 @@
                 android:layout_below="@+id/statusBar"
                 android:background="@color/colorPrimary"
                 android:gravity="top"
-                android:visibility="gone"
                 android:theme="@style/ToolbarTheme"
+                android:visibility="gone"
                 app:layout_scrollFlags="scroll|enterAlways">
 
                 <com.riseapps.xmusic.widgets.MainTextView
@@ -88,9 +87,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
+                    android:layout_marginTop="3dp"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="@dimen/size16sp"
-                    android:layout_marginTop="3dp"/>
+                    android:textSize="@dimen/size16sp" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -99,16 +98,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:animateLayoutChanges="true"
                 android:background="@color/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
+                app:tabGravity="fill"
                 app:tabIndicatorColor="@color/colorAccent"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed"
                 app:tabPaddingEnd="-1dp"
                 app:tabPaddingStart="-1dp"
-                app:tabSelectedTextColor="@color/colorAccent"
-                app:tabMaxWidth="0dp"
-                app:tabGravity="fill"
-                app:tabMode="fixed"/>
+                app:tabSelectedTextColor="@color/colorAccent" />
 
         </android.support.design.widget.AppBarLayout>
 
@@ -132,7 +130,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:animateLayoutChanges="true"
                 android:visibility="gone"
                 card_view:cardBackgroundColor="@color/colorPrimary"
                 card_view:cardCornerRadius="0dp"
@@ -154,17 +151,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0.8"
-            android:visibility="gone"
-            android:background="@color/colorBlack">
+            android:background="@color/colorBlack"
+            android:visibility="gone">
+
             <com.riseapps.xmusic.widgets.MainTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                android:textSize="20sp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="@string/refreshing_lists"
-                />
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp" />
         </RelativeLayout>
 
 

@@ -35,8 +35,9 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
     private Dialog dialog;
-    private EditText min,hrs;
+    private EditText min, hrs;
     private static EqualizerPresetListener equalizerPresetListener;
     private RadioGroup radioButtonGroup;
     SharedPreferenceSingelton sharedPreferenceSingelton;
@@ -55,7 +56,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     private void init() {
         // Toolbar
-        sharedPreferenceSingelton=new SharedPreferenceSingelton();
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -69,31 +70,30 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         CardView setting_sleep = (CardView) findViewById(R.id.setting_sleep);
         CardView setting_share_app = (CardView) findViewById(R.id.setting_share);
         CardView setting_rate = (CardView) findViewById(R.id.setting_rate);
-        back= (CoordinatorLayout) findViewById(R.id.back);
+        back = (CoordinatorLayout) findViewById(R.id.back);
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.BOTTOM_TOP,
                 new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
         back.setBackground(gd);
-        if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_PROXIMITY)){
+        if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_PROXIMITY)) {
             setting_pro.setVisibility(View.GONE);
             //Toast.makeText(this, "Has", Toast.LENGTH_SHORT).show();
         }
 
         Switch pro = (Switch) findViewById(R.id.setting_pro);
-        if(sharedPreferenceSingelton.getSavedBoolean(this,"Pro_Controls"))
+        if (sharedPreferenceSingelton.getSavedBoolean(this, "Pro_Controls"))
             pro.setChecked(true);
         else
             pro.setChecked(false);
         pro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(sharedPreferenceSingelton.getSavedBoolean(AppSettingActivity.this,"Pro_Controls")) {
-                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Pro_Controls",false);
+                if (sharedPreferenceSingelton.getSavedBoolean(AppSettingActivity.this, "Pro_Controls")) {
+                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Pro_Controls", false);
                     MainActivity.mSensorManager.unregisterListener(MainActivity.proximityDetector);
                     Toast.makeText(AppSettingActivity.this, "Pro Controls Deactivated", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Pro_Controls",true);
+                } else {
+                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Pro_Controls", true);
                     MainActivity.mSensorManager.registerListener(MainActivity.proximityDetector, MainActivity.mProximity, 2 * 1000 * 1000);
                     Toast.makeText(AppSettingActivity.this, "Pro Controls Activated", Toast.LENGTH_SHORT).show();
                 }
@@ -132,28 +132,25 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void openSleepDialog(){
-        dialog=new Dialog(this);
+    private void openSleepDialog() {
+        dialog = new Dialog(this);
         dialog.setContentView(R.layout.sleep_timer_dialog);
         dialog.show();
-        hrs= (EditText) dialog.findViewById(R.id.hours);
-        min= (EditText) dialog.findViewById(R.id.minutes);
-        Button done= (Button) dialog.findViewById(R.id.done);
+        hrs = (EditText) dialog.findViewById(R.id.hours);
+        min = (EditText) dialog.findViewById(R.id.minutes);
+        Button done = (Button) dialog.findViewById(R.id.done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long d=0;
-                String h=hrs.getText().toString();
-                String m=min.getText().toString();
-                if((h+m).equalsIgnoreCase("00")||(h+m).equalsIgnoreCase("0")||(h+m).equalsIgnoreCase("")){
+                long d = 0;
+                String h = hrs.getText().toString();
+                String m = min.getText().toString();
+                if ((h + m).equalsIgnoreCase("00") || (h + m).equalsIgnoreCase("0") || (h + m).equalsIgnoreCase("")) {
                     Toast.makeText(AppSettingActivity.this, getString(R.string.Invalid_Time_Toast), Toast.LENGTH_SHORT).show();
-                }
-                else if(h.equalsIgnoreCase("")||m.equalsIgnoreCase("")){
+                } else if (h.equalsIgnoreCase("") || m.equalsIgnoreCase("")) {
                     Toast.makeText(AppSettingActivity.this, getString(R.string.Invalid_Time_Toast), Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    d=System.currentTimeMillis()+(Integer.parseInt(h)*60*60*1000)+(Integer.parseInt(m)*60*1000);
+                } else {
+                    d = System.currentTimeMillis() + (Integer.parseInt(h) * 60 * 60 * 1000) + (Integer.parseInt(m) * 60 * 1000);
                     Intent intent = new Intent("Stop");
                     PendingIntent pi = PendingIntent.getBroadcast(AppSettingActivity.this, 5, intent, 0);
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -162,7 +159,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, d, pi);
-                    else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                    else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP, d, pi);
                     else
                         alarmManager.set(AlarmManager.RTC_WAKEUP, d, pi);
@@ -173,7 +170,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
-        Button cancel=(Button) dialog.findViewById(R.id.cancel);
+        Button cancel = (Button) dialog.findViewById(R.id.cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,25 +182,25 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void openEqualizerDialog(){
-        dialog=new Dialog(this);
+    private void openEqualizerDialog() {
+        dialog = new Dialog(this);
         dialog.setContentView(R.layout.equalizer_dialog);
         dialog.show();
-        radioButtonGroup= (RadioGroup) dialog.findViewById(R.id.radio_group);
+        radioButtonGroup = (RadioGroup) dialog.findViewById(R.id.radio_group);
 
-        int x=sharedPreferenceSingelton.getSavedInt(AppSettingActivity.this,"Preset");
-        if(x!=0){
+        int x = sharedPreferenceSingelton.getSavedInt(AppSettingActivity.this, "Preset");
+        if (x != 0) {
             radioButtonGroup.check((radioButtonGroup.getChildAt(x)).getId());
         }
-        Button done= (Button) dialog.findViewById(R.id.done);
+        Button done = (Button) dialog.findViewById(R.id.done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
                 View radioButton = radioButtonGroup.findViewById(radioButtonID);
                 int idx = radioButtonGroup.indexOfChild(radioButton);
-                equalizerPresetListener.OnEqualizerPresetChanged((short)idx);
-                sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Preset",idx);
+                equalizerPresetListener.OnEqualizerPresetChanged((short) idx);
+                sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Preset", idx);
                 dialog.dismiss();
                 /*if(interstitial.isLoaded())
                     showInterstitial();*/
@@ -214,7 +211,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void shareAppLink(){
+    private void shareAppLink() {
         String message = "https://play.google.com/store/apps/details?id=com.riseapps.xmusic";
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
@@ -226,14 +223,13 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         final Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
         final Intent rateAppIntent = new Intent(Intent.ACTION_VIEW, uri);
 
-        if (getPackageManager().queryIntentActivities(rateAppIntent, 0).size() > 0)
-        {
+        if (getPackageManager().queryIntentActivities(rateAppIntent, 0).size() > 0) {
             startActivity(rateAppIntent);
         }
     }
 
-    public void helpUsTranslate(View v){
-        dialog=new Dialog(this);
+    public void helpUsTranslate(View v) {
+        dialog = new Dialog(this);
         dialog.setContentView(R.layout.translation);
         dialog.show();
     }
@@ -244,14 +240,13 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-    public interface EqualizerPresetListener{
+    public interface EqualizerPresetListener {
         void OnEqualizerPresetChanged(short value);
     }
 
     public static void setEqualizerPresetListener(EqualizerPresetListener listener) {   // Sets a callback to execute when we switch songs.. ie: update UI
         equalizerPresetListener = listener;
     }
-
 
 
 }

@@ -3,34 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitePrimary"
-    >
+    android:background="@color/whitePrimary">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
-        android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="@dimen/size100dp"
             android:layout_height="@dimen/size100dp"
-            app:srcCompat="@drawable/ic_not_found"
-            android:tint="@color/colorPrimaryFontDark"/>
+            android:tint="@color/colorPrimaryFontDark"
+            app:srcCompat="@drawable/ic_not_found" />
 
         <com.riseapps.xmusic.widgets.MainTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
             android:text="@string/empty_state_message"
             android:textColor="@color/textColorPrimary"
             android:textSize="@dimen/size23sp"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
             android:textStyle="bold" />
 
     </LinearLayout>

@@ -12,24 +12,26 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/linearLayout3"
         android:background="@color/whitePrimary" />
+
     <LinearLayout
         android:id="@+id/loading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/linearLayout3"
+        android:layout_marginBottom="5dp"
         android:gravity="center"
-        android:visibility="gone"
-        android:layout_marginBottom="5dp">
+        android:visibility="gone">
+
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="15dp"
-            android:layout_height="15dp"/>
+            android:layout_height="15dp" />
+
         <com.riseapps.xmusic.widgets.MainTextViewSub
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/refreshing_lists"
             android:layout_marginStart="3dp"
-            />
+            android:text="@string/refreshing_lists" />
     </LinearLayout>
 
     <LinearLayout
@@ -58,8 +60,7 @@
             android:layout_width="7dp"
             android:layout_height="7dp"
             android:layout_marginStart="10dp"
-            android:background="@drawable/walkthrough_unselected"
-            />
+            android:background="@drawable/walkthrough_unselected" />
     </LinearLayout>
 
 

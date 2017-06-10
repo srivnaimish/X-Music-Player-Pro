@@ -12,67 +12,66 @@
         android:layout_height="64dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:background="#67809F"
-        android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:layout_marginEnd="2dp"
+        android:layout_marginTop="2dp"
+        android:background="#67809F"
         android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/track"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="4dp"
+        android:layout_toStartOf="@+id/imageView"
         android:ellipsize="marquee"
         android:fadingEdge="horizontal"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:layout_alignParentStart="true"
-        android:gravity="center"
         android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
         android:textColor="@color/textColorPrimary"
-        android:layout_alignParentTop="true"
-        tools:text="Text"
         android:textSize="16sp"
-        android:layout_marginTop="4dp"
-        android:layout_toStartOf="@+id/imageView" />
+        tools:text="Text" />
 
     <RelativeLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/imageView"
         android:layout_below="@+id/track"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp">
+        android:layout_toStartOf="@+id/imageView">
 
         <ImageButton
             android:id="@+id/prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ripple"
             android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/play_pause"
             android:layout_marginEnd="50dp"
-            />
+            android:layout_toStartOf="@+id/play_pause"
+            android:background="@drawable/ripple" />
 
         <ImageButton
             android:id="@+id/play_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_notification_play"
             android:background="@drawable/ripple"
-            android:layout_centerHorizontal="true" />
+            app:srcCompat="@drawable/ic_notification_play" />
 
         <ImageButton
             android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:background="@drawable/ripple"
             android:layout_alignParentTop="true"
+            android:layout_gravity="end"
+            android:layout_marginStart="50dp"
             android:layout_toEndOf="@+id/play_pause"
-            android:layout_marginStart="50dp"/>
+            android:background="@drawable/ripple" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -3,23 +3,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <com.riseapps.xmusic.widgets.MainTextView
         android:id="@+id/tv_tag_item_contain"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/size30dp"
-        android:gravity="center"
-        android:textSize="36sp"
         android:ellipsize="end"
-        android:maxLines="1"/>
-
-    <!--TextView
-        android:id="@+id/tv_tag_item_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
         android:gravity="center"
-        android:singleLine="true"
-        android:visibility="gone"/-->
+        android:maxLines="1"
+        android:textSize="36sp" />
 
 </LinearLayout>

@@ -55,6 +55,7 @@ public class SongsFragment extends Fragment {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
     RecyclerView recyclerView;
     LinearLayout background;
     ArrayList<Song> songMainList = new ArrayList<>();
@@ -64,6 +65,7 @@ public class SongsFragment extends Fragment {
     private ActionModeCallback callback;
     private OnShowContextMenuListener mListener;
     private LinearLayoutManager layoutManager;
+
     public static SongsFragment newInstance() {
         return new SongsFragment();
     }
@@ -79,13 +81,13 @@ public class SongsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
 
-        background= (LinearLayout) rootView.findViewById(R.id.background);
+        background = (LinearLayout) rootView.findViewById(R.id.background);
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.BOTTOM_TOP,
                 new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
         background.setBackground(gd);
 
-        songAllList=((MainActivity) getActivity()).getCompleteSongList();
+        songAllList = ((MainActivity) getActivity()).getCompleteSongList();
         if (songAllList.size() > 50) {
             songMainList = new ArrayList<>(songAllList.subList(0, 50));
         } else {

@@ -8,7 +8,7 @@ import android.view.View;
  * Created by kanishk on 6/12/16.
  */
 
-public class GridItemDecoration extends RecyclerView.ItemDecoration{
+public class GridItemDecoration extends RecyclerView.ItemDecoration {
     private int spanCount;
     private int spacing;
     private boolean includeEdge;

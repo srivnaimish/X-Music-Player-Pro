@@ -41,7 +41,7 @@ public class Walkthrough extends AppCompatActivity {
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private int[] layouts;
-    private Button btn1,btn2,btn3;
+    private Button btn1, btn2, btn3;
     private LinearLayout loading;
     boolean songs_present;
 
@@ -63,12 +63,12 @@ public class Walkthrough extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         RelativeLayout btnSkip = (RelativeLayout) findViewById(R.id.btn_skip);
-        btn1= (Button) findViewById(R.id.bt1);
-        btn2= (Button) findViewById(R.id.bt2);
-        btn3= (Button) findViewById(R.id.bt3);
+        btn1 = (Button) findViewById(R.id.bt1);
+        btn2 = (Button) findViewById(R.id.bt2);
+        btn3 = (Button) findViewById(R.id.bt3);
 
 
-        loading= (LinearLayout) findViewById(R.id.loading);
+        loading = (LinearLayout) findViewById(R.id.loading);
 
         layouts = new int[]{
                 R.layout.walkthrough1,
@@ -82,12 +82,11 @@ public class Walkthrough extends AppCompatActivity {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(async.getStatus()== AsyncTask.Status.FINISHED){
+                if (async.getStatus() == AsyncTask.Status.FINISHED) {
                     launchHomeScreen();
-                }
-                else {
-                    if(loading.getVisibility()==View.GONE)
-                    loading.setVisibility(View.VISIBLE);
+                } else {
+                    if (loading.getVisibility() == View.GONE)
+                        loading.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -101,15 +100,14 @@ public class Walkthrough extends AppCompatActivity {
 
     private void launchHomeScreen() {
         //if (async.getStatus() == AsyncTask.Status.FINISHED) {
-            if(!songs_present){
-                openEmptyStateDialog();
-            }
-            else{
-                new SharedPreferenceSingelton().saveAs(Walkthrough.this, "opened_before", true);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
-            }
+        if (!songs_present) {
+            openEmptyStateDialog();
+        } else {
+            new SharedPreferenceSingelton().saveAs(Walkthrough.this, "opened_before", true);
+            startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            finish();
+        }
 
     }
 
@@ -120,15 +118,13 @@ public class Walkthrough extends AppCompatActivity {
             if (position == layouts.length - 1) {
                 btn3.setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
                 btn2.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
-            }
-            else if(position==1){
+            } else if (position == 1) {
                 // still pages are left
                 btn1.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
                 btn3.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
                 btn2.setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
 
-            }
-            else {
+            } else {
                 btn1.setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
                 btn2.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
             }
@@ -183,9 +179,9 @@ public class Walkthrough extends AppCompatActivity {
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED) {
+                    || ActivityCompat.checkSelfPermission(this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[0])
-                    || ActivityCompat.shouldShowRequestPermissionRationale(this,permissionsRequired[1])) {
+                        || ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[1])) {
                     Snackbar.make(findViewById(android.R.id.content),
                             "Permissions needed to Access Songs and to stop/play music during call",
                             Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
@@ -193,7 +189,7 @@ public class Walkthrough extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v) {
                                     ActivityCompat.requestPermissions(Walkthrough.this,
-                                           permissionsRequired,
+                                            permissionsRequired,
                                             REQUEST_PERMISSION);
                                 }
                             }).show();
@@ -234,7 +230,7 @@ public class Walkthrough extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            songs_present=new UpdateSongs(Walkthrough.this).getSongList();
+            songs_present = new UpdateSongs(Walkthrough.this).getSongList();
 
             //songList = new MyApplication(Walkthrough.this).getWritableDatabase().readSongs();
             artistList = new MyApplication(Walkthrough.this).getWritableDatabase().readArtists();
@@ -248,22 +244,22 @@ public class Walkthrough extends AppCompatActivity {
             intent = new Intent(Walkthrough.this, MainActivity.class);
             Gson gson = new Gson();
 
-           // String songJson = gson.toJson(songList, type);
+            // String songJson = gson.toJson(songList, type);
             Type type = new TypeToken<ArrayList<Album>>() {
             }.getType();
             String albumJson = gson.toJson(albumList, type);
             type = new TypeToken<ArrayList<Artist>>() {
             }.getType();
             String artistJson = gson.toJson(artistList, type);
-           // intent.putExtra("songList", songJson);
+            // intent.putExtra("songList", songJson);
             intent.putExtra("albumList", albumJson);
             intent.putExtra("artistList", artistJson);
-            if(loading.getVisibility()==View.VISIBLE)
+            if (loading.getVisibility() == View.VISIBLE)
                 launchHomeScreen();
         }
     }
 
-    public void openEmptyStateDialog(){
+    public void openEmptyStateDialog() {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.empty_state_dialog);
         dialog.show();

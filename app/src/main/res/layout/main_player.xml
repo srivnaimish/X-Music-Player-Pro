@@ -50,8 +50,8 @@
                 android:alpha="0.5"/>
             <ImageView
                 android:id="@+id/liked"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 app:srcCompat="@drawable/ic_liked"
                 android:tint="@color/colorAccentDark"
                 android:layout_centerVertical="true"

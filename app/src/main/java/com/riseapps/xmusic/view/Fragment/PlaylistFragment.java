@@ -44,9 +44,10 @@ public class PlaylistFragment extends Fragment {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
     NestedScrollView nestedScrollView;
     RecyclerView recyclerView;
-    ArrayList<Playlist> playLists=new ArrayList<>();
+    ArrayList<Playlist> playLists = new ArrayList<>();
     PlaylistAdapter playlistAdapter;
     private OnFragmentInteractionListener mListener;
     //  private LinearLayout createPlaylist;
@@ -73,8 +74,8 @@ public class PlaylistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment_songs
-        final View v=inflater.inflate(R.layout.fragment_playlist, container, false);
-        nestedScrollView= (NestedScrollView) v.findViewById(R.id.nestedScrollView);
+        final View v = inflater.inflate(R.layout.fragment_playlist, container, false);
+        nestedScrollView = (NestedScrollView) v.findViewById(R.id.nestedScrollView);
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.BOTTOM_TOP,
                 new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
@@ -93,6 +94,7 @@ public class PlaylistFragment extends Fragment {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
+
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 new MyApplication(getActivity()).getWritableDatabase().deletePlaylist(playLists.get(viewHolder.getAdapterPosition()).getName());
@@ -109,28 +111,27 @@ public class PlaylistFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-                CardView cardView= (CardView) view.findViewById(R.id.playlist_list_card);
-                ImageView delete= (ImageView) view.findViewById(R.id.delete);
+                CardView cardView = (CardView) view.findViewById(R.id.playlist_list_card);
+                ImageView delete = (ImageView) view.findViewById(R.id.delete);
 
-                View.OnClickListener onClickListener=new View.OnClickListener() {
+                View.OnClickListener onClickListener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(v.getId()==R.id.delete){
+                        if (v.getId() == R.id.delete) {
                             new MyApplication(getContext()).getWritableDatabase().deletePlaylist(playLists.get(position).getName());
                             playlistAdapter.delete(position);
                             Toast.makeText(getContext(), "Playlist Deleted", Toast.LENGTH_SHORT).show();
-                        }
-                        else if(v.getId()==R.id.playlist_list_card){
-                            FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                            ScrollingFragment scrollingFragment=new ScrollingFragment();
-                            Bundle bundle=new Bundle();
-                            bundle.putString("Name",playLists.get(position).getName());
+                        } else if (v.getId() == R.id.playlist_list_card) {
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            ScrollingFragment scrollingFragment = new ScrollingFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("Name", playLists.get(position).getName());
                             //   bundle.putString("Imagepath",playLists.get(position).getImagepath());
-                            bundle.putString("Action","Playlists");
+                            bundle.putString("Action", "Playlists");
                             scrollingFragment.setArguments(bundle);
                             fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.replace(R.id.drawerLayout,scrollingFragment);
+                            fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
                             fragmentTransaction.commit();
                         }
 
@@ -207,8 +208,8 @@ public class PlaylistFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void refreshPlaylists(){
-        playLists=new MyApplication(getActivity()).getWritableDatabase().readPlaylists();
+    public void refreshPlaylists() {
+        playLists = new MyApplication(getActivity()).getWritableDatabase().readPlaylists();
         playlistAdapter = new PlaylistAdapter(getActivity(), playLists, recyclerView);
         recyclerView.setAdapter(playlistAdapter);
     }

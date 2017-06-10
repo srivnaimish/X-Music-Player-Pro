@@ -3,40 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitePrimary"
-    >
+    android:background="@color/whitePrimary">
 
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher" />
+
         <com.riseapps.xmusic.widgets.MainTextViewSub
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/translation_help"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/size20sp"
             android:layout_marginStart="4dp"
-            />
+            android:text="@string/translation_help"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/size20sp" />
     </LinearLayout>
+
     <com.riseapps.xmusic.widgets.MainTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/translation_help_sub"
         android:layout_below="@+id/ll"
-        android:textAlignment="center"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginTop="30dp"
         android:layout_marginBottom="50dp"
-        android:textSize="@dimen/size15sp"
-        />
+        android:layout_marginEnd="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/translation_help_sub"
+        android:textAlignment="center"
+        android:textSize="@dimen/size15sp" />
 </RelativeLayout>

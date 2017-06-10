@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Xmusic Pro</string>
+    <string name="app_name" translatable="false">Xmusic Pro</string>
 
     <!--WALKTHROUGH-->
     <string name="fragment1_heading">Search on Youtube</string>
@@ -43,7 +43,7 @@
     <string name="play_all">Play All</string>
     <string name="shuffle">Shuffle</string>
     <string name="empty_state_message">Sorry..No Songs Found !!</string>
-    <string name="swipe_right_or_left_to_change_the_song">Swipe Right or Left to change the Song</string>
+    <string name="swipe_right_or_left_to_change_the_song">Swipe Right/Left or Double Tap on Album Art</string>
     <string name="playing_all">Playling All Songs from</string>
 
     <!--SETTINGS-->
@@ -90,6 +90,7 @@
     <string name="minutes">Minutes</string>
     <string name="zero" translatable="false">0</string>
     <string name="action_share">Share this Song</string>
+    <string name="select_the_newly_created_playlist">Select the newly created playlist</string>
 
     <!--AD UNIT ID'S-->
 

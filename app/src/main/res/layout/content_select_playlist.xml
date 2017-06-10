@@ -5,16 +5,16 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="60dp"
     android:background="@color/colorWhite"
-    tools:context=".view.Activity.SelectPlaylistActivity"
-    android:layout_marginTop="60dp">
+    tools:context=".view.Activity.SelectPlaylistActivity">
 
-    <ScrollView android:layout_width="match_parent"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:fillViewport="true"
+        android:orientation="vertical"
         android:scrollbars="none">
 
         <RelativeLayout
@@ -25,28 +25,28 @@
                 android:id="@+id/skill_select_indicator_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 android:text="@string/playlist_screen_placeholder"
-                android:textSize="@dimen/size16sp"
-                android:layout_margin="16dp"/>
+                android:textSize="@dimen/size16sp" />
 
 
             <com.riseapps.xmusic.widgets.TagView
                 android:id="@+id/tag_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/skill_select_indicator_text"
+                android:layout_marginBottom="0dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="0dp"
-                android:layout_marginTop="4dp"
-                android:layout_below="@id/skill_select_indicator_text"/>
+                android:layout_marginTop="4dp" />
 
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tag_group"
+                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
                 android:scrollbars="none">
 
@@ -54,17 +54,17 @@
                     android:id="@+id/tokenView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/colorWhite"
+                    android:focusableInTouchMode="true"
                     android:hint="Please type your skills ... "
                     android:imeOptions="actionDone"
+                    android:inputType="text|textNoSuggestions"
+                    android:nextFocusDown="@+id/editText"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="16sp"
-                    android:nextFocusDown="@+id/editText"
-                    android:inputType="text|textNoSuggestions"
-                    android:focusableInTouchMode="true"
-                    android:visibility="gone"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/colorWhite"
-                    android:layout_marginRight="16dp"/>
+                    android:visibility="gone" />
 
             </HorizontalScrollView>
 

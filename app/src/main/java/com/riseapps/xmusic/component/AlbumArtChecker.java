@@ -16,7 +16,7 @@ public class AlbumArtChecker {
         ParcelFileDescriptor pfd = null;
         try {
             pfd = context.getContentResolver().openFileDescriptor(uri, "r");
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | NullPointerException e) {
         }
         if (pfd != null) {
             return true;

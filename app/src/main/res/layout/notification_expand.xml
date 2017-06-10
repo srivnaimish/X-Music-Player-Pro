@@ -5,17 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="110dp"
     android:background="@color/whitePrimary">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FF000000"
-        android:alpha="0.1">
+        android:alpha="0.1"
+        android:background="#FF000000">
+
         <ImageView
             android:id="@+id/notification_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            />
+            android:scaleType="centerCrop" />
     </RelativeLayout>
 
 
@@ -84,8 +85,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="50dp"
             android:layout_toStartOf="@+id/play_pause"
-            android:background="@null"
-            />
+            android:background="@null" />
 
         <ImageButton
             android:id="@+id/play_pause"
@@ -104,7 +104,6 @@
             android:layout_gravity="end"
             android:layout_marginStart="50dp"
             android:layout_toEndOf="@+id/play_pause"
-            android:background="@android:color/transparent"
-            />
+            android:background="@android:color/transparent" />
     </RelativeLayout>
 </RelativeLayout>

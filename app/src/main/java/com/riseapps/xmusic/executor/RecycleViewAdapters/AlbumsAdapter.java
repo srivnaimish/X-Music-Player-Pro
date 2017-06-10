@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.Pojo.Album;
-import com.riseapps.xmusic.utils.RandomAlbumArt;
 
 import java.util.List;
 
@@ -26,7 +25,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
 
     private List<Album> albumList;
     Context c;
-    private RandomAlbumArt randomAlbumArt;
 
     public AlbumsAdapter(Context context, List<Album> albumList, RecyclerView recyclerView) {
         this.albumList = albumList;
@@ -37,8 +35,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                     .getLayoutManager();
             c = context;
         }
-
-        randomAlbumArt = new RandomAlbumArt();
 
     }
 

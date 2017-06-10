@@ -27,6 +27,7 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
     Toolbar mToolbar;
     BaseMaterialSearchView mSearchView;
     CoordinatorLayout mCoordinator;
@@ -41,7 +42,7 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
         mSearchView = (BaseMaterialSearchView) findViewById(R.id.sv);
         mCoordinator = (CoordinatorLayout) findViewById(R.id.drawerLayout);
         mSearchView.setMenuItem(mToolbar.getMenu().findItem(R.id.action_search));
-                initCustom();
+        initCustom();
         //;
     }
 
@@ -49,7 +50,8 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
         return R.layout.search_simple;
     }
 
-    protected void initCustom() {}
+    protected void initCustom() {
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

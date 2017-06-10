@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/back"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/back"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.riseapps.xmusic.view.Activity.AppSettingActivity">
@@ -25,16 +25,15 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_below="@+id/statusBar"
                 android:layout_gravity="center"
-                app:layout_scrollFlags="scroll|enterAlways"
-                >
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <com.riseapps.xmusic.widgets.MainTextView
                     android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_title"
-                    android:textColor="@color/textColorPrimary"
                     android:textAlignment="textStart"
+                    android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/size16sp" />
 
             </android.support.v7.widget.Toolbar>
@@ -45,6 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/appbar">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,9 +70,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
                             android:layout_margin="12dp"
                             android:switchMinWidth="43dp"
-                            android:layout_centerVertical="true"
                             android:thumb="@drawable/customswitchselector"
                             android:track="@drawable/custom_switch_background" />
 
@@ -95,7 +95,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/pro_control_subHeading"
-                                android:textSize="@dimen/size14sp"/>
+                                android:textSize="@dimen/size14sp" />
 
                         </LinearLayout>
 
@@ -107,9 +107,9 @@
                     android:id="@+id/setting_equalizer"
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
+                    android:layout_below="@id/setting_shake"
                     android:layout_marginTop="1dp"
                     android:clickable="true"
-                    android:layout_below="@id/setting_shake"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="0dp">
@@ -146,7 +146,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/equalizer_subHeading"
-                                android:textSize="@dimen/size14sp"/>
+                                android:textSize="@dimen/size14sp" />
 
                         </LinearLayout>
 
@@ -191,13 +191,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/sleep_timer_heading"
                                 android:textColor="@color/textColorPrimary"
-                                 android:textSize="@dimen/size16sp" />
+                                android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/sleep_timer_subHeading"
-                                android:textSize="@dimen/size14sp"/>
+                                android:textSize="@dimen/size14sp" />
 
                         </LinearLayout>
 
@@ -213,9 +213,9 @@
                     android:layout_marginTop="1dp"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
+                    android:onClick="helpUsTranslate"
                     app:cardCornerRadius="0dp"
-                    app:cardElevation="0dp"
-                    android:onClick="helpUsTranslate">
+                    app:cardElevation="0dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -243,13 +243,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/help_heading"
                                 android:textColor="@color/textColorPrimary"
-                                 android:textSize="@dimen/size16sp" />
+                                android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/help_subHeading"
-                                android:textSize="@dimen/size14sp"/>
+                                android:textSize="@dimen/size14sp" />
 
                         </LinearLayout>
 
@@ -279,8 +279,8 @@
                             android:layout_height="45dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
-                            app:srcCompat="@drawable/ic_like"
-                            android:tint="@color/colorPrimaryFontDark"/>
+                            android:tint="@color/colorPrimaryFontDark"
+                            app:srcCompat="@drawable/ic_like" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -295,13 +295,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/rate_us_heading"
                                 android:textColor="@color/textColorPrimary"
-                                 android:textSize="@dimen/size16sp" />
+                                android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/rate_us_subHeading"
-                                android:textSize="@dimen/size14sp"/>
+                                android:textSize="@dimen/size14sp" />
 
                         </LinearLayout>
 
@@ -331,8 +331,8 @@
                             android:layout_height="45dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
-                            app:srcCompat="@drawable/ic_share"
-                            android:tint="@color/colorPrimaryFontDark"/>
+                            android:tint="@color/colorPrimaryFontDark"
+                            app:srcCompat="@drawable/ic_share" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -347,13 +347,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/share_app"
                                 android:textColor="@color/textColorPrimary"
-                                 android:textSize="@dimen/size16sp" />
+                                android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/recomment_it_to_others"
-                                android:textSize="@dimen/size14sp"/>
+                                android:textSize="@dimen/size14sp" />
 
                         </LinearLayout>
 

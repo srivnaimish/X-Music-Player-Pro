@@ -36,14 +36,14 @@ import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.ArrayList;
 
-public class ArtistFragment extends Fragment{
+public class ArtistFragment extends Fragment {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     RecyclerView recyclerView;
-    ArrayList<Artist> artistAllList=new ArrayList<>();
-    ArrayList<Artist> artistMainList=new ArrayList<>();
+    ArrayList<Artist> artistAllList = new ArrayList<>();
+    ArrayList<Artist> artistMainList = new ArrayList<>();
     ArtistAdapter artistAdapter;
     LinearLayout background;
 
@@ -67,18 +67,19 @@ public class ArtistFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_artist, container, false);
-        background= (LinearLayout) v.findViewById(R.id.background);
+        View v = inflater.inflate(R.layout.fragment_artist, container, false);
+        background = (LinearLayout) v.findViewById(R.id.background);
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.BOTTOM_TOP,
                 new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
         background.setBackground(gd);
-        String artistJson=getActivity().getIntent().getStringExtra("artistList");
+        String artistJson = getActivity().getIntent().getStringExtra("artistList");
         getActivity().getIntent().removeExtra("artistList");
-        artistAllList=new Gson().fromJson(artistJson, new TypeToken<ArrayList<Artist>>() {}.getType());
+        artistAllList = new Gson().fromJson(artistJson, new TypeToken<ArrayList<Artist>>() {
+        }.getType());
 
         if (artistAllList.size() > 50) {
-            artistMainList = new ArrayList<>(artistAllList.subList(0,50));
+            artistMainList = new ArrayList<>(artistAllList.subList(0, 50));
 
         } else {
             artistMainList = artistAllList;
@@ -109,9 +110,9 @@ public class ArtistFragment extends Fragment{
 
             @Override
             public void OnArtistRefresh(ArrayList<Artist> arrayList) {
-                artistAllList=arrayList;
+                artistAllList = arrayList;
                 if (artistAllList.size() > 20) {
-                    artistMainList = new ArrayList<>(artistAllList.subList(0,20));
+                    artistMainList = new ArrayList<>(artistAllList.subList(0, 20));
 
                 } else {
                     artistMainList = artistAllList;
@@ -124,16 +125,16 @@ public class ArtistFragment extends Fragment{
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                ScrollingFragment scrollingFragment=new ScrollingFragment();
-                Bundle bundle=new Bundle();
-                bundle.putString("Name",artistAllList.get(position).getName());
-                bundle.putString("Imagepath",artistAllList.get(position).getImagepath());
-                bundle.putString("Action","Artists");
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                ScrollingFragment scrollingFragment = new ScrollingFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("Name", artistAllList.get(position).getName());
+                bundle.putString("Imagepath", artistAllList.get(position).getImagepath());
+                bundle.putString("Action", "Artists");
                 scrollingFragment.setArguments(bundle);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.replace(R.id.drawerLayout,scrollingFragment);
+                fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
                 fragmentTransaction.commit();
             }
 
@@ -145,6 +146,7 @@ public class ArtistFragment extends Fragment{
 
         return v;
     }
+
     private void onScrolledToBottom() {
         if (artistMainList.size() < artistAllList.size()) {
             int x, y;

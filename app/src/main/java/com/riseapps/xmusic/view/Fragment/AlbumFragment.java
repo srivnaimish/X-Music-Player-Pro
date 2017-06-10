@@ -40,7 +40,7 @@ public class AlbumFragment extends Fragment {
 
     RecyclerView recyclerView;
     ArrayList<Album> albumMainList = new ArrayList<>();
-    ArrayList<Album> albumAllList=new ArrayList<>();
+    ArrayList<Album> albumAllList = new ArrayList<>();
     AlbumsAdapter albumAdapter;
     LinearLayout background;
 
@@ -64,8 +64,8 @@ public class AlbumFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v=inflater.inflate(R.layout.fragment_album, container, false);
-        background= (LinearLayout) v.findViewById(R.id.background);
+        View v = inflater.inflate(R.layout.fragment_album, container, false);
+        background = (LinearLayout) v.findViewById(R.id.background);
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.BOTTOM_TOP,
                 new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
@@ -77,7 +77,7 @@ public class AlbumFragment extends Fragment {
         }.getType());
 
         if (albumAllList.size() > 20) {
-            albumMainList = new ArrayList<>(albumAllList.subList(0,20));
+            albumMainList = new ArrayList<>(albumAllList.subList(0, 20));
 
         } else {
             albumMainList = albumAllList;
@@ -105,9 +105,9 @@ public class AlbumFragment extends Fragment {
 
             @Override
             public void OnAlbumRefresh(ArrayList<Album> arrayList) {
-                albumAllList=arrayList;
+                albumAllList = arrayList;
                 if (albumAllList.size() > 20) {
-                    albumMainList = new ArrayList<>(albumAllList.subList(0,20));
+                    albumMainList = new ArrayList<>(albumAllList.subList(0, 20));
 
                 } else {
                     albumMainList = albumAllList;
@@ -120,16 +120,16 @@ public class AlbumFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                ScrollingFragment scrollingFragment=new ScrollingFragment();
-                Bundle bundle=new Bundle();
-                bundle.putString("Name",albumAllList.get(position).getName());
-                bundle.putString("Imagepath",albumAllList.get(position).getImagepath());
-                bundle.putString("Action","Album");
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                ScrollingFragment scrollingFragment = new ScrollingFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("Name", albumAllList.get(position).getName());
+                bundle.putString("Imagepath", albumAllList.get(position).getImagepath());
+                bundle.putString("Action", "Album");
                 scrollingFragment.setArguments(bundle);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.replace(R.id.drawerLayout,scrollingFragment);
+                fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
                 fragmentTransaction.commit();
             }
 
@@ -142,6 +142,7 @@ public class AlbumFragment extends Fragment {
 
         return v;
     }
+
     private void onScrolledToBottom() {
         if (albumMainList.size() < albumAllList.size()) {
             int x = 0, y = 0;
