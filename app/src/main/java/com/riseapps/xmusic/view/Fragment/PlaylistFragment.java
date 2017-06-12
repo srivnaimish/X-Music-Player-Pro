@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.Interfaces.PlaylistRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
@@ -44,7 +45,7 @@ public class PlaylistFragment extends Fragment {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-
+    SharedPreferenceSingelton sharedPreferenceSingelton;
     NestedScrollView nestedScrollView;
     RecyclerView recyclerView;
     ArrayList<Playlist> playLists = new ArrayList<>();
@@ -76,10 +77,15 @@ public class PlaylistFragment extends Fragment {
         // Inflate the layout for this fragment_songs
         final View v = inflater.inflate(R.layout.fragment_playlist, container, false);
         nestedScrollView = (NestedScrollView) v.findViewById(R.id.nestedScrollView);
-        GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.BOTTOM_TOP,
-                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
-        nestedScrollView.setBackground(gd);
+
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        if (!sharedPreferenceSingelton.getSavedBoolean(getContext(), "Theme")) {
+            GradientDrawable gd;
+            gd = new GradientDrawable(
+                    GradientDrawable.Orientation.BOTTOM_TOP,
+                    new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
+            nestedScrollView.setBackground(gd);
+        }
 
         recyclerView = (RecyclerView) v.findViewById(R.id.playlists);
         recyclerView.setHasFixedSize(true);

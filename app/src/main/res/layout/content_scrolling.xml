@@ -36,10 +36,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:text="@string/empty_state_message"
-            android:textColor="@color/colorPrimaryFontDark"
             android:textSize="18sp"
             android:visibility="gone"
-
+            android:textColor="?android:textColorTertiary"
             />
     </RelativeLayout>
 

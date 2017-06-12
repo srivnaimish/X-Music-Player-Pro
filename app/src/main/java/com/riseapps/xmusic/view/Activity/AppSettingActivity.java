@@ -3,6 +3,7 @@ package com.riseapps.xmusic.view.Activity;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,13 +14,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.DragEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -45,6 +49,12 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        if (sharedPreferenceSingelton.getSavedBoolean(AppSettingActivity.this, "Theme")) {
+            setTheme(R.style.AppTheme_Dark);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         init();
@@ -56,7 +66,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     private void init() {
         // Toolbar
-        sharedPreferenceSingelton = new SharedPreferenceSingelton();
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -71,13 +80,8 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         CardView setting_share_app = (CardView) findViewById(R.id.setting_share);
         CardView setting_rate = (CardView) findViewById(R.id.setting_rate);
         back = (CoordinatorLayout) findViewById(R.id.back);
-        GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.BOTTOM_TOP,
-                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
-        back.setBackground(gd);
         if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_PROXIMITY)) {
             setting_pro.setVisibility(View.GONE);
-            //Toast.makeText(this, "Has", Toast.LENGTH_SHORT).show();
         }
 
         Switch pro = (Switch) findViewById(R.id.setting_pro);
@@ -85,9 +89,9 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
             pro.setChecked(true);
         else
             pro.setChecked(false);
-        pro.setOnClickListener(new View.OnClickListener() {
+        pro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (sharedPreferenceSingelton.getSavedBoolean(AppSettingActivity.this, "Pro_Controls")) {
                     sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Pro_Controls", false);
                     MainActivity.mSensorManager.unregisterListener(MainActivity.proximityDetector);
@@ -97,6 +101,28 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                     MainActivity.mSensorManager.registerListener(MainActivity.proximityDetector, MainActivity.mProximity, 2 * 1000 * 1000);
                     Toast.makeText(AppSettingActivity.this, "Pro Controls Activated", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        Switch theme = (Switch) findViewById(R.id.switch_theme);
+        if (sharedPreferenceSingelton.getSavedBoolean(this, "Theme"))
+            theme.setChecked(true);
+        else
+            theme.setChecked(false);
+
+        theme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (sharedPreferenceSingelton.getSavedBoolean(AppSettingActivity.this, "Theme")) {
+                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Theme", false);
+                } else {
+                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Theme", true);
+                }
+                finish();
+                final Intent intent = IntentCompat.makeMainActivity(new ComponentName(
+                        AppSettingActivity.this, SplashScreen.class));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
 
@@ -113,7 +139,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         switch (view.getId()) {
 
             case R.id.setting_equalizer:
-
                 openEqualizerDialog();
                 break;
 
@@ -165,8 +190,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                         alarmManager.set(AlarmManager.RTC_WAKEUP, d, pi);
                     dialog.dismiss();
                 }
-                /*if(interstitial.isLoaded())
-                    showInterstitial();*/
 
             }
         });
@@ -175,8 +198,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                /*if(interstitial.isLoaded())
-                    showInterstitial();*/
             }
         });
 
@@ -202,12 +223,8 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
                 equalizerPresetListener.OnEqualizerPresetChanged((short) idx);
                 sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Preset", idx);
                 dialog.dismiss();
-                /*if(interstitial.isLoaded())
-                    showInterstitial();*/
             }
         });
-
-        //
 
     }
 

@@ -165,7 +165,7 @@ public class SongAdapter extends RecyclerView.Adapter {
             else
                 ((SongViewHolder) holder).iv.setImageResource(R.drawable.empty);
             if(song.getFavourite())
-                ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);
+                ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked_toolbar);
             else
                 ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
 
@@ -232,7 +232,7 @@ public class SongAdapter extends RecyclerView.Adapter {
                 //song.setFavourite(false);
             } else {
                 //new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),1);
-                ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked);
+                ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked_toolbar);
                 //song.setFavourite(true);
             }
         } else
@@ -290,7 +290,7 @@ public class SongAdapter extends RecyclerView.Adapter {
                         song.setFavourite(false);
                     } else {
                         new MyApplication(ctx).getWritableDatabase().updateFavourites(song.getID(),1);
-                        like.setImageResource(R.drawable.ic_liked);
+                        like.setImageResource(R.drawable.ic_liked_toolbar);
                         song.setFavourite(true);
                     }
                 }

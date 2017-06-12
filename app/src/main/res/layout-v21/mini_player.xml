@@ -52,7 +52,8 @@
             android:id="@+id/album_art_mini"
             android:layout_width="@dimen/size50dp"
             android:layout_height="@dimen/size50dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -73,7 +74,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:maxLines="1"
         android:scrollHorizontally="true"
-        android:textColor="@color/textColorPrimary"
+        android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/size14sp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/album_art_card"
@@ -90,7 +91,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:maxLines="1"
         android:scrollHorizontally="true"
-        android:textColor="@color/textColorPrimary"
+        android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/size14sp"
         app:layout_constraintBottom_toBottomOf="@+id/album_art_card"
         app:layout_constraintHorizontal_bias="0.0"

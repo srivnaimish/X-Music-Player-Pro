@@ -8,7 +8,8 @@
     android:layout_below="@id/appbar"
     android:layout_marginTop="2dp"
     android:animateLayoutChanges="true"
-    android:background="#FFF">
+    android:visibility="gone"
+    android:background="?colorPrimary">
     <android.support.constraint.ConstraintLayout
         android:id="@+id/imageContainer"
         android:layout_width="0dp"
@@ -52,7 +53,7 @@
                 android:id="@+id/liked"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:srcCompat="@drawable/ic_liked"
+                app:srcCompat="@drawable/ic_liked_toolbar"
                 android:tint="@color/colorAccentDark"
                 android:layout_centerVertical="true"
                 android:alpha="0.8"
@@ -136,7 +137,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="6sp"
             android:fontFamily="sans-serif-light"
-            android:textColor="@color/colorPrimaryFontDark"
+            android:textColor="?android:textColorTertiary"
             android:textSize="@dimen/size16sp"
             android:gravity="center_vertical"
             android:textAlignment="center"
@@ -152,7 +153,7 @@
             android:fontFamily="sans-serif-light"
             android:textAlignment="center"
             android:gravity="center_vertical"
-            android:textColor="#636363"
+            android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/size16sp"
             tools:text="Song Artist"
             android:maxLines="1"/>
@@ -178,6 +179,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ripple"
         app:srcCompat="@drawable/ic_prev"
+        android:tint="?android:textColorPrimary"
         app:layout_constraintLeft_toRightOf="@+id/shuffle"
         android:layout_marginLeft="@dimen/size8dp"
         app:layout_constraintRight_toLeftOf="@+id/play_pause"
@@ -194,6 +196,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ripple"
         app:srcCompat="@drawable/ic_next"
+        android:tint="?android:textColorPrimary"
         app:layout_constraintLeft_toRightOf="@+id/play_pause"
         app:layout_constraintRight_toLeftOf="@+id/repeat"
         app:layout_constraintHorizontal_bias="0.486"
@@ -208,6 +211,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ripple"
         app:srcCompat="@drawable/ic_shuffle"
+        android:tint="?android:textColorPrimary"
         app:layout_constraintLeft_toLeftOf="@+id/currentPosition"
         app:layout_constraintTop_toTopOf="@+id/play_pause"
         android:layout_marginTop="16dp" />
@@ -219,6 +223,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ripple"
         app:srcCompat="@drawable/ic_repeat"
+        android:tint="?android:textColorPrimary"
         app:layout_constraintRight_toRightOf="@+id/totalDuration"
         app:layout_constraintTop_toTopOf="@+id/play_pause"
         android:layout_marginTop="16dp"

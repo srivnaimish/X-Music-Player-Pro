@@ -19,7 +19,7 @@
         android:id="@+id/refresh"
         android:title="@string/action_refresh"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:icon="@drawable/ic_refresh_black_24dp"
+        android:icon="@drawable/ic_refresh"
         app:showAsAction="ifRoom"
         android:orderInCategory="1"/>
 

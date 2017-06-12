@@ -10,23 +10,20 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:layout_height="?attr/actionBarSize">
 
             <com.riseapps.xmusic.widgets.MainTextView
                 android:id="@+id/toolbar_player_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
                 android:text="@string/action_playlist"
-                android:textColor="@color/textColorPrimary"
+                android:textAlignment="textStart"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/size16sp" />
 
         </android.support.v7.widget.Toolbar>

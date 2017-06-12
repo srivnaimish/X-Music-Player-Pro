@@ -47,7 +47,7 @@
             android:inputType="number"
             android:maxLength="2"
             android:text="@string/zero"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/size14sp" />
 
         <com.riseapps.xmusic.widgets.MainEditText
@@ -61,7 +61,7 @@
             android:inputType="number"
             android:maxLength="2"
             android:text="@string/zero"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/size14sp" />
     </LinearLayout>
 

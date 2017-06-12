@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.component.TagToken.customviews.TokenCompleteTextView;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.model.Pojo.Playlist;
@@ -52,7 +53,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
     private HashMap<String, Integer> selectedPlaylist = new HashMap<>();
     private HashMap<String, Integer> hashMap = new HashMap<>();
     private HashMap<String, Integer> skillFactoryHashMap = new HashMap<>();
-
+    SharedPreferenceSingelton sharedPreferenceSingelton;
     // utils
     private TagSelector tagSelector = new TagSelector(SelectPlaylistActivity.this);
     private Dialog dialog;
@@ -64,6 +65,12 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        if (sharedPreferenceSingelton.getSavedBoolean(SelectPlaylistActivity.this, "Theme")) {
+            setTheme(R.style.AppTheme_Dark);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_playlist);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

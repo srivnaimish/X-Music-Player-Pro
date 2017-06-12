@@ -82,10 +82,13 @@ public class SongsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
 
         background = (LinearLayout) rootView.findViewById(R.id.background);
-        GradientDrawable gd = new GradientDrawable(
+        /*GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.BOTTOM_TOP,
-                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
-        background.setBackground(gd);
+                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});*/
+        /*GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.BOTTOM_TOP,
+                new int[]{Color.parseColor("#212121"), Color.parseColor("#424242")});
+        background.setBackground(gd);*/
 
         songAllList = ((MainActivity) getActivity()).getCompleteSongList();
         if (songAllList.size() > 50) {

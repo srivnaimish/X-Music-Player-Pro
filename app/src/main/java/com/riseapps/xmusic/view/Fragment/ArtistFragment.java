@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.ArtistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
@@ -40,7 +41,7 @@ public class ArtistFragment extends Fragment {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-
+    SharedPreferenceSingelton sharedPreferenceSingelton;
     RecyclerView recyclerView;
     ArrayList<Artist> artistAllList = new ArrayList<>();
     ArrayList<Artist> artistMainList = new ArrayList<>();
@@ -69,12 +70,15 @@ public class ArtistFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_artist, container, false);
         background = (LinearLayout) v.findViewById(R.id.background);
-        GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.BOTTOM_TOP,
-                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
-        background.setBackground(gd);
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        if (!sharedPreferenceSingelton.getSavedBoolean(getContext(), "Theme")) {
+            GradientDrawable gd;
+            gd = new GradientDrawable(
+                    GradientDrawable.Orientation.BOTTOM_TOP,
+                    new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
+            background.setBackground(gd);
+        }
         String artistJson = getActivity().getIntent().getStringExtra("artistList");
-        getActivity().getIntent().removeExtra("artistList");
         artistAllList = new Gson().fromJson(artistJson, new TypeToken<ArrayList<Artist>>() {
         }.getType());
 

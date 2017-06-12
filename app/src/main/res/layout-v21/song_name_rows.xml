@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@color/colorWhite"
+        android:background="?colorPrimary"
         android:orientation="vertical">
 
         <android.support.v7.widget.CardView
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/empty" />
+                app:srcCompat="@drawable/empty"/>
 
         </android.support.v7.widget.CardView>
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="17dp"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="?android:textColorPrimary"
             android:textSize="@dimen/size14sp"
             app:layout_constraintLeft_toRightOf="@+id/album_art_card"
             app:layout_constraintTop_toTopOf="parent"

@@ -17,6 +17,7 @@ import android.view.View;
 import com.claudiodegio.msv.BaseMaterialSearchView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 
 /**
@@ -27,13 +28,19 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-
+    SharedPreferenceSingelton sharedPreferenceSingelton;
     Toolbar mToolbar;
     BaseMaterialSearchView mSearchView;
     CoordinatorLayout mCoordinator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        if (sharedPreferenceSingelton.getSavedBoolean(BaseMatSearchViewActivity.this, "Theme")) {
+            setTheme(R.style.AppTheme_Dark);
+        } else {
+            setTheme(R.style.AppTheme);
+        }
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         mToolbar = (Toolbar) findViewById(R.id.toolbar);

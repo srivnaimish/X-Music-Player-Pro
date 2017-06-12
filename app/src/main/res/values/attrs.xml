@@ -4,4 +4,8 @@
         <attr name="foregroundColor" format="integer" />
         <attr name="animDuration" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="dual">
+        <attr name="iconDual" format="color" />
+    </declare-styleable>
 </resources>

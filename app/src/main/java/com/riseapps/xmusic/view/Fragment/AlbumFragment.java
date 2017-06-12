@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.AlbumRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
@@ -37,7 +38,7 @@ public class AlbumFragment extends Fragment {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-
+    SharedPreferenceSingelton sharedPreferenceSingelton;
     RecyclerView recyclerView;
     ArrayList<Album> albumMainList = new ArrayList<>();
     ArrayList<Album> albumAllList = new ArrayList<>();
@@ -66,13 +67,19 @@ public class AlbumFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_album, container, false);
         background = (LinearLayout) v.findViewById(R.id.background);
-        GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.BOTTOM_TOP,
-                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
-        background.setBackground(gd);
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        if (!sharedPreferenceSingelton.getSavedBoolean(getContext(), "Theme")) {
+            GradientDrawable gd;
+            gd = new GradientDrawable(
+                    GradientDrawable.Orientation.BOTTOM_TOP,
+                    new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
+            background.setBackground(gd);
+        }
+        /*;*/
+
+
 
         String albumJson = getActivity().getIntent().getStringExtra("albumList");
-        getActivity().getIntent().removeExtra("albumList");
         albumAllList = new Gson().fromJson(albumJson, new TypeToken<ArrayList<Album>>() {
         }.getType());
 

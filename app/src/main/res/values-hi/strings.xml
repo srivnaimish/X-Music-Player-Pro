@@ -50,7 +50,7 @@
     <string name="sleep_timer_subHeading">संगीत को स्वचालित रूप से बंद करें</string>
     <string name="start_now">अभी शुरू करो</string>
     <string name="stop_music_after">इस समय के बाद संगीत बंद करो</string>
-    <string name="swipe_right_or_left_to_change_the_song">"एल्बम कला पर दाएं / बायां स्वाइप करें या डबल टैप करें "</string>
+    <string name="swipe_right_or_left_to_change_the_song">एल्बम कला पर दाएं / बायां स्वाइप करें या डबल टैप करें</string>
     <string name="Invalid_Time_Toast">अमान्य समय</string>
     <string name="created">बन गया</string>
     <string name="did_not_select">आपने अपने गीत के लिए किसी भी प्लेलिस्ट का चयन नहीं किया!</string>
@@ -69,4 +69,6 @@
     <string name="translation_help_sub">एक्स संगीत प्लेयर प्रो के अनुवाद में रुचि दिखाने के लिए धन्यवाद! , आप अनुवाद करना चाहते हैं, तो हमें riseappalarm@gmail.com पर एक मेल ड्रॉप में सुधार या हमारे अनुप्रयोग में अपनी भाषा जोड़ने के लिए</string>
     <string name="action_share">এই গানটি শেয়ার করুন</string>
     <string name="select_the_newly_created_playlist">नव निर्मित प्लेलिस्ट का चयन करें</string>
+    <string name="switch_betweem_the_light_and_dark_app_themes">थीम को स्विच करने के लिए ऐप पुनरारंभ होता है</string>
+    <string name="theme">थीम</string>
 </resources>

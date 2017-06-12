@@ -3,8 +3,13 @@
     <!--Light Theme-->
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#000</color>
-    <color name="colorAccent">#EC644B</color>
     <color name="textColorPrimary">#000</color>
+
+    <color name="colorPrimaryInverse">#161619</color>
+    <color name="colorPrimaryDarkInverse">#111111</color>
+    <color name="textColorPrimaryInverse">#FFFFFF</color>
+
+    <color name="colorAccent">#EC644B</color>
     <color name="colorMainBackground">#EEEEEE</color>
     <color name="colorWhite">#FFF</color>
     <color name="colorBlack">#000</color>
@@ -12,5 +17,7 @@
     <color name="colorLongSelection">#B0BEC5</color>
     <color name="lightAccent">#efebe9</color>
     <color name="colorPrimaryFontDark">#264348</color>
+
+    <color name="colorPrimaryFontDarkInverse">#FAFAFA</color>
 
 </resources>

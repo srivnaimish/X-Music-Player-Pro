@@ -24,8 +24,3 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--ignorewarnings
-
--keep class * {
-    public private *;
-}

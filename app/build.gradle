@@ -7,16 +7,15 @@ android {
         applicationId "com.riseapps.xmusic"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 21
-        versionName "1.0.20"
+        versionCode 23
+        versionName "1.0.22"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),'proguard-rules.pro'
         }
     }

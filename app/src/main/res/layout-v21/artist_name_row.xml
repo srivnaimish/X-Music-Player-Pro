@@ -8,7 +8,9 @@
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="1dp">
+    card_view:cardElevation="1dp"
+    card_view:cardBackgroundColor="?colorPrimary"
+    >
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -54,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:maxLines="2"
-                android:textColor="@color/textColorPrimary"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/size14sp"
                 tools:text="TextView" />
 

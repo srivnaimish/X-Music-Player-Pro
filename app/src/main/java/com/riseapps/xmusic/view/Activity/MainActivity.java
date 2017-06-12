@@ -345,7 +345,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         intentFilter.addAction("Stop");
         registerReceiver(stopReceiver, intentFilter);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_settings_black_24dp);
+        mToolbar.setNavigationIcon(R.drawable.ic_settings);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -430,9 +430,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         toolbarContext.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.favouritesPlayer) {
-                    // Toast.makeText(MainActivity.this, "Action 1", Toast.LENGTH_SHORT).show();
-                } else if (item.getItemId() == R.id.playlist) {
+                if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
                     i.putExtra("selection_type", "single_playlist");
                     startActivityForResult(i, 2);
@@ -491,9 +489,16 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         play_pause_mini = (ImageButton) findViewById(R.id.play_pause_mini);
 
         miniPlayer = (CardView) findViewById(R.id.song_list_card);
-        GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT,
-                new int[]{Color.parseColor("#f5f5f5"), Color.parseColor("#FFFFFF")});
+        GradientDrawable gd;
+        if (sharedPreferenceSingelton.getSavedBoolean(MainActivity.this, "Theme")) {
+            gd = new GradientDrawable(
+                    GradientDrawable.Orientation.LEFT_RIGHT,
+                    new int[]{Color.parseColor("#161619"), Color.parseColor("#212121")});
+        } else {
+            gd = new GradientDrawable(
+                    GradientDrawable.Orientation.LEFT_RIGHT,
+                    new int[]{Color.parseColor("#f5f5f5"), Color.parseColor("#EEEEEE")});
+        }
         miniPlayer.setBackground(gd);
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
 
