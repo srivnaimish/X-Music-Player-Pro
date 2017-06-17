@@ -12,12 +12,10 @@ import android.media.MediaPlayer;
 import android.media.audiofx.Equalizer;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,17 +27,13 @@ import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.view.Activity.AppSettingActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-
 public class MusicService extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
-        MediaPlayer.OnCompletionListener {
+        MediaPlayer.OnCompletionListener, AudioManager.OnAudioFocusChangeListener {
 
     public SharedPreferenceSingelton sharedPreferenceSingelton;
 
@@ -48,6 +42,7 @@ public class MusicService extends Service implements
     public HeadsetPlugReceiver headsetPlugReceiver;
     public ArrayList<Song> songs;
 
+    AudioManager audioManager;
     private int songPos;
 
     private final IBinder musicBind = new MusicBinder();
@@ -171,7 +166,6 @@ public class MusicService extends Service implements
 
     @Override
     public void onDestroy() {
-        equalizer.setEnabled(false);
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(NOTIFICATION_ID);
         if (mSeekBar != null)
@@ -186,8 +180,22 @@ public class MusicService extends Service implements
             headsetPlugReceiver = null;
         }
         player.release();
+        audioManager.abandonAudioFocus(this);
 
         super.onDestroy();
+    }
+
+    @Override
+    public void onAudioFocusChange(int focusChange) {
+        if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+            if(player.isPlaying()){
+                togglePlay();
+            }
+        } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+            if (!player.isPlaying()) {
+                togglePlay();
+            }
+        }
     }
 
     public class MusicBinder extends Binder {
@@ -201,13 +209,23 @@ public class MusicService extends Service implements
     }
 
     public void initMusicPlayer() {
-
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
         player.setOnPreparedListener(this);
         player.setOnCompletionListener(this);
         player.setOnErrorListener(this);
 
+    }
+
+    public boolean requestAudioFocus() {
+        int result = audioManager.requestAudioFocus(this,
+                AudioManager.STREAM_MUSIC,
+                AudioManager.AUDIOFOCUS_GAIN);
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            return true;
+        }
+        return false;
     }
 
     public void setSongs(ArrayList<Song> songs) {
@@ -252,14 +270,18 @@ public class MusicService extends Service implements
     public void togglePlay() {
         switch (playerState) {
             case STOPPED:
-                playSong();
-                new GenerateNotification(1).getNotification(this, getInstance());
+                if (requestAudioFocus()) {
+                    playSong();
+                    new GenerateNotification(1).getNotification(this, getInstance());
+                }
                 break;
             case PAUSED:
-                player.start();
-                onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
-                mProgressRunner.run();
-                new GenerateNotification(1).getNotification(this, getInstance());
+                if (requestAudioFocus()) {
+                    player.start();
+                    onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
+                    mProgressRunner.run();
+                    new GenerateNotification(1).getNotification(this, getInstance());
+                }
                 break;
             case PLAYING:
                 player.pause();

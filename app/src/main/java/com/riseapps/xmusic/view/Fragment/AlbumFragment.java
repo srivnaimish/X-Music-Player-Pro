@@ -43,7 +43,6 @@ public class AlbumFragment extends Fragment {
     ArrayList<Album> albumMainList = new ArrayList<>();
     ArrayList<Album> albumAllList = new ArrayList<>();
     AlbumsAdapter albumAdapter;
-    LinearLayout background;
 
     public AlbumFragment() {
         // Required empty public constructor
@@ -66,18 +65,7 @@ public class AlbumFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_album, container, false);
-        background = (LinearLayout) v.findViewById(R.id.background);
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        if (!sharedPreferenceSingelton.getSavedBoolean(getContext(), "Theme")) {
-            GradientDrawable gd;
-            gd = new GradientDrawable(
-                    GradientDrawable.Orientation.BOTTOM_TOP,
-                    new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
-            background.setBackground(gd);
-        }
-        /*;*/
-
-
 
         String albumJson = getActivity().getIntent().getStringExtra("albumList");
         albumAllList = new Gson().fromJson(albumJson, new TypeToken<ArrayList<Album>>() {
@@ -163,7 +151,12 @@ public class AlbumFragment extends Fragment {
             for (int i = x; i < y; i++) {
                 albumMainList.add(albumAllList.get(i));
             }
-            albumAdapter.notifyDataSetChanged();
+            recyclerView.post(new Runnable() {
+                public void run() {
+                    albumAdapter.notifyDataSetChanged();
+                }
+            });
+
         }
 
     }

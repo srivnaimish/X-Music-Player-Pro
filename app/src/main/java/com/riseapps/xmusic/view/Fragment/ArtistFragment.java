@@ -71,13 +71,7 @@ public class ArtistFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_artist, container, false);
         background = (LinearLayout) v.findViewById(R.id.background);
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        if (!sharedPreferenceSingelton.getSavedBoolean(getContext(), "Theme")) {
-            GradientDrawable gd;
-            gd = new GradientDrawable(
-                    GradientDrawable.Orientation.BOTTOM_TOP,
-                    new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
-            background.setBackground(gd);
-        }
+
         String artistJson = getActivity().getIntent().getStringExtra("artistList");
         artistAllList = new Gson().fromJson(artistJson, new TypeToken<ArrayList<Artist>>() {
         }.getType());
@@ -165,7 +159,12 @@ public class ArtistFragment extends Fragment {
             for (int i = x; i < y; i++) {
                 artistMainList.add(artistAllList.get(i));
             }
-            artistAdapter.notifyDataSetChanged();
+            recyclerView.post(new Runnable() {
+                public void run() {
+                    artistAdapter.notifyDataSetChanged();
+                }
+            });
+
         }
 
     }

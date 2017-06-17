@@ -30,13 +30,6 @@ public class DBPlayer {
         mDatabase = playerHelper.getWritableDatabase();
     }
 
-    /*For Songs-
-     1)Insertion              -insertSong(...)
-     2)Read                   -readSongs()
-     3)Update Favourites      -updateFavourites(SongId,FavouriteStatus)
-     4)Read Favourite  Songs  -readFavouriteSongs()
-     5)Delete All Songs       -Deletes all songs in Song table just in case*/
-
     public void insertSong(long id, String Name, String Artist, long duration, String Imagepath, String albumName) {
         String sql = "INSERT INTO " + PlayerHelper.SONG_TABLE_NAME + " (" + PlayerHelper.COLUMN_ID + "," + PlayerHelper.COLUMN_NAME + "," +
                 PlayerHelper.COLUMN_ARTIST + "," + PlayerHelper.COLUMN_DURATION + "," + PlayerHelper.COLUMN_IMAGEPATH + "," +
@@ -168,7 +161,6 @@ public class DBPlayer {
         Log.d("Song", "Deleted");
     }
 
-
     public void insertNewPlaylist(String PlaylistName, long id) {
         String sql = "INSERT INTO " + PlayerHelper.PLAYLIST_TABLE_NAME + " (" + PlayerHelper.PLAYLIST_COLUMN_NAME + "," + PlayerHelper.PLAYLIST_COLUMN_SONG + ") VALUES(?,?);";
         SQLiteStatement statement = mDatabase.compileStatement(sql);
@@ -271,9 +263,6 @@ public class DBPlayer {
         Log.d("Playlist", "Deleted");
     }
 
-    /*For Albums
-     1)Read list of Albums
-     2)Read Songs within An Album*/
     public ArrayList<Album> readAlbums() {
         ArrayList<Album> albumlist = new ArrayList<>();
         String[] columns = {
@@ -341,12 +330,6 @@ public class DBPlayer {
         mDatabase.close();
         return songlist;
     }
-
-
-    /*For Artists
-     1)Read list of Artists
-     2)Read Songs of an Artist*/
-
 
     public ArrayList<Artist> readArtists() {
         ArrayList<Artist> artistlist = new ArrayList<>();

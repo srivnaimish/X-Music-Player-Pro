@@ -68,8 +68,6 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
         if (sharedPreferenceSingelton.getSavedBoolean(SelectPlaylistActivity.this, "Theme")) {
             setTheme(R.style.AppTheme_Dark);
-        } else {
-            setTheme(R.style.AppTheme);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_playlist);
@@ -160,9 +158,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                         tagView.setTextColor(getResources().getColor(R.color.colorBlack));
                         tag.layoutColor = Color.parseColor("#FFFFFF");
                         tag.tagTextColor = Color.parseColor("#000000");
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            view.setBackground(tagSelector.getNormalSelector(tag));
-                        }
+                        view.setBackground(tagSelector.getNormalSelector(tag));
                         selectedPlaylist.remove(tag.text);
                     }
                 } else if (selectionType.equals("single_playlist")) {
@@ -173,9 +169,7 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                             // reset previous tag
                             selectedPlaylist.remove(singlePlaylist);
                             singlePlaylistTextView.setTextColor(getResources().getColor(R.color.colorBlack));
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                singlePlaylistView.setBackground(tagSelector.getNormalSelector(tag));
-                            }
+                            singlePlaylistView.setBackground(tagSelector.getNormalSelector(tag));
                             singlePlaylist = tag.text;
                             Log.d(TAG, "IF RESET PREVIOUS TAG AND SINGLE PLAYLIST " + singlePlaylist);
                             // ADD TAG

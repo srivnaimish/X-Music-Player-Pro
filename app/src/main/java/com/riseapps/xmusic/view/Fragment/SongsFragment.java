@@ -65,6 +65,7 @@ public class SongsFragment extends Fragment {
     private ActionModeCallback callback;
     private OnShowContextMenuListener mListener;
     private LinearLayoutManager layoutManager;
+    SharedPreferenceSingelton sharedPreferenceSingelton;
 
     public static SongsFragment newInstance() {
         return new SongsFragment();
@@ -82,13 +83,7 @@ public class SongsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
 
         background = (LinearLayout) rootView.findViewById(R.id.background);
-        /*GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.BOTTOM_TOP,
-                new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});*/
-        /*GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.BOTTOM_TOP,
-                new int[]{Color.parseColor("#212121"), Color.parseColor("#424242")});
-        background.setBackground(gd);*/
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
 
         songAllList = ((MainActivity) getActivity()).getCompleteSongList();
         if (songAllList.size() > 50) {
@@ -137,13 +132,12 @@ public class SongsFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
 
-                if ((((MainActivity) getActivity()).getSongs() != songMainList) || (((MainActivity) getActivity()).getSongs() != songAllList)) {
+                if (((MainActivity) getActivity()).getSongs().size() != songAllList.size()) {
                     ((MainActivity) getActivity()).setSongs(songAllList);
                     ((MainActivity) getActivity()).getMusicService().setSongs(songAllList);
                     new PlaySongExec(getContext(), position).startPlaying();
                     new SharedPreferenceSingelton().saveAs(getContext(), "Shuffle", false);
                 }
-
 
                 if (actionMode != null)
                     onListItemSelect(position);
@@ -237,7 +231,11 @@ public class SongsFragment extends Fragment {
             for (int i = x; i < y; i++) {
                 songMainList.add(songAllList.get(i));
             }
-            songsAdapter.notifyDataSetChanged();
+            recyclerView.post(new Runnable() {
+                public void run() {
+                    songsAdapter.notifyDataSetChanged();
+                }
+            });
         }
 
     }
@@ -274,29 +272,6 @@ public class SongsFragment extends Fragment {
             actionMode = null;
             //   Toast.makeText(getActivity(), "setting null", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public ArrayList<Song> getDummyData() throws JSONException {
-        String dummyData = loadJSONFromAsset();
-        songAllList = new Gson().fromJson(dummyData, new TypeToken<ArrayList<Song>>() {
-        }.getType());
-        return songAllList;
-    }
-
-    public String loadJSONFromAsset() {
-        String json;
-        try {
-            InputStream is = getActivity().getAssets().open("dummy.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
     }
 
     public interface OnShowContextMenuListener {

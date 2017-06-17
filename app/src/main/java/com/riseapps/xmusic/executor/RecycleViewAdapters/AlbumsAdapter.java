@@ -3,6 +3,7 @@ package com.riseapps.xmusic.executor.RecycleViewAdapters;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -70,6 +71,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                     .dontAnimate()
                     .into(((AlbumViewHolder) holder).imageView);
         }
+
+        ViewCompat.setTransitionName(((AlbumViewHolder) holder).imageView, name);
+
         ((AlbumViewHolder) holder).name.setText(name);
         ((AlbumViewHolder) holder).album = album;
     }
@@ -83,52 +87,18 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
 
 }
 
-class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+class AlbumViewHolder extends RecyclerView.ViewHolder{
 
-    ImageView imageView, optionMenuClose;
+    ImageView imageView;
     TextView name;
     Context ctx;
     Album album;
-    RelativeLayout optionsMenu;
-    private Animator anim;
-    private static boolean isOpen;
 
     AlbumViewHolder(final View view, Context context) {
         super(view);
         this.ctx = context;
         imageView = (ImageView) view.findViewById(R.id.imageView);
         name = (TextView) view.findViewById(R.id.name);
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        Toast.makeText(ctx, " " + getLayoutPosition(), Toast.LENGTH_SHORT).show();
-        doCircularReveal(v, optionsMenu);
-        return true;
-    }
-
-    private void doCircularReveal(final View v, RelativeLayout menu) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            int x = menu.getLeft() + menu.getWidth() / 2;
-            int y = 0;
-            int startRadius = 0;
-            int hypotenuse = (int) Math.hypot(menu.getWidth(), menu.getHeight());
-            anim = ViewAnimationUtils.createCircularReveal(menu, x, y, startRadius, hypotenuse);
-            anim.setInterpolator(new AccelerateDecelerateInterpolator());
-            anim.setDuration(400);
-            anim.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    v.setVisibility(View.GONE);
-                    isOpen = true;
-                }
-            });
-            menu.setVisibility(View.VISIBLE);
-            anim.start();
-        } else {
-            menu.setVisibility(View.VISIBLE);
-        }
     }
 }
 

@@ -79,13 +79,6 @@ public class PlaylistFragment extends Fragment {
         nestedScrollView = (NestedScrollView) v.findViewById(R.id.nestedScrollView);
 
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        if (!sharedPreferenceSingelton.getSavedBoolean(getContext(), "Theme")) {
-            GradientDrawable gd;
-            gd = new GradientDrawable(
-                    GradientDrawable.Orientation.BOTTOM_TOP,
-                    new int[]{Color.parseColor("#EEEEEE"), Color.parseColor("#FFFFFF")});
-            nestedScrollView.setBackground(gd);
-        }
 
         recyclerView = (RecyclerView) v.findViewById(R.id.playlists);
         recyclerView.setHasFixedSize(true);

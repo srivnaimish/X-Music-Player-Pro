@@ -44,30 +44,33 @@ public class UpdateSongs {
                     (MediaStore.Audio.AudioColumns.ALBUM);
             int x = 0;
             do {
-                long thisId = musicCursor.getLong(idColumn);
-                String thisTitle = musicCursor.getString(titleColumn);
-                if (thisTitle.length() > textLimit)
-                    thisTitle = thisTitle.substring(0, textLimit) + "...";
-                String thisArtist = musicCursor.getString(artistColumn);
-                if (thisArtist==null||thisArtist.equalsIgnoreCase("<unknown>")) {
-                    thisArtist = "Unknown";
-                }
-                if (thisArtist.length() > textLimit)
-                    thisArtist = thisArtist.substring(0, textLimit) + "...";
-
-                String thisAlbum = musicCursor.getString(album);
                 long thisduration = musicCursor.getLong(song_duration);
 
-                String imagepath = "content://media/external/audio/media/" + thisId + "/albumart";
-                if (!new AlbumArtChecker().hasAlbumArt(context, imagepath))
-                    imagepath = "no_image";
+                if(thisduration>10000) {
+                    long thisId = musicCursor.getLong(idColumn);
+                    String thisTitle = musicCursor.getString(titleColumn);
+                    if (thisTitle.length() > textLimit)
+                        thisTitle = thisTitle.substring(0, textLimit) + "...";
+                    String thisArtist = musicCursor.getString(artistColumn);
+                    if (thisArtist == null || thisArtist.equalsIgnoreCase("<unknown>")) {
+                        thisArtist = "Unknown";
+                    }
+                    if (thisArtist.length() > textLimit)
+                        thisArtist = thisArtist.substring(0, textLimit) + "...";
 
-                if (thisAlbum == null) {
-                    thisAlbum = "Unknown";
+                    String thisAlbum = musicCursor.getString(album);
+
+                    String imagepath = "content://media/external/audio/media/" + thisId + "/albumart";
+                    if (!new AlbumArtChecker().hasAlbumArt(context, imagepath))
+                        imagepath = "no_image";
+
+                    if (thisAlbum == null) {
+                        thisAlbum = "Unknown";
+                    }
+                    new MyApplication(context).getWritableDatabase().insertNewPlaylist("All Songs", thisId);
+                    new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, thisAlbum);
+                    x++;
                 }
-                new MyApplication(context).getWritableDatabase().insertNewPlaylist("All Songs", thisId);
-                new MyApplication(context).getWritableDatabase().insertSong(thisId, thisTitle, thisArtist, thisduration, imagepath, thisAlbum);
-                x++;
             }
             while (musicCursor.moveToNext());
             Log.d("Song Insert", "" + x);
@@ -78,8 +81,6 @@ public class UpdateSongs {
     }
 
     public void refreshList() {
-        //new MyApplication(context).getWritableDatabase().deleteAllSongs();
-        //ArrayList<Song> songs=new MyApplication(context).getWritableDatabase().readSongs();
 
         ContentResolver musicResolver = context.getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -101,7 +102,8 @@ public class UpdateSongs {
             int x = 0;
             do {
                 long thisId = musicCursor.getLong(idColumn);
-                if (!new MyApplication(context).getWritableDatabase().isSongPresent(thisId)) {
+                long thisduration = musicCursor.getLong(song_duration);
+                if (!new MyApplication(context).getWritableDatabase().isSongPresent(thisId)&&thisduration>10000) {
                     String thisTitle = musicCursor.getString(titleColumn);
                     if (thisTitle.length() > textLimit)
                         thisTitle = thisTitle.substring(0, textLimit) + "...";
@@ -113,7 +115,6 @@ public class UpdateSongs {
                         thisArtist = thisArtist.substring(0, textLimit) + "...";
 
                     String thisAlbum = musicCursor.getString(album);
-                    long thisduration = musicCursor.getLong(song_duration);
 
                     String imagepath = "content://media/external/audio/media/" + thisId + "/albumart";
                     if (!new AlbumArtChecker().hasAlbumArt(context, imagepath))
@@ -129,8 +130,6 @@ public class UpdateSongs {
 
             }
             while (musicCursor.moveToNext());
-           // new MyApplication(context).getWritableDatabase().refreshPlaylists();
-            Log.d("New Song Updated", "" + x);
             musicCursor.close();
         }
     }

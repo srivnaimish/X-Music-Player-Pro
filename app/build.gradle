@@ -44,4 +44,3 @@ dependencies {
     compile 'com.android.support:support-vector-drawable:25.3.1'
     testCompile 'junit:junit:4.12'
 }
-apply plugin: 'com.google.gms.google-services'

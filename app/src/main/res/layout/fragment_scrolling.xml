@@ -27,7 +27,8 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.8" />
+                app:layout_collapseParallaxMultiplier="0.8"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -57,7 +58,8 @@
                     android:layout_centerVertical="true"
                     android:foregroundGravity="center"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/empty" />
+                    app:srcCompat="@drawable/empty"
+                    android:transitionName="MyTransition"/>
 
                 <LinearLayout
                     android:id="@+id/linear"

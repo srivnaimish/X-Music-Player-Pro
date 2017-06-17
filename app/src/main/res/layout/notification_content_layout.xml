@@ -15,7 +15,8 @@
         android:layout_marginBottom="2dp"
         android:layout_marginEnd="2dp"
         android:layout_marginTop="2dp"
-        android:background="#67809F"
+        android:background="#e0e0e0"
+        android:src="@drawable/ic_splash"
         android:scaleType="centerCrop" />
 
     <TextView

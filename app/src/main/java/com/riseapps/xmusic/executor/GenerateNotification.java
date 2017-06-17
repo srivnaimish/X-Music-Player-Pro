@@ -44,7 +44,7 @@ public class GenerateNotification {
         mBuilder.setPriority(Notification.PRIORITY_HIGH);
         mBuilder.setGroupSummary(true);
         mBuilder.setAutoCancel(false);
-        mBuilder.setTicker("Music Playing");
+        mBuilder.setTicker("Playing Music");
 
         if (status==0)
             mBuilder.setOngoing(false);
@@ -101,6 +101,36 @@ public class GenerateNotification {
                             R.id.notification_background,
                             notification,
                             NOTIFICATION_ID));
+        }
+        else {
+            Glide.with(context.getApplicationContext()) // safer!
+                    .load(R.drawable.ic_splash)
+                    .asBitmap()
+                    .into(new NotificationTarget(
+                            context,
+                            contentView,
+                            R.id.imageView,
+                            notification,
+                            NOTIFICATION_ID));
+            Glide.with(context.getApplicationContext()) // safer!
+                    .load(R.drawable.ic_splash)
+                    .asBitmap()
+                    .into(new NotificationTarget(
+                            context,
+                            expandedView,
+                            R.id.imageView,
+                            notification,
+                            NOTIFICATION_ID));
+            Glide.with(context.getApplicationContext()) // safer!
+                    .load(R.drawable.ic_splash)
+                    .asBitmap()
+                    .into(new NotificationTarget(
+                            context,
+                            expandedView,
+                            R.id.notification_background,
+                            notification,
+                            NOTIFICATION_ID));
+
         }
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());

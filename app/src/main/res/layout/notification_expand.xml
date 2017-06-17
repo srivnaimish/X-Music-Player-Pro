@@ -25,11 +25,11 @@
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:layout_alignParentEnd="true"
-        android:background="#67809F"
+        android:background="#EEEEEE"
         android:scaleType="centerCrop"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/empty" />
+        />
 
 
     <TextView

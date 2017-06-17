@@ -38,8 +38,6 @@ public abstract class BaseMatSearchViewActivity extends AppCompatActivity {
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
         if (sharedPreferenceSingelton.getSavedBoolean(BaseMatSearchViewActivity.this, "Theme")) {
             setTheme(R.style.AppTheme_Dark);
-        } else {
-            setTheme(R.style.AppTheme);
         }
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());

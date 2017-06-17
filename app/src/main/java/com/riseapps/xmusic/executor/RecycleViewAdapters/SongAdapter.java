@@ -217,29 +217,6 @@ public class SongAdapter extends RecyclerView.Adapter {
         return songsList.size();
     }
 
-    SongLikedListener l = new SongLikedListener() {
-        @Override
-        public void onSongLiked(boolean status) {
-        }
-    };
-
-    public void onSongLiked(boolean status) {
-        final Song song = songsList.get(position);
-        if (status) {
-            if (song.getFavourite()) {
-                //new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),0);
-                ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
-                //song.setFavourite(false);
-            } else {
-                //new MyApplication(c).getWritableDatabase().updateFavourites(song.getID(),1);
-                ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked_toolbar);
-                //song.setFavourite(true);
-            }
-        } else
-            Toast.makeText(c, "hello 2", Toast.LENGTH_SHORT).show();
-    }
-
-
     public interface OnShowContextMenuListener {
         void onShowFirst(int count, HashMap<Integer, Boolean> list);
         void onShow(int count, HashMap<Integer, Boolean> list);

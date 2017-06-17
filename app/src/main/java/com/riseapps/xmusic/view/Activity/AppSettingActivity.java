@@ -52,8 +52,6 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
         if (sharedPreferenceSingelton.getSavedBoolean(AppSettingActivity.this, "Theme")) {
             setTheme(R.style.AppTheme_Dark);
-        } else {
-            setTheme(R.style.AppTheme);
         }
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());

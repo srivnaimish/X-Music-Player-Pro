@@ -21,6 +21,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name="android.support.multidex.MultiDexApplication">
+
+        <activity
+            android:name=".view.Activity.SplashScreen"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".view.Activity.Walkthrough"
+            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".view.Activity.MainActivity"
             android:windowSoftInputMode="adjustNothing" />
@@ -32,21 +46,9 @@
         <activity
             android:name=".view.Activity.SelectPlaylistActivity"
             />
-        <activity
-            android:name=".view.Activity.Walkthrough"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".view.Activity.SplashScreen"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
 
         <activity android:name=".view.Activity.AppSettingActivity"/>
+
     </application>
 
 </manifest>
