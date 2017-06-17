@@ -66,8 +66,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                     .dontAnimate()
                     .into(((AlbumViewHolder) holder).imageView);
         } else {
-            Glide.with(c).load(R.drawable.ic_splash)
-                    .placeholder(R.drawable.ic_splash)
+            Glide.with(c).load(R.drawable.ic_playlist)
+                    .placeholder(R.drawable.ic_playlist)
                     .dontAnimate()
                     .into(((AlbumViewHolder) holder).imageView);
         }

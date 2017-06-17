@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.riseapps.xmusic.widgets.MainTextViewSub
+    <com.riseapps.xmusic.widgets.MainTextView
         android:id="@+id/custom_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:textColor="?android:textColorPrimary"
-        android:textSize="@dimen/size13sp" />
+        android:textSize="@dimen/size14sp" />
 </LinearLayout>

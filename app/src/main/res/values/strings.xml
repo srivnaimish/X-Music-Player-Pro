@@ -19,10 +19,10 @@
     <string name="action_search">Search for a Song</string>
 
     <!--MAINACTIVITY-->
-    <string name="TAB1">PLAYLIST</string>
-    <string name="TAB2">ALBUMS</string>
-    <string name="TAB3">ARTISTS</string>
-    <string name="TAB4">TRACKS</string>
+    <string name="TAB1">Playlist</string>
+    <string name="TAB2">Albums</string>
+    <string name="TAB3">Artists</string>
+    <string name="TAB4">Tracks</string>
     <string name="now_playing">Now Playing</string>
     <string name="refreshing_lists">Refreshing Lists…Please Wait</string>
     <string name="song_repeat_off_toast">Song Repeat Off</string>

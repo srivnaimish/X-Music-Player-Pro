@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/artist_list_card"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="70dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="0dp"
@@ -21,7 +21,7 @@
         android:layout_margin="4dp"
         android:orientation="vertical">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/artist_art_card"
             android:layout_width="@dimen/size50dp"
             android:layout_height="@dimen/size50dp"
@@ -29,7 +29,7 @@
             android:layout_marginStart="13dp"
             android:layout_marginTop="8dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_singer" />
+            android:src="@drawable/ic_playlist"/>
 
 
         <LinearLayout

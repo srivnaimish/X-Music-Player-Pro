@@ -78,12 +78,12 @@ public class AlbumFragment extends Fragment {
             albumMainList = albumAllList;
         }
         recyclerView = (RecyclerView) v.findViewById(R.id.albums);
-        int spanCount = 2;
+        int spanCount = 3;
         int spacing = 4;
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
-        GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
+        GridLayoutManager grid = new GridLayoutManager(v.getContext(), 3);
         recyclerView.setLayoutManager(grid);
         albumAdapter = new AlbumsAdapter(getActivity(), albumMainList, recyclerView);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

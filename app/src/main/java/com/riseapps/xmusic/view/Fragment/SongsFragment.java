@@ -93,7 +93,7 @@ public class SongsFragment extends Fragment {
         }
         recyclerView = (RecyclerView) rootView.findViewById(R.id.songs);
         int spanCount = 1; // 2 columns
-        int spacing = 4; // 50px
+        int spacing = 20; // 50px
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
