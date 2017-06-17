@@ -37,7 +37,7 @@ public class MainTextViewSub extends TextView {
 
     private void applyFont(Context context) {
         //Typeface font = FontCache.getTypeface("fonts/Hind_Siliguri/HindSiliguri-Regular.ttf", context);
-        Typeface font = FontCache.getTypeface("fonts/Overpass/Overpass-Regulr.ttf", context);
+        Typeface font = FontCache.getTypeface("fonts/Overpass/Overpass-Regular.ttf", context);
         setTypeface(font);
     }
 }

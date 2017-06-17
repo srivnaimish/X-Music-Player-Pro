@@ -9,7 +9,8 @@
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="1dp"
+    card_view:cardElevation="0dp"
+    card_view:cardBackgroundColor="?colorPrimary"
     >
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +27,8 @@
             android:layout_height="@dimen/size150dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/dummy"/>
 
         <LinearLayout
             android:id="@+id/linearlayout"

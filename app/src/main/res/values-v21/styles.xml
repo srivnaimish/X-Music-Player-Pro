@@ -12,14 +12,6 @@
         <item name="actionModeBackground">@color/colorWhite</item>
         <item name="android:colorBackground">@color/colorMainBackground</item>
 
-      <!--  <item name="ic_liked">@drawable/ic_liked_toolbar</item>
-        <item name="ic_refresh">@drawable/ic_refresh</item>
-        <item name="ic_search">@drawable/ic_search</item>
-        <item name="ic_playlist">@drawable/ic_playlist</item>
-        <item name="ic_youtube">@drawable/ic_youtube_symbol</item>
-        <item name="ic_share">@drawable/ic_share</item>
-        <item name="ic_playlist_add">@drawable/ic_playlist_add_check</item>-->
-
         <item name="iconDual">#000</item>
     </style>
 
@@ -35,15 +27,6 @@
         <!--  For Custom Action Mode Background Color/Drawable -->
         <item name="actionModeBackground">@color/colorPrimaryInverse</item>
         <item name="android:colorBackground">@color/colorPrimaryDarkInverse</item>
-
-        <!--<item name="ic_liked">@drawable/ic_liked_toolbar_white</item>
-        <item name="ic_refresh">@drawable/ic_refresh_white</item>
-        <item name="ic_search">@drawable/ic_search_white</item>
-        <item name="ic_playlist">@drawable/ic_playlist_white</item>
-        <item name="ic_youtube">@drawable/ic_youtube_symbol_white</item>
-        <item name="ic_share">@drawable/ic_share_white</item>
-        <item name="ic_playlist_add">@drawable/ic_playlist_add_check_white</item>-->
-
         <item name="iconDual">#FAFAFA</item>
 
     </style>

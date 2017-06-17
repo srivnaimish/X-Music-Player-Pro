@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/song_list_card"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="80dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardCornerRadius="0dp"
-    card_view:cardElevation="4dp"
+    card_view:cardCornerRadius="1dp"
+    card_view:cardElevation="0dp"
     card_view:cardBackgroundColor="?colorPrimary"
     >
 
@@ -23,11 +23,11 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/album_art"
-            android:layout_width="@dimen/size50dp"
-            android:layout_height="@dimen/size50dp"
+            android:layout_width="@dimen/size45dp"
+            android:layout_height="@dimen/size45dp"
             android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/size8dp"
-            android:layout_marginStart="11dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/size8dp"
             app:cardElevation="4dp"
             app:srcCompat="@drawable/empty"

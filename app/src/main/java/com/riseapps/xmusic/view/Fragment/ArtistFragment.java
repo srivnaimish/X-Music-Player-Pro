@@ -85,7 +85,7 @@ public class ArtistFragment extends Fragment {
 
         recyclerView = (RecyclerView) v.findViewById(R.id.artists);
         int spanCount = 1;
-        int spacing = 20;
+        int spacing = 5;
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);

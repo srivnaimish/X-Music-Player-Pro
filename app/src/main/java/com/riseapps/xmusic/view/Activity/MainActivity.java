@@ -226,7 +226,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "" + sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Shuffle"), Toast.LENGTH_SHORT).show();
                 if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Shuffle")) {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", false);
                     DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));

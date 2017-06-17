@@ -23,7 +23,8 @@
         android:name="android.support.multidex.MultiDexApplication">
 
         <activity
-            android:name=".view.Activity.SplashScreen">
+            android:name=".view.Activity.SplashScreen"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

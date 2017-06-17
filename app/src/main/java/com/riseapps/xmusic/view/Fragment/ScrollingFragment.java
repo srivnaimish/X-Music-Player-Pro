@@ -284,26 +284,4 @@ public class ScrollingFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public ArrayList<Song> getDummyData() throws JSONException {
-        String dummyData = loadJSONFromAsset();
-        songAllList = new Gson().fromJson(dummyData, new TypeToken<ArrayList<Song>>() {
-        }.getType());
-        return songAllList;
-    }
-
-    public String loadJSONFromAsset() {
-        String json;
-        try {
-            InputStream is = getActivity().getAssets().open("dummy.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-    }
 }

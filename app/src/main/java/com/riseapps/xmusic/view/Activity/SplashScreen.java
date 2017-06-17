@@ -38,7 +38,6 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash);
         if (new SharedPreferenceSingelton().getSavedBoolean(SplashScreen.this, "opened_before")) {
             new Async().execute();
         } else {

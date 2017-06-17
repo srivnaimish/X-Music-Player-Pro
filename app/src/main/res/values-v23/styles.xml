@@ -13,6 +13,8 @@
 
         <item name="actionModeBackground">@color/colorWhite</item>
 
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDark</item>
+
         <item name="windowActionBar">false</item>
 
         <item name="windowNoTitle">true</item>

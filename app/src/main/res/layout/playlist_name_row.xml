@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/playlist_list_card"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="80dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="1dp"
@@ -17,45 +17,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="4dp">
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="20dp"
-            android:layout_toEndOf="@+id/imageView"
-            android:gravity="center">
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp">
 
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/size40dp"
+                android:layout_height="@dimen/size40dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/playlist"/>
             <com.riseapps.xmusic.widgets.MainTextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:gravity="center_vertical"
-                android:maxLines="2"
+                android:layout_gravity="center_vertical"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/size16sp"
-                tools:text="TextView" />
+                tools:text="TextView"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="4dp"/>
+
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="10dp"
-            app:srcCompat="@drawable/ic_playlist"
-            android:tint="?android:textColorTertiary"/>
+
 
         <ImageView
             android:id="@+id/delete"
-            android:layout_width="@dimen/size24dp"
-            android:layout_height="@dimen/size24dp"
+            android:layout_width="@dimen/size20dp"
+            android:layout_height="@dimen/size20dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/size8dp"
