@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.View;
 
@@ -30,16 +31,19 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class SplashScreen extends AppCompatActivity {
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
-    //ArrayList<Song> songList = new ArrayList<>();
     ArrayList<Album> albumList = new ArrayList<>();
     ArrayList<Artist> artistList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+     //   setContentView(R.layout.splash_screen);
         if (new SharedPreferenceSingelton().getSavedBoolean(SplashScreen.this, "opened_before")) {
-            new Async().execute();
+           new Async().execute();
         } else {
             startActivity(new Intent(SplashScreen.this, Walkthrough.class));
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -60,7 +64,6 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            //songList = new MyApplication(SplashScreen.this).getWritableDatabase().readSongs();
             artistList = new MyApplication(SplashScreen.this).getWritableDatabase().readArtists();
             albumList = new MyApplication(SplashScreen.this).getWritableDatabase().readAlbums();
 
@@ -73,14 +76,10 @@ public class SplashScreen extends AppCompatActivity {
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<Song>>() {
             }.getType();
-          /*  String songJson = gson.toJson(songList, type);
-            type = new TypeToken<ArrayList<Album>>() {
-            }.getType();*/
             String albumJson = gson.toJson(albumList, type);
             type = new TypeToken<ArrayList<Artist>>() {
             }.getType();
             String artistJson = gson.toJson(artistList, type);
-            // intent.putExtra("songList", songJson);
             intent.putExtra("albumList", albumJson);
             intent.putExtra("artistList", artistJson);
             startActivity(intent);

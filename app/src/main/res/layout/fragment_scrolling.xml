@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/size66dp"
+    android:layout_marginBottom="@dimen/size61dp"
     android:background="?colorPrimary">
 
     <android.support.design.widget.AppBarLayout
@@ -57,9 +57,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:foregroundGravity="center"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/empty"
-                    android:transitionName="MyTransition"/>
+                    android:scaleType="centerCrop"/>
 
                 <LinearLayout
                     android:id="@+id/linear"

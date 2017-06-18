@@ -2,6 +2,7 @@ package com.riseapps.xmusic.executor.RecycleViewAdapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,6 +55,9 @@ public class ArtistAdapter extends RecyclerView.Adapter {
             Artist artist = artistList.get(position);
             String name = artist.getName().trim();
             String imagepath = artist.getImagepath();
+            if(Build.VERSION.SDK_INT>=21){
+                ((ArtistViewHolder) holder).imageView.setTransitionName(name);
+            }
             if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
                 ((ArtistViewHolder) holder).name.setText(name);
 
@@ -88,6 +92,7 @@ class ArtistViewHolder extends RecyclerView.ViewHolder {
         this.ctx = context;
 
         name = (TextView) v.findViewById(R.id.name);
+        imageView= (ImageView) v.findViewById(R.id.artist_art_card);
     }
 
 }

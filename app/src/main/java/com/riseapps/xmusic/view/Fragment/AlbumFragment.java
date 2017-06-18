@@ -2,6 +2,7 @@ package com.riseapps.xmusic.view.Fragment;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -11,10 +12,12 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -115,17 +118,32 @@ public class AlbumFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                ScrollingFragment scrollingFragment = new ScrollingFragment();
+                String imageTransition="";
+                ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+                ScrollingFragment scrollingFragment=new ScrollingFragment();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    setSharedElementReturnTransition(TransitionInflater.from(
+                            getActivity()).inflateTransition(android.R.transition.move));
+                    setExitTransition(TransitionInflater.from(
+                            getActivity()).inflateTransition(android.R.transition.fade));
+
+                    scrollingFragment.setSharedElementEnterTransition(TransitionInflater.from(
+                            getActivity()).inflateTransition(android.R.transition.move));
+                    scrollingFragment.setEnterTransition(TransitionInflater.from(
+                            getActivity()).inflateTransition(android.R.transition.fade));
+                    imageTransition=imageView.getTransitionName();
+                }
                 Bundle bundle = new Bundle();
                 bundle.putString("Name", albumAllList.get(position).getName());
                 bundle.putString("Imagepath", albumAllList.get(position).getImagepath());
                 bundle.putString("Action", "Album");
                 scrollingFragment.setArguments(bundle);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
-                fragmentTransaction.commit();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.drawerLayout,scrollingFragment)
+                        .addToBackStack(null)
+                        .addSharedElement(imageView, imageTransition)
+                        .commit();
             }
 
             @Override

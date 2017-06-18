@@ -16,6 +16,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,17 +122,22 @@ public class PlaylistFragment extends Fragment {
                             playlistAdapter.delete(position);
                             Toast.makeText(getContext(), "Playlist Deleted", Toast.LENGTH_SHORT).show();
                         } else if (v.getId() == R.id.playlist_list_card) {
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            ScrollingFragment scrollingFragment = new ScrollingFragment();
+                            ScrollingFragment scrollingFragment=new ScrollingFragment();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                setExitTransition(TransitionInflater.from(
+                                        getActivity()).inflateTransition(android.R.transition.fade));
+                                scrollingFragment.setEnterTransition(TransitionInflater.from(
+                                        getActivity()).inflateTransition(android.R.transition.fade));
+                            }
                             Bundle bundle = new Bundle();
                             bundle.putString("Name", playLists.get(position).getName());
-                            //   bundle.putString("Imagepath",playLists.get(position).getImagepath());
                             bundle.putString("Action", "Playlists");
                             scrollingFragment.setArguments(bundle);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
-                            fragmentTransaction.commit();
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.drawerLayout,scrollingFragment)
+                                    .addToBackStack(null)
+                                    .commit();
                         }
 
                     }

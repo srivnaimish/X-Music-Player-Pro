@@ -4,10 +4,15 @@
 
     <item
         android:drawable="@color/colorWhite"/>
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/ic_splash"/>
+
+    <item android:bottom="100dp">
+        <bitmap android:src="@drawable/ic_splash" android:gravity="center"/>
     </item>
+
+    <item android:top="100dp">
+        <bitmap android:src="@drawable/untitled" android:gravity="center"/>
+    </item>
+
+
 
 </layer-list>

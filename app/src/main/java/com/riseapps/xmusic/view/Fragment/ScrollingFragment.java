@@ -13,6 +13,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,10 @@ public class ScrollingFragment extends Fragment {
         playAllButton = (Button) rootView.findViewById(R.id.play_all_button);
         shuffleButton = (Button) rootView.findViewById(R.id.shuffle_button);
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            circleAlbumArt.setTransitionName(Name);
+        }
+
         if (Name != null) {
             name.setText(Name);
         } else {
@@ -110,25 +115,19 @@ public class ScrollingFragment extends Fragment {
         }
 
         if (Imagepath != null && !Imagepath.equalsIgnoreCase("no_image")) {
-
-            //faded image view in background
             Glide.with(getContext()).load(Uri.parse(Imagepath))
                     .crossFade()
                     .into(imageView);
 
-            //circle image view
             Glide.with(getContext()).load(Uri.parse(Imagepath))
-                    .crossFade()
+                    .dontAnimate()
                     .into(circleAlbumArt);
         } else {
-            //imageView.setImageResource(R.drawable.empty);
             circleAlbumArt.setImageResource(R.drawable.ic_play);
             Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/09/08/21/09/piano-1655558_960_720.jpg")
                     .crossFade()
                     .placeholder(R.drawable.ic_splash)
                     .into(imageView);
-
-
         }
 
         if (Action.equalsIgnoreCase("Album")) {

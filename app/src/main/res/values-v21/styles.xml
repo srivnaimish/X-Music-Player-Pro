@@ -8,11 +8,10 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:textColorTertiary">@color/colorPrimaryFontDark</item>
-
         <item name="actionModeBackground">@color/colorWhite</item>
         <item name="android:colorBackground">@color/colorMainBackground</item>
-
         <item name="iconDual">#000</item>
+
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
@@ -23,8 +22,6 @@
         <item name="android:textColorPrimary">@color/textColorPrimaryInverse</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:textColorTertiary">@color/colorPrimaryFontDarkInverse</item>
-
-        <!--  For Custom Action Mode Background Color/Drawable -->
         <item name="actionModeBackground">@color/colorPrimaryInverse</item>
         <item name="android:colorBackground">@color/colorPrimaryDarkInverse</item>
         <item name="iconDual">#FAFAFA</item>
@@ -34,5 +31,10 @@
     <style name="ToolbarTheme" parent="AppTheme">
         <item name="selectableItemBackground">?android:selectableItemBackground</item>
         <item name="android:colorControlHighlight">#7f8c8d</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+        <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 </resources>

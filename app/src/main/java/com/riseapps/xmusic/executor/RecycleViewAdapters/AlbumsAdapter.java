@@ -3,6 +3,7 @@ package com.riseapps.xmusic.executor.RecycleViewAdapters;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -59,7 +60,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
 
         String name = album.getName().trim();
         String imagepath = album.getImagepath();
-        //Log.d("imagepath", " " + imagepath);
+
+        if(Build.VERSION.SDK_INT>=21){
+            ((AlbumViewHolder) holder).imageView.setTransitionName(name);
+        }
+
         if (!imagepath.equalsIgnoreCase("no_image")) {
             Glide.with(c).load(imagepath)
                     .centerCrop()
@@ -67,12 +72,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                     .into(((AlbumViewHolder) holder).imageView);
         } else {
             Glide.with(c).load(R.drawable.dummy)
-                    .dontAnimate()
                     .centerCrop()
                     .into(((AlbumViewHolder) holder).imageView);
         }
-
-        ViewCompat.setTransitionName(((AlbumViewHolder) holder).imageView, name);
 
         ((AlbumViewHolder) holder).name.setText(name);
         ((AlbumViewHolder) holder).album = album;

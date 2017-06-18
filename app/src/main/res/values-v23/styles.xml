@@ -4,21 +4,13 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-
         <item name="colorPrimaryDark">@color/colorWhite</item>
-
         <item name="colorAccent">@color/colorAccent</item>
-
         <item name="windowActionModeOverlay">true</item>
-
         <item name="actionModeBackground">@color/colorWhite</item>
-
         <item name="android:textColorTertiary">@color/colorPrimaryFontDark</item>
-
         <item name="windowActionBar">false</item>
-
         <item name="windowNoTitle">true</item>
-
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:colorBackground">@color/colorMainBackground</item>
         <item name="iconDual">#000</item>
@@ -27,21 +19,13 @@
     <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryInverse</item>
-
         <item name="colorPrimaryDark">@color/colorPrimaryDarkInverse</item>
-
         <item name="colorAccent">@color/colorAccent</item>
-
         <item name="android:textColorPrimary">@color/textColorPrimaryInverse</item>
-
         <item name="android:textColorTertiary">@color/colorPrimaryFontDarkInverse</item>
-
         <item name="windowActionModeOverlay">true</item>
-
         <item name="android:windowLightStatusBar">false</item>
-
         <item name="android:colorBackground">@color/colorPrimaryDarkInverse</item>
-
         <item name="iconDual">#FAFAFA</item>
 
     </style>

@@ -356,8 +356,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.favourites) {
-                    View v = findViewById(R.id.favourites);
-                    v.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     ScrollingFragment scrollingFragment = new ScrollingFragment();
