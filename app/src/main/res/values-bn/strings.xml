@@ -70,4 +70,7 @@
     <string name="select_the_newly_created_playlist">নতুন তৈরি প্লেলিস্ট নির্বাচন করুন</string>
     <string name="switch_betweem_the_light_and_dark_app_themes">থিমটি স্যুইচ করার জন্য অ্যাপ্লিকেশন পুনরায় চালু করা হয়</string>
     <string name="theme">রঙ থিম</string>
+    <string name="app_walk1">ইকুয়ালাইজার, ঘুম টাইমার , Skipie , রঙ থিম</string>
+    <string name="app_walk2">মেইন প্লেয়ারটি খুলতে মিনি প্লেয়ারে আলতো চাপুন</string>
+    <string name="app_walk3">ইউটিউবে এই গান অনুসন্ধান করতে চান?</string>
 </resources>

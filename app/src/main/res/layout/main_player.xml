@@ -8,7 +8,6 @@
     android:layout_below="@id/appbar"
     android:layout_marginTop="2dp"
     android:animateLayoutChanges="true"
-    android:visibility="gone"
     android:background="?colorPrimary">
     <android.support.constraint.ConstraintLayout
         android:id="@+id/imageContainer"
@@ -160,17 +159,19 @@
     </LinearLayout>
 
 
-    <ImageButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/play_pause"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:srcCompat="@drawable/ic_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/play"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="@dimen/size8dp"
         app:layout_constraintTop_toBottomOf="@+id/linearlayout"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="@dimen/size8dp"
+        app:fabSize="mini"
+        app:elevation="5dp"
         android:background="@drawable/ripple" />
 
     <ImageButton
@@ -185,10 +186,12 @@
         app:layout_constraintRight_toLeftOf="@+id/play_pause"
         android:layout_marginRight="@dimen/size8dp"
         app:layout_constraintTop_toTopOf="@+id/play_pause"
-        android:layout_marginTop="16dp"
-        app:layout_constraintHorizontal_bias="0.505"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.51"
         android:layout_marginStart="@dimen/size8dp"
-        android:layout_marginEnd="@dimen/size8dp" />
+        android:layout_marginEnd="@dimen/size8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/play_pause"
+        android:layout_marginBottom="8dp" />
 
     <ImageButton
         android:id="@+id/next"
@@ -199,11 +202,13 @@
         android:tint="?android:textColorPrimary"
         app:layout_constraintLeft_toRightOf="@+id/play_pause"
         app:layout_constraintRight_toLeftOf="@+id/repeat"
-        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintHorizontal_bias="0.451"
         app:layout_constraintTop_toTopOf="@+id/play_pause"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="@dimen/size8dp"
-        android:layout_marginEnd="16dp" />
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/play_pause"
+        android:layout_marginBottom="8dp" />
 
     <ImageButton
         android:id="@+id/shuffle"
@@ -214,8 +219,10 @@
         android:tint="?android:textColorPrimary"
         app:layout_constraintLeft_toLeftOf="@+id/currentPosition"
         app:layout_constraintTop_toTopOf="@+id/play_pause"
-        android:layout_marginTop="16dp" />
-
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/play_pause"
+        android:layout_marginBottom="8dp" />
 
     <ImageButton
         android:id="@+id/repeat"
@@ -226,6 +233,9 @@
         android:tint="?android:textColorPrimary"
         app:layout_constraintRight_toRightOf="@+id/totalDuration"
         app:layout_constraintTop_toTopOf="@+id/play_pause"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="4dp" />
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/play_pause"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="8dp" />
 </android.support.constraint.ConstraintLayout>

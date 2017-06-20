@@ -34,7 +34,7 @@ import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.model.MusicService;
 
-public class AppSettingActivity extends AppCompatActivity implements View.OnClickListener {
+public class AppSettingActivity extends AppCompatActivity{
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -46,6 +46,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
     private RadioGroup radioButtonGroup;
     SharedPreferenceSingelton sharedPreferenceSingelton;
     CoordinatorLayout back;
+    Switch theme,pro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,40 +74,36 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
             }
         });
         CardView setting_pro = (CardView) findViewById(R.id.setting_shake);
-        CardView setting_equalizer = (CardView) findViewById(R.id.setting_equalizer);
-        CardView setting_sleep = (CardView) findViewById(R.id.setting_sleep);
-        CardView setting_share_app = (CardView) findViewById(R.id.setting_share);
-        CardView setting_rate = (CardView) findViewById(R.id.setting_rate);
         back = (CoordinatorLayout) findViewById(R.id.back);
         if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_PROXIMITY)) {
             setting_pro.setVisibility(View.GONE);
         }
-
-        Switch pro = (Switch) findViewById(R.id.setting_pro);
+        pro = (Switch) findViewById(R.id.setting_pro);
         if (sharedPreferenceSingelton.getSavedBoolean(this, "Pro_Controls"))
             pro.setChecked(true);
         else
             pro.setChecked(false);
+
+        theme = (Switch) findViewById(R.id.switch_theme);
+        if (sharedPreferenceSingelton.getSavedBoolean(this, "Theme"))
+            theme.setChecked(true);
+        else
+            theme.setChecked(false);
+
         pro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (sharedPreferenceSingelton.getSavedBoolean(AppSettingActivity.this, "Pro_Controls")) {
                     sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Pro_Controls", false);
                     MainActivity.mSensorManager.unregisterListener(MainActivity.proximityDetector);
-                    Toast.makeText(AppSettingActivity.this, "Pro Controls Deactivated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AppSettingActivity.this, "Deactivated", Toast.LENGTH_SHORT).show();
                 } else {
                     sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Pro_Controls", true);
                     MainActivity.mSensorManager.registerListener(MainActivity.proximityDetector, MainActivity.mProximity, 2 * 1000 * 1000);
-                    Toast.makeText(AppSettingActivity.this, "Pro Controls Activated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AppSettingActivity.this, "Activated", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-        Switch theme = (Switch) findViewById(R.id.switch_theme);
-        if (sharedPreferenceSingelton.getSavedBoolean(this, "Theme"))
-            theme.setChecked(true);
-        else
-            theme.setChecked(false);
 
         theme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -124,38 +121,25 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        setting_equalizer.setOnClickListener(this);
-        setting_sleep.setOnClickListener(this);
-        setting_share_app.setOnClickListener(this);
-
-        setting_rate.setOnClickListener(this);
-
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-            case R.id.setting_equalizer:
-                openEqualizerDialog();
-                break;
-
-            case R.id.setting_sleep:
-                openSleepDialog();
-                break;
-
-            case R.id.setting_share:
-                shareAppLink();
-                break;
-
-            case R.id.setting_rate:
-                rateApp();
-                break;
-
+    public void changeThemeSwitch(View v){
+        if (theme.isChecked()) {
+            theme.setChecked(false);
+        } else {
+            theme.setChecked(true);
         }
     }
 
-    private void openSleepDialog() {
+    public void changeSkipieSwitch(View v){
+        if (pro.isChecked()) {
+            pro.setChecked(false);
+        } else {
+            pro.setChecked(true);
+        }
+    }
+
+    public void openSleepDialog(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.sleep_timer_dialog);
         dialog.show();
@@ -201,7 +185,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void openEqualizerDialog() {
+    public void openEqualizerDialog(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.equalizer_dialog);
         dialog.show();
@@ -226,7 +210,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void shareAppLink() {
+    public void shareAppLink(View v) {
         String message = "https://play.google.com/store/apps/details?id=com.riseapps.xmusic";
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
@@ -234,7 +218,7 @@ public class AppSettingActivity extends AppCompatActivity implements View.OnClic
         startActivity(Intent.createChooser(share, "Share via.."));
     }
 
-    private void rateApp() {
+    public void rateApp(View v) {
         final Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
         final Intent rateAppIntent = new Intent(Intent.ACTION_VIEW, uri);
 

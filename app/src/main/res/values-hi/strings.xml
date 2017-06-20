@@ -10,6 +10,9 @@
     <string name="action_refresh">गीत फिर से लाने के लिए</string>
     <string name="action_search">गीत की खोज</string>
     <string name="action_youtube">यूट्यूब पर गीत खोज</string>
+    <string name="app_walk1">तुल्यकारक, सोने का टाइमर, Skipie , थीम</string>
+    <string name="app_walk2">मुख्य प्लेयर को खोलने के लिए मिनी प्लेयर पर टैप करें</string>
+    <string name="app_walk3">यूट्यूब पर इस गाने को खोजना चाहते हैं?</string>
     <string name="cancel">रद्द</string>
     <string name="classical_preset">क्लासिक</string>
     <string name="create">बनाओ</string>

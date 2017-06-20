@@ -94,6 +94,9 @@
     <string name="theme">Theme</string>
     <string name="switch_betweem_the_light_and_dark_app_themes">App Restarts to switch the theme</string>
 
+    <string name="app_walk1">Equalizer, Sleep Timer, Skipie mode, Themes</string>
+    <string name="app_walk2">Tap on Mini Player to open Main Player</string>
+    <string name="app_walk3">Want to search this song on Youtube?</string>
     <!--AD UNIT ID'S-->
 
 

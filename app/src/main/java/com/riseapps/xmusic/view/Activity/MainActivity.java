@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -19,6 +20,7 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,6 +48,9 @@ import com.bumptech.glide.Glide;
 import com.claudiodegio.msv.OnSearchViewListener;
 import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -87,7 +92,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     public EqualizerView equalizerView;
     public boolean musicPlaying, isMusicShuffled = false;
-    public ImageButton play_pause, prev, next, repeat, shuffle;
+    public ImageButton prev, next, repeat, shuffle;
+    FloatingActionButton play_pause;
     //MiniPlayer items
     TextView title_mini, artist_mini;
     ImageButton play_pause_mini;
@@ -171,7 +177,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 public void onPlayerStatusChanged(int status) {
                     switch (status) {
                         case MusicService.PLAYING:
-                            play_pause.setImageResource(R.drawable.ic_pause);
+                            play_pause.setImageResource(R.drawable.pause);
                             play_pause_mini.setImageResource(R.drawable.ic_pause);
                             musicPlaying = true;
                             mWaveHelper.start();
@@ -179,7 +185,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             equalizerView.setVisibility(View.VISIBLE);
                             break;
                         case MusicService.PAUSED:
-                            play_pause.setImageResource(R.drawable.ic_play);
+                            play_pause.setImageResource(R.drawable.play);
                             play_pause_mini.setImageResource(R.drawable.ic_play);
                             musicPlaying = false;
                             mWaveHelper.cancel();
@@ -195,13 +201,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            play_pause.setImageResource(R.drawable.ic_play);
+            play_pause.setImageResource(R.drawable.play);
             play_pause_mini.setImageResource(R.drawable.ic_play);
             musicPlaying = false;
             mWaveHelper.cancel();
         }
     };
-
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -375,6 +380,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         toolbarPlayer = (Toolbar) findViewById(R.id.toolbar_player);
         toolbarPlayer.inflateMenu(R.menu.player_menu);
         toolbarPlayer.setNavigationIcon(R.drawable.ic_back);
+
         toolbarPlayer.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -471,7 +477,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         artist = (TextView) findViewById(R.id.artist);
         liked = (ImageView) findViewById(R.id.liked);
         album_art = (ImageView) findViewById(R.id.album_art);
-        play_pause = (ImageButton) findViewById(R.id.play_pause);
+        play_pause = (FloatingActionButton) findViewById(R.id.play_pause);
         next = (ImageButton) findViewById(R.id.next);
         prev = (ImageButton) findViewById(R.id.prev);
         shuffle = (ImageButton) findViewById(R.id.shuffle);
@@ -504,6 +510,46 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         equalizerView = (EqualizerView) findViewById(R.id.equalizer_view);
 
+
+        if(!sharedPreferenceSingleton.getSavedBoolean(this,"mainScreenSequence")) {
+           new TapTargetSequence(this).targets(
+                    TapTarget.forToolbarNavigationIcon(mToolbar,"Equalizer, Sleep Timer, Skipie mode, Themes")
+                            .dimColor(android.R.color.black)
+                            .outerCircleColor(R.color.colorAccentDark)
+                            .targetCircleColor(R.color.colorWhite)
+                            .transparentTarget(true)
+                            .textTypeface(Typeface.SANS_SERIF)
+                            .textColor(android.R.color.white)
+                            .targetRadius(20)
+                            .cancelable(true)
+                            .id(1),
+                    TapTarget.forView(album_art_mini,"Tap on Mini Player to open Main Player")
+                            .dimColor(android.R.color.black)
+                            .outerCircleColor(R.color.colorAccentDark)
+                            .targetCircleColor(R.color.colorWhite)
+                            .textTypeface(Typeface.SANS_SERIF)
+                            .transparentTarget(true)
+                            .textColor(R.color.colorWhite)
+                            .targetRadius(30)
+                            .id(2)
+            ).listener(new TapTargetSequence.Listener() {
+               @Override
+               public void onSequenceFinish() {
+
+               }
+
+               @Override
+               public void onSequenceStep(TapTarget tapTarget, boolean b) {
+                   if(tapTarget.id()==2)
+                    showMainPlayer();
+               }
+
+               @Override
+               public void onSequenceCanceled(TapTarget tapTarget) {
+               }
+           }).start();
+            sharedPreferenceSingleton.saveAs(this,"mainScreenSequence",true);
+        }
     }
 
     @Override
@@ -609,6 +655,18 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         miniPlayer.setVisibility(View.GONE);
         mToolbar.setVisibility(View.GONE);
         mainPlayer.startAnimation(new CustomAnimation().slide_up(MainActivity.this));
+        if(!sharedPreferenceSingleton.getSavedBoolean(MainActivity.this,"playerSequence")) {
+            new TapTargetSequence(this).target(
+                    TapTarget.forToolbarMenuItem(toolbarPlayer, R.id.youtube, "Want to search this song on Youtube?")
+                            .dimColor(android.R.color.black)
+                            .outerCircleColor(R.color.colorAccentDark)
+                            .targetCircleColor(R.color.whitePrimary)
+                            .transparentTarget(true)
+                            .textColor(android.R.color.white)
+                            .targetRadius(25)
+                            .id(1)).start();
+            sharedPreferenceSingleton.saveAs(MainActivity.this,"playerSequence",true);
+       }
 
     }
 
@@ -653,10 +711,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     @Override
     public void onQueryTextChange(String s) {
 
-    }
-
-    public void setListener(SongLikedListener mListener) {
-        this.mListener = mListener;
     }
 
     @Override
