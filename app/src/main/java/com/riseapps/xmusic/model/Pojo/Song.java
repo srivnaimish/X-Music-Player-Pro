@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class Song implements Parcelable{
     private long ID, duration;
     private String Name, Artist,Imagepath;
-    private boolean favourite;
+    private boolean favourite,isSelected=false;
 
     public Song(){
 
@@ -102,6 +102,13 @@ public class Song implements Parcelable{
         this.favourite = favourite;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     @Override
     public int describeContents() {

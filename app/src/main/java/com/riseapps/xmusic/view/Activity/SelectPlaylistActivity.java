@@ -72,15 +72,12 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_playlist);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
         hint = (TextView) findViewById(R.id.hint);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                * Add logic to add all the song to all the selected playlists. dataset - otherSKills hashmap.
-                 * This hashmap contains all the selected items.*/
+
                 Intent i = new Intent();
                 setResult(RESULT_CANCELED, i);
                 Toast.makeText(SelectPlaylistActivity.this, getString(R.string.did_not_select), Toast.LENGTH_SHORT).show();

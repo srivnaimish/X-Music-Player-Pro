@@ -5,6 +5,13 @@
     tools:context=".view.Activity.MainActivity">
 
     <item
+        android:id="@+id/delete"
+        android:title="@string/action_playlist"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="ifRoom"
+        />
+    <item
         android:id="@+id/playlist"
         android:title="@string/action_playlist"
         xmlns:app="http://schemas.android.com/apk/res-auto"

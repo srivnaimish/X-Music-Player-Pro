@@ -86,23 +86,23 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
         return albumList.size();
     }
 
+    class AlbumViewHolder extends RecyclerView.ViewHolder{
 
-}
+        ImageView imageView;
+        TextView name;
+        Context ctx;
+        Album album;
 
-class AlbumViewHolder extends RecyclerView.ViewHolder{
-
-    ImageView imageView;
-    TextView name;
-    Context ctx;
-    Album album;
-
-    AlbumViewHolder(final View view, Context context) {
-        super(view);
-        this.ctx = context;
-        imageView = (ImageView) view.findViewById(R.id.imageView);
-        name = (TextView) view.findViewById(R.id.name);
+        AlbumViewHolder(final View view, Context context) {
+            super(view);
+            this.ctx = context;
+            imageView = (ImageView) view.findViewById(R.id.imageView);
+            name = (TextView) view.findViewById(R.id.name);
+        }
     }
 }
+
+
 
 
 

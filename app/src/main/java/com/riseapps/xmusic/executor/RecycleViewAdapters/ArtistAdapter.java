@@ -75,27 +75,27 @@ public class ArtistAdapter extends RecyclerView.Adapter {
         return artistList.size();
     }
 
+    class ArtistViewHolder extends RecyclerView.ViewHolder {
 
-}
+        ImageView imageView;
+        TextView name;
+        Context ctx;
+        MainTextViewSub artistTextView;
 
-class ArtistViewHolder extends RecyclerView.ViewHolder {
+        Artist artist;
 
-    ImageView imageView;
-    TextView name;
-    Context ctx;
-    MainTextViewSub artistTextView;
+        ArtistViewHolder(View v, Context context) {
+            super(v);
+            this.ctx = context;
 
-    Artist artist;
+            name = (TextView) v.findViewById(R.id.name);
+            imageView= (ImageView) v.findViewById(R.id.artist_art_card);
+        }
 
-    ArtistViewHolder(View v, Context context) {
-        super(v);
-        this.ctx = context;
-
-        name = (TextView) v.findViewById(R.id.name);
-        imageView= (ImageView) v.findViewById(R.id.artist_art_card);
     }
 
 }
+
 
 
 

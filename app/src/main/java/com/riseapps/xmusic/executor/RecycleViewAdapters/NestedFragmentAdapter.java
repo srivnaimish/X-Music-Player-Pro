@@ -78,21 +78,20 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
         return songsList.size();
     }
 
+    class NestedSongViewHolder extends RecyclerView.ViewHolder {
 
-}
+        TextView name, artist;
+        private Context ctx;
+        Song song;
 
-class NestedSongViewHolder extends RecyclerView.ViewHolder {
+        NestedSongViewHolder(View v, Context context) {
+            super(v);
+            this.ctx = context;
 
-    TextView name, artist;
-    private Context ctx;
-    Song song;
+            name = (TextView) v.findViewById(R.id.name);
+            artist = (TextView) v.findViewById(R.id.artist);
+        }
 
-    NestedSongViewHolder(View v, Context context) {
-        super(v);
-        this.ctx = context;
-
-        name = (TextView) v.findViewById(R.id.name);
-        artist = (TextView) v.findViewById(R.id.artist);
     }
-
 }
+
