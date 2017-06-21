@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
@@ -145,11 +146,12 @@ public class SongAdapter extends RecyclerView.Adapter {
                     if (song.isSelected()) {
                         song.setSelected(false);
                         count--;
+                        adapterToActivityListener.onTrackLongPress(count,song.getID(),false);
                     } else {
                         song.setSelected(true);
                         count++;
+                        adapterToActivityListener.onTrackLongPress(count,song.getID(),true);
                     }
-                    adapterToActivityListener.onTrackLongPress(count);
                     songListCard.setCardBackgroundColor(song.isSelected() ? colorSelected : colorNormal);
                 } else {
                     mainListPlayingListener.onPlayingFromTrackList();
@@ -168,11 +170,11 @@ public class SongAdapter extends RecyclerView.Adapter {
             if (song.isSelected()) {
                 song.setSelected(false);
                 count--;
-                adapterToActivityListener.onTrackLongPress(count);
+                adapterToActivityListener.onTrackLongPress(count,song.getID(),false);
             } else {
                 song.setSelected(true);
                 count++;
-                adapterToActivityListener.onTrackLongPress(count);
+                adapterToActivityListener.onTrackLongPress(count,song.getID(),true);
             }
             songListCard.setCardBackgroundColor(song.isSelected() ? colorSelected : colorNormal);
             return true;

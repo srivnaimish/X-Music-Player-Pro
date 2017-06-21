@@ -437,7 +437,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     startActivityForResult(i, 2);
                 }
                 else {
-                    Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+
                 }
                 return true;
             }
@@ -735,9 +735,14 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             mToolbar.setVisibility(View.VISIBLE);
             miniPlayer.setVisibility(View.VISIBLE);
             String str = data.getStringExtra("selected_playlist");
-
+            long array[]=new long[selectedID.size()];
+            int c=0;
+            for(long id:selectedID) {
+                array[c] = id;
+                c++;
+            }
             if (!str.equalsIgnoreCase("")) {
-               // new MyApplication(MainActivity.this).getWritableDatabase().addMultipleSongToSinglePlaylist(str.replace(",", ""), array);
+                new MyApplication(MainActivity.this).getWritableDatabase().addMultipleSongToSinglePlaylist(str.replace(",", ""), array);
                 playlistRefreshListener.OnPlaylistRefresh();
             }
             toolbarContext.setVisibility(View.GONE);
@@ -778,9 +783,15 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     @Override
-    public void onTrackLongPress(int count) {
-        toolbar_context_title.setText(count +" Selected");
-        if(count==0){
+    public void onTrackLongPress(int c, long songId, boolean songAdded) {
+        toolbar_context_title.setText(c +" Selected");
+        if(songAdded){
+            selectedID.add(songId);
+        }
+        else {
+            selectedID.remove(songId);
+        }
+        if(c==0){
             toolbarContext.setVisibility(View.GONE);
             mToolbar.setVisibility(View.VISIBLE);
             miniPlayer.setVisibility(View.VISIBLE);
