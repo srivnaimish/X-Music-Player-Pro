@@ -48,7 +48,7 @@ public class Walkthrough extends AppCompatActivity {
     Async async = new Async();
     private static final int REQUEST_PERMISSION = 0;
     String[] permissionsRequired = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE};
+            Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     ArrayList<Song> songList = new ArrayList<>();
     ArrayList<Album> albumList = new ArrayList<>();
@@ -179,7 +179,7 @@ public class Walkthrough extends AppCompatActivity {
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.checkSelfPermission(this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED) {
+                    || ActivityCompat.checkSelfPermission(this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED|| ActivityCompat.checkSelfPermission(this, permissionsRequired[2]) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[0])
                         || ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[1])) {
                     Snackbar.make(findViewById(android.R.id.content),
@@ -208,7 +208,7 @@ public class Walkthrough extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_PERMISSION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED ) {
                     async.execute();
                 } else {
                     Snackbar.make(viewPager, R.string.permission_rationale,

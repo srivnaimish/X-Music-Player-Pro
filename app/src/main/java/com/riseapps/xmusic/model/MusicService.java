@@ -310,7 +310,7 @@ public class MusicService extends Service implements
             onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
         } catch (Exception e) {
             new MyApplication(this).getWritableDatabase().deleteSong(currSongID);
-            Toast.makeText(this, "Error Song Not Found.\nPlease Refresh the SongList", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Song Not Found", Toast.LENGTH_SHORT).show();
         }
 
 

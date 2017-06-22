@@ -100,6 +100,11 @@ public class SongAdapter extends RecyclerView.Adapter {
         this.mainListPlayingListener = mainListPlayingListener;
     }
 
+    public void delete(int position) {
+        songsList.remove(position);
+        notifyItemRemoved(position);
+      //  notifyItemRangeChanged(position, songsList.size());
+    }
 
     @Override
     public int getItemCount() {

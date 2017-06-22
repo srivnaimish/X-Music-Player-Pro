@@ -1,9 +1,11 @@
 package com.riseapps.xmusic.view.Activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -33,6 +35,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +56,7 @@ import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
+import com.riseapps.xmusic.executor.FilePathFromId;
 import com.riseapps.xmusic.executor.Interfaces.AdapterToActivityListener;
 import com.riseapps.xmusic.executor.Interfaces.AlbumRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ArtistRefreshListener;
@@ -76,7 +80,9 @@ import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 import com.riseapps.xmusic.view.Fragment.SongsFragment;
 import com.riseapps.xmusic.widgets.MainTextView;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -400,20 +406,14 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     startActivity(intent);
                     Toast.makeText(MainActivity.this, getString(R.string.opening_youtube), Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.share) {
-                    Uri mediaContentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                    String[] projection = new String[]{MediaStore.Audio.Media.DATA};
-                    String selection = MediaStore.Audio.Media._ID + "=?";
-                    String[] selectionArgs = new String[]{"" + song.getID()}; //This is the id you are looking for
-                    Cursor mediaCursor = getContentResolver().query(mediaContentUri, projection, selection, selectionArgs, null);
-                    if (mediaCursor != null && mediaCursor.getCount() >= 0) {
-                        mediaCursor.moveToPosition(0);
-                        String path = mediaCursor.getString(mediaCursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                        Uri uri = Uri.parse("file:///" + path);
+                    Uri uri=new FilePathFromId().pathFromID(MainActivity.this,song.getID());
+                    if(uri!=null) {
                         Intent share = new Intent(Intent.ACTION_SEND);
                         share.setType("audio/*");
                         share.putExtra(Intent.EXTRA_STREAM, uri);
                         startActivity(Intent.createChooser(share, "Share Sound File"));
                     }
+
                 }
                 return true;
             }
@@ -436,7 +436,26 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     i.putExtra("selection_type", "single_playlist");
                     startActivityForResult(i, 2);
                 }
-                else {
+                else if(item.getItemId() == R.id.delete){
+                    for(long id:selectedID){
+                    try {
+                        Uri uri = new FilePathFromId().pathFromID(MainActivity.this,id);
+                        File file=new File(uri.getPath());
+                        if(file.exists()) {
+                            file.delete();
+                            int rows=getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.Audio.Media._ID + "=" + id, null);
+                            new MyApplication(MainActivity.this).getWritableDatabase().deleteSong(id);
+                        }
+                    }
+                    catch (Exception e){
+                        //Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    }
+                    selectedID.clear();
+                    toolbarContext.setVisibility(View.GONE);
+                    mToolbar.setVisibility(View.VISIBLE);
+                    miniPlayer.setVisibility(View.VISIBLE);
+                    new RefreshAsync().execute();
 
                 }
                 return true;
@@ -783,7 +802,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     @Override
-    public void onTrackLongPress(int c, long songId, boolean songAdded) {
+    public void onTrackLongPress(int c, long songId ,boolean songAdded) {
         toolbar_context_title.setText(c +" Selected");
         if(songAdded){
             selectedID.add(songId);

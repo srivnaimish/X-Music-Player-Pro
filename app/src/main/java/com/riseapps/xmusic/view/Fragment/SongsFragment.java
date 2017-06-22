@@ -9,17 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.MainListPlayingListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
+import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by naimish on 11/3/17.
@@ -59,7 +62,7 @@ public class SongsFragment extends Fragment {
 
         songAllList = ((MainActivity) getActivity()).getCompleteSongList();
         if (songAllList.size() > 50) {
-            songMainList = new ArrayList<>(songAllList.subList(0, 50));
+            songMainList = new ArrayList<>(songAllList.subList(0, 30));
         } else {
             songMainList = songAllList;
         }
@@ -102,9 +105,10 @@ public class SongsFragment extends Fragment {
             @Override
             public void OnContextBackPressed() {
                 for(Song song:songMainList){
+                    if(song.isSelected())
                     song.setSelected(false);
-                    songsAdapter.count=0;
                 }
+                songsAdapter.count=0;
                 songsAdapter.notifyDataSetChanged();
             }
         });
@@ -132,9 +136,9 @@ public class SongsFragment extends Fragment {
     private void onScrolledToBottom() {
         if (songMainList.size() < songAllList.size()) {
             int x, y;
-            if ((songAllList.size() - songMainList.size()) >= 50) {
+            if ((songAllList.size() - songMainList.size()) >= 30) {
                 x = songMainList.size();
-                y = x + 50;
+                y = x + 30;
             } else {
                 x = songMainList.size();
                 y = x + songAllList.size() - songMainList.size();
