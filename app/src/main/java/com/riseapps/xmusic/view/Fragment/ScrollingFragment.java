@@ -229,7 +229,7 @@ public class ScrollingFragment extends Fragment {
                     playSongExec = new PlaySongExec(getContext(), 0);
                     playSongExec.startPlaying();
                 } else
-                    Snackbar.make(nestedScrollView, "No Songs Here to Play", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(nestedScrollView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -246,7 +246,7 @@ public class ScrollingFragment extends Fragment {
                     playSongExec.startPlaying();
                     new SharedPreferenceSingelton().saveAs(getActivity(), "Shuffle", true);
                 } else {
-                    Snackbar.make(nestedScrollView, "No Songs Here to Play", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(nestedScrollView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
                 }
             }
         });

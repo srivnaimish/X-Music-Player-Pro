@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -18,12 +19,15 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -127,6 +131,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private SongsFragment songFragment;
     private MainTextView toolbar_context_title;
 
+    private static final int REQUEST_PERMISSION = 0;
+    String[] permissionsRequired = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private ArrayList<Long> selectedID=new ArrayList<>();
 
@@ -137,7 +143,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     private SharedPreferenceSingelton sharedPreferenceSingleton = new SharedPreferenceSingelton();
 
-    ArrayList<Song> completeList;
+    public ArrayList<Song> completeList;
 
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
         @Override
@@ -217,7 +223,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+        checkPermission();
+        toolbarsInitiallize();
         initiallize();
 
         prev.setOnClickListener(new View.OnClickListener() {
@@ -353,125 +360,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         intentFilter.addAction("Stop");
         registerReceiver(stopReceiver, intentFilter);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_settings);
-
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(MainActivity.this, AppSettingActivity.class), 1);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            }
-        });
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.favourites) {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    ScrollingFragment scrollingFragment = new ScrollingFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Action", "Favourites");
-                    scrollingFragment.setArguments(bundle);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
-                    fragmentTransaction.commit();
-                } else if (item.getItemId() == R.id.refresh) {
-                    new RefreshAsync().execute();
-                }
-                return true;
-            }
-        });
-
-        toolbarPlayer = (Toolbar) findViewById(R.id.toolbar_player);
-        toolbarPlayer.inflateMenu(R.menu.player_menu);
-        toolbarPlayer.setNavigationIcon(R.drawable.ic_back);
-
-        toolbarPlayer.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Song song = songList.get(musicService.getCurrentIndex());
-                if (item.getItemId() == R.id.playlist) {
-                    Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
-                    i.putExtra("selection_type", "multiple_playlist");
-                    startActivityForResult(i, 1);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                } else if (item.getItemId() == R.id.youtube) {
-                    if (musicPlaying) {
-                        musicService.togglePlay();
-                    }
-                    Intent intent = new Intent(Intent.ACTION_SEARCH);
-                    intent.setPackage("com.google.android.youtube");
-                    intent.putExtra("query", song.getName());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    Toast.makeText(MainActivity.this, getString(R.string.opening_youtube), Toast.LENGTH_SHORT).show();
-                } else if (item.getItemId() == R.id.share) {
-                    Uri uri=new FilePathFromId().pathFromID(MainActivity.this,song.getID());
-                    if(uri!=null) {
-                        Intent share = new Intent(Intent.ACTION_SEND);
-                        share.setType("audio/*");
-                        share.putExtra(Intent.EXTRA_STREAM, uri);
-                        startActivity(Intent.createChooser(share, "Share Sound File"));
-                    }
-
-                }
-                return true;
-            }
-        });
-        toolbarPlayer.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideMainPlayer();
-            }
-        });
-        toolbarContext = (Toolbar) findViewById(R.id.toolbar_context);
-        toolbarContext.inflateMenu(R.menu.context_menu);
-        toolbar_context_title = (MainTextView) findViewById(R.id.toolbar_context_title);
-        toolbarContext.setNavigationIcon(R.drawable.ic_back);
-        toolbarContext.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.playlist) {
-                    Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
-                    i.putExtra("selection_type", "single_playlist");
-                    startActivityForResult(i, 2);
-                }
-                else if(item.getItemId() == R.id.delete){
-                    for(long id:selectedID){
-                    try {
-                        Uri uri = new FilePathFromId().pathFromID(MainActivity.this,id);
-                        File file=new File(uri.getPath());
-                        if(file.exists()) {
-                            file.delete();
-                            int rows=getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.Audio.Media._ID + "=" + id, null);
-                            new MyApplication(MainActivity.this).getWritableDatabase().deleteSong(id);
-                        }
-                    }
-                    catch (Exception e){
-                        //Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    }
-                    selectedID.clear();
-                    toolbarContext.setVisibility(View.GONE);
-                    mToolbar.setVisibility(View.VISIBLE);
-                    miniPlayer.setVisibility(View.VISIBLE);
-                    new RefreshAsync().execute();
-
-                }
-                return true;
-            }
-        });
-        toolbarContext.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toolbarContext.setVisibility(View.GONE);
-                mToolbar.setVisibility(View.VISIBLE);
-                miniPlayer.setVisibility(View.VISIBLE);
-                songRefreshListener.OnContextBackPressed();
-            }
-        });
-
-
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -570,6 +458,126 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
            }).start();
             sharedPreferenceSingleton.saveAs(this,"mainScreenSequence",true);
         }
+    }
+
+    private void toolbarsInitiallize(){
+        mToolbar.setNavigationIcon(R.drawable.ic_settings);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this, AppSettingActivity.class), 1);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.favourites) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    ScrollingFragment scrollingFragment = new ScrollingFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Action", "Favourites");
+                    scrollingFragment.setArguments(bundle);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
+                    fragmentTransaction.commit();
+                } else if (item.getItemId() == R.id.refresh) {
+                    new RefreshAsync().execute();
+                }
+                return true;
+            }
+        });
+
+        toolbarPlayer = (Toolbar) findViewById(R.id.toolbar_player);
+        toolbarPlayer.inflateMenu(R.menu.player_menu);
+        toolbarPlayer.setNavigationIcon(R.drawable.ic_back);
+
+        toolbarPlayer.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Song song = songList.get(musicService.getCurrentIndex());
+                if (item.getItemId() == R.id.playlist) {
+                    Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
+                    i.putExtra("selection_type", "multiple_playlist");
+                    startActivityForResult(i, 1);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                } else if (item.getItemId() == R.id.youtube) {
+                    if (musicPlaying) {
+                        musicService.togglePlay();
+                    }
+                    Intent intent = new Intent(Intent.ACTION_SEARCH);
+                    intent.setPackage("com.google.android.youtube");
+                    intent.putExtra("query", song.getName());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    Toast.makeText(MainActivity.this, getString(R.string.opening_youtube), Toast.LENGTH_SHORT).show();
+                } else if (item.getItemId() == R.id.share) {
+                    Uri uri=new FilePathFromId().pathFromID(MainActivity.this,song.getID());
+                    if(uri!=null) {
+                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.setType("audio/*");
+                        share.putExtra(Intent.EXTRA_STREAM, uri);
+                        startActivity(Intent.createChooser(share, "Share Sound File"));
+                    }
+
+                }
+                return true;
+            }
+        });
+        toolbarPlayer.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideMainPlayer();
+            }
+        });
+        toolbarContext = (Toolbar) findViewById(R.id.toolbar_context);
+        toolbarContext.inflateMenu(R.menu.context_menu);
+        toolbar_context_title = (MainTextView) findViewById(R.id.toolbar_context_title);
+        toolbarContext.setNavigationIcon(R.drawable.ic_back);
+        toolbarContext.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.playlist) {
+                    Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
+                    i.putExtra("selection_type", "single_playlist");
+                    startActivityForResult(i, 2);
+                }
+                else if(item.getItemId() == R.id.delete){
+                    for(long id:selectedID){
+                        try {
+                            Uri uri = new FilePathFromId().pathFromID(MainActivity.this,id);
+                            File file=new File(uri.getPath());
+                            if(file.exists()) {
+                                file.delete();
+                                int rows=getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.Audio.Media._ID + "=" + id, null);
+                                new MyApplication(MainActivity.this).getWritableDatabase().deleteSong(id);
+                            }
+                        }
+                        catch (Exception e){
+                            Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    selectedID.clear();
+                    toolbarContext.setVisibility(View.GONE);
+                    mToolbar.setVisibility(View.VISIBLE);
+                    miniPlayer.setVisibility(View.VISIBLE);
+                    new RefreshAsync().execute();
+
+                }
+                return true;
+            }
+        });
+        toolbarContext.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toolbarContext.setVisibility(View.GONE);
+                mToolbar.setVisibility(View.VISIBLE);
+                miniPlayer.setVisibility(View.VISIBLE);
+                songRefreshListener.OnContextBackPressed();
+            }
+        });
     }
 
     @Override
@@ -929,5 +937,27 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     };
 
 
+    public void checkPermission() {
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[0])) {
+                    Snackbar.make(findViewById(android.R.id.content),
+                            "Permission required if you want to delete songs",
+                            Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ActivityCompat.requestPermissions(MainActivity.this,
+                                            permissionsRequired,
+                                            REQUEST_PERMISSION);
+                                }
+                            }).show();
+                } else {
+                    ActivityCompat.requestPermissions(this, permissionsRequired, REQUEST_PERMISSION);
+                }
+            }
+        }
+    }
 }
 

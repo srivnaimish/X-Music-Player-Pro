@@ -96,7 +96,8 @@ public class SongsFragment extends Fragment {
                 } else {
                     songMainList = songAllList;
                 }
-                ((MainActivity) getActivity()).setSongs(songAllList);
+                ((MainActivity) getActivity()).setSongs(arrayList);
+                ((MainActivity) getActivity()).completeList=arrayList;
                 songsAdapter = new SongAdapter(getActivity(), songMainList, recyclerView);
                 recyclerView.setAdapter(songsAdapter);
 
