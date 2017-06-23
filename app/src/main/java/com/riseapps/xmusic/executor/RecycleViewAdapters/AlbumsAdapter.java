@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.Pojo.Album;
 
@@ -64,17 +65,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
         if(Build.VERSION.SDK_INT>=21){
             ((AlbumViewHolder) holder).imageView.setTransitionName(name);
         }
-
-        if (!imagepath.equalsIgnoreCase("no_image")) {
             Glide.with(c).load(imagepath)
-                    .centerCrop()
                     .dontAnimate()
-                    .into(((AlbumViewHolder) holder).imageView);
-        } else {
-            Glide.with(c).load(R.drawable.dummy)
                     .centerCrop()
+                    .placeholder(R.drawable.dummy)
+                    .error(R.drawable.dummy)
                     .into(((AlbumViewHolder) holder).imageView);
-        }
+
 
         ((AlbumViewHolder) holder).name.setText(name);
         ((AlbumViewHolder) holder).album = album;

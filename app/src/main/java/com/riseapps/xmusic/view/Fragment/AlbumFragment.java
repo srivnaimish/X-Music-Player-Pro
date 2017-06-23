@@ -1,13 +1,21 @@
 package com.riseapps.xmusic.view.Fragment;
 
+import android.content.ContentUris;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.GridLayoutManager;
@@ -37,15 +45,19 @@ import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.ArrayList;
 
-public class AlbumFragment extends Fragment {
+public class AlbumFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-    SharedPreferenceSingelton sharedPreferenceSingelton;
+
     RecyclerView recyclerView;
-    ArrayList<Album> albumMainList = new ArrayList<>();
-    ArrayList<Album> albumAllList = new ArrayList<>();
+    ArrayList<Album> albumList = new ArrayList<>();
     AlbumsAdapter albumAdapter;
+    private static final int ALBUM_LOADER = 3;
+    private SharedPreferenceSingelton sharedPreferenceSingelton;
+    final Uri sArtworkUri = Uri
+            .parse("content://media/external/audio/albumart");
+
 
     public AlbumFragment() {
         // Required empty public constructor
@@ -68,18 +80,7 @@ public class AlbumFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_album, container, false);
-        sharedPreferenceSingelton = new SharedPreferenceSingelton();
 
-        String albumJson = getActivity().getIntent().getStringExtra("albumList");
-        albumAllList = new Gson().fromJson(albumJson, new TypeToken<ArrayList<Album>>() {
-        }.getType());
-
-        if (albumAllList.size() > 20) {
-            albumMainList = new ArrayList<>(albumAllList.subList(0, 20));
-
-        } else {
-            albumMainList = albumAllList;
-        }
         recyclerView = (RecyclerView) v.findViewById(R.id.albums);
         int spanCount = 2;
         int spacing = 5;
@@ -88,61 +89,27 @@ public class AlbumFragment extends Fragment {
         recyclerView.setNestedScrollingEnabled(false);
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
         recyclerView.setLayoutManager(grid);
-        albumAdapter = new AlbumsAdapter(getActivity(), albumMainList, recyclerView);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (!recyclerView.canScrollVertically(1))
-                    onScrolledToBottom();
-            }
-        });
-        recyclerView.setAdapter(albumAdapter);
-
-        ((MainActivity) getActivity()).setAlbumRefreshListener(new AlbumRefreshListener() {
-
-            @Override
-            public void OnAlbumRefresh(ArrayList<Album> arrayList) {
-                albumAllList = arrayList;
-                if (albumAllList.size() > 20) {
-                    albumMainList = new ArrayList<>(albumAllList.subList(0, 20));
-
-                } else {
-                    albumMainList = albumAllList;
-                }
-                albumAdapter = new AlbumsAdapter(getActivity(), albumMainList, recyclerView);
-                recyclerView.setAdapter(albumAdapter);
-            }
-
-        });
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                String imageTransition="";
-                ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-                ScrollingFragment scrollingFragment=new ScrollingFragment();
+                ScrollingFragment scrollingFragment = new ScrollingFragment();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    setSharedElementReturnTransition(TransitionInflater.from(
-                            getActivity()).inflateTransition(android.R.transition.move));
                     setExitTransition(TransitionInflater.from(
                             getActivity()).inflateTransition(android.R.transition.fade));
-
-                    scrollingFragment.setSharedElementEnterTransition(TransitionInflater.from(
-                            getActivity()).inflateTransition(android.R.transition.move));
                     scrollingFragment.setEnterTransition(TransitionInflater.from(
                             getActivity()).inflateTransition(android.R.transition.fade));
-                    imageTransition=imageView.getTransitionName();
                 }
                 Bundle bundle = new Bundle();
-                bundle.putString("Name", albumAllList.get(position).getName());
-                bundle.putString("Imagepath", albumAllList.get(position).getImagepath());
-                bundle.putString("Action", "Album");
+                bundle.putLong("ID", albumList.get(position).getId());
+                bundle.putString("Name", albumList.get(position).getName());
+                bundle.putString("Imagepath", albumList.get(position).getImagepath());
+                bundle.putString("Action", "Albums");
                 scrollingFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.drawerLayout,scrollingFragment)
+                        .replace(R.id.drawerLayout, scrollingFragment)
                         .addToBackStack(null)
-                        .addSharedElement(imageView, imageTransition)
                         .commit();
             }
 
@@ -152,31 +119,45 @@ public class AlbumFragment extends Fragment {
             }
         }));
 
-
         return v;
     }
 
-    private void onScrolledToBottom() {
-        if (albumMainList.size() < albumAllList.size()) {
-            int x = 0, y = 0;
-            if ((albumAllList.size() - albumMainList.size()) >= 20) {
-                x = albumMainList.size();
-                y = x + 20;
-            } else {
-                x = albumMainList.size();
-                y = x + albumAllList.size() - albumMainList.size();
-            }
-            for (int i = x; i < y; i++) {
-                albumMainList.add(albumAllList.get(i));
-            }
-            recyclerView.post(new Runnable() {
-                public void run() {
-                    albumAdapter.notifyDataSetChanged();
-                }
-            });
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        }
+        getActivity().getSupportLoaderManager().initLoader(ALBUM_LOADER, null, this);
 
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri musicUri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+        return new CursorLoader(getContext(), musicUri, null, null, null, MediaStore.Audio.Media.ALBUM + " COLLATE NOCASE ASC");
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data != null && data.moveToFirst()) {
+            do {
+                long album_id = data.getLong(data.getColumnIndex(MediaStore.Audio.Albums._ID));
+                String album = data.getString(data.getColumnIndex(MediaStore.Audio.Albums.ALBUM));
+
+                Uri uri = ContentUris.withAppendedId(sArtworkUri, album_id);
+                if (album.length() > 40)
+                    album = album.substring(0, 32) + "...";
+                albumList.add(new Album(album_id, album, uri.toString()));
+            }
+            while (data.moveToNext());
+            data.close();
+        }
+        albumAdapter = new AlbumsAdapter(getActivity(), albumList, recyclerView);
+        recyclerView.setAdapter(albumAdapter);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
 }

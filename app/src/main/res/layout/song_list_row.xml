@@ -29,7 +29,6 @@
             android:layout_marginBottom="@dimen/size8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/size8dp"
-            app:cardElevation="4dp"
             app:srcCompat="@drawable/empty"
             />
 

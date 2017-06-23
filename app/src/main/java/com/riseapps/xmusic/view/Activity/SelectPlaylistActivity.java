@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.component.TagToken.customviews.TokenCompleteTextView;
@@ -205,7 +207,9 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
     }
 
     private void prepareTags() throws Exception {
-        ArrayList<Playlist> playlists = new MyApplication(SelectPlaylistActivity.this).getWritableDatabase().readPlaylists();
+        String playlistJson=sharedPreferenceSingelton.getSavedString(this,"PlaylistNames");
+        ArrayList<Playlist> playlists=new Gson().fromJson(playlistJson, new TypeToken<ArrayList<Playlist>>() {
+        }.getType());
         for (int i = 0; i < playlists.size(); i++) {
             skillFactoryHashMap.put(playlists.get(i).getName(), 0);
         }

@@ -20,30 +20,23 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.executor.MyApplication;
-import com.riseapps.xmusic.executor.UpdateSongs;
-import com.riseapps.xmusic.model.Pojo.Album;
-import com.riseapps.xmusic.model.Pojo.Artist;
-import com.riseapps.xmusic.model.Pojo.Playlist;
-import com.riseapps.xmusic.model.Pojo.Song;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class SplashScreen extends AppCompatActivity {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-
+/*
     ArrayList<Album> albumList = new ArrayList<>();
-    ArrayList<Artist> artistList = new ArrayList<>();
+    ArrayList<Artist> artistList = new ArrayList<>();*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
      //   setContentView(R.layout.splash_screen);
         if (new SharedPreferenceSingelton().getSavedBoolean(SplashScreen.this, "opened_before")) {
-           new Async().execute();
+            startActivity(new Intent(SplashScreen.this, MainActivity.class));
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            finish();
         } else {
             startActivity(new Intent(SplashScreen.this, Walkthrough.class));
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -59,14 +52,14 @@ public class SplashScreen extends AppCompatActivity {
         super.onResume();
     }
 
-    private class Async extends AsyncTask<Void, Void, Void> {
+    /*private class Async extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
 
-            artistList = new MyApplication(SplashScreen.this).getWritableDatabase().readArtists();
+         *//*   artistList = new MyApplication(SplashScreen.this).getWritableDatabase().readArtists();
             albumList = new MyApplication(SplashScreen.this).getWritableDatabase().readAlbums();
-
+*//*
             return null;
         }
 
@@ -87,6 +80,6 @@ public class SplashScreen extends AppCompatActivity {
             finish();
             super.onPostExecute(aVoid);
         }
-    }
+    }*/
 
 }

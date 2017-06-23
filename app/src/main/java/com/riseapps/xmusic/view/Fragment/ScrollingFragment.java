@@ -1,14 +1,20 @@
 package com.riseapps.xmusic.view.Fragment;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,31 +55,28 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ScrollingFragment extends Fragment {
+public class ScrollingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    ProgressBar progressBar;
     NestedScrollView nestedScrollView;
     // views
+    SharedPreferenceSingelton sharedPreferenceSingelton;
     String Name, Imagepath = null, Action;
     ImageView imageView;
-    private ImageView circleAlbumArt;
-    MainTextViewSub name;
-    MainTextView empty;
+    TextView name, empty;
+    long id;
     RecyclerView recyclerView;
     private Button playAllButton, shuffleButton;
 
-    ArrayList<Song> songAllArrayList = new ArrayList<>();
     ArrayList<Song> songMainArrayList;
     NestedFragmentAdapter nestedFragmentAdapter;
     private PlaySongExec playSongExec;
 
 
     private OnFragmentInteractionListener mListener;
-    private ArrayList<Song> songAllList;
 
     public ScrollingFragment() {
         // Required empty public constructor
@@ -83,6 +86,7 @@ public class ScrollingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            id = getArguments().getLong("ID");
             Name = getArguments().getString("Name");
             Imagepath = getArguments().getString("Imagepath");
             Action = getArguments().getString("Action");
@@ -94,54 +98,40 @@ public class ScrollingFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_scrolling, container, false);
-        nestedScrollView = (NestedScrollView) rootView.findViewById(R.id.nestedScrollView);
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         imageView = (ImageView) rootView.findViewById(R.id.imageView);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        circleAlbumArt = (ImageView) rootView.findViewById(R.id.album_art);
+        ImageView circleAlbumArt = (ImageView) rootView.findViewById(R.id.album_art);
         name = (MainTextViewSub) rootView.findViewById(R.id.type_name);
         empty = (MainTextView) rootView.findViewById(R.id.empty);
         playAllButton = (Button) rootView.findViewById(R.id.play_all_button);
         shuffleButton = (Button) rootView.findViewById(R.id.shuffle_button);
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            circleAlbumArt.setTransitionName(Name);
-        }
-
+        songMainArrayList = new ArrayList<>();
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
         if (Name != null) {
             name.setText(Name);
         } else {
-            name.setText("Favourites");
+            name.setText(getString(R.string.action_favourites));
         }
 
-        if (Imagepath != null && !Imagepath.equalsIgnoreCase("no_image")) {
-            Glide.with(getContext()).load(Uri.parse(Imagepath))
-                    .crossFade()
-                    .into(imageView);
-
-            Glide.with(getContext()).load(Uri.parse(Imagepath))
-                    .dontAnimate()
-                    .into(circleAlbumArt);
-        } else {
-            circleAlbumArt.setImageResource(R.drawable.ic_play);
+        if (Imagepath == null) {
+            circleAlbumArt.setImageResource(R.drawable.play);
             Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/09/08/21/09/piano-1655558_960_720.jpg")
                     .crossFade()
                     .placeholder(R.drawable.ic_splash)
                     .into(imageView);
+        } else {
+            Glide.with(getContext()).load(Uri.parse(Imagepath))
+                    .crossFade()
+                    .placeholder(R.drawable.dummy)
+                    .into(imageView);
+
+            Glide.with(getContext()).load(Uri.parse(Imagepath))
+                    .dontAnimate()
+                    .placeholder(ContextCompat.getDrawable(getActivity(), R.drawable.play))
+                    .into(circleAlbumArt);
         }
 
-        if (Action.equalsIgnoreCase("Album")) {
-            songAllArrayList = new MyApplication(getActivity()).getWritableDatabase().readAlbumSongs(Name);
-        } else if (Action.equalsIgnoreCase("Artists"))
-            songAllArrayList = new MyApplication(getActivity()).getWritableDatabase().readArtistSongs(Name);
-        else if (Action.equalsIgnoreCase("Playlists")) {
-            songAllArrayList = new MyApplication(getActivity()).getWritableDatabase().readSongsFromPlaylist(Name);
-        } else
-            songAllArrayList = new MyApplication(getActivity()).getWritableDatabase().readFavouriteSongs();
 
-        if (songAllArrayList.size() == 0) {
-            empty.setVisibility(View.VISIBLE);
-        }
         int spanCount = 1; // 2 columns
         int spacing = 20; // 50px
 
@@ -149,66 +139,17 @@ public class ScrollingFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        if (songAllArrayList.size() > 20) {
-            songMainArrayList = new ArrayList<>(songAllArrayList.subList(0, 20));
-
-        } else {
-            songMainArrayList = songAllArrayList;
-        }
         nestedFragmentAdapter = new NestedFragmentAdapter(getActivity(), songMainArrayList, recyclerView);
 
-        nestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                View view = (View) nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
-                int diff = (view.getBottom() - (nestedScrollView.getHeight() + nestedScrollView
-                        .getScrollY()));
 
-                if (diff == 0) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (songMainArrayList.size() < songAllArrayList.size()) {
-                                int x = 0, y = 0;
-                                if ((songAllArrayList.size() - songMainArrayList.size()) >= 20) {
-                                    x = songMainArrayList.size();
-                                    y = x + 20;
-                                } else {
-                                    x = songMainArrayList.size();
-                                    y = x + songAllArrayList.size() - songMainArrayList.size();
-                                }
-
-                                for (int i = x; i < y; i++) {
-                                    songMainArrayList.add(songAllArrayList.get(i));
-                                    nestedFragmentAdapter.notifyDataSetChanged();
-
-                                }
-                            }
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }, 1500);
-
-
-                }
-            }
-        });
         recyclerView.setAdapter(nestedFragmentAdapter);
 
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if ((((MainActivity) getActivity()).getSongs() != songAllArrayList)) {
-                    Toast.makeText(getContext(), getContext().getString(R.string.now_playing) + " " + name.getText().toString(), Toast.LENGTH_SHORT).show();
-                    ((MainActivity) getActivity()).setSongs(songAllArrayList);
-                    ((MainActivity) getActivity()).getMusicService().setSongs(songAllArrayList);
-                }
-                playSongExec = new PlaySongExec(getContext(), position);
-                playSongExec.startPlaying();
+                playFromThisFragment();
             }
 
             @Override
@@ -220,41 +161,48 @@ public class ScrollingFragment extends Fragment {
         playAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (songAllArrayList.size() != 0) {
-                    if ((((MainActivity) getActivity()).getSongs() != songAllArrayList)) {
-                        Toast.makeText(getContext(), getContext().getString(R.string.playing_all) + " " + name.getText().toString(), Toast.LENGTH_SHORT).show();
-                        ((MainActivity) getActivity()).setSongs(songAllArrayList);
-                        ((MainActivity) getActivity()).getMusicService().setSongs(songAllArrayList);
-                    }
-                    playSongExec = new PlaySongExec(getContext(), 0);
-                    playSongExec.startPlaying();
-                } else
-                    Snackbar.make(nestedScrollView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
+
             }
         });
 
         shuffleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (songAllArrayList.size() != 0) {
-                    if ((((MainActivity) getActivity()).getSongs() != songAllArrayList)) {
+                if (songMainArrayList.size() != 0) {
+                    if ((((MainActivity) getActivity()).getSongs() != songMainArrayList)) {
                         Toast.makeText(getContext(), getContext().getString(R.string.playing_all) + " " + name.getText().toString(), Toast.LENGTH_SHORT).show();
-                        ((MainActivity) getActivity()).setSongs(songAllArrayList);
-                        ((MainActivity) getActivity()).getMusicService().setSongs(songAllArrayList);
+                        ((MainActivity) getActivity()).setSongs(songMainArrayList);
+                        ((MainActivity) getActivity()).getMusicService().setSongs(songMainArrayList);
                     }
                     playSongExec = new PlaySongExec(getContext(), 0);
                     playSongExec.startPlaying();
                     new SharedPreferenceSingelton().saveAs(getActivity(), "Shuffle", true);
-                } else {
+                } else
                     Snackbar.make(nestedScrollView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
-                }
             }
         });
 
         return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (Action.equalsIgnoreCase("Favourites")) {
+            //TODO FETCH FROM DB
+            if (songMainArrayList.size() == 0) {
+                empty.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (sharedPreferenceSingelton.getSavedBoolean(getContext(), "Loader"))
+                getActivity().getSupportLoaderManager().restartLoader(4, null, this);
+            else {
+                getActivity().getSupportLoaderManager().initLoader(4, null, this);
+                sharedPreferenceSingelton.saveAs(getContext(), "Loader", true);
+            }
+        }
+    }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -278,9 +226,62 @@ public class ScrollingFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String selection = "";
+        if (Action.equalsIgnoreCase("Albums")) {
+            selection = MediaStore.Audio.Media.ALBUM_ID + "=" + this.id;
+        } else if (Action.equalsIgnoreCase("Artists")) {
+            selection = MediaStore.Audio.Media.ARTIST_ID + "=" + this.id;
+        }
+        return new CursorLoader(getContext(), musicUri, null, selection, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        int textLimit = 26;
+        if (data != null && data.moveToFirst()) {
+            do {
+                long id = data.getLong(data.getColumnIndex(MediaStore.Audio.Media._ID));
+                long duration = data.getLong(data.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
+                String title = data.getString(data.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                String artist = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                String imagepath = "content://media/external/audio/media/" + id + "/albumart";
+                if (title.length() > 27)
+                    title = title.substring(0, textLimit) + "...";
+                if (artist.length() > 35)
+                    artist = artist.substring(0, 30) + "...";
+                songMainArrayList.add(new Song(id, duration, title, artist, imagepath, false));
+            }
+            while (data.moveToNext());
+            data.close();
+        }
+        nestedFragmentAdapter = new NestedFragmentAdapter(getContext(), songMainArrayList, recyclerView);
+        recyclerView.setAdapter(nestedFragmentAdapter);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        songMainArrayList = null;
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    void playFromThisFragment(){
+        if (songMainArrayList.size() != 0) {
+            if ((((MainActivity) getActivity()).getSongs() != songMainArrayList)) {
+                Toast.makeText(getContext(), getContext().getString(R.string.now_playing) + " " + name.getText().toString(), Toast.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).setSongs(songMainArrayList);
+                ((MainActivity) getActivity()).getMusicService().setSongs(songMainArrayList);
+            }
+            playSongExec = new PlaySongExec(getContext(), 0);
+            playSongExec.startPlaying();
+        } else
+            Snackbar.make(nestedScrollView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
     }
 
 }

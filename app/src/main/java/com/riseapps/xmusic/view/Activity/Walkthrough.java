@@ -28,7 +28,6 @@ import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.MyApplication;
-import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.model.Pojo.Song;
@@ -39,21 +38,12 @@ import java.util.ArrayList;
 public class Walkthrough extends AppCompatActivity {
 
     private ViewPager viewPager;
-    private MyViewPagerAdapter myViewPagerAdapter;
     private int[] layouts;
     private Button btn1, btn2, btn3;
-    private LinearLayout loading;
-    boolean songs_present;
 
-    Async async = new Async();
     private static final int REQUEST_PERMISSION = 0;
     String[] permissionsRequired = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-    ArrayList<Song> songList = new ArrayList<>();
-    ArrayList<Album> albumList = new ArrayList<>();
-    ArrayList<Artist> artistList = new ArrayList<>();
-    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,46 +58,25 @@ public class Walkthrough extends AppCompatActivity {
         btn3 = (Button) findViewById(R.id.bt3);
 
 
-        loading = (LinearLayout) findViewById(R.id.loading);
-
         layouts = new int[]{
                 R.layout.walkthrough1,
                 R.layout.walkthrough2,
                 R.layout.walkthrough3};
 
-        myViewPagerAdapter = new MyViewPagerAdapter();
+        MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (async.getStatus() == AsyncTask.Status.FINISHED) {
-                    launchHomeScreen();
-                } else {
-                    if (loading.getVisibility() == View.GONE)
-                        loading.setVisibility(View.VISIBLE);
-                }
+                moveToMain();
 
             }
         });
 
         checkPermission();
 
-
-    }
-
-
-    private void launchHomeScreen() {
-        //if (async.getStatus() == AsyncTask.Status.FINISHED) {
-        if (!songs_present) {
-            openEmptyStateDialog();
-        } else {
-            new SharedPreferenceSingelton().saveAs(Walkthrough.this, "opened_before", true);
-            startActivity(intent);
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            finish();
-        }
 
     }
 
@@ -196,11 +165,7 @@ public class Walkthrough extends AppCompatActivity {
                 } else {
                     ActivityCompat.requestPermissions(this, permissionsRequired, REQUEST_PERMISSION);
                 }
-            } else {
-                async.execute();
             }
-        } else {
-            async.execute();
         }
     }
 
@@ -209,7 +174,7 @@ public class Walkthrough extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED ) {
-                    async.execute();
+                    moveToMain();
                 } else {
                     Snackbar.make(viewPager, R.string.permission_rationale,
                             Snackbar.LENGTH_INDEFINITE)
@@ -226,43 +191,10 @@ public class Walkthrough extends AppCompatActivity {
         }
     }
 
-    private class Async extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            songs_present = new UpdateSongs(Walkthrough.this).getSongList();
-
-            //songList = new MyApplication(Walkthrough.this).getWritableDatabase().readSongs();
-            artistList = new MyApplication(Walkthrough.this).getWritableDatabase().readArtists();
-            albumList = new MyApplication(Walkthrough.this).getWritableDatabase().readAlbums();
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            intent = new Intent(Walkthrough.this, MainActivity.class);
-            Gson gson = new Gson();
-
-            // String songJson = gson.toJson(songList, type);
-            Type type = new TypeToken<ArrayList<Album>>() {
-            }.getType();
-            String albumJson = gson.toJson(albumList, type);
-            type = new TypeToken<ArrayList<Artist>>() {
-            }.getType();
-            String artistJson = gson.toJson(artistList, type);
-            // intent.putExtra("songList", songJson);
-            intent.putExtra("albumList", albumJson);
-            intent.putExtra("artistList", artistJson);
-            if (loading.getVisibility() == View.VISIBLE)
-                launchHomeScreen();
-        }
-    }
-
-    public void openEmptyStateDialog() {
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.empty_state_dialog);
-        dialog.show();
-
+    public void moveToMain(){
+        new SharedPreferenceSingelton().saveAs(Walkthrough.this, "opened_before", true);
+        startActivity(new Intent(Walkthrough.this, MainActivity.class));
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        finish();
     }
 }

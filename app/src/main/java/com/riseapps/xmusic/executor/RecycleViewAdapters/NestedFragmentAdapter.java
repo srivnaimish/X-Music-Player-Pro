@@ -18,17 +18,18 @@ import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.model.Pojo.Song;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class NestedFragmentAdapter extends RecyclerView.Adapter {
 
-    private List<Song> songsList;
+    private ArrayList<Song> songsList;
     Context c;
 
 
-    public NestedFragmentAdapter(Context context, List<Song> songs, RecyclerView recyclerView) {
+    public NestedFragmentAdapter(Context context, ArrayList<Song> songs, RecyclerView recyclerView) {
         songsList = songs;
 
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {

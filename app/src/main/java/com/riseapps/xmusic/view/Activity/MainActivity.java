@@ -52,6 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.claudiodegio.msv.OnSearchViewListener;
 import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
@@ -70,7 +71,6 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.ProximityDetector;
-import com.riseapps.xmusic.executor.UpdateSongs;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
@@ -162,14 +162,18 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             musicService.setOnSongChangedListener(new MusicService.OnSongChangedListener() {
                 @Override
                 public void onSongChanged(Song song) {
-                    if (!song.getImagepath().equalsIgnoreCase("no_image")) {
-                        Glide.with(MainActivity.this).load(song.getImagepath()).into(album_art);
-                        Glide.with(MainActivity.this).load(song.getImagepath()).into(album_art_mini);
-                    } else {
-                        album_art.setImageResource(R.drawable.empty);
-                        album_art_mini.setImageResource(R.drawable.empty);
-                    }
-
+                    Glide
+                            .with(MainActivity.this)
+                            .load(song.getImagepath())
+                            .crossFade()
+                            .error(ContextCompat.getDrawable(MainActivity.this, R.drawable.empty))
+                            .into(album_art);
+                    Glide
+                            .with(MainActivity.this)
+                            .load(song.getImagepath())
+                            .crossFade()
+                            .error(ContextCompat.getDrawable(MainActivity.this, R.drawable.empty))
+                            .into(album_art_mini);
                     title.setText(song.getName());
                     title_mini.setText(song.getName());
 
@@ -294,11 +298,11 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             public void onDoubleTapping() {
                 Song song = songList.get(musicService.getCurrentIndex());
                 if (song.getFavourite()) {
-                    new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(), 0);
+                    new MyApplication(MainActivity.this).getWritableDatabase().deleteFavourite(song.getID());
                     song.setFavourite(false);
                     Toast.makeText(MainActivity.this, "Song Removed from Favourites", Toast.LENGTH_SHORT).show();
                 } else {
-                    new MyApplication(MainActivity.this).getWritableDatabase().updateFavourites(song.getID(), 1);
+                    new MyApplication(MainActivity.this).getWritableDatabase().insertFavourite(song.getID());
                     liked.setVisibility(View.VISIBLE);
                     liked.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
                     liked.setVisibility(View.INVISIBLE);
@@ -483,8 +487,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
                     fragmentTransaction.commit();
-                } else if (item.getItemId() == R.id.refresh) {
-                    new RefreshAsync().execute();
                 }
                 return true;
             }
@@ -552,7 +554,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             if(file.exists()) {
                                 file.delete();
                                 int rows=getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.Audio.Media._ID + "=" + id, null);
-                                new MyApplication(MainActivity.this).getWritableDatabase().deleteSong(id);
+                                //new MyApplication(MainActivity.this).getWritableDatabase().deleteSong(id);
                             }
                         }
                         catch (Exception e){
@@ -563,7 +565,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     toolbarContext.setVisibility(View.GONE);
                     mToolbar.setVisibility(View.VISIBLE);
                     miniPlayer.setVisibility(View.VISIBLE);
-                    new RefreshAsync().execute();
 
                 }
                 return true;
@@ -580,9 +581,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    public void startTheService(){
         if (playIntent == null) {
             playIntent = new Intent(this, MusicService.class);
             startService(playIntent);
@@ -598,8 +597,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     @Override
     protected void onDestroy() {
-        sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", false);
-        sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat", false);
+        sharedPreferenceSingelton.saveAs(this,"Loader",false);
+        sharedPreferenceSingleton.saveAs(this, "Shuffle", false);
+        sharedPreferenceSingleton.saveAs(this, "Repeat", false);
         sharedPreferenceSingleton.saveAs(this, "Last_Song", musicService.getCurrentIndex());
         unregisterReceiver(stopReceiver);
         unbindService(musicConnection);
@@ -652,12 +652,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         this.songList = songList;
     }
 
-    public ArrayList<Song> getCompleteSongList() {
-        completeList = new MyApplication(MainActivity.this).getWritableDatabase().readSongs();
+    public void setCompleteSongList(ArrayList<Song> arrayList) {
+        completeList = arrayList;
         setSongs(completeList);
-        return completeList;
     }
-
 
     void showMainPlayer() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0)
@@ -737,7 +735,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     protected void initCustom() {
         //getTitles();
         //String[] arrays = getResources().getStringArray(R.array.query_suggestions);
-        String[] arrays = getTitles();
+        //  String[] arrays = getTitles();
+        String[] arrays = {"HEY"};
         SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView) mSearchView;
         cast.setSuggestion(arrays);
         mSearchView.setOnSearchViewListener(this);
@@ -783,15 +782,15 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         }
     }
 
-    private String[] getTitles() {
+   /* private String[] getTitles() {
         ArrayList<Song> list = new MyApplication(this).getWritableDatabase().readSongs();
         String[] array = new String[list.size()];
         for (int i = 0; i < array.length; i++) {
             array[i] = list.get(i).getName();
         }
-        /*your logic to fetch titles of all the loaded songs and put it in string array*/
+        *//*your logic to fetch titles of all the loaded songs and put it in string array*//*
         return array;
-    }
+    }*/
 
     public void setSongRefreshListener(SongRefreshListener refreshListener) {
         this.songRefreshListener = refreshListener;
@@ -810,15 +809,14 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     @Override
-    public void onTrackLongPress(int c, long songId ,boolean songAdded) {
-        toolbar_context_title.setText(c +" Selected");
-        if(songAdded){
+    public void onTrackLongPress(int c, long songId, boolean songAdded) {
+        toolbar_context_title.setText(c + " Selected");
+        if (songAdded) {
             selectedID.add(songId);
-        }
-        else {
+        } else {
             selectedID.remove(songId);
         }
-        if(c==0){
+        if (c == 0) {
             toolbarContext.setVisibility(View.GONE);
             mToolbar.setVisibility(View.VISIBLE);
             miniPlayer.setVisibility(View.VISIBLE);
@@ -836,6 +834,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
 
+        //String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -854,7 +853,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     return ArtistFragment.newInstance();
 
             }
-            return PlaylistFragment.newInstance();
+            return SongsFragment.newInstance();
         }
 
         @Override
@@ -872,57 +871,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             TextView tv = (TextView) tab.findViewById(R.id.custom_text);
             tv.setText(tabTitles[position]);
             return tab;
-        }
-    }
-
-    private class RefreshAsync extends AsyncTask<Void, Void, Void> {
-
-        ArrayList<Song> songs = new ArrayList<>();
-        ArrayList<Artist> artists = new ArrayList<>();
-        ArrayList<Album> albums = new ArrayList<>();
-
-        @Override
-        protected void onPreExecute() {
-            if (musicPlaying)
-                musicService.togglePlay();
-            unbindService(musicConnection);
-            stopService(playIntent);
-            mViewPager.setAlpha(0.8f);
-            progressView.setVisibility(View.VISIBLE);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            new UpdateSongs(MainActivity.this).refreshList();
-            songs = new MyApplication(MainActivity.this).getWritableDatabase().readSongs();
-            artists = new MyApplication(MainActivity.this).getWritableDatabase().readArtists();
-            albums = new MyApplication(MainActivity.this).getWritableDatabase().readAlbums();
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    songRefreshListener.OnSongRefresh(songs);
-                    albumRefreshListener.OnAlbumRefresh(albums);
-                    artistRefreshListener.OnArtistRefresh(artists);
-                    playlistRefreshListener.OnPlaylistRefresh();
-                }
-            });
-
-            playIntent = new Intent(MainActivity.this, MusicService.class);
-            startService(playIntent);
-            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            progressView.setVisibility(View.GONE);
-            mViewPager.setAlpha(1.0f);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            super.onPostExecute(aVoid);
         }
     }
 

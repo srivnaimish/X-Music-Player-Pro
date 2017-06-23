@@ -1,7 +1,14 @@
 package com.riseapps.xmusic.view.Fragment;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,19 +35,15 @@ import java.util.Iterator;
  * Created by naimish on 11/3/17.
  */
 
-public class SongsFragment extends Fragment {
+public class SongsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     RecyclerView recyclerView;
-    LinearLayout background;
-    ArrayList<Song> songMainList = new ArrayList<>();
-    ArrayList<Song> songAllList = new ArrayList<>();
+    ArrayList<Song> songsList = new ArrayList<>();
     SongAdapter songsAdapter;
-
-    private LinearLayoutManager layoutManager;
-    SharedPreferenceSingelton sharedPreferenceSingelton;
+    private static final int SONG_LOADER = 1;
 
     public static SongsFragment newInstance() {
         return new SongsFragment();
@@ -57,15 +60,6 @@ public class SongsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
 
-        background = (LinearLayout) rootView.findViewById(R.id.background);
-        sharedPreferenceSingelton = new SharedPreferenceSingelton();
-
-        songAllList = ((MainActivity) getActivity()).getCompleteSongList();
-        if (songAllList.size() > 50) {
-            songMainList = new ArrayList<>(songAllList.subList(0, 30));
-        } else {
-            songMainList = songAllList;
-        }
         recyclerView = (RecyclerView) rootView.findViewById(R.id.songs);
         int spanCount = 1; // 2 columns
         int spacing = 5; // 50px
@@ -73,56 +67,6 @@ public class SongsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        songsAdapter = new SongAdapter(getActivity(), songMainList, recyclerView);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (!recyclerView.canScrollVertically(1))
-                    onScrolledToBottom();
-            }
-        });
-
-        recyclerView.setAdapter(songsAdapter);
-
-
-        ((MainActivity) getActivity()).setSongRefreshListener(new SongRefreshListener() {
-            @Override
-            public void OnSongRefresh(ArrayList<Song> arrayList) {
-                songAllList = arrayList;
-                if (songAllList.size() > 30) {
-                    songMainList = new ArrayList<>(songAllList.subList(0, 30));
-                } else {
-                    songMainList = songAllList;
-                }
-                ((MainActivity) getActivity()).setSongs(arrayList);
-                ((MainActivity) getActivity()).completeList=arrayList;
-                songsAdapter = new SongAdapter(getActivity(), songMainList, recyclerView);
-                recyclerView.setAdapter(songsAdapter);
-
-            }
-
-            @Override
-            public void OnContextBackPressed() {
-                for(Song song:songMainList){
-                    if(song.isSelected())
-                    song.setSelected(false);
-                }
-                songsAdapter.count=0;
-                songsAdapter.notifyDataSetChanged();
-            }
-        });
-
-        songsAdapter.setMainListPlayingListener(new MainListPlayingListener() {
-            @Override
-            public void onPlayingFromTrackList() {
-                if (((MainActivity) getActivity()).getSongs().size() != songAllList.size()) {
-                    ((MainActivity) getActivity()).setSongs(songAllList);
-                    ((MainActivity) getActivity()).getMusicService().setSongs(songAllList);
-                }
-            }
-        });
 
 
 
@@ -130,29 +74,56 @@ public class SongsFragment extends Fragment {
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().getSupportLoaderManager().initLoader(SONG_LOADER,null,this);
     }
 
-    private void onScrolledToBottom() {
-        if (songMainList.size() < songAllList.size()) {
-            int x, y;
-            if ((songAllList.size() - songMainList.size()) >= 30) {
-                x = songMainList.size();
-                y = x + 30;
-            } else {
-                x = songMainList.size();
-                y = x + songAllList.size() - songMainList.size();
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        return new CursorLoader(getContext(),musicUri,null,null,null,MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        int textLimit = 26;
+        if (data != null && data.moveToFirst()) {
+            do {
+                long id = data.getLong(data.getColumnIndex(MediaStore.Audio.Media._ID));
+                long duration = data.getLong(data.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
+                String title = data.getString(data.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                String artist = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                String imagepath = "content://media/external/audio/media/" + id + "/albumart";
+                if(title.length()>27)
+                title = title.substring(0, textLimit) + "...";
+                songsList.add(new Song(id,duration,title,artist,imagepath,false));
             }
-            for (int i = x; i < y; i++) {
-                songMainList.add(songAllList.get(i));
-            }
-            recyclerView.post(new Runnable() {
-                public void run() {
-                    songsAdapter.notifyDataSetChanged();
-                }
-            });
+            while (data.moveToNext());
+
+            data.close();
         }
+        songsAdapter = new SongAdapter(getActivity(), songsList,recyclerView);
+        recyclerView.setAdapter(songsAdapter);
+        setPlayingFromThisFragment();
+        ((MainActivity) getActivity()).setCompleteSongList(songsList);
+        ((MainActivity) getActivity()).startTheService();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
+    void setPlayingFromThisFragment(){
+        songsAdapter.setMainListPlayingListener(new MainListPlayingListener() {
+            @Override
+            public void onPlayingFromTrackList() {
+                if (((MainActivity) getActivity()).getSongs().size() != songsList.size()) {
+                    ((MainActivity) getActivity()).setSongs(songsList);
+                    ((MainActivity) getActivity()).getMusicService().setSongs(songsList);
+                }
+            }
+        });
     }
 
 }

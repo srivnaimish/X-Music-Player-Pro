@@ -10,7 +10,7 @@ import android.widget.Toast;
  * Created by naimish on 4/1/17.
  */
 
-public class Song implements Parcelable{
+public class Song{
     private long ID, duration;
     private String Name, Artist,Imagepath;
     private boolean favourite,isSelected=false;
@@ -33,26 +33,6 @@ public class Song implements Parcelable{
             Log.d("Null","yes");
 
     }
-
-    protected Song(Parcel in) {
-        ID = in.readLong();
-        duration = in.readLong();
-        Name = in.readString();
-        Artist = in.readString();
-        favourite = in.readByte() != 0;
-    }
-
-    public static final Creator<Song> CREATOR = new Creator<Song>() {
-        @Override
-        public Song createFromParcel(Parcel in) {
-            return new Song(in);
-        }
-
-        @Override
-        public Song[] newArray(int size) {
-            return new Song[size];
-        }
-    };
 
     public long getID() {
         return ID;
@@ -110,18 +90,4 @@ public class Song implements Parcelable{
         isSelected = selected;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(ID);
-        parcel.writeLong(duration);
-        parcel.writeString(Name);
-        parcel.writeString(Artist);
-        parcel.writeString(Imagepath);
-        parcel.writeByte((byte) (favourite ? 1 : 0));
-    }
 }

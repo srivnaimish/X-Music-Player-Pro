@@ -54,17 +54,8 @@ public class ArtistAdapter extends RecyclerView.Adapter {
         if (holder instanceof ArtistViewHolder) {
             Artist artist = artistList.get(position);
             String name = artist.getName().trim();
-            String imagepath = artist.getImagepath();
-            if(Build.VERSION.SDK_INT>=21){
-                ((ArtistViewHolder) holder).imageView.setTransitionName(name);
-            }
-            if (!imagepath.equalsIgnoreCase("NoImage") && !name.equals("Ad")) {
-                ((ArtistViewHolder) holder).name.setText(name);
-
-                ((ArtistViewHolder) holder).artist = artist;
-            } else {
-                ((ArtistViewHolder) holder).name.setText(name);
-            }
+            ((ArtistViewHolder) holder).name.setText(name);
+            ((ArtistViewHolder) holder).artist = artist;
         }
 
     }

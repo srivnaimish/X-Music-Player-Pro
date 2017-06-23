@@ -309,8 +309,8 @@ public class MusicService extends Service implements
             mProgressRunner.run();
             onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
         } catch (Exception e) {
-            new MyApplication(this).getWritableDatabase().deleteSong(currSongID);
-            Toast.makeText(this, "Song Not Found", Toast.LENGTH_SHORT).show();
+            songs.remove(getCurrentIndex());
+         //   new MyApplication(this).getWritableDatabase().deleteSong(currSongID);
         }
 
 
