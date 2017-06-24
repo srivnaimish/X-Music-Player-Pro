@@ -35,30 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom">
-
         <include layout="@layout/content_select_playlist" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:elevation="5dp"
-            app:srcCompat="@drawable/ic_add" />
-
-        <com.riseapps.xmusic.widgets.MainTextViewSub
-            android:id="@+id/hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/fab"
-            android:layout_toStartOf="@+id/fab"
-            android:text="@string/select_the_newly_created_playlist"
-            android:textAlignment="center"
-            android:textSize="@dimen/size14sp"
-            android:visibility="gone" />
     </RelativeLayout>
 
 

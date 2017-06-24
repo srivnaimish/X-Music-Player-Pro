@@ -3,23 +3,22 @@ package com.riseapps.xmusic.view.Activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.provider.MediaStore;
@@ -39,11 +38,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -52,7 +50,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.claudiodegio.msv.OnSearchViewListener;
 import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
@@ -63,8 +60,6 @@ import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.FilePathFromId;
 import com.riseapps.xmusic.executor.Interfaces.AdapterToActivityListener;
-import com.riseapps.xmusic.executor.Interfaces.AlbumRefreshListener;
-import com.riseapps.xmusic.executor.Interfaces.ArtistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.PlaylistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
@@ -72,9 +67,8 @@ import com.riseapps.xmusic.executor.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.ProximityDetector;
 import com.riseapps.xmusic.model.MusicService;
-import com.riseapps.xmusic.model.Pojo.Album;
-import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.utils.ZoomOutPageTransformer;
 import com.riseapps.xmusic.widgets.EqualizerView;
 import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
@@ -86,9 +80,6 @@ import com.riseapps.xmusic.widgets.MainTextView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -125,10 +116,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private int mBorderColor = Color.parseColor("#e74c3c");
     private int mBorderWidth = 5;
     private SongRefreshListener songRefreshListener;
-    private ArtistRefreshListener artistRefreshListener;
-    private AlbumRefreshListener albumRefreshListener;
     private PlaylistRefreshListener playlistRefreshListener;
-    private SongsFragment songFragment;
     private MainTextView toolbar_context_title;
 
     private static final int REQUEST_PERMISSION = 0;
@@ -221,6 +209,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             mWaveHelper.cancel();
         }
     };
+    private Dialog dialog;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -368,14 +357,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(3);
-        mViewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
-            @Override
-            public void transformPage(View page, float position) {
-                final float normalizedposition = Math.abs(Math.abs(position) - 1);
-                page.setScaleX(normalizedposition / 2 + 0.5f);
-                page.setScaleY(normalizedposition / 2 + 0.5f);
-            }
-        });
+        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -502,8 +484,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 Song song = songList.get(musicService.getCurrentIndex());
                 if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
-                    i.putExtra("selection_type", "multiple_playlist");
-                    startActivityForResult(i, 1);
+                    //i.putExtra("selection_type", "multiple_playlist");
+                    startActivityForResult(i,1);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 } else if (item.getItemId() == R.id.youtube) {
                     if (musicPlaying) {
@@ -543,29 +525,10 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
-                    i.putExtra("selection_type", "single_playlist");
                     startActivityForResult(i, 2);
                 }
                 else if(item.getItemId() == R.id.delete){
-                    for(long id:selectedID){
-                        try {
-                            Uri uri = new FilePathFromId().pathFromID(MainActivity.this,id);
-                            File file=new File(uri.getPath());
-                            if(file.exists()) {
-                                file.delete();
-                                int rows=getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.Audio.Media._ID + "=" + id, null);
-                                //new MyApplication(MainActivity.this).getWritableDatabase().deleteSong(id);
-                            }
-                        }
-                        catch (Exception e){
-                            Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    selectedID.clear();
-                    toolbarContext.setVisibility(View.GONE);
-                    mToolbar.setVisibility(View.VISIBLE);
-                    miniPlayer.setVisibility(View.VISIBLE);
-
+                    openDeleteDialog();
                 }
                 return true;
             }
@@ -586,12 +549,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             playIntent = new Intent(this, MusicService.class);
             startService(playIntent);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
-            miniPlayer.setVisibility(View.VISIBLE);
             miniPlayer.setAlpha(0.f);
             miniPlayer.animate()
                     .alpha(1.f)
-                    .setDuration(1000)
+                    .setDuration(100)
                     .start();
+            miniPlayer.setVisibility(View.VISIBLE);
         }
     }
 
@@ -735,11 +698,17 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     protected void initCustom() {
         //getTitles();
         //String[] arrays = getResources().getStringArray(R.array.query_suggestions);
-        //  String[] arrays = getTitles();
-        String[] arrays = {"HEY"};
-        SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView) mSearchView;
-        cast.setSuggestion(arrays);
-        mSearchView.setOnSearchViewListener(this);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                String[] arrays = getTitles();
+                SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView) mSearchView;
+                cast.setSuggestion(arrays);
+                mSearchView.setOnSearchViewListener(MainActivity.this);
+            }
+        },1000);
+
         //super.initCustom();
     }
 
@@ -749,7 +718,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         if (resultCode == Activity.RESULT_CANCELED) {
 
         } else if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            String str = data.getStringExtra("selected_playlist");
+            String str = data.getExtras().getString("selected_playlist");
             if (!str.equalsIgnoreCase("")) {
                 long id = songList.get(musicService.getCurrentIndex()).getID();
                 new MyApplication(MainActivity.this).getWritableDatabase().addSongToPlaylists(id, str);
@@ -757,20 +726,19 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 playlistRefreshListener.OnPlaylistRefresh();
             }
         } else if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
+            String str = data.getStringExtra("selected_playlist");
             toolbarContext.setVisibility(View.GONE);
             mToolbar.setVisibility(View.VISIBLE);
             miniPlayer.setVisibility(View.VISIBLE);
-            String str = data.getStringExtra("selected_playlist");
             long array[]=new long[selectedID.size()];
             int c=0;
             for(long id:selectedID) {
                 array[c] = id;
                 c++;
             }
-            if (!str.equalsIgnoreCase("")) {
-                new MyApplication(MainActivity.this).getWritableDatabase().addMultipleSongToSinglePlaylist(str.replace(",", ""), array);
-                playlistRefreshListener.OnPlaylistRefresh();
-            }
+            new MyApplication(MainActivity.this).getWritableDatabase().addMultipleSongToMultiplePlaylist(str, array);
+            playlistRefreshListener.OnPlaylistRefresh();
+
             toolbarContext.setVisibility(View.GONE);
             mToolbar.setVisibility(View.VISIBLE);
             miniPlayer.setVisibility(View.VISIBLE);
@@ -782,26 +750,17 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         }
     }
 
-   /* private String[] getTitles() {
-        ArrayList<Song> list = new MyApplication(this).getWritableDatabase().readSongs();
+    private String[] getTitles() {
+        ArrayList<Song> list = completeList;
         String[] array = new String[list.size()];
         for (int i = 0; i < array.length; i++) {
             array[i] = list.get(i).getName();
         }
-        *//*your logic to fetch titles of all the loaded songs and put it in string array*//*
         return array;
-    }*/
+    }
 
     public void setSongRefreshListener(SongRefreshListener refreshListener) {
         this.songRefreshListener = refreshListener;
-    }
-
-    public void setArtistRefreshListener(ArtistRefreshListener refreshListener) {
-        this.artistRefreshListener = refreshListener;
-    }
-
-    public void setAlbumRefreshListener(AlbumRefreshListener refreshListener) {
-        this.albumRefreshListener = refreshListener;
     }
 
     public void setPlaylistRefreshListener(PlaylistRefreshListener refreshListener) {
@@ -832,7 +791,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
+        String tabTitles[] = new String[]{getResources().getString(R.string.TAB1),getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
 
         //String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
         SectionsPagerAdapter(FragmentManager fm) {
@@ -843,17 +802,16 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    songFragment = SongsFragment.newInstance();
-                    return songFragment;
-                case 1:
                     return PlaylistFragment.newInstance();
+                case 1:
+                    return SongsFragment.newInstance();
                 case 2:
                     return AlbumFragment.newInstance();
                 case 3:
                     return ArtistFragment.newInstance();
 
             }
-            return SongsFragment.newInstance();
+            return PlaylistFragment.newInstance();
         }
 
         @Override
@@ -906,6 +864,55 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 }
             }
         }
+    }
+
+    private void openDeleteDialog() {
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.delete_confirm_dialog);
+        dialog.show();
+        Button done = (Button) dialog.findViewById(R.id.done);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(long id:selectedID){
+                    if(musicService.currSongID==id){
+                        changeToNextSong();
+                    }
+                    try {
+                        Uri uri = new FilePathFromId().pathFromID(MainActivity.this,id);
+                        File file=new File(uri.getPath());
+                        if(file.exists()) {
+                            file.delete();
+                            int rows=getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.Audio.Media._ID + "=" + id, null);
+                            //new MyApplication(MainActivity.this).getWritableDatabase().deleteSong(id);
+                        }
+                    }
+                    catch (Exception e){
+                        Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                selectedID.clear();
+                toolbarContext.setVisibility(View.GONE);
+                mToolbar.setVisibility(View.VISIBLE);
+                miniPlayer.setVisibility(View.VISIBLE);
+                songRefreshListener.OnSongDelete();
+                dialog.dismiss();
+
+            }
+        });
+        Button cancel = (Button) dialog.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedID.clear();
+                toolbarContext.setVisibility(View.GONE);
+                mToolbar.setVisibility(View.VISIBLE);
+                miniPlayer.setVisibility(View.VISIBLE);
+                songRefreshListener.OnContextBackPressed();
+                dialog.dismiss();
+            }
+        });
+
     }
 }
 

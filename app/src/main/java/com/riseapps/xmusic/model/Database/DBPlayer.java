@@ -1,6 +1,5 @@
 package com.riseapps.xmusic.model.Database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,15 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.model.Pojo.Album;
-import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.model.Pojo.Playlist;
-import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.model.Pojo.PlaylistSelect;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
@@ -75,18 +69,26 @@ public class DBPlayer {
         return b;
     }
 
-    public Cursor readFavourites() {
+    public ArrayList<Long> readFavourites() {
+        ArrayList<Long> songlist = new ArrayList<>();
         String[] columns = {
                 PlayerHelper.COLUMN_ID
         };
-        return mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, null, null, null, null, null);
+        Cursor cursor = mDatabase.query(PlayerHelper.SONG_TABLE_NAME, columns, null, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                songlist.add(cursor.getLong(cursor.getColumnIndex(PlayerHelper.COLUMN_ID)));
+            }
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+        mDatabase.close();
+        return songlist;
     }
+
 
     public void addSongToPlaylists(long id, String playlistNames) {
         String S[] = convertStringToArray(playlistNames);
-        String playlistJson=sharedPreferenceSingelton.getSavedString(c,"PlaylistNames");
-        ArrayList<Playlist> playlists=new Gson().fromJson(playlistJson, new TypeToken<ArrayList<Playlist>>() {
-        }.getType());
 
         for (String value : S) {
             String sql = "INSERT INTO " + PlayerHelper.PLAYLIST_TRACKS_TABLE_NAME + " (" + PlayerHelper.PLAYLIST_NAME + "," + PlayerHelper.PLAYLIST_SONG_ID + ") VALUES(?,?);";
@@ -98,43 +100,85 @@ public class DBPlayer {
             statement.execute();
             mDatabase.setTransactionSuccessful();
             mDatabase.endTransaction();
-            Playlist playlist=new Playlist(value);
-            if(!playlists.contains(playlist)){
-                playlists.add(playlist);
-            }
+
         }
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<Playlist>>() {
-        }.getType();
-        sharedPreferenceSingelton.saveAs(c,"PlaylistNames",gson.toJson(playlists, type));
+
         mDatabase.close();
     }
 
-    public void addMultipleSongToSinglePlaylist(String playlistName, long id[]) {
-        String playlistJson=sharedPreferenceSingelton.getSavedString(c,"PlaylistNames");
-        ArrayList<Playlist> playlists=new Gson().fromJson(playlistJson, new TypeToken<ArrayList<Playlist>>() {
-        }.getType());
-        Playlist playlist=new Playlist(playlistName);
-        if(!playlists.contains(playlist)){
-            playlists.add(playlist);
-            Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<Playlist>>() {
-            }.getType();
-            sharedPreferenceSingelton.saveAs(c,"PlaylistNames",gson.toJson(playlists, type));
-        }
-
-        for (long anId : id) {
-            String sql = "INSERT INTO " + PlayerHelper.PLAYLIST_TRACKS_TABLE_NAME + " (" + PlayerHelper.PLAYLIST_NAME + "," + PlayerHelper.PLAYLIST_SONG_ID + ") VALUES(?,?);";
-            SQLiteStatement statement = mDatabase.compileStatement(sql);
-            mDatabase.beginTransaction();
-            statement.clearBindings();
-            statement.bindString(1, playlistName);
-            statement.bindLong(2, anId);
-            statement.execute();
-            mDatabase.setTransactionSuccessful();
-            mDatabase.endTransaction();
+    public void addMultipleSongToMultiplePlaylist(String playlistNames, long id[]) {
+        String S[] = convertStringToArray(playlistNames);
+        for (String value : S) {
+            for (long anId : id) {
+                String sql = "INSERT INTO " + PlayerHelper.PLAYLIST_TRACKS_TABLE_NAME + " (" + PlayerHelper.PLAYLIST_NAME + "," + PlayerHelper.PLAYLIST_SONG_ID + ") VALUES(?,?);";
+                SQLiteStatement statement = mDatabase.compileStatement(sql);
+                mDatabase.beginTransaction();
+                statement.clearBindings();
+                statement.bindString(1, value);
+                statement.bindLong(2, anId);
+                statement.execute();
+                mDatabase.setTransactionSuccessful();
+                mDatabase.endTransaction();
+            }
         }
         mDatabase.close();
+    }
+
+    public ArrayList<Playlist> readPlaylists() {
+        ArrayList<Playlist> playlists = new ArrayList<>();
+        String[] columns = {
+                PlayerHelper.PLAYLIST_NAME
+        };
+        Cursor cursor = mDatabase.query(true, PlayerHelper.PLAYLIST_TRACKS_TABLE_NAME, columns, null, null, PlayerHelper.PLAYLIST_NAME, null, PlayerHelper.PLAYLIST_NAME, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Playlist playlist = new Playlist();
+                playlist.setName(cursor.getString(cursor.getColumnIndex(PlayerHelper.PLAYLIST_NAME)));
+                playlists.add(playlist);
+            }
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+        mDatabase.close();
+        return playlists;
+    }
+    public ArrayList<PlaylistSelect> readPlaylistsSelect() {
+        ArrayList<PlaylistSelect> playlists = new ArrayList<>();
+        String[] columns = {
+                PlayerHelper.PLAYLIST_NAME
+        };
+        Cursor cursor = mDatabase.query(true, PlayerHelper.PLAYLIST_TRACKS_TABLE_NAME, columns, null, null, PlayerHelper.PLAYLIST_NAME, null, PlayerHelper.PLAYLIST_NAME, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                PlaylistSelect playlist = new PlaylistSelect();
+                playlist.setName(cursor.getString(cursor.getColumnIndex(PlayerHelper.PLAYLIST_NAME)));
+                playlist.setSelected(false);
+                playlists.add(playlist);
+            }
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+        mDatabase.close();
+        return playlists;
+    }
+
+    public ArrayList<Long> readSongsFromPlaylist(String playlist) {
+        ArrayList<Long> songlist = new ArrayList<>();
+        String[] columns = {
+                PlayerHelper.PLAYLIST_SONG_ID
+        };
+        String selection="PLAYLIST_NAME=?";
+        String args[]={""+playlist};
+        Cursor cursor = mDatabase.query(PlayerHelper.PLAYLIST_TRACKS_TABLE_NAME, columns, selection, args, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                songlist.add(cursor.getLong(cursor.getColumnIndex(PlayerHelper.PLAYLIST_SONG_ID)));
+            }
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+        mDatabase.close();
+        return songlist;
     }
 
     public void deletePlaylist(String name) {
@@ -147,7 +191,7 @@ public class DBPlayer {
 
     private class PlayerHelper extends SQLiteOpenHelper {
         private static final String DB_NAME = "playerDB";
-        private static final int DB_VERSION = 7;
+        private static final int DB_VERSION = 8;
         private Context mContext;
 
         static final String SONG_TABLE_NAME = "FAVOURITE_LIST";     //Attributes of Favourite tracks

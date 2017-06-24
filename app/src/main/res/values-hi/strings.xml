@@ -74,4 +74,7 @@
     <string name="select_the_newly_created_playlist">नव निर्मित प्लेलिस्ट का चयन करें</string>
     <string name="switch_betweem_the_light_and_dark_app_themes">थीम को स्विच करने के लिए ऐप पुनरारंभ होता है</string>
     <string name="theme">थीम</string>
+    <string name="delete_these_songs">इन गीतों को हटाएं?</string>
+    <string name="delete_warning">यह ऑपरेशन डिवाइस से चयनित गीतों को भी हटा देगा</string>
+    <string name="empty_state_playlist_message">आपने कोई प्लेलिस्ट नहीं बनाई है</string>
 </resources>

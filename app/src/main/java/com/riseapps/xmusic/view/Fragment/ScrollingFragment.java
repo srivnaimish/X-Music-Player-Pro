@@ -3,12 +3,9 @@ package com.riseapps.xmusic.view.Fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -19,14 +16,11 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +29,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.executor.CheckConnectivity;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
@@ -47,13 +40,7 @@ import com.riseapps.xmusic.view.Activity.MainActivity;
 import com.riseapps.xmusic.widgets.MainTextView;
 import com.riseapps.xmusic.widgets.MainTextViewSub;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ScrollingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -74,6 +61,8 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
     ArrayList<Song> songMainArrayList;
     NestedFragmentAdapter nestedFragmentAdapter;
     private PlaySongExec playSongExec;
+
+    String multipleIDs="";
 
 
     private OnFragmentInteractionListener mListener;
@@ -107,7 +96,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         shuffleButton = (Button) rootView.findViewById(R.id.shuffle_button);
         songMainArrayList = new ArrayList<>();
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        if (Name != null) {
+         if (Name != null) {
             name.setText(Name);
         } else {
             name.setText(getString(R.string.action_favourites));
@@ -117,7 +106,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
             circleAlbumArt.setImageResource(R.drawable.play);
             Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/09/08/21/09/piano-1655558_960_720.jpg")
                     .crossFade()
-                    .placeholder(R.drawable.ic_splash)
+                    .placeholder(R.drawable.dummy)
                     .into(imageView);
         } else {
             Glide.with(getContext()).load(Uri.parse(Imagepath))
@@ -130,21 +119,13 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                     .placeholder(ContextCompat.getDrawable(getActivity(), R.drawable.play))
                     .into(circleAlbumArt);
         }
-
-
         int spanCount = 1; // 2 columns
         int spacing = 20; // 50px
 
         recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        nestedFragmentAdapter = new NestedFragmentAdapter(getActivity(), songMainArrayList, recyclerView);
-
-
-        recyclerView.setAdapter(nestedFragmentAdapter);
 
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
@@ -161,7 +142,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         playAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                playFromThisFragment();
             }
         });
 
@@ -181,6 +162,14 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                     Snackbar.make(nestedScrollView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
             }
         });
+        if(Action.equalsIgnoreCase("Favourites")) {
+            ArrayList<Long> IDs = new MyApplication(getActivity()).getWritableDatabase().readFavourites();
+            initiallizeMultipleIDs(IDs);
+        }
+        else if(Action.equalsIgnoreCase("Playlists")){
+            ArrayList<Long> IDs = new MyApplication(getActivity()).getWritableDatabase().readSongsFromPlaylist(Name);
+            initiallizeMultipleIDs(IDs);
+        }
 
         return rootView;
     }
@@ -188,18 +177,27 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (Action.equalsIgnoreCase("Favourites")) {
-            //TODO FETCH FROM DB
-            if (songMainArrayList.size() == 0) {
+        if(Action.equalsIgnoreCase("Favourites")||Action.equalsIgnoreCase("Playlists")) {
+            if (!multipleIDs.equalsIgnoreCase("")) {
+                startLoader();
+            } else {
                 empty.setVisibility(View.VISIBLE);
             }
-        } else {
-            if (sharedPreferenceSingelton.getSavedBoolean(getContext(), "Loader"))
-                getActivity().getSupportLoaderManager().restartLoader(4, null, this);
-            else {
-                getActivity().getSupportLoaderManager().initLoader(4, null, this);
-                sharedPreferenceSingelton.saveAs(getContext(), "Loader", true);
+        }
+        else if(Action.equalsIgnoreCase("Recent_Playlists")){
+            String recentJSON=sharedPreferenceSingelton.getSavedString(getContext(),"Recent");
+            if(recentJSON!=null) {
+                ArrayList<Long> ids = new Gson().fromJson(recentJSON, new TypeToken<ArrayList<Long>>() {
+                }.getType());
+                initiallizeMultipleIDs(ids);
+                startLoader();
             }
+            else {
+                empty.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            startLoader();
         }
     }
 
@@ -235,6 +233,10 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         } else if (Action.equalsIgnoreCase("Artists")) {
             selection = MediaStore.Audio.Media.ARTIST_ID + "=" + this.id;
         }
+        else if(Action.equalsIgnoreCase("Favourites")||Action.equalsIgnoreCase("Playlists")||
+                Action.equalsIgnoreCase("Recent_Playlists")){
+            selection=multipleIDs;
+        }
         return new CursorLoader(getContext(), musicUri, null, selection, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
     }
 
@@ -259,6 +261,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         }
         nestedFragmentAdapter = new NestedFragmentAdapter(getContext(), songMainArrayList, recyclerView);
         recyclerView.setAdapter(nestedFragmentAdapter);
+
     }
 
     @Override
@@ -271,7 +274,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         void onFragmentInteraction(Uri uri);
     }
 
-    void playFromThisFragment(){
+    void playFromThisFragment() {
         if (songMainArrayList.size() != 0) {
             if ((((MainActivity) getActivity()).getSongs() != songMainArrayList)) {
                 Toast.makeText(getContext(), getContext().getString(R.string.now_playing) + " " + name.getText().toString(), Toast.LENGTH_SHORT).show();
@@ -282,6 +285,24 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
             playSongExec.startPlaying();
         } else
             Snackbar.make(nestedScrollView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
+    }
+
+    void startLoader(){
+        if (sharedPreferenceSingelton.getSavedBoolean(getContext(), "Loader"))
+            getActivity().getSupportLoaderManager().restartLoader(4, null, this);
+        else {
+            getActivity().getSupportLoaderManager().initLoader(4, null, this);
+            sharedPreferenceSingelton.saveAs(getContext(), "Loader", true);
+        }
+    }
+
+    void initiallizeMultipleIDs(ArrayList<Long> IDs){
+        for (int i = 0; i < IDs.size(); i++) {
+            if (i < IDs.size() - 1)
+                multipleIDs += MediaStore.Audio.Media._ID + "=" + IDs.get(i) + " OR ";
+            else
+                multipleIDs += MediaStore.Audio.Media._ID + "=" + IDs.get(i);
+        }
     }
 
 }

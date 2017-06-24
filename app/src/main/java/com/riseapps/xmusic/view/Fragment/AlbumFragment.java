@@ -2,21 +2,16 @@ package com.riseapps.xmusic.view.Fragment;
 
 import android.content.ContentUris;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,24 +19,14 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.executor.Interfaces.AlbumRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.AlbumsAdapter;
 import com.riseapps.xmusic.model.Pojo.Album;
-import com.riseapps.xmusic.model.Pojo.Artist;
 import com.riseapps.xmusic.utils.GridItemDecoration;
-import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.ArrayList;
 

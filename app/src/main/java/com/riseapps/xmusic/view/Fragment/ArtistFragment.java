@@ -1,49 +1,31 @@
 package com.riseapps.xmusic.view.Fragment;
 
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.executor.Interfaces.ArtistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
-import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.ArtistAdapter;
-import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
-import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
-import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.ArrayList;
 
@@ -80,9 +62,7 @@ public class ArtistFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_artist, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.artists);
-        int spanCount = 1;
-        int spacing = 5;
-        recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -117,6 +97,25 @@ public class ArtistFragment extends Fragment implements LoaderManager.LoaderCall
 
 
         return v;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            View v = getView();
+            if (v != null) {
+               // playlistAdapter.notifyDataSetChanged();
+
+            }
+
+        } else {
+            View v = getView();
+            if (v != null) {
+
+            }
+        }
     }
 
     @Override

@@ -33,6 +33,10 @@
 
     </style>
 
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorAccentDark</item>
+    </style>
     <style name="ToolbarTheme" parent="AppTheme">
 
     </style>

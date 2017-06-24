@@ -15,21 +15,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
-import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.MainListPlayingListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
-import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by naimish on 11/3/17.
@@ -68,6 +63,28 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        ((MainActivity)getActivity()).setSongRefreshListener(new SongRefreshListener() {
+
+            @Override
+            public void OnContextBackPressed() {
+                for(Song song:songsList){
+                    if(song.isSelected())
+                        song.setSelected(false);
+                }
+                songsAdapter.count=0;
+                songsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void OnSongDelete() {
+                for(int i=songsList.size()-1;i>=0;i--){
+                    Song song=songsList.get(i);
+                    if(song.isSelected()){
+                        songsAdapter.delete(i);
+                    }
+                }
+            }
+        });
 
 
         return rootView;
@@ -87,7 +104,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        int textLimit = 26;
+        int textLimit = 27;
         if (data != null && data.moveToFirst()) {
             do {
                 long id = data.getLong(data.getColumnIndex(MediaStore.Audio.Media._ID));
@@ -95,8 +112,10 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
                 String title = data.getString(data.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String artist = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 String imagepath = "content://media/external/audio/media/" + id + "/albumart";
-                if(title.length()>27)
+                if(title.length()>textLimit)
                 title = title.substring(0, textLimit) + "...";
+                if(artist.length()>textLimit)
+                    artist = artist.substring(0, textLimit) + "...";
                 songsList.add(new Song(id,duration,title,artist,imagepath,false));
             }
             while (data.moveToNext());

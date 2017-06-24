@@ -1,11 +1,9 @@
 package com.riseapps.xmusic.view.Activity;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,25 +13,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.executor.MyApplication;
-import com.riseapps.xmusic.model.Pojo.Album;
-import com.riseapps.xmusic.model.Pojo.Artist;
-import com.riseapps.xmusic.model.Pojo.Song;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class Walkthrough extends AppCompatActivity {
 
@@ -50,7 +38,9 @@ public class Walkthrough extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_walkthrough);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setExitTransition(new Fade());
+        }
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         RelativeLayout btnSkip = (RelativeLayout) findViewById(R.id.btn_skip);
         btn1 = (Button) findViewById(R.id.bt1);
@@ -174,7 +164,7 @@ public class Walkthrough extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED ) {
-                    moveToMain();
+                        //moveToMain();
                 } else {
                     Snackbar.make(viewPager, R.string.permission_rationale,
                             Snackbar.LENGTH_INDEFINITE)

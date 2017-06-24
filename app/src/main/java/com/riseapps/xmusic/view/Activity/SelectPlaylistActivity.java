@@ -2,7 +2,6 @@ package com.riseapps.xmusic.view.Activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -10,59 +9,45 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.component.TagToken.customviews.TokenCompleteTextView;
+import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.MyApplication;
-import com.riseapps.xmusic.model.Pojo.Playlist;
-import com.riseapps.xmusic.model.Pojo.Tag;
-import com.riseapps.xmusic.model.xplayertags.TagClass;
-import com.riseapps.xmusic.utils.TagSelector;
-import com.riseapps.xmusic.widgets.TagView;
+import com.riseapps.xmusic.executor.RecycleTouchListener;
+import com.riseapps.xmusic.executor.RecycleViewAdapters.AddPlaylistAdapter;
+import com.riseapps.xmusic.model.Pojo.PlaylistSelect;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 
 
-public class SelectPlaylistActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener<TagClass> {
+public class SelectPlaylistActivity extends AppCompatActivity {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    private final String TAG = getClass().getSimpleName();
-    TextView hint;
-    FloatingActionButton fab;
+    String selection = "";
+    LinearLayout empty_state;
+    RecyclerView recyclerView;
+    ArrayList<PlaylistSelect> playLists = new ArrayList<>();
+    AddPlaylistAdapter addPlaylistAdapter;
+    CardView cardView;
 
-    // private AdView mAdView;
-    private String str = "";
-
-    Tag tag;
-    ArrayList<Tag> tags = new ArrayList<>();
-    TagView tagGroup;
-
-    private HashMap<String, Integer> selectedPlaylist = new HashMap<>();
-    private HashMap<String, Integer> hashMap = new HashMap<>();
-    private HashMap<String, Integer> skillFactoryHashMap = new HashMap<>();
     SharedPreferenceSingelton sharedPreferenceSingelton;
-    // utils
-    private TagSelector tagSelector = new TagSelector(SelectPlaylistActivity.this);
     private Dialog dialog;
-    private String selectionType;
-    private String singlePlaylist;
-    private View singlePlaylistView;
-    private TextView singlePlaylistTextView;
+    // utils
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -73,31 +58,40 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_playlist);
+        empty_state= (LinearLayout) findViewById(R.id.linearLayout4);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        hint = (TextView) findViewById(R.id.hint);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(SelectPlaylistActivity.this, getString(R.string.did_not_select), Toast.LENGTH_SHORT).show();
                 Intent i = new Intent();
                 setResult(RESULT_CANCELED, i);
-                Toast.makeText(SelectPlaylistActivity.this, getString(R.string.did_not_select), Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
-        toolbar.inflateMenu(R.menu.select_playlist_menu);
+        toolbar.inflateMenu(R.menu.playlist_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_done) {
-                    if (selectedPlaylist.size() < 1) {
-                        Toast.makeText(SelectPlaylistActivity.this, getString(R.string.select_atleast_one), Toast.LENGTH_SHORT).show();
+                    for (int i = 0; i < playLists.size(); i++) {
+                        PlaylistSelect playlistSelect = playLists.get(i);
+                        if (playlistSelect.isSelected()) {
+                            if (i < playLists.size() - 1)
+                                selection += playlistSelect.getName() + ",";
+                            else selection += playlistSelect.getName();
+                        }
+                    }
+
+                    if (selection.equalsIgnoreCase("")) {
+                        /*Intent i = new Intent();
+                        setResult(RESULT_CANCELED, i);*/
+                        Toast.makeText(SelectPlaylistActivity.this, getString(R.string.did_not_select), Toast.LENGTH_SHORT).show();
+                      //  finish();
                     } else {
-                        selectedPlaylist.remove("A");
-                        convertHashmapToString();
                         Intent i = new Intent();
-                        i.putExtra("selected_playlist", str);
+                        i.putExtra("selected_playlist", selection);
                         setResult(RESULT_OK, i);
                         finish();
                     }
@@ -106,156 +100,52 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
             }
         });
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        cardView = (CardView) findViewById(R.id.add_playlist);
+        recyclerView = (RecyclerView) findViewById(R.id.playlists);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        cardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 openDialog();
             }
         });
 
-        try {
-            setupTagView();
-        } catch (Exception e) {
-            e.printStackTrace();
+        playLists = new MyApplication(this).getWritableDatabase().readPlaylistsSelect();
+        if(playLists.size()==0){
+            empty_state.setVisibility(View.VISIBLE);
         }
+        addPlaylistAdapter = new AddPlaylistAdapter(this, playLists, recyclerView);
+        recyclerView.setAdapter(addPlaylistAdapter);
 
-        Intent intent = getIntent();
-        if (intent != null)
-            selectionType = intent.getStringExtra("selection_type");
 
-    }
-
-    @Override
-    public void onTokenAdded(TagClass token) {
-
-    }
-
-    @Override
-    public void onTokenRemoved(TagClass token) {
-
-    }
-
-    // setup tags and listeners
-    private void setupTagView() throws Exception {
-        tagGroup = (TagView) findViewById(R.id.tag_group);
-        prepareTags();
-        setTags();
-        selectedPlaylist.put("A", 0);
-
-        tagGroup.setOnTagClickListener(new TagView.OnTagClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+        recyclerView.addOnItemTouchListener(new RecycleTouchListener(SelectPlaylistActivity.this, recyclerView, new ClickListener() {
             @Override
-            public void onTagClick(View view, TextView tagView, Tag tag, int position) {
-                if (selectionType.equals("multiple_playlist")) {
-                    if (selectedPlaylist.get(tag.text) == null) {
-                        view.setBackground(tagSelector.getSelector(tag));
-                        tagView.setTextColor(getResources().getColor(R.color.colorWhite));
-                        selectedPlaylist.put(tag.text, 1); // tag.text - playlist name
-                    } else {
-                        // reset same tag
-                        tagView.setTextColor(getResources().getColor(R.color.colorBlack));
-                        tag.layoutColor = Color.parseColor("#FFFFFF");
-                        tag.tagTextColor = Color.parseColor("#000000");
-                        view.setBackground(tagSelector.getNormalSelector(tag));
-                        selectedPlaylist.remove(tag.text);
+            public void onClick(View view, final int position) {
+                CheckBox add = (CheckBox) view.findViewById(R.id.add);
+
+                add.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked)
+                            playLists.get(position).setSelected(true);
+                        else
+                            playLists.get(position).setSelected(false);
                     }
-                } else if (selectionType.equals("single_playlist")) {
-                    if (selectedPlaylist.get(tag.text) == null) {
-                        Log.d(TAG, "IF ADD TAG AND SINGLE PLAYLIST " + singlePlaylist);
-                        // CHECK IF ANYTHING ALREADY PRESENT IN HASHMAP
-                        if (selectedPlaylist.size() > 1) {
-                            // reset previous tag
-                            selectedPlaylist.remove(singlePlaylist);
-                            singlePlaylistTextView.setTextColor(getResources().getColor(R.color.colorBlack));
-                            singlePlaylistView.setBackground(tagSelector.getNormalSelector(tag));
-                            singlePlaylist = tag.text;
-                            Log.d(TAG, "IF RESET PREVIOUS TAG AND SINGLE PLAYLIST " + singlePlaylist);
-                            // ADD TAG
-                            view.setBackground(tagSelector.getSelector(tag));
-                            tagView.setTextColor(getResources().getColor(R.color.colorWhite));
-                            selectedPlaylist.put(tag.text, 1); // tag.text - playlist name
-                            singlePlaylistView = view;
-                            singlePlaylistTextView = tagView;
-                        } else {
-                            singlePlaylist = tag.text;
-                            Log.d(TAG, "IF ADD NEW TAG AND SINGLE PLAYLIST " + singlePlaylist);
-                            // ADD TAG
-                            view.setBackground(tagSelector.getSelector(tag));
-                            tagView.setTextColor(getResources().getColor(R.color.colorWhite));
-                            selectedPlaylist.put(tag.text, 1); // tag.text - playlist name
-                            singlePlaylistView = view;
-                            singlePlaylistTextView = tagView;
-                        }
-                    } else if (selectedPlaylist.get(tag.text) != null) {
-                        Log.d(TAG, "IF RESET TAG AND SINGLE PLAYLIST " + singlePlaylist);
-                        // RESET TAG
-                        selectedPlaylist.remove(tag.text);
-                        tagView.setTextColor(getResources().getColor(R.color.colorBlack));
-                        tag.layoutColor = Color.parseColor("#FFFFFF");
-                        tag.tagTextColor = Color.parseColor("#000000");
-                        view.setBackground(tagSelector.getNormalSelector(tag));
-                        //singlePlaylist = "";
-                        singlePlaylistTextView.setTextColor(getResources().getColor(R.color.colorBlack));
-                        singlePlaylistView.setBackground(tagSelector.getNormalSelector(tag));
-                    }
-                }
+                });
             }
-        });
 
+            @Override
+            public void onLongClick(View view, int position) {
 
-    }
-
-    private void prepareTags() throws Exception {
-        String playlistJson=sharedPreferenceSingelton.getSavedString(this,"PlaylistNames");
-        ArrayList<Playlist> playlists=new Gson().fromJson(playlistJson, new TypeToken<ArrayList<Playlist>>() {
-        }.getType());
-        for (int i = 0; i < playlists.size(); i++) {
-            skillFactoryHashMap.put(playlists.get(i).getName(), 0);
-        }
-
-    }
-
-    private void setTags() {
-        Log.d("hashmap", " " + skillFactoryHashMap.toString());
-        //skillFactoryHashMap.putAll(hashMap);
-        Iterator it = skillFactoryHashMap.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry) it.next();
-            String tagName = pair.getKey().toString();
-            int status = Integer.parseInt(pair.getValue().toString());
-            Log.d(TAG, "int value " + status);
-            tag = new Tag(tagName);
-            tag.radius = 8f;
-            if (hashMap.containsKey(tagName) && status == 2) {
-                tag.layoutColor = Color.parseColor(String.valueOf(R.color.colorAccent));
-                tag.tagTextColor = Color.parseColor("#ffffff");
-                selectedPlaylist.put(tagName, 2);
-            } else if (hashMap.containsKey(tagName) && status == 0) {
-                continue;
-            } else if (hashMap.containsKey(tagName) && status == 1) {
-                tag.layoutColor = Color.parseColor("#3F51B5");
-                tag.tagTextColor = Color.parseColor("#ffffff");
-                selectedPlaylist.put(tagName, 1);
-            } else if (!hashMap.containsKey(tagName) && status == 0) {
-                tag.layoutColor = Color.parseColor("#ffffff");
-            } else {
-                tag.layoutColor = Color.parseColor("#ffffff");
             }
-            tags.add(tag);
-        }
-        tagGroup.addTags(tags);
+        }));
+
+        /**/
     }
 
-    private void convertHashmapToString() {
-        Iterator it = selectedPlaylist.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry) it.next();
-            str = str + pair.getKey() + ",";
-            it.remove();
-        }
-        Log.d(TAG, "" + str);
-    }
 
     private void openDialog() {
         dialog = new Dialog(SelectPlaylistActivity.this);
@@ -263,22 +153,25 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
         dialog.show();
         Button create = (Button) dialog.findViewById(R.id.create);
         Button cancel = (Button) dialog.findViewById(R.id.cancel);
-        final EditText editText = (EditText) dialog.findViewById(R.id.dialogEditText);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!editText.getText().toString().equalsIgnoreCase("")) {
-                    skillFactoryHashMap.put(editText.getText().toString(), 0);
-                    tagGroup = (TagView) findViewById(R.id.tag_group);
-                    tags = new ArrayList<>();
-                    setTags();
-                    dialog.dismiss();
-                    Toast.makeText(SelectPlaylistActivity.this, getString(R.string.created), Toast.LENGTH_SHORT).show();
-                    if (hint.getVisibility() == View.GONE)
-                        hint.setVisibility(View.VISIBLE);
+                EditText editText = (EditText) dialog.findViewById(R.id.dialogEditText);
+                String s = editText.getText().toString();
+                if (!s.equalsIgnoreCase("")) {
+                    if(playLists.contains(new PlaylistSelect(s,false))){
+                        Snackbar.make(cardView, "Playlist already created", Snackbar.LENGTH_SHORT).show();
+                    }else {
+                        if(empty_state.getVisibility()==View.VISIBLE){
+                            empty_state.setVisibility(View.GONE);
+                        }
+                        playLists.add(new PlaylistSelect(s, false));
+                        addPlaylistAdapter.notifyItemInserted(playLists.size());
+                    }
                 } else {
-                    Snackbar.make(fab, "Please give playlist a Name", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(cardView, "Please give playlist a Name", Snackbar.LENGTH_SHORT).show();
                 }
+                dialog.dismiss();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -287,5 +180,11 @@ public class SelectPlaylistActivity extends AppCompatActivity implements TokenCo
                 dialog.dismiss();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }

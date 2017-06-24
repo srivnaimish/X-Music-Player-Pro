@@ -18,14 +18,16 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.GenerateNotification;
-import com.riseapps.xmusic.executor.MyApplication;
+import com.riseapps.xmusic.executor.RecentQueue;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.view.Activity.AppSettingActivity;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
@@ -62,6 +64,8 @@ public class MusicService extends Service implements
     public TextView mTotalDuration;
     private int mInterval = 1000;
     private static final int NOTIFICATION_ID = 1;
+    ArrayList<Long> ids=new ArrayList<>();
+    public long currSongID;
 
     public void onCreate() {
 
@@ -299,7 +303,7 @@ public class MusicService extends Service implements
         player.reset();
 
         Song playSong = songs.get(songPos);
-        long currSongID = playSong.getID();
+        currSongID = playSong.getID();
         Uri trackUri = ContentUris.withAppendedId(
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 currSongID);
@@ -308,9 +312,28 @@ public class MusicService extends Service implements
             player.prepareAsync();
             mProgressRunner.run();
             onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
+            String s=sharedPreferenceSingelton.getSavedString(this,"Recent");
+            if(s==null){
+                ids=new RecentQueue().pushPop(ids,currSongID);
+                Gson gson = new Gson();
+                Type type = new TypeToken<ArrayList<Long>>() {
+                }.getType();
+                String recentJSON = gson.toJson(ids, type);
+                sharedPreferenceSingelton.saveAs(this,"Recent",recentJSON);
+            }
+            else
+            {
+                ids = new Gson().fromJson(s, new TypeToken<ArrayList<Long>>() {}.getType());
+                ids=new RecentQueue().pushPop(ids,currSongID);
+                Gson gson = new Gson();
+                Type type = new TypeToken<ArrayList<Long>>() {
+                }.getType();
+                String recentJSON = gson.toJson(ids, type);
+                sharedPreferenceSingelton.saveAs(this,"Recent",recentJSON);
+            }
+
         } catch (Exception e) {
             songs.remove(getCurrentIndex());
-         //   new MyApplication(this).getWritableDatabase().deleteSong(currSongID);
         }
 
 
@@ -384,9 +407,6 @@ public class MusicService extends Service implements
             if (player.isPlaying() && disconnectHeadphones) {
                 togglePlay();
             }
-
-            // Toast.makeText(MusicService.this, ""+connectedHeadphones, Toast.LENGTH_SHORT).show();
-            // ...
         }
     }
 

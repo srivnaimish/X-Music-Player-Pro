@@ -17,6 +17,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class PlaylistFragment extends Fragment {
     ArrayList<Playlist> playLists = new ArrayList<>();
     PlaylistAdapter playlistAdapter;
     private OnFragmentInteractionListener mListener;
+    CardView cardView;
 
     public PlaylistFragment() {
         // Required empty public constructor
@@ -81,14 +83,35 @@ public class PlaylistFragment extends Fragment {
         nestedScrollView = (NestedScrollView) v.findViewById(R.id.nestedScrollView);
 
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        cardView= (CardView) v.findViewById(R.id.recent_played);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.playlists);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 1);
         recyclerView.setLayoutManager(grid);
 
-        int spanCount = 1;
-        int spacing = 5;
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScrollingFragment scrollingFragment=new ScrollingFragment();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    setExitTransition(TransitionInflater.from(
+                            getActivity()).inflateTransition(android.R.transition.fade));
+                    scrollingFragment.setEnterTransition(TransitionInflater.from(
+                            getActivity()).inflateTransition(android.R.transition.fade));
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("Name", "Recent 20");
+                bundle.putString("Action", "Recent_Playlists");
+                scrollingFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.drawerLayout,scrollingFragment)
+                        .addToBackStack(null)
+                        .commit();
+
+            }
+        });
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
@@ -105,8 +128,6 @@ public class PlaylistFragment extends Fragment {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
@@ -211,17 +232,8 @@ public class PlaylistFragment extends Fragment {
     }
 
     public void refreshPlaylists() {
-        String playlistJson=sharedPreferenceSingelton.getSavedString(getActivity(),"PlaylistNames");
-        if(playlistJson==null){
-            playLists.add(new Playlist("Recently Added"));
-            Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<Playlist>>() {
-            }.getType();
-            sharedPreferenceSingelton.saveAs(getActivity(),"PlaylistNames",gson.toJson(playLists, type));
-        }else {
-            playLists = new Gson().fromJson(playlistJson, new TypeToken<ArrayList<Playlist>>() {
-            }.getType());
-        }
+
+        playLists=new MyApplication(getActivity()).getWritableDatabase().readPlaylists();
         playlistAdapter = new PlaylistAdapter(getActivity(), playLists, recyclerView);
         recyclerView.setAdapter(playlistAdapter);
     }
@@ -229,10 +241,6 @@ public class PlaylistFragment extends Fragment {
     public void deletePlaylist(String name,int position){
         new MyApplication(getActivity()).getWritableDatabase().deletePlaylist(name);
         playlistAdapter.delete(position);
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<Playlist>>() {
-        }.getType();
-        sharedPreferenceSingelton.saveAs(getActivity(),"PlaylistNames",gson.toJson(playLists, type));
         Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
     }
 }

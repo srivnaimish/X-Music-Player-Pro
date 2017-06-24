@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -23,9 +21,7 @@ import com.riseapps.xmusic.executor.Interfaces.MainListPlayingListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.view.Activity.MainActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter {
@@ -99,7 +95,6 @@ public class SongAdapter extends RecyclerView.Adapter {
     public void delete(int position) {
         songsList.remove(position);
         notifyItemRemoved(position);
-        //  notifyItemRangeChanged(position, songsList.size());
     }
 
     @Override

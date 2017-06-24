@@ -73,4 +73,7 @@
     <string name="app_walk1">ইকুয়ালাইজার, ঘুম টাইমার , Skipie , রঙ থিম</string>
     <string name="app_walk2">মেইন প্লেয়ারটি খুলতে মিনি প্লেয়ারে আলতো চাপুন</string>
     <string name="app_walk3">ইউটিউবে এই গান অনুসন্ধান করতে চান?</string>
+    <string name="delete_these_songs">এই গানগুলি মুছবেন?</string>
+    <string name="delete_warning">এই অপারেশন এছাড়াও ডিভাইস থেকে নির্বাচিত গান মুছে ফেলা হবে</string>
+    <string name="empty_state_playlist_message">আপনি কোনও প্লেলিস্ট তৈরি করেন নি</string>
 </resources>

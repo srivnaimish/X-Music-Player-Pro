@@ -71,6 +71,7 @@ public class AppSettingActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 finish();
+                AppSettingActivity.this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
         CardView setting_pro = (CardView) findViewById(R.id.setting_shake);
@@ -161,9 +162,7 @@ public class AppSettingActivity extends AppCompatActivity{
                     Intent intent = new Intent("Stop");
                     PendingIntent pi = PendingIntent.getBroadcast(AppSettingActivity.this, 5, intent, 0);
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
                     alarmManager.cancel(pi);
-
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, d, pi);
                     else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)

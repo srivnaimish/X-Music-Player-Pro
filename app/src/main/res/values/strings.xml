@@ -32,7 +32,7 @@
 
 
     <!--PLAYLIST SELECT ACTIVITY-->
-    <string name="playlist_screen_placeholder">You can add this song to MULTIPLE playlists at once.</string>
+    <string name="playlist_screen_placeholder">You can add to MULTIPLE playlists at once.</string>
     <string name="did_not_select">You didn\'t select any playlist for your song!</string>
     <string name="select_atleast_one">You must select at least 1 playlist</string>
     <string name="created">Created</string>
@@ -97,6 +97,9 @@
     <string name="app_walk1">Equalizer, Sleep Timer, Skipie mode, Themes</string>
     <string name="app_walk2">Tap on Mini Player to open Main Player</string>
     <string name="app_walk3">Want to search this song on Youtube?</string>
+    <string name="delete_these_songs">Delete these Songs?</string>
+    <string name="delete_warning">This operation will delete the selected songs from the device also</string>
+    <string name="empty_state_playlist_message">You did not create any playlist</string>
     <!--AD UNIT ID'S-->
 
 

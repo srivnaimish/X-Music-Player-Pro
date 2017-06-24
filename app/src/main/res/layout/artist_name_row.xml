@@ -9,6 +9,7 @@
     card_view:cardCornerRadius="1dp"
     card_view:cardElevation="0dp"
     card_view:cardBackgroundColor="?colorPrimary"
+    android:layout_marginTop="4dp"
     >
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

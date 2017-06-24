@@ -129,10 +129,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:visibility="gone"
                 card_view:cardBackgroundColor="?colorPrimary"
                 card_view:cardCornerRadius="0dp"
                 card_view:cardElevation="3dp"
+                android:visibility="gone"
                 card_view:cardPreventCornerOverlap="false">
 
                 <include layout="@layout/mini_player" />
