@@ -83,6 +83,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
                         songsAdapter.delete(i);
                     }
                 }
+                songsAdapter.count=0;
             }
         });
 

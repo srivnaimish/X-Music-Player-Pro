@@ -10,7 +10,7 @@
         android:id="@+id/ll"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:background="@color/colorAccentDark"
         android:padding="7dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -24,7 +24,7 @@
             android:layout_centerVertical="true"
             android:text="@string/select_a_preset"
             android:textColor="@color/whitePrimary"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size18sp" />
     </RelativeLayout>
 
 
@@ -49,7 +49,7 @@
             android:layout_marginStart="0dp"
             android:checked="true"
             android:text="@string/normal_preset"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size15sp" />
 
         <RadioButton
             android:id="@+id/classical"
@@ -57,28 +57,28 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:text="@string/classical_preset"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size15sp" />
 
         <RadioButton
             android:id="@+id/dance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dance_preset"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size15sp" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:text="@string/flat_preset"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size15sp" />
 
         <RadioButton
             android:id="@+id/folk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/folk_preset"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size15sp" />
 
         <RadioButton
             android:id="@+id/heavy_metal"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:text="@string/heavy_metal_preset"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size15sp" />
 
         <RadioButton
             android:id="@+id/hip_hop"
@@ -101,14 +101,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:text="@string/jazz_preset"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size15sp" />
 
         <RadioButton
             android:id="@+id/pop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pop_preset"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size15sp" />
 
         <RadioButton
             android:id="@+id/rock"
@@ -116,21 +116,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:text="@string/rock_preset"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size15sp" />
     </RadioGroup>
 
     <Button
         android:id="@+id/done"
-        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="24dp"
-        android:layout_weight=".5"
+        android:background="@color/colorAccentDark"
+        android:textColor="@color/whitePrimary"
+        android:textSize="@dimen/size18sp"
         android:text="@string/ok"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/radio_group"
-        app:layout_constraintRight_toRightOf="@+id/radio_group"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radio_group" />
 
 </android.support.constraint.ConstraintLayout>

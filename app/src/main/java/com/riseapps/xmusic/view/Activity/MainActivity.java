@@ -707,7 +707,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 cast.setSuggestion(arrays);
                 mSearchView.setOnSearchViewListener(MainActivity.this);
             }
-        },1000);
+        },1500);
 
         //super.initCustom();
     }
@@ -884,7 +884,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                         if(file.exists()) {
                             file.delete();
                             int rows=getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.Audio.Media._ID + "=" + id, null);
-                            //new MyApplication(MainActivity.this).getWritableDatabase().deleteSong(id);
                         }
                     }
                     catch (Exception e){
