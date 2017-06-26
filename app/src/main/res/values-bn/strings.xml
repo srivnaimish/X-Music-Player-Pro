@@ -76,4 +76,5 @@
     <string name="delete_these_songs">এই গানগুলি মুছবেন?</string>
     <string name="delete_warning">এই অপারেশন এছাড়াও ডিভাইস থেকে নির্বাচিত গান মুছে ফেলা হবে</string>
     <string name="empty_state_playlist_message">আপনি কোনও প্লেলিস্ট তৈরি করেন নি</string>
+    <string name="hide_music">इस अवधि से अधिक संगीत लोड करें</string>
 </resources>

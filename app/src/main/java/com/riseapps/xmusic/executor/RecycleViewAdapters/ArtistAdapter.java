@@ -1,8 +1,13 @@
 package com.riseapps.xmusic.executor.RecycleViewAdapters;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,27 +18,28 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.executor.Interfaces.FragmentTransitionListener;
+import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Artist;
+import com.riseapps.xmusic.view.Activity.MainActivity;
+import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 import com.riseapps.xmusic.widgets.MainTextViewSub;
 
 import java.util.List;
 
 public class ArtistAdapter extends RecyclerView.Adapter {
 
-    private List<Artist> artistList;
+    private Cursor dataCursor;
+    private ScrollingFragment scrollingFragment;
+    private FragmentTransitionListener fragmentTransitionListener;
     Context c;
 
-    public ArtistAdapter(Context context, List<Artist> artistList, RecyclerView recyclerView) {
-        this.artistList = artistList;
+    public ArtistAdapter(Context context, RecyclerView recyclerView,Cursor cursor) {
 
-        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-
-            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
+        dataCursor=cursor;
+           LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
                     .getLayoutManager();
             c = context;
-
-
-        }
     }
 
 
@@ -51,27 +57,45 @@ public class ArtistAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof ArtistViewHolder) {
-            Artist artist = artistList.get(position);
-            String name = artist.getName().trim();
-            ((ArtistViewHolder) holder).name.setText(name);
-            ((ArtistViewHolder) holder).artist = artist;
-        }
+        dataCursor.moveToPosition(position);
+        String artist = dataCursor.getString(dataCursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST));
+        long id = dataCursor.getLong(dataCursor.getColumnIndex(MediaStore.Audio.Artists._ID));
+        if (artist.length() > 40)
+            artist = artist.substring(0, 32) + "...";
 
+        ((ArtistViewHolder) holder).name.setText(artist);
+        ((ArtistViewHolder) holder).artist=new Artist(artist,id);
+
+    }
+
+    public void setFragmentTransitionListener(FragmentTransitionListener fragmentTransitionListener) {
+        this.fragmentTransitionListener = fragmentTransitionListener;
+    }
+
+    public Cursor swapCursor(Cursor cursor) {
+        if (dataCursor == cursor) {
+            return null;
+        }
+        Cursor oldCursor = dataCursor;
+        this.dataCursor = cursor;
+        if (cursor != null) {
+            this.notifyDataSetChanged();
+        }
+        return oldCursor;
     }
 
 
     @Override
     public int getItemCount() {
-        return artistList.size();
+        return (dataCursor == null) ? 0 : dataCursor.getCount();
     }
 
-    class ArtistViewHolder extends RecyclerView.ViewHolder {
+    class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView imageView;
         TextView name;
         Context ctx;
-        MainTextViewSub artistTextView;
+        CardView cardView;
 
         Artist artist;
 
@@ -81,8 +105,35 @@ public class ArtistAdapter extends RecyclerView.Adapter {
 
             name = (TextView) v.findViewById(R.id.name);
             imageView= (ImageView) v.findViewById(R.id.artist_art_card);
+            cardView= (CardView) v.findViewById(R.id.artist_list_card);
+            cardView.setOnClickListener(this);
+        }
+        private void fragmentJump(Artist artist) {
+            scrollingFragment = new ScrollingFragment();
+            Bundle bundle = new Bundle();
+            bundle.putLong("ID", artist.getId());
+            bundle.putString("Name", artist.getName());
+            bundle.putString("Action", "Artists");
+            scrollingFragment.setArguments(bundle);
+            fragmentTransitionListener.onFragmentTransition(scrollingFragment);
+            switchContent(R.id.drawerLayout, scrollingFragment);
         }
 
+        public void switchContent(int id, Fragment fragment) {
+            if (c == null)
+                return;
+            if (c instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) c;
+                mainActivity.switchContent(id, fragment);
+            }
+
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            fragmentJump(artist);
+        }
     }
 
 }

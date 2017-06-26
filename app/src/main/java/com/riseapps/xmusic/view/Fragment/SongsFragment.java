@@ -1,5 +1,6 @@
 package com.riseapps.xmusic.view.Fragment;
 
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,8 +16,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.MainListPlayingListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
@@ -106,18 +109,24 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         int textLimit = 27;
+        int short_time=new SharedPreferenceSingelton().getSavedInt(getActivity(),"Short_music_time");
         if (data != null && data.moveToFirst()) {
             do {
-                long id = data.getLong(data.getColumnIndex(MediaStore.Audio.Media._ID));
                 long duration = data.getLong(data.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
-                String title = data.getString(data.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                String artist = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                String imagepath = "content://media/external/audio/media/" + id + "/albumart";
-                if(title.length()>textLimit)
-                title = title.substring(0, textLimit) + "...";
-                if(artist.length()>textLimit)
-                    artist = artist.substring(0, textLimit) + "...";
-                songsList.add(new Song(id,duration,title,artist,imagepath,false));
+                if(duration > (short_time *1000)) {
+                    long id = data.getLong(data.getColumnIndex(MediaStore.Audio.Media._ID));
+                    String title = data.getString(data.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                    String artist = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                    String imagepath = "content://media/external/audio/media/" + id + "/albumart";
+                    if (title.length() > textLimit)
+                        title = title.substring(0, textLimit) + "...";
+                    if (artist == null)
+                        artist = "Unknown";
+                    if (artist.length() > textLimit)
+                        artist = artist.substring(0, textLimit) + "...";
+                    songsList.add(new Song(id, duration, title, artist, imagepath, false));
+
+                }
             }
             while (data.moveToNext());
 

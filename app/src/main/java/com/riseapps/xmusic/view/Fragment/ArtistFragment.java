@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
+import com.riseapps.xmusic.executor.Interfaces.FragmentTransitionListener;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.ArtistAdapter;
 import com.riseapps.xmusic.model.Pojo.Artist;
@@ -35,7 +36,6 @@ public class ArtistFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     RecyclerView recyclerView;
-    ArrayList<Artist> artistList = new ArrayList<>();
     ArtistAdapter artistAdapter;
     private static final int ARTIST_LOADER = 2;
     private SharedPreferenceSingelton sharedPreferenceSingelton;
@@ -61,62 +61,32 @@ public class ArtistFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_artist, container, false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.artists);
 
+        recyclerView = (RecyclerView) v.findViewById(R.id.artists);
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
+
+        artistAdapter = new ArtistAdapter(getActivity(), recyclerView,null);
+        recyclerView.setAdapter(artistAdapter);
+
+        artistAdapter.setFragmentTransitionListener(new FragmentTransitionListener() {
             @Override
-            public void onClick(View view, int position) {
-                ScrollingFragment scrollingFragment = new ScrollingFragment();
+            public void onFragmentTransition(ScrollingFragment scrollingFragment) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     setExitTransition(TransitionInflater.from(
                             getActivity()).inflateTransition(android.R.transition.fade));
                     scrollingFragment.setEnterTransition(TransitionInflater.from(
                             getActivity()).inflateTransition(android.R.transition.fade));
                 }
-                Bundle bundle = new Bundle();
-                bundle.putLong("ID", artistList.get(position).getId());
-                bundle.putString("Name", artistList.get(position).getName());
-                bundle.putString("Action", "Artists");
-                scrollingFragment.setArguments(bundle);
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.drawerLayout, scrollingFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
 
             }
-        }));
-
+        });
 
         return v;
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (isVisibleToUser) {
-            View v = getView();
-            if (v != null) {
-               // playlistAdapter.notifyDataSetChanged();
-
-            }
-
-        } else {
-            View v = getView();
-            if (v != null) {
-
-            }
-        }
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -132,24 +102,11 @@ public class ArtistFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data != null && data.moveToFirst()) {
-            do {
-                String artist = data.getString(data.getColumnIndex(MediaStore.Audio.Artists.ARTIST));
-                long id = data.getLong(data.getColumnIndex(MediaStore.Audio.Artists._ID));
-                if (artist.length() > 40)
-                    artist = artist.substring(0, 32) + "...";
-                artistList.add(new Artist(artist, id));
-            }
-            while (data.moveToNext());
-
-            data.close();
-        }
-        artistAdapter = new ArtistAdapter(getActivity(), artistList, recyclerView);
-        recyclerView.setAdapter(artistAdapter);
+        artistAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        artistAdapter.swapCursor(null);
     }
 }

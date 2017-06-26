@@ -100,6 +100,7 @@
     <string name="delete_these_songs">Delete these Songs?</string>
     <string name="delete_warning">This operation will delete the selected songs from the device also</string>
     <string name="empty_state_playlist_message">You did not create any playlist</string>
+    <string name="hide_music">Load music files larger than</string>
     <!--AD UNIT ID'S-->
 
 

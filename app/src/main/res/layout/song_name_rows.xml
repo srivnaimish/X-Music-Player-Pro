@@ -50,6 +50,16 @@
                 tools:text="TextView" />
         </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/delete_playlist"
+            android:layout_width="@dimen/size16dp"
+            android:layout_height="@dimen/size16dp"
+            app:srcCompat="@drawable/ic_remove"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/size8dp"
+            android:background="@drawable/ripple"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

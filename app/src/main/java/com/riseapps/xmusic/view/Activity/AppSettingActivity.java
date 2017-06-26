@@ -27,9 +27,12 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.model.MusicService;
@@ -47,6 +50,9 @@ public class AppSettingActivity extends AppCompatActivity{
     SharedPreferenceSingelton sharedPreferenceSingelton;
     CoordinatorLayout back;
     Switch theme,pro;
+    private TextView short_time;
+    private int previous_set;
+    private HoloCircleSeekBar seekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +86,18 @@ public class AppSettingActivity extends AppCompatActivity{
             setting_pro.setVisibility(View.GONE);
         }
         pro = (Switch) findViewById(R.id.setting_pro);
+        theme = (Switch) findViewById(R.id.switch_theme);
+        short_time= (TextView) findViewById(R.id.time_for_short_music);
+        previous_set=sharedPreferenceSingelton.getSavedInt(this,"Short_music_time");
+        String time=previous_set+" seconds";
+        short_time.setText(time);
+        
         if (sharedPreferenceSingelton.getSavedBoolean(this, "Pro_Controls"))
             pro.setChecked(true);
         else
             pro.setChecked(false);
 
-        theme = (Switch) findViewById(R.id.switch_theme);
+       
         if (sharedPreferenceSingelton.getSavedBoolean(this, "Theme"))
             theme.setChecked(true);
         else
@@ -230,6 +242,36 @@ public class AppSettingActivity extends AppCompatActivity{
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.translation);
         dialog.show();
+    }
+
+    public void hide_short(View v){
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.short_music_hide_dialog);
+        dialog.show();
+        Button done = (Button) dialog.findViewById(R.id.done);
+        Button cancel = (Button) dialog.findViewById(R.id.cancel);
+        seekBar= (HoloCircleSeekBar) dialog.findViewById(R.id.seekBar);
+        previous_set=sharedPreferenceSingelton.getSavedInt(this,"Short_music_time");
+        if(previous_set!=0){
+            seekBar.setValue(previous_set);
+        }
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String time=seekBar.getValue()+" Seconds";
+                short_time.setText(time);
+                sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Short_music_time",seekBar.getValue());
+                dialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
     }
 
     @Override

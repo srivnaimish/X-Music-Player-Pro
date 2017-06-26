@@ -913,5 +913,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         });
 
     }
+
+    public void switchContent(int id, Fragment fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(id, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 }
 

@@ -1,6 +1,5 @@
 package com.riseapps.xmusic.view.Fragment;
 
-import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -22,10 +20,8 @@ import android.view.ViewGroup;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.executor.Interfaces.ClickListener;
-import com.riseapps.xmusic.executor.RecycleTouchListener;
+import com.riseapps.xmusic.executor.Interfaces.FragmentTransitionListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.AlbumsAdapter;
-import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.utils.GridItemDecoration;
 
 import java.util.ArrayList;
@@ -36,13 +32,9 @@ public class AlbumFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     RecyclerView recyclerView;
-    ArrayList<Album> albumList = new ArrayList<>();
     AlbumsAdapter albumAdapter;
     private static final int ALBUM_LOADER = 3;
     private SharedPreferenceSingelton sharedPreferenceSingelton;
-    final Uri sArtworkUri = Uri
-            .parse("content://media/external/audio/albumart");
-
 
     public AlbumFragment() {
         // Required empty public constructor
@@ -75,35 +67,22 @@ public class AlbumFragment extends Fragment implements LoaderManager.LoaderCallb
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
         recyclerView.setLayoutManager(grid);
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
+
+        albumAdapter = new AlbumsAdapter(getActivity(),recyclerView,null);
+        recyclerView.setAdapter(albumAdapter);
+
+        albumAdapter.setFragmentTransitionListener(new FragmentTransitionListener() {
             @Override
-            public void onClick(View view, int position) {
-                ScrollingFragment scrollingFragment = new ScrollingFragment();
+            public void onFragmentTransition(ScrollingFragment scrollingFragment) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     setExitTransition(TransitionInflater.from(
                             getActivity()).inflateTransition(android.R.transition.fade));
                     scrollingFragment.setEnterTransition(TransitionInflater.from(
                             getActivity()).inflateTransition(android.R.transition.fade));
                 }
-                Bundle bundle = new Bundle();
-                bundle.putLong("ID", albumList.get(position).getId());
-                bundle.putString("Name", albumList.get(position).getName());
-                bundle.putString("Imagepath", albumList.get(position).getImagepath());
-                bundle.putString("Action", "Albums");
-                scrollingFragment.setArguments(bundle);
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.drawerLayout, scrollingFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
 
             }
-        }));
-
+        });
         return v;
     }
 
@@ -124,25 +103,11 @@ public class AlbumFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data != null && data.moveToFirst()) {
-            do {
-                long album_id = data.getLong(data.getColumnIndex(MediaStore.Audio.Albums._ID));
-                String album = data.getString(data.getColumnIndex(MediaStore.Audio.Albums.ALBUM));
-
-                Uri uri = ContentUris.withAppendedId(sArtworkUri, album_id);
-                if (album.length() > 40)
-                    album = album.substring(0, 32) + "...";
-                albumList.add(new Album(album_id, album, uri.toString()));
-            }
-            while (data.moveToNext());
-            data.close();
-        }
-        albumAdapter = new AlbumsAdapter(getActivity(), albumList, recyclerView);
-        recyclerView.setAdapter(albumAdapter);
+      albumAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        albumAdapter.swapCursor(null);
     }
 }

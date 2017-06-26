@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="?colorPrimary">
+    <com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar
+        android:layout_centerInParent="true"
+        android:id="@+id/seekBar"
+        android:layout_width="0dp"
+        android:layout_height="290dp"
+        app:max="30"
+        app:pointer_color="@color/colorAccentDark"
+        app:pointer_halo_color="@color/colorAccentDark"
+        app:pointer_size="20dp"
+        app:text_color="?android:textColorTertiary"
+        app:text_size="65sp"
+        app:wheel_active_color="@color/colorAccent"
+        app:wheel_unactive_color="@color/colorMainBackground"/>
+
+    <Button
+        android:id="@+id/done"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="@dimen/size20dp"
+        android:text="@string/ok"
+        app:layout_constraintLeft_toLeftOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        android:textSize="@dimen/size16sp"/>
+
+    <Button
+        android:id="@+id/cancel"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="0dp"
+        android:text="@string/cancel"
+        app:layout_constraintRight_toRightOf="@+id/seekBar"
+        app:layout_constraintTop_toTopOf="@+id/done"
+        android:textSize="@dimen/size16sp"/>
+</android.support.constraint.ConstraintLayout>

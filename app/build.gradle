@@ -7,8 +7,8 @@ android {
         applicationId "com.riseapps.xmusic"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 28
-        versionName "1.0.27"
+        versionCode 29
+        versionName "1.0.28"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -43,5 +43,6 @@ dependencies {
     compile 'com.github.claudiodegio:MsvSearch:1.0.0'
     compile 'com.android.support:support-vector-drawable:25.3.1'
     compile 'com.getkeepsafe.taptargetview:taptargetview:1.9.1'
+    compile 'com.github.JesusM:HoloCircleSeekBar:v2.2.2'
     testCompile 'junit:junit:4.12'
 }

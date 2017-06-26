@@ -20,8 +20,8 @@ public class DBPlayer {
     private PlayerHelper playerHelper;
     private SQLiteDatabase mDatabase;
     private Context c;
-    public static final String strSeparator = ",";
-    SharedPreferenceSingelton sharedPreferenceSingelton;
+    private static final String strSeparator = ",";
+    private SharedPreferenceSingelton sharedPreferenceSingelton;
 
     public DBPlayer(Context context) {
         c = context;
@@ -187,6 +187,13 @@ public class DBPlayer {
         mDatabase.delete(PlayerHelper.PLAYLIST_TRACKS_TABLE_NAME, whereClause, whereArgs);
         mDatabase.close();
         Log.d("Playlist", "Deleted");
+    }
+
+    public void deleteSongFromPlaylist(String playlist,long id){
+        String whereClause = PlayerHelper.PLAYLIST_NAME + "=? AND " +PlayerHelper.PLAYLIST_SONG_ID + "=?" ;
+        String whereArgs[] = {playlist,""+id};
+        mDatabase.delete(PlayerHelper.PLAYLIST_TRACKS_TABLE_NAME, whereClause, whereArgs);
+        mDatabase.close();
     }
 
     private class PlayerHelper extends SQLiteOpenHelper {

@@ -77,4 +77,5 @@
     <string name="delete_these_songs">इन गीतों को हटाएं?</string>
     <string name="delete_warning">यह ऑपरेशन डिवाइस से चयनित गीतों को भी हटा देगा</string>
     <string name="empty_state_playlist_message">आपने कोई प्लेलिस्ट नहीं बनाई है</string>
+    <string name="hide_music">এই সময়কাল থেকে বড় সঙ্গীত লোড</string>
 </resources>

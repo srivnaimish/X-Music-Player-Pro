@@ -29,10 +29,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.executor.Interfaces.ClickListener;
+import com.riseapps.xmusic.executor.Interfaces.ScrollingClick;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
-import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.NestedFragmentAdapter;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
@@ -42,7 +41,7 @@ import com.riseapps.xmusic.widgets.MainTextViewSub;
 
 import java.util.ArrayList;
 
-public class ScrollingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ScrollingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -62,7 +61,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
     NestedFragmentAdapter nestedFragmentAdapter;
     private PlaySongExec playSongExec;
 
-    String multipleIDs="";
+    String multipleIDs = "";
 
 
     private OnFragmentInteractionListener mListener;
@@ -96,7 +95,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         shuffleButton = (Button) rootView.findViewById(R.id.shuffle_button);
         songMainArrayList = new ArrayList<>();
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
-         if (Name != null) {
+        if (Name != null) {
             name.setText(Name);
         } else {
             name.setText(getString(R.string.action_favourites));
@@ -127,46 +126,23 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        recyclerView.addOnItemTouchListener(new RecycleTouchListener(getActivity(), recyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                playFromThisFragment();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
-
         playAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                playFromThisFragment();
+                playFromThisFragment(0, false);
             }
         });
 
         shuffleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (songMainArrayList.size() != 0) {
-                    if ((((MainActivity) getActivity()).getSongs() != songMainArrayList)) {
-                        Toast.makeText(getContext(), getContext().getString(R.string.playing_all) + " " + name.getText().toString(), Toast.LENGTH_SHORT).show();
-                        ((MainActivity) getActivity()).setSongs(songMainArrayList);
-                        ((MainActivity) getActivity()).getMusicService().setSongs(songMainArrayList);
-                    }
-                    playSongExec = new PlaySongExec(getContext(), 0);
-                    playSongExec.startPlaying();
-                    new SharedPreferenceSingelton().saveAs(getActivity(), "Shuffle", true);
-                } else
-                    Snackbar.make(nestedScrollView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
+                playFromThisFragment(0, true);
             }
         });
-        if(Action.equalsIgnoreCase("Favourites")) {
+        if (Action.equalsIgnoreCase("Favourites")) {
             ArrayList<Long> IDs = new MyApplication(getActivity()).getWritableDatabase().readFavourites();
             initiallizeMultipleIDs(IDs);
-        }
-        else if(Action.equalsIgnoreCase("Playlists")){
+        } else if (Action.equalsIgnoreCase("Playlists")) {
             ArrayList<Long> IDs = new MyApplication(getActivity()).getWritableDatabase().readSongsFromPlaylist(Name);
             initiallizeMultipleIDs(IDs);
         }
@@ -177,26 +153,23 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(Action.equalsIgnoreCase("Favourites")||Action.equalsIgnoreCase("Playlists")) {
+        if (Action.equalsIgnoreCase("Favourites") || Action.equalsIgnoreCase("Playlists")) {
             if (!multipleIDs.equalsIgnoreCase("")) {
                 startLoader();
             } else {
                 empty.setVisibility(View.VISIBLE);
             }
-        }
-        else if(Action.equalsIgnoreCase("Recent_Playlists")){
-            String recentJSON=sharedPreferenceSingelton.getSavedString(getContext(),"Recent");
-            if(recentJSON!=null) {
+        } else if (Action.equalsIgnoreCase("Recent_Playlists")) {
+            String recentJSON = sharedPreferenceSingelton.getSavedString(getContext(), "Recent");
+            if (recentJSON != null) {
                 ArrayList<Long> ids = new Gson().fromJson(recentJSON, new TypeToken<ArrayList<Long>>() {
                 }.getType());
                 initiallizeMultipleIDs(ids);
                 startLoader();
-            }
-            else {
+            } else {
                 empty.setVisibility(View.VISIBLE);
             }
-        }
-        else {
+        } else {
             startLoader();
         }
     }
@@ -232,10 +205,9 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
             selection = MediaStore.Audio.Media.ALBUM_ID + "=" + this.id;
         } else if (Action.equalsIgnoreCase("Artists")) {
             selection = MediaStore.Audio.Media.ARTIST_ID + "=" + this.id;
-        }
-        else if(Action.equalsIgnoreCase("Favourites")||Action.equalsIgnoreCase("Playlists")||
-                Action.equalsIgnoreCase("Recent_Playlists")){
-            selection=multipleIDs;
+        } else if (Action.equalsIgnoreCase("Favourites") || Action.equalsIgnoreCase("Playlists") ||
+                Action.equalsIgnoreCase("Recent_Playlists")) {
+            selection = multipleIDs;
         }
         return new CursorLoader(getContext(), musicUri, null, selection, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
     }
@@ -259,9 +231,20 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
             while (data.moveToNext());
             data.close();
         }
-        nestedFragmentAdapter = new NestedFragmentAdapter(getContext(), songMainArrayList, recyclerView);
+        nestedFragmentAdapter = new NestedFragmentAdapter(getContext(), songMainArrayList, recyclerView, Action);
         recyclerView.setAdapter(nestedFragmentAdapter);
+        nestedFragmentAdapter.setScrollingClick(new ScrollingClick() {
+            @Override
+            public void onClick(int position) {
+                playFromThisFragment(position, false);
+            }
 
+            @Override
+            public void onDeleteClick(int position) {
+                new MyApplication(getContext()).getWritableDatabase().deleteSongFromPlaylist(Name,songMainArrayList.get(position).getID());
+                nestedFragmentAdapter.delete(position);
+            }
+        });
     }
 
     @Override
@@ -274,20 +257,21 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         void onFragmentInteraction(Uri uri);
     }
 
-    void playFromThisFragment() {
+    void playFromThisFragment(int position, boolean shuffle) {
         if (songMainArrayList.size() != 0) {
             if ((((MainActivity) getActivity()).getSongs() != songMainArrayList)) {
                 Toast.makeText(getContext(), getContext().getString(R.string.now_playing) + " " + name.getText().toString(), Toast.LENGTH_SHORT).show();
                 ((MainActivity) getActivity()).setSongs(songMainArrayList);
                 ((MainActivity) getActivity()).getMusicService().setSongs(songMainArrayList);
             }
-            playSongExec = new PlaySongExec(getContext(), 0);
+            playSongExec = new PlaySongExec(getContext(), position);
             playSongExec.startPlaying();
+            new SharedPreferenceSingelton().saveAs(getActivity(), "Shuffle", shuffle);
         } else
             Snackbar.make(nestedScrollView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
     }
 
-    void startLoader(){
+    void startLoader() {
         if (sharedPreferenceSingelton.getSavedBoolean(getContext(), "Loader"))
             getActivity().getSupportLoaderManager().restartLoader(4, null, this);
         else {
@@ -296,7 +280,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         }
     }
 
-    void initiallizeMultipleIDs(ArrayList<Long> IDs){
+    void initiallizeMultipleIDs(ArrayList<Long> IDs) {
         for (int i = 0; i < IDs.size(); i++) {
             if (i < IDs.size() - 1)
                 multipleIDs += MediaStore.Audio.Media._ID + "=" + IDs.get(i) + " OR ";
