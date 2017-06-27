@@ -81,9 +81,6 @@ public class SongAdapter extends RecyclerView.Adapter {
             song.setFavourite(false);
             ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
         }
-
-        ((SongViewHolder) holder).songListCard.setCardBackgroundColor(song.isSelected() ? colorSelected : colorNormal);
-
         ((SongViewHolder) holder).song = song;
     }
 

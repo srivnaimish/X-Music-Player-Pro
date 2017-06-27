@@ -386,17 +386,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         play_pause_mini = (ImageButton) findViewById(R.id.play_pause_mini);
 
         miniPlayer = (CardView) findViewById(R.id.song_list_card);
-        GradientDrawable gd;
-        if (sharedPreferenceSingelton.getSavedBoolean(MainActivity.this, "Theme")) {
-            gd = new GradientDrawable(
-                    GradientDrawable.Orientation.LEFT_RIGHT,
-                    new int[]{Color.parseColor("#161619"), Color.parseColor("#212121")});
-        } else {
-            gd = new GradientDrawable(
-                    GradientDrawable.Orientation.LEFT_RIGHT,
-                    new int[]{Color.parseColor("#f5f5f5"), Color.parseColor("#EEEEEE")});
-        }
-        miniPlayer.setBackground(gd);
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
 
         play_pause.setOnClickListener(togglePlayBtn);

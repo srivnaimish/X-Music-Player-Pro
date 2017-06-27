@@ -9,10 +9,8 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:textColorTertiary">@color/colorPrimaryFontDark</item>
-
         <item name="actionModeBackground">@color/colorWhite</item>
         <item name="android:colorBackground">@color/colorMainBackground</item>
-
         <item name="iconDual">#000</item>
 
     </style>
@@ -25,13 +23,50 @@
         <item name="android:textColorPrimary">@color/textColorPrimaryInverse</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:textColorTertiary">@color/colorPrimaryFontDarkInverse</item>
-
-        <!--  For Custom Action Mode Background Color/Drawable -->
         <item name="actionModeBackground">@color/colorPrimaryInverse</item>
         <item name="android:colorBackground">@color/colorPrimaryDarkInverse</item>
         <item name="iconDual">#FAFAFA</item>
-
     </style>
+
+    <style name="AppTheme.Dark2" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary2</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark2</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary2</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDark2</item>
+        <item name="actionModeBackground">@color/colorPrimary2</item>
+        <item name="android:colorBackground">@color/colorPrimaryDark2</item>
+        <item name="iconDual">#FAFAFA</item>
+    </style>
+
+    <style name="AppTheme.Dark3" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary3</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary3</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDark3</item>
+        <item name="actionModeBackground">@color/colorPrimary2</item>
+        <item name="android:colorBackground">@color/colorPrimaryDark2</item>
+        <item name="iconDual">#FAFAFA</item>
+    </style>
+
+    <style name="AppTheme.Dark4" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary4</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark4</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary4</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDark4</item>
+        <item name="actionModeBackground">@color/colorPrimary4</item>
+        <item name="android:colorBackground">@color/colorMainBackground4</item>
+        <item name="iconDual">#FAFAFA</item>
+    </style>
+
 
     <style name="MyCheckBox" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/colorAccent</item>

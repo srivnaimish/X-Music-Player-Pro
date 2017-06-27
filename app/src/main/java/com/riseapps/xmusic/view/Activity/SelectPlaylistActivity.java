@@ -1,11 +1,12 @@
 package com.riseapps.xmusic.view.Activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -15,11 +16,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
@@ -43,10 +46,10 @@ public class SelectPlaylistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<PlaylistSelect> playLists = new ArrayList<>();
     AddPlaylistAdapter addPlaylistAdapter;
-    CardView cardView;
-
+    CardView cardView,dialog;
     SharedPreferenceSingelton sharedPreferenceSingelton;
-    private Dialog dialog;
+    TextView hint;
+    //  private Dialog dialog;
     // utils
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -59,6 +62,8 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_playlist);
         empty_state= (LinearLayout) findViewById(R.id.linearLayout4);
+        dialog= (CardView) findViewById(R.id.playlist_new);
+        hint= (TextView) findViewById(R.id.hint);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -100,6 +105,36 @@ public class SelectPlaylistActivity extends AppCompatActivity {
             }
         });
 
+        Button create = (Button) findViewById(R.id.create);
+        Button cancel = (Button) findViewById(R.id.cancel);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText editText = (EditText) dialog.findViewById(R.id.dialogEditText);
+                String s = editText.getText().toString();
+                if (!s.equalsIgnoreCase("")) {
+                    if(playLists.contains(new PlaylistSelect(s,false))){
+                        Snackbar.make(cardView, "Playlist already created", Snackbar.LENGTH_SHORT).show();
+                    }else {
+                        if(empty_state.getVisibility()==View.VISIBLE){
+                            empty_state.setVisibility(View.GONE);
+                        }
+                        playLists.add(new PlaylistSelect(s, false));
+                        addPlaylistAdapter.notifyItemInserted(playLists.size());
+                        doExitReveal(dialog);
+                    }
+                } else {
+                    Snackbar.make(cardView, "Please give playlist a Name", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doExitReveal(dialog);
+            }
+        });
+
         cardView = (CardView) findViewById(R.id.add_playlist);
         recyclerView = (RecyclerView) findViewById(R.id.playlists);
 
@@ -109,7 +144,7 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog();
+                doCircularReveal(dialog);
             }
         });
 
@@ -142,44 +177,6 @@ public class SelectPlaylistActivity extends AppCompatActivity {
 
             }
         }));
-
-        /**/
-    }
-
-
-    private void openDialog() {
-        dialog = new Dialog(SelectPlaylistActivity.this);
-        dialog.setContentView(R.layout.playlist_create_dialog);
-        dialog.show();
-        Button create = (Button) dialog.findViewById(R.id.create);
-        Button cancel = (Button) dialog.findViewById(R.id.cancel);
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText editText = (EditText) dialog.findViewById(R.id.dialogEditText);
-                String s = editText.getText().toString();
-                if (!s.equalsIgnoreCase("")) {
-                    if(playLists.contains(new PlaylistSelect(s,false))){
-                        Snackbar.make(cardView, "Playlist already created", Snackbar.LENGTH_SHORT).show();
-                    }else {
-                        if(empty_state.getVisibility()==View.VISIBLE){
-                            empty_state.setVisibility(View.GONE);
-                        }
-                        playLists.add(new PlaylistSelect(s, false));
-                        addPlaylistAdapter.notifyItemInserted(playLists.size());
-                    }
-                } else {
-                    Snackbar.make(cardView, "Please give playlist a Name", Snackbar.LENGTH_SHORT).show();
-                }
-                dialog.dismiss();
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
     }
 
     @Override
@@ -187,4 +184,53 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
+    private void doCircularReveal(View view) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            dialog.setVisibility(View.VISIBLE);
+            int centerX = 0;
+            int centerY = view.getHeight();
+            int startRadius = 0;
+            int endRadius = Math.max(view.getWidth(), view.getHeight());
+            Animator anim = null;
+            anim = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
+            anim.setDuration(400);
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                }
+            });
+            anim.start();
+        } else {
+            dialog.setVisibility(View.VISIBLE);
+        }
+        cardView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+        hint.setVisibility(View.GONE);
+    }
+
+    void doExitReveal(View view) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            int centerX = 0;
+            int centerY = view.getHeight();
+            int initialRadius = view.getWidth();
+            Animator anim =
+                    ViewAnimationUtils.createCircularReveal(view, centerX, centerY, initialRadius, 0);
+            anim.setDuration(400);
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    dialog.setVisibility(View.GONE);
+                }
+            });
+            anim.start();
+        } else {
+            dialog.setVisibility(View.GONE);
+        }
+        cardView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+        hint.setVisibility(View.VISIBLE);
+    }
+
 }
