@@ -118,10 +118,6 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                     .placeholder(ContextCompat.getDrawable(getActivity(), R.drawable.play))
                     .into(circleAlbumArt);
         }
-        int spanCount = 1; // 2 columns
-        int spacing = 20; // 50px
-
-        recyclerView.addItemDecoration(new GridItemDecoration(spanCount, spacing, true));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -268,7 +264,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
             playSongExec.startPlaying();
             new SharedPreferenceSingelton().saveAs(getActivity(), "Shuffle", shuffle);
         } else
-            Snackbar.make(nestedScrollView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(imageView, getString(R.string.empty_state_message), Snackbar.LENGTH_SHORT).show();
     }
 
     void startLoader() {

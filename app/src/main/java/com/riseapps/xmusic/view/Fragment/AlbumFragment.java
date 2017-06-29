@@ -34,7 +34,6 @@ public class AlbumFragment extends Fragment implements LoaderManager.LoaderCallb
     RecyclerView recyclerView;
     AlbumsAdapter albumAdapter;
     private static final int ALBUM_LOADER = 3;
-    private SharedPreferenceSingelton sharedPreferenceSingelton;
 
     public AlbumFragment() {
         // Required empty public constructor
@@ -66,7 +65,6 @@ public class AlbumFragment extends Fragment implements LoaderManager.LoaderCallb
         recyclerView.setNestedScrollingEnabled(false);
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
         recyclerView.setLayoutManager(grid);
-        sharedPreferenceSingelton = new SharedPreferenceSingelton();
 
         albumAdapter = new AlbumsAdapter(getActivity(),recyclerView,null);
         recyclerView.setAdapter(albumAdapter);

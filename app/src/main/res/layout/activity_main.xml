@@ -100,12 +100,12 @@
                 android:background="?colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:tabGravity="fill"
-                app:tabIndicatorColor="@color/colorAccent"
+                app:tabIndicatorColor="?colorAccent"
                 app:tabMaxWidth="0dp"
                 app:tabMode="fixed"
                 app:tabPaddingEnd="-1dp"
                 app:tabPaddingStart="-1dp"
-                app:tabSelectedTextColor="@color/colorAccent" />
+                app:tabSelectedTextColor="?colorAccent" />
 
         </android.support.design.widget.AppBarLayout>
 

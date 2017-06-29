@@ -19,7 +19,7 @@
         app:text_color="?android:textColorTertiary"
         app:text_size="65sp"
         app:wheel_active_color="@color/colorAccent"
-        app:wheel_unactive_color="@color/colorMainBackground"/>
+        app:wheel_unactive_color="?android:textColorTertiary"/>
 
     <Button
         android:id="@+id/done"

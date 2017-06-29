@@ -63,7 +63,7 @@
     <string name="rate_us_subHeading">Show us some love and give us 5 stars</string>
     <string name="Invalid_Time_Toast">Invalid Time</string>
     <string name="translation_help">Translation Help</string>
-    <string name="translation_help_sub">Thank you for showing interest in translation of X Music Player Pro! .\n\n If you wish to translate, drop us a mail at riseappalarm@gmail.com to improve or add your language in our app</string>
+    <string name="translation_help_sub">Thank you for showing interest in translation of X Music Player Pro! .\n\n If you wish to translate, drop us a mail at sriv.naimish@gmail.com to improve or add your language in our app</string>
 
 
     <!--CREATE PLAYLIST DIALOG-->
@@ -101,6 +101,9 @@
     <string name="delete_warning">This operation will delete the selected songs from the device also</string>
     <string name="empty_state_playlist_message">You did not create any playlist</string>
     <string name="hide_music">Load music files larger than</string>
+    <string name="action_edit">Edit Song details</string>
+    <string name="custom_time">Custom Time</string>
+    <string name="pick_time">Pick Time</string>
     <!--AD UNIT ID'S-->
 
 

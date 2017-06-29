@@ -66,6 +66,9 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        songsAdapter = new SongAdapter(getActivity(),recyclerView,null);
+        recyclerView.setAdapter(songsAdapter);
+
         ((MainActivity)getActivity()).setSongRefreshListener(new SongRefreshListener() {
 
             @Override
@@ -108,32 +111,8 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        int textLimit = 27;
-        int short_time=new SharedPreferenceSingelton().getSavedInt(getActivity(),"Short_music_time");
-        if (data != null && data.moveToFirst()) {
-            do {
-                long duration = data.getLong(data.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
-                if(duration > (short_time *1000)) {
-                    long id = data.getLong(data.getColumnIndex(MediaStore.Audio.Media._ID));
-                    String title = data.getString(data.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                    String artist = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                    String imagepath = "content://media/external/audio/media/" + id + "/albumart";
-                    if (title.length() > textLimit)
-                        title = title.substring(0, textLimit) + "...";
-                    if (artist == null)
-                        artist = "Unknown";
-                    if (artist.length() > textLimit)
-                        artist = artist.substring(0, textLimit) + "...";
-                    songsList.add(new Song(id, duration, title, artist, imagepath, false));
-
-                }
-            }
-            while (data.moveToNext());
-
-            data.close();
-        }
-        songsAdapter = new SongAdapter(getActivity(), songsList,recyclerView);
-        recyclerView.setAdapter(songsAdapter);
+        songsAdapter.swapCursor(data);
+        songsList=songsAdapter.songsList;
         setPlayingFromThisFragment();
         ((MainActivity) getActivity()).setCompleteSongList(songsList);
         ((MainActivity) getActivity()).startTheService();
@@ -141,6 +120,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        songsAdapter.swapCursor(null);
     }
 
     void setPlayingFromThisFragment(){

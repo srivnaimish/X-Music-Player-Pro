@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -11,10 +10,11 @@
         <item name="actionModeBackground">@color/colorWhite</item>
         <item name="android:colorBackground">@color/colorMainBackground</item>
         <item name="iconDual">#000</item>
+        <item name="colorControlNormal">@color/colorPrimaryFontDark</item>
+        <item name="android:colorControlActivated">@color/colorAccentDark</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryInverse</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkInverse</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -27,10 +27,9 @@
     </style>
 
     <style name="AppTheme.Dark2" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary2</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark2</item>
-        <item name="colorAccent">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/textColorPrimary2</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:textColorTertiary">@color/colorPrimaryFontDark2</item>
@@ -40,10 +39,9 @@
     </style>
 
     <style name="AppTheme.Dark3" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary3</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
-        <item name="colorAccent">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/textColorPrimary3</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:textColorTertiary">@color/colorPrimaryFontDark3</item>
@@ -53,8 +51,6 @@
     </style>
 
     <style name="AppTheme.Dark4" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
-
         <item name="colorPrimary">@color/colorPrimary4</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark4</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -66,6 +62,41 @@
         <item name="iconDual">@color/colorPrimaryDark4</item>
     </style>
 
+    <style name="AppTheme.Dark5" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary5</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark5</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary5</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDark5</item>
+        <item name="actionModeBackground">@color/colorPrimary5</item>
+        <item name="android:colorBackground">@color/colorPrimaryDark5</item>
+        <item name="iconDual">#FAFAFA</item>
+    </style>
+
+    <style name="AppTheme.Dark6" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary6</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark6</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary6</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDark6</item>
+        <item name="actionModeBackground">@color/colorPrimary6</item>
+        <item name="android:colorBackground">@color/colorPrimaryDark6</item>
+        <item name="iconDual">#FAFAFA</item>
+    </style>
+
+    <style name="AppTheme.Dark7" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary7</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark7</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary7</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDark7</item>
+        <item name="actionModeBackground">@color/colorPrimary7</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:colorBackground">@color/colorMainBackground7</item>
+        <item name="iconDual">@color/colorPrimaryDark7</item>
+    </style>
 
     <style name="ToolbarTheme" parent="AppTheme">
         <item name="selectableItemBackground">?android:selectableItemBackground</item>

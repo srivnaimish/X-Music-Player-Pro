@@ -57,49 +57,50 @@
                     card_view:cardCornerRadius="0dp"
                     card_view:cardElevation="0dp"
                     card_view:cardBackgroundColor="?colorPrimary"
-                    android:onClick="changeThemeSwitch">
+                    android:onClick="changeTheme">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center">
-
-                        <Switch
-                            android:id="@+id/switch_theme"
-                            android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginBottom="12dp"
-                            android:layout_marginEnd="8dp"
-                            android:switchMinWidth="43dp"
-                            android:thumb="@drawable/customswitchselector"
-                            android:track="@drawable/custom_switch_background" />
+                            android:layout_gravity="center">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="8dp"
-                            android:layout_toEndOf="@id/switch_theme"
-                            android:orientation="vertical">
+                            <ImageView
+                                android:id="@+id/setting_theme_icon"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_margin="12dp"
+                                app:srcCompat="@drawable/ic_color"
+                                android:tint="?android:textColorTertiary"/>
 
-                            <com.riseapps.xmusic.widgets.MainTextView
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/theme"
-                                android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp" />
+                                android:layout_centerVertical="true"
+                                android:layout_margin="8dp"
+                                android:layout_toEndOf="@id/setting_theme_icon"
+                                android:orientation="vertical">
 
-                            <com.riseapps.xmusic.widgets.MainTextViewSub
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/switch_betweem_the_light_and_dark_app_themes"
-                                android:textSize="@dimen/size14sp" />
+                                <com.riseapps.xmusic.widgets.MainTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/theme"
+                                    android:textColor="?android:textColorPrimary"
+                                    android:textSize="@dimen/size16sp" />
 
-                        </LinearLayout>
+                                <com.riseapps.xmusic.widgets.MainTextViewSub
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/switch_betweem_the_light_and_dark_app_themes"
+                                    android:textSize="@dimen/size14sp" />
+
+                            </LinearLayout>-->
+
+                        </RelativeLayout>
 
                     </RelativeLayout>
 

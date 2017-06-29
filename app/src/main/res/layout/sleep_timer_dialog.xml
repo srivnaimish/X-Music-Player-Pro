@@ -2,123 +2,230 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="240dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp"
     android:background="?colorPrimary">
 
-    <com.riseapps.xmusic.widgets.MainTextView
-        android:id="@+id/dialog_placeholder"
+    <LinearLayout
+        android:id="@+id/heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="@string/stop_music_after"
-        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_sleep_timer"
+            android:background="@null"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp" />
+        <com.riseapps.xmusic.widgets.MainTextView
+            android:id="@+id/dialog_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/stop_music_after"
+            android:textAlignment="center"
+            android:textSize="@dimen/size16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorTertiary" />
+    </LinearLayout>
+
+
+    <com.riseapps.xmusic.widgets.MainTextViewSub
+        android:id="@+id/tt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pick_time"
+        android:textAllCaps="true"
+        android:textColor="?android:textColorTertiary"
         android:textSize="@dimen/size15sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/ll1"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/size16dp"
+        app:layout_constraintTop_toBottomOf="@+id/heading"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="32dp"
-        android:orientation="horizontal"
-        android:weightSum="1"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_placeholder">
+        android:layout_marginStart="8dp" />
 
-        <com.riseapps.xmusic.widgets.MainEditText
-            android:id="@+id/hours"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".5"
-            android:background="@color/colorAccentDark"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="2"
-            android:text="@string/zero"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/size16sp" />
-
-        <com.riseapps.xmusic.widgets.MainEditText
-            android:id="@+id/minutes"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_weight=".5"
-            android:background="@color/colorAccentDark"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="2"
-            android:text="@string/zero"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/size16sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        android:weightSum="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll1">
-
-        <com.riseapps.xmusic.widgets.MainTextViewSub
-            android:id="@+id/textView2"
+        <LinearLayout
+            android:id="@+id/ll1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:text="@string/hours"
-            android:textAlignment="center"
-            android:textSize="@dimen/size15sp" />
+            android:layout_marginTop="@dimen/size20dp"
+            app:layout_constraintTop_toBottomOf="@+id/tt"
+            app:layout_constraintLeft_toLeftOf="@+id/tt"
+            android:weightSum="1"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent">
+            <android.support.v7.widget.CardView
+                android:id="@+id/fifteen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="@color/colorPrimaryFontDark"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardElevation="0dp"
+                android:layout_weight="0.5">
+                <com.riseapps.xmusic.widgets.MainTextViewSub
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="15 min"
+                    android:textColor="@color/whitePrimary"
+                    android:layout_marginStart="@dimen/size20dp"
+                    android:layout_marginEnd="@dimen/size20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/size15sp"/>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/thirty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="@color/colorPrimaryFontDark"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardElevation="0dp"
+                android:layout_weight="0.5"
+                android:layout_marginStart="@dimen/size20dp">
+                <com.riseapps.xmusic.widgets.MainTextViewSub
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30 min"
+                    android:textColor="@color/whitePrimary"
+                    android:layout_marginStart="@dimen/size20dp"
+                    android:layout_marginEnd="@dimen/size20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/size15sp"/>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
 
-        <com.riseapps.xmusic.widgets.MainTextViewSub
-            android:id="@+id/textView3"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight=".5"
+            android:layout_marginTop="@dimen/size16dp"
+            android:weightSum="1"
+            app:layout_constraintTop_toBottomOf="@+id/ll1"
+            app:layout_constraintRight_toRightOf="@+id/ll1"
+            app:layout_constraintLeft_toLeftOf="@+id/ll1"
+            android:id="@+id/linearLayout5">
+            <android.support.v7.widget.CardView
+                android:id="@+id/fortyfive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="@color/colorPrimaryFontDark"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardElevation="0dp"
+                android:layout_weight="0.5">
+                <com.riseapps.xmusic.widgets.MainTextViewSub
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="45 min"
+                    android:textColor="@color/whitePrimary"
+                    android:layout_marginStart="@dimen/size20dp"
+                    android:layout_marginEnd="@dimen/size20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/size15sp"/>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/sixty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="@color/colorPrimaryFontDark"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardElevation="0dp"
+                android:layout_weight="0.5"
+                android:layout_marginStart="@dimen/size20dp">
+                <com.riseapps.xmusic.widgets.MainTextViewSub
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="60 min"
+                    android:textColor="@color/whitePrimary"
+                    android:layout_marginStart="@dimen/size20dp"
+                    android:layout_marginEnd="@dimen/size20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/size15sp"/>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <com.riseapps.xmusic.widgets.MainTextViewSub
+            android:id="@+id/tt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_time"
+            android:textAllCaps="true"
+            android:textColor="?android:textColorTertiary"
+            android:textSize="@dimen/size15sp"
+            android:layout_marginTop="@dimen/size20dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintLeft_toLeftOf="@+id/tt" />
+
+            <com.riseapps.xmusic.widgets.MainEditText
+                android:id="@+id/minutes"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/colorPrimaryFontDark"
+                android:layout_gravity="center"
+                android:textSize="@dimen/size15sp"
+                android:textColor="@color/whitePrimary"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="@dimen/size20dp"
+                app:layout_constraintTop_toBottomOf="@+id/tt1"
+                />
+
+        <com.riseapps.xmusic.widgets.MainTextViewSub
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/minutes"
-            android:textAlignment="center"
-            android:textSize="@dimen/size15sp" />
-    </LinearLayout>
+            app:layout_constraintTop_toTopOf="@+id/minutes"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/minutes"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintLeft_toRightOf="@+id/minutes"
+            android:layout_marginLeft="8dp"
+            android:textColor="?android:textColorTertiary"/>
+            <Button
+                android:id="@+id/done"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/ok"
+                app:layout_constraintLeft_toLeftOf="@+id/tt1"
+                android:textColor="?android:textColorTertiary"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/minutes"
+                app:layout_constraintRight_toLeftOf="@+id/minutes"
+                android:layout_marginRight="8dp" />
 
-    <Button
-        android:id="@+id/done"
-        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/ok"
-        app:layout_constraintLeft_toLeftOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-    <Button
-        android:id="@+id/cancel"
-        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="0dp"
-        android:text="@string/cancel"
-        app:layout_constraintRight_toRightOf="@+id/linearLayout2"
-        app:layout_constraintTop_toTopOf="@+id/done" />
+            <Button
+                android:id="@+id/cancel"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_marginTop="0dp"
+                android:text="@string/cancel"
+                app:layout_constraintTop_toTopOf="@+id/done"
+                app:layout_constraintRight_toRightOf="@+id/linearLayout5"
+                android:textColor="?android:textColorTertiary"
+                android:layout_marginRight="12dp"
+                app:layout_constraintLeft_toRightOf="@+id/minutes"
+                android:layout_marginLeft="8dp" />
 
 </android.support.constraint.ConstraintLayout>

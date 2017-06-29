@@ -41,6 +41,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -95,7 +96,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     FloatingActionButton play_pause;
     //MiniPlayer items
     TextView title_mini, artist_mini;
-    ImageButton play_pause_mini;
+    FloatingActionButton play_pause_mini;
     ImageView album_art_mini;
     //MainPlayer items
     TextView title, artist, currentPosition, totalDuration;
@@ -114,7 +115,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private Toolbar toolbarPlayer, toolbarContext;
     private WaveHelper mWaveHelper;
     private int mBorderColor = Color.parseColor("#e74c3c");
-    private int mBorderWidth = 5;
     private SongRefreshListener songRefreshListener;
     private PlaylistRefreshListener playlistRefreshListener;
     private MainTextView toolbar_context_title;
@@ -179,16 +179,18 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 public void onPlayerStatusChanged(int status) {
                     switch (status) {
                         case MusicService.PLAYING:
+                            play_pause.startAnimation(AnimationUtils.loadAnimation(MainActivity.this,R.anim.play_pause));
                             play_pause.setImageResource(R.drawable.pause);
-                            play_pause_mini.setImageResource(R.drawable.ic_pause);
+                            play_pause_mini.setImageResource(R.drawable.pause);
                             musicPlaying = true;
                             mWaveHelper.start();
                             equalizerView.animateBars();
                             equalizerView.setVisibility(View.VISIBLE);
                             break;
                         case MusicService.PAUSED:
+                            play_pause.startAnimation(AnimationUtils.loadAnimation(MainActivity.this,R.anim.play_pause));
                             play_pause.setImageResource(R.drawable.play);
-                            play_pause_mini.setImageResource(R.drawable.ic_play);
+                            play_pause_mini.setImageResource(R.drawable.play);
                             musicPlaying = false;
                             mWaveHelper.cancel();
                             equalizerView.setVisibility(View.GONE);
@@ -204,7 +206,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         @Override
         public void onServiceDisconnected(ComponentName name) {
             play_pause.setImageResource(R.drawable.play);
-            play_pause_mini.setImageResource(R.drawable.ic_play);
+            play_pause_mini.setImageResource(R.drawable.play);
             musicPlaying = false;
             mWaveHelper.cancel();
         }
@@ -303,6 +305,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         });
 
         final WaveView waveView = (WaveView) findViewById(R.id.wave);
+        int mBorderWidth = 5;
         waveView.setBorder(mBorderWidth, mBorderColor);
 
         // set wave view
@@ -383,7 +386,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         title_mini = (TextView) findViewById(R.id.name_mini);
         artist_mini = (TextView) findViewById(R.id.artist_mini);
         album_art_mini = (ImageView) findViewById(R.id.album_art_mini);
-        play_pause_mini = (ImageButton) findViewById(R.id.play_pause_mini);
+        play_pause_mini = (FloatingActionButton) findViewById(R.id.play_pause_mini);
 
         miniPlayer = (CardView) findViewById(R.id.song_list_card);
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
@@ -396,7 +399,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
         if(!sharedPreferenceSingleton.getSavedBoolean(this,"mainScreenSequence")) {
            new TapTargetSequence(this).targets(
-                    TapTarget.forToolbarNavigationIcon(mToolbar,"Equalizer, Sleep Timer, Skipie mode, Themes")
+                    TapTarget.forToolbarNavigationIcon(mToolbar,getString(R.string.app_walk1))
                             .dimColor(android.R.color.black)
                             .outerCircleColor(R.color.colorAccentDark)
                             .targetCircleColor(R.color.colorWhite)
@@ -406,7 +409,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             .targetRadius(20)
                             .cancelable(true)
                             .id(1),
-                    TapTarget.forView(album_art_mini,"Tap on Mini Player to open Main Player")
+                    TapTarget.forView(album_art_mini,getString(R.string.app_walk2))
                             .dimColor(android.R.color.black)
                             .outerCircleColor(R.color.colorAccentDark)
                             .targetCircleColor(R.color.colorWhite)
@@ -473,7 +476,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 Song song = songList.get(musicService.getCurrentIndex());
                 if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
-                    //i.putExtra("selection_type", "multiple_playlist");
                     startActivityForResult(i,1);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 } else if (item.getItemId() == R.id.youtube) {
@@ -525,12 +527,20 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         toolbarContext.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toolbarContext.setVisibility(View.GONE);
-                mToolbar.setVisibility(View.VISIBLE);
-                miniPlayer.setVisibility(View.VISIBLE);
-                songRefreshListener.OnContextBackPressed();
+                removeContentSelection();
             }
         });
+    }
+
+    private void removeContentSelection() {
+        toolbarContext.setVisibility(View.GONE);
+        mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
+        mToolbar.setVisibility(View.VISIBLE);
+        miniPlayer.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
+        miniPlayer.setVisibility(View.VISIBLE);
+        selectedID=new ArrayList<>();
+        songRefreshListener.OnContextBackPressed();
+
     }
 
     public void startTheService(){
@@ -584,10 +594,17 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             if (musicPlaying) {
                 if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                     getSupportFragmentManager().popBackStackImmediate();
-                else
+                else{
+                    if(selectedID.size()>0){
+                        removeContentSelection();
+                    }else
                     moveTaskToBack(true);
+                }
             } else {
-                super.onBackPressed();
+                if(selectedID.size()>0){
+                    removeContentSelection();
+                }else
+                    super.onBackPressed();
             }
         }
     }
@@ -622,7 +639,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         mainPlayer.startAnimation(new CustomAnimation().slide_up(MainActivity.this));
         if(!sharedPreferenceSingleton.getSavedBoolean(MainActivity.this,"playerSequence")) {
             new TapTargetSequence(this).target(
-                    TapTarget.forToolbarMenuItem(toolbarPlayer, R.id.youtube, "Want to search this song on Youtube?")
+                    TapTarget.forToolbarMenuItem(toolbarPlayer, R.id.youtube, getString(R.string.app_walk3))
                             .dimColor(android.R.color.black)
                             .outerCircleColor(R.color.colorAccentDark)
                             .targetCircleColor(R.color.whitePrimary)
@@ -741,9 +758,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     private String[] getTitles() {
         ArrayList<Song> list = completeList;
-        String[] array = new String[list.size()];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = list.get(i).getName();
+        String[] array={""};
+        if(list!=null) {
+             array = new String[list.size()];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = list.get(i).getName();
+            }
         }
         return array;
     }
@@ -766,15 +786,20 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         }
         if (c == 0) {
             toolbarContext.setVisibility(View.GONE);
+            mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
             mToolbar.setVisibility(View.VISIBLE);
+            miniPlayer.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
             miniPlayer.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onFirstTrackLongPress() {
+        toolbarContext.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
         toolbarContext.setVisibility(View.VISIBLE);
+        mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out));
         mToolbar.setVisibility(View.GONE);
+        miniPlayer.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out));
         miniPlayer.setVisibility(View.GONE);
     }
 

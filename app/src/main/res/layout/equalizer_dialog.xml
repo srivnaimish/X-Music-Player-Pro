@@ -4,29 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/size250dp"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?colorPrimary">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/ll"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccentDark"
-        android:padding="7dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/size16dp">
+        <ImageView
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_equalizer"
+            android:background="@null" />
         <com.riseapps.xmusic.widgets.MainTextView
             android:id="@+id/dialog_placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:text="@string/select_a_preset"
-            android:textColor="@color/whitePrimary"
-            android:textSize="@dimen/size18sp" />
-    </RelativeLayout>
-
+            android:textSize="@dimen/size16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorTertiary"
+            android:layout_gravity="center_vertical"
+            />
+    </LinearLayout>
 
     <RadioGroup
         android:id="@+id/radio_group"
@@ -36,7 +42,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -49,7 +55,8 @@
             android:layout_marginStart="0dp"
             android:checked="true"
             android:text="@string/normal_preset"
-            android:textSize="@dimen/size15sp" />
+            android:textSize="@dimen/size15sp"
+            android:textColor="?android:textColorTertiary"/>
 
         <RadioButton
             android:id="@+id/classical"
@@ -57,28 +64,32 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:text="@string/classical_preset"
-            android:textSize="@dimen/size15sp" />
+            android:textSize="@dimen/size15sp"
+            android:textColor="?android:textColorTertiary"/>
 
         <RadioButton
             android:id="@+id/dance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dance_preset"
-            android:textSize="@dimen/size15sp" />
+            android:textSize="@dimen/size15sp"
+            android:textColor="?android:textColorTertiary"/>
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:text="@string/flat_preset"
-            android:textSize="@dimen/size15sp" />
+            android:textSize="@dimen/size15sp"
+            android:textColor="?android:textColorTertiary"/>
 
         <RadioButton
             android:id="@+id/folk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/folk_preset"
-            android:textSize="@dimen/size15sp" />
+            android:textSize="@dimen/size15sp"
+            android:textColor="?android:textColorTertiary"/>
 
         <RadioButton
             android:id="@+id/heavy_metal"
@@ -86,14 +97,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:text="@string/heavy_metal_preset"
-            android:textSize="@dimen/size15sp" />
+            android:textSize="@dimen/size15sp"
+            android:textColor="?android:textColorTertiary"/>
 
         <RadioButton
             android:id="@+id/hip_hop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/hip_hop_preset"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size14sp"
+            android:textColor="?android:textColorTertiary"/>
 
         <RadioButton
             android:id="@+id/jazz"
@@ -101,14 +114,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:text="@string/jazz_preset"
-            android:textSize="@dimen/size15sp" />
+            android:textSize="@dimen/size15sp"
+            android:textColor="?android:textColorTertiary"/>
 
         <RadioButton
             android:id="@+id/pop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pop_preset"
-            android:textSize="@dimen/size15sp" />
+            android:textSize="@dimen/size15sp"
+            android:textColor="?android:textColorTertiary"/>
 
         <RadioButton
             android:id="@+id/rock"
@@ -116,18 +131,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:text="@string/rock_preset"
-            android:textSize="@dimen/size15sp" />
+            android:textSize="@dimen/size15sp"
+            android:textColor="?android:textColorTertiary"
+            />
     </RadioGroup>
 
     <Button
         android:id="@+id/done"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:background="@color/colorAccentDark"
-        android:textColor="@color/whitePrimary"
-        android:textSize="@dimen/size18sp"
         android:text="@string/ok"
+        android:textColor="?android:textColorTertiary"
+        android:textSize="@dimen/size18sp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

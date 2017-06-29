@@ -31,4 +31,5 @@
     <dimen name="size45dp">45dp</dimen>
     <dimen name="size40dp">40dp</dimen>
     <dimen name="size20dp">20dp</dimen>
+    <dimen name="size35dp">35dp</dimen>
 </resources>

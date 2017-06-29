@@ -11,8 +11,8 @@
     <color name="textColorPrimaryInverse">#FFFFFF</color>
     <color name="colorPrimaryFontDarkInverse">#FAFAFA</color>
 
-    <color name="colorPrimary2">#a35742</color>
-    <color name="colorPrimaryDark2">#99513d</color>
+    <color name="colorPrimary2">#6e3c1b</color>
+    <color name="colorPrimaryDark2">#5e2c0b</color>
     <color name="textColorPrimary2">#FFFFFF</color>
     <color name="colorPrimaryFontDark2">#FAFAFA</color>
 
@@ -22,10 +22,26 @@
     <color name="colorPrimaryFontDark3">#FAFAFA</color>
 
     <color name="colorPrimary4">#fffdf2</color>
-    <color name="colorPrimaryDark4">#4E4660</color>
-    <color name="textColorPrimary4">#4E4660</color>
-    <color name="colorPrimaryFontDark4">#4E4660</color>
-    <color name="colorMainBackground4">#f9f7e0</color>
+    <color name="colorPrimaryDark4">#2c3e50</color>
+    <color name="textColorPrimary4">#2c3e50</color>
+    <color name="colorPrimaryFontDark4">#2c3e50</color>
+    <color name="colorMainBackground4">#f2eedc</color>
+
+    <color name="colorPrimary5">#34495e</color>
+    <color name="colorPrimaryDark5">#2c3e50</color>
+    <color name="textColorPrimary5">#FFFFFF</color>
+    <color name="colorPrimaryFontDark5">#FAFAFA</color>
+
+    <color name="colorPrimary6">#0077c0</color>
+    <color name="colorPrimaryDark6">#0067b0</color>
+    <color name="textColorPrimary6">#FFFFFF</color>
+    <color name="colorPrimaryFontDark6">#FAFAFA</color>
+
+    <color name="colorPrimary7">#ffe9d1</color>
+    <color name="colorPrimaryDark7">#1e003d</color>
+    <color name="textColorPrimary7">#1e003d</color>
+    <color name="colorPrimaryFontDark7">#1e003d</color>
+    <color name="colorMainBackground7">#f7dec3</color>
 
     <color name="colorAccent">#EC644B</color>
     <color name="colorMainBackground">#EEEEEE</color>

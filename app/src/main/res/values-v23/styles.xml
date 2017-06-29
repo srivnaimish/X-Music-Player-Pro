@@ -14,6 +14,8 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:colorBackground">@color/colorMainBackground</item>
         <item name="iconDual">#000</item>
+        <item name="colorControlNormal">@color/colorPrimaryFontDark</item>
+        <item name="android:colorControlActivated">@color/colorAccentDark</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
@@ -56,7 +58,6 @@
     </style>
 
     <style name="AppTheme.Dark4" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary4</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark4</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -66,6 +67,41 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:colorBackground">@color/colorMainBackground4</item>
         <item name="iconDual">@color/colorPrimaryDark4</item>
+    </style>
+
+    <style name="AppTheme.Dark5" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary5</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark5</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary5</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDark5</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorBackground">@color/colorPrimaryDark5</item>
+        <item name="iconDual">#FAFAFA</item>
+    </style>
+    <style name="AppTheme.Dark6" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary6</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark6</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary6</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDark6</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorBackground">@color/colorPrimaryDark6</item>
+        <item name="iconDual">#FAFAFA</item>
+    </style>
+
+    <style name="AppTheme.Dark7" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary7</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark7</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary7</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDark7</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorBackground">@color/colorMainBackground7</item>
+        <item name="iconDual">@color/colorPrimaryDark7</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">

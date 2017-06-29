@@ -1,15 +1,22 @@
 package com.riseapps.xmusic.view.Activity;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,11 +30,12 @@ import android.widget.RelativeLayout;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 
-public class Walkthrough extends AppCompatActivity {
+public class Walkthrough extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private ViewPager viewPager;
     private int[] layouts;
     private Button btn1, btn2, btn3;
+    boolean found;
 
     private static final int REQUEST_PERMISSION = 0;
     String[] permissionsRequired = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -60,7 +68,14 @@ public class Walkthrough extends AppCompatActivity {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(found)
                 moveToMain();
+                else {
+                    Dialog dialog = new Dialog(Walkthrough.this);
+                    dialog.setContentView(R.layout.empty_state_dialog);
+                    dialog.show();
+                }
+
 
             }
         });
@@ -99,6 +114,22 @@ public class Walkthrough extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        return new CursorLoader(this,musicUri,null,null,null,null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        found = data.getCount() != 0;
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
 
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
@@ -156,6 +187,12 @@ public class Walkthrough extends AppCompatActivity {
                     ActivityCompat.requestPermissions(this, permissionsRequired, REQUEST_PERMISSION);
                 }
             }
+            else{
+                getSupportLoaderManager().initLoader(6,null,this);
+            }
+        }
+        else {
+            getSupportLoaderManager().initLoader(6,null,this);
         }
     }
 
@@ -164,7 +201,7 @@ public class Walkthrough extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED ) {
-                        //moveToMain();
+                    getSupportLoaderManager().initLoader(6,null,this);
                 } else {
                     Snackbar.make(viewPager, R.string.permission_rationale,
                             Snackbar.LENGTH_INDEFINITE)

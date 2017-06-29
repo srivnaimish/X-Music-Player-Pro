@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/size61dp"
-    android:background="?colorPrimary">
+    android:background="?android:colorBackground">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"

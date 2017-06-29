@@ -27,4 +27,5 @@
     <dimen name="size45dp">55dp</dimen>
     <dimen name="size40dp">50dp</dimen>
     <dimen name="size20dp">31dp</dimen>
+    <dimen name="size35dp">40dp</dimen>
 </resources>

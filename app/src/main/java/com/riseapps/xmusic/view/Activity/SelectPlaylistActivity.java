@@ -52,12 +52,28 @@ public class SelectPlaylistActivity extends AppCompatActivity {
     //  private Dialog dialog;
     // utils
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        if (sharedPreferenceSingelton.getSavedBoolean(SelectPlaylistActivity.this, "Theme")) {
+        if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==1) {
             setTheme(R.style.AppTheme_Dark);
+        }else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==2) {
+            setTheme(R.style.AppTheme_Dark2);
+        }
+        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==3) {
+            setTheme(R.style.AppTheme_Dark3);
+        }
+        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==4) {
+            setTheme(R.style.AppTheme_Dark4);
+        }
+        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==5) {
+            setTheme(R.style.AppTheme_Dark5);
+        }
+        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==6) {
+            setTheme(R.style.AppTheme_Dark5);
+        }
+        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==7) {
+            setTheme(R.style.AppTheme_Dark7);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_playlist);

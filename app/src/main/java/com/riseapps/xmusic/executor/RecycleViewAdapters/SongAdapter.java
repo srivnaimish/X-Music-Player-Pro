@@ -1,16 +1,21 @@
 package com.riseapps.xmusic.executor.RecycleViewAdapters;
 
+import android.content.ContentUris;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.provider.MediaStore;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
@@ -20,30 +25,58 @@ import com.riseapps.xmusic.executor.Interfaces.AdapterToActivityListener;
 import com.riseapps.xmusic.executor.Interfaces.MainListPlayingListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
+import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Song;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter {
 
-    private List<Song> songsList;
+    public ArrayList<Song> songsList;
     private Context c;
     public int count = 0;
     private MainListPlayingListener mainListPlayingListener;
     private AdapterToActivityListener adapterToActivityListener;
     private int colorSelected = Color.LTGRAY;
     private int colorNormal = Color.WHITE;
+    private Cursor dataCursor;
+    private int textLimit = 27;
 
-    public SongAdapter(Context context, List<Song> songs, RecyclerView recyclerView) {
-        songsList = songs;
+    public SongAdapter(Context context, RecyclerView recyclerView, Cursor cursor) {
+        dataCursor = cursor;
         adapterToActivityListener = (AdapterToActivityListener) context;
         SharedPreferenceSingelton sharedPreferenceSingelton = new SharedPreferenceSingelton();
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         c = context;
-        if (sharedPreferenceSingelton.getSavedBoolean(c, "Theme")) {
+        if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==1) {
             colorSelected = Color.rgb(58, 58, 71);
             colorNormal = Color.rgb(22, 22, 25);
+        }else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==2) {
+            colorSelected = Color.rgb(163, 87, 66);
+            colorNormal = Color.rgb(110, 60, 27);
         }
+        else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==3) {
+            colorSelected = Color.rgb(96, 77, 89);
+            colorNormal = Color.rgb(73, 59, 68);
+        }
+        else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==4) {
+            colorSelected = Color.rgb(242, 238, 220);
+            colorNormal = Color.rgb(255, 253, 242);
+        }
+        else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==5) {
+            colorSelected = Color.rgb(81, 109, 137);
+            colorNormal = Color.rgb(52, 73, 94);
+        }
+        else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==6) {
+            colorSelected = Color.rgb(58, 58, 71);
+            colorNormal = Color.rgb(0, 119, 192);
+        }
+        else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==7) {
+            colorSelected = Color.rgb(242, 207, 169);
+            colorNormal = Color.rgb(255, 233, 209);
+        }
+
     }
 
     public SongAdapter getInstance() {
@@ -56,9 +89,44 @@ public class SongAdapter extends RecyclerView.Adapter {
         return new SongViewHolder(view, c);
     }
 
+    public Cursor swapCursor(Cursor cursor) {
+        if (dataCursor == cursor) {
+            return null;
+        }
+        Cursor oldCursor = dataCursor;
+        this.dataCursor = cursor;
+        if (cursor != null) {
+            this.notifyDataSetChanged();
+        }
+        int short_time = new SharedPreferenceSingelton().getSavedInt(c, "Short_music_time");
+        if (cursor != null && cursor.moveToFirst()) {
+            songsList = new ArrayList<>();
+
+            do {
+                long duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
+                if (duration > (short_time * 1000)) {
+                    long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+                    String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                    String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                    String imagepath = "content://media/external/audio/media/" + id + "/albumart";
+                    if (title.length() > textLimit)
+                        title = title.substring(0, textLimit) + "...";
+                    if (artist == null)
+                        artist = "Unknown";
+                    if (artist.length() > textLimit)
+                        artist = artist.substring(0, textLimit) + "...";
+                    songsList.add(new Song(id, duration, title, artist, imagepath, false));
+                }
+            }
+            while (cursor.moveToNext());
+        }
+
+        return oldCursor;
+    }
+
+
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-
         Song song = songsList.get(position);
         String name = song.getName();
         String artist = song.getArtist();
@@ -73,15 +141,18 @@ public class SongAdapter extends RecyclerView.Adapter {
                 .centerCrop()
                 .placeholder(R.drawable.dummy)
                 .into(((SongViewHolder) holder).iv);
-        if(new MyApplication(c).getWritableDatabase().isFavourite(song.getID())) {
-             song.setFavourite(true);
+        if (new MyApplication(c).getWritableDatabase().isFavourite(song.getID())) {
+            song.setFavourite(true);
             ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked_toolbar);
-        }
-        else {
+        } else {
             song.setFavourite(false);
             ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
         }
+
+        ((SongViewHolder) holder).songListCard.setCardBackgroundColor(song.isSelected() ? colorSelected : colorNormal);
         ((SongViewHolder) holder).song = song;
+
+
     }
 
 
@@ -96,7 +167,7 @@ public class SongAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return songsList.size();
+        return (dataCursor == null) ? 0 : songsList.size();
     }
 
     class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -115,6 +186,7 @@ public class SongAdapter extends RecyclerView.Adapter {
             name = (TextView) v.findViewById(R.id.name);
             artist = (TextView) v.findViewById(R.id.artist_mini);
             like = (ImageButton) v.findViewById(R.id.like);
+
             songListCard = (CardView) v.findViewById(R.id.song_list_card);
             like.setOnClickListener(this);
             songListCard.setOnClickListener(this);

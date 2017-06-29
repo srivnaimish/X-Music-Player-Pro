@@ -5,8 +5,12 @@
     android:id="@+id/song_list_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="4dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
+    android:padding="5dp"
     card_view:cardCornerRadius="0dp"
     card_view:cardElevation="0dp">
 
@@ -18,6 +22,7 @@
         android:layout_gravity="center"
         android:background="?colorPrimary"
         android:orientation="vertical">
+
         <ImageView
             android:id="@+id/album_art_card"
             android:layout_width="@dimen/size40dp"
@@ -25,15 +30,16 @@
             android:layout_marginBottom="@dimen/size8dp"
             android:layout_marginStart="@dimen/size8dp"
             android:layout_marginTop="@dimen/size8dp"
-            app:srcCompat="@drawable/empty"/>
+            app:srcCompat="@drawable/empty" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_toEndOf="@+id/album_art_card"
             android:layout_centerVertical="true"
-            android:layout_marginStart="16dp">
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/album_art_card"
+            android:orientation="vertical">
+
             <com.riseapps.xmusic.widgets.MainTextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
@@ -54,12 +60,12 @@
             android:id="@+id/delete_playlist"
             android:layout_width="@dimen/size16dp"
             android:layout_height="@dimen/size16dp"
-            app:srcCompat="@drawable/ic_remove"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/size8dp"
             android:background="@drawable/ripple"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_remove" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>
