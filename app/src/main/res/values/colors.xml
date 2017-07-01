@@ -51,5 +51,7 @@
     <color name="colorLongSelection">#B0BEC5</color>
     <color name="lightAccent">#efebe9</color>
 
+    <color name="whitePrimary">#FFF</color>
+
 
 </resources>

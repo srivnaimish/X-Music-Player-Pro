@@ -1,6 +1,8 @@
 package com.riseapps.xmusic.view.Activity;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -23,6 +25,7 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -35,13 +38,19 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -51,8 +60,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.claudiodegio.msv.OnSearchViewListener;
-import com.claudiodegio.msv.SuggestionMaterialSearchView;
 import com.gelitenight.waveview.library.WaveView;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
@@ -84,12 +91,13 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends BaseMatSearchViewActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, OnSearchViewListener ,AdapterToActivityListener {
+public class MainActivity extends AppCompatActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AdapterToActivityListener {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
+    AppBarLayout appBarLayout;
     public EqualizerView equalizerView;
     public boolean musicPlaying, isMusicShuffled = false;
     public ImageButton prev, next, repeat, shuffle;
@@ -101,7 +109,6 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     //MainPlayer items
     TextView title, artist, currentPosition, totalDuration;
     ImageView album_art, liked;
-    RelativeLayout progressView;
     private ArrayList<Song> songList = new ArrayList<>();
     private MusicService musicService;
     private Intent playIntent;
@@ -112,26 +119,29 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
-    private Toolbar toolbarPlayer, toolbarContext;
+    private Toolbar toolbarPlayer, toolbarContext, mToolbar;
     private WaveHelper mWaveHelper;
     private int mBorderColor = Color.parseColor("#e74c3c");
     private SongRefreshListener songRefreshListener;
     private PlaylistRefreshListener playlistRefreshListener;
     private MainTextView toolbar_context_title;
-
+    String[] titles;
     private static final int REQUEST_PERMISSION = 0;
     String[] permissionsRequired = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    private ArrayList<Long> selectedID=new ArrayList<>();
+    private ArrayList<Long> selectedID = new ArrayList<>();
 
     public static SensorManager mSensorManager;
     @SuppressLint("StaticFieldLeak")
     public static ProximityDetector proximityDetector;
     public static Sensor mProximity;
-
-    private SharedPreferenceSingelton sharedPreferenceSingleton = new SharedPreferenceSingelton();
+    private Dialog dialog;
+    private SharedPreferenceSingelton sharedPreferenceSingleton;
 
     public ArrayList<Song> completeList;
+    Toolbar searchBar;
+    AutoCompleteTextView autoComplete;
+    private ImageButton searchClear;
 
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
         @Override
@@ -211,13 +221,29 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             mWaveHelper.cancel();
         }
     };
-    private Dialog dialog;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        sharedPreferenceSingleton = new SharedPreferenceSingelton();
+        if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 1) {
+            setTheme(R.style.AppTheme_Dark);
+        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 2) {
+            setTheme(R.style.AppTheme_Dark2);
+        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 3) {
+            setTheme(R.style.AppTheme_Dark3);
+        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 4) {
+            setTheme(R.style.AppTheme_Dark4);
+        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 5) {
+            setTheme(R.style.AppTheme_Dark5);
+        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 6) {
+            setTheme(R.style.AppTheme_Dark6);
+        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 7) {
+            setTheme(R.style.AppTheme_Dark7);
+        }
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         checkPermission();
         toolbarsInitiallize();
         initiallize();
@@ -351,11 +377,27 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     }
 
     private void initiallize() {
-        progressView = (RelativeLayout) findViewById(R.id.progress);
+        appBarLayout= (AppBarLayout) findViewById(R.id.appbar);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Stop");
         registerReceiver(stopReceiver, intentFilter);
 
+        searchBar = (Toolbar) findViewById(R.id.search_bar);
+        searchClear = (ImageButton) findViewById(R.id.search_bar_clear);
+        autoComplete = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+        searchClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(autoComplete.getText().toString().length()>0){
+                    autoComplete.setText("");
+                }else {
+                    doExitReveal(searchBar);
+                }
+
+            }
+        });
+
+        autoComplete.setThreshold(3);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -382,24 +424,20 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         currentPosition = (TextView) findViewById(R.id.currentPosition);
         totalDuration = (TextView) findViewById(R.id.totalDuration);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
-
         title_mini = (TextView) findViewById(R.id.name_mini);
         artist_mini = (TextView) findViewById(R.id.artist_mini);
         album_art_mini = (ImageView) findViewById(R.id.album_art_mini);
         play_pause_mini = (FloatingActionButton) findViewById(R.id.play_pause_mini);
-
         miniPlayer = (CardView) findViewById(R.id.song_list_card);
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
+        equalizerView = (EqualizerView) findViewById(R.id.equalizer_view);
 
         play_pause.setOnClickListener(togglePlayBtn);
         play_pause_mini.setOnClickListener(togglePlayBtn);
 
-        equalizerView = (EqualizerView) findViewById(R.id.equalizer_view);
-
-
-        if(!sharedPreferenceSingleton.getSavedBoolean(this,"mainScreenSequence")) {
-           new TapTargetSequence(this).targets(
-                    TapTarget.forToolbarNavigationIcon(mToolbar,getString(R.string.app_walk1))
+        if (!sharedPreferenceSingleton.getSavedBoolean(this, "mainScreenSequence")) {
+            new TapTargetSequence(this).targets(
+                    TapTarget.forToolbarNavigationIcon(mToolbar, getString(R.string.app_walk1))
                             .dimColor(android.R.color.black)
                             .outerCircleColor(R.color.colorAccentDark)
                             .targetCircleColor(R.color.colorWhite)
@@ -409,7 +447,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             .targetRadius(20)
                             .cancelable(true)
                             .id(1),
-                    TapTarget.forView(album_art_mini,getString(R.string.app_walk2))
+                    TapTarget.forView(album_art_mini, getString(R.string.app_walk2))
                             .dimColor(android.R.color.black)
                             .outerCircleColor(R.color.colorAccentDark)
                             .targetCircleColor(R.color.colorWhite)
@@ -419,26 +457,28 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             .targetRadius(30)
                             .id(2)
             ).listener(new TapTargetSequence.Listener() {
-               @Override
-               public void onSequenceFinish() {
+                @Override
+                public void onSequenceFinish() {
 
-               }
+                }
 
-               @Override
-               public void onSequenceStep(TapTarget tapTarget, boolean b) {
-                   if(tapTarget.id()==2)
-                    showMainPlayer();
-               }
+                @Override
+                public void onSequenceStep(TapTarget tapTarget, boolean b) {
+                    if (tapTarget.id() == 2)
+                        showMainPlayer();
+                }
 
-               @Override
-               public void onSequenceCanceled(TapTarget tapTarget) {
-               }
-           }).start();
-            sharedPreferenceSingleton.saveAs(this,"mainScreenSequence",true);
+                @Override
+                public void onSequenceCanceled(TapTarget tapTarget) {
+                }
+            }).start();
+            sharedPreferenceSingleton.saveAs(this, "mainScreenSequence", true);
         }
     }
 
-    private void toolbarsInitiallize(){
+    private void toolbarsInitiallize() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.inflateMenu(R.menu.main_menu);
         mToolbar.setNavigationIcon(R.drawable.ic_settings);
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -461,11 +501,23 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
                     fragmentTransaction.commit();
+                } else if (item.getItemId() == R.id.action_search) {
+                    doCircularReveal(searchBar);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                            (MainActivity.this, android.R.layout.simple_dropdown_item_1line, titles);
+                    autoComplete.setAdapter(adapter);
+                    autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String selection = (String)parent.getItemAtPosition(position);
+                            playFromSearch(selection);
+                            doExitReveal(searchBar);
+                        }
+                    });
                 }
                 return true;
             }
         });
-
         toolbarPlayer = (Toolbar) findViewById(R.id.toolbar_player);
         toolbarPlayer.inflateMenu(R.menu.player_menu);
         toolbarPlayer.setNavigationIcon(R.drawable.ic_back);
@@ -476,7 +528,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 Song song = songList.get(musicService.getCurrentIndex());
                 if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
-                    startActivityForResult(i,1);
+                    startActivityForResult(i, 1);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 } else if (item.getItemId() == R.id.youtube) {
                     if (musicPlaying) {
@@ -489,8 +541,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                     startActivity(intent);
                     Toast.makeText(MainActivity.this, getString(R.string.opening_youtube), Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.share) {
-                    Uri uri=new FilePathFromId().pathFromID(MainActivity.this,song.getID());
-                    if(uri!=null) {
+                    Uri uri = new FilePathFromId().pathFromID(MainActivity.this, song.getID());
+                    if (uri != null) {
                         Intent share = new Intent(Intent.ACTION_SEND);
                         share.setType("audio/*");
                         share.putExtra(Intent.EXTRA_STREAM, uri);
@@ -517,8 +569,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                 if (item.getItemId() == R.id.playlist) {
                     Intent i = new Intent(MainActivity.this, SelectPlaylistActivity.class);
                     startActivityForResult(i, 2);
-                }
-                else if(item.getItemId() == R.id.delete){
+                } else if (item.getItemId() == R.id.delete) {
                     openDeleteDialog();
                 }
                 return true;
@@ -538,12 +589,12 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         mToolbar.setVisibility(View.VISIBLE);
         miniPlayer.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
         miniPlayer.setVisibility(View.VISIBLE);
-        selectedID=new ArrayList<>();
+        selectedID = new ArrayList<>();
         songRefreshListener.OnContextBackPressed();
 
     }
 
-    public void startTheService(){
+    public void startTheService() {
         if (playIntent == null) {
             playIntent = new Intent(this, MusicService.class);
             startService(playIntent);
@@ -559,7 +610,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     @Override
     protected void onDestroy() {
-        sharedPreferenceSingelton.saveAs(this,"Loader",false);
+
+        sharedPreferenceSingleton.saveAs(this, "Loader", false);
         sharedPreferenceSingleton.saveAs(this, "Shuffle", false);
         sharedPreferenceSingleton.saveAs(this, "Repeat", false);
         sharedPreferenceSingleton.saveAs(this, "Last_Song", musicService.getCurrentIndex());
@@ -588,23 +640,27 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     @Override
     public void onBackPressed() {
-        if (mainPlayer.getVisibility() == View.VISIBLE) {
-            hideMainPlayer();
-        } else {
-            if (musicPlaying) {
-                if (getSupportFragmentManager().getBackStackEntryCount() > 0)
-                    getSupportFragmentManager().popBackStackImmediate();
-                else{
-                    if(selectedID.size()>0){
-                        removeContentSelection();
-                    }else
-                    moveTaskToBack(true);
-                }
+        if(searchBar.getVisibility()==View.VISIBLE){
+            doExitReveal(searchBar);
+        }else {
+            if (mainPlayer.getVisibility() == View.VISIBLE) {
+                hideMainPlayer();
             } else {
-                if(selectedID.size()>0){
-                    removeContentSelection();
-                }else
-                    super.onBackPressed();
+                if (musicPlaying) {
+                    if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                        getSupportFragmentManager().popBackStackImmediate();
+                    else {
+                        if (selectedID.size() > 0) {
+                            removeContentSelection();
+                        } else
+                            moveTaskToBack(true);
+                    }
+                } else {
+                    if (selectedID.size() > 0) {
+                        removeContentSelection();
+                    } else
+                        super.onBackPressed();
+                }
             }
         }
     }
@@ -624,6 +680,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
     public void setCompleteSongList(ArrayList<Song> arrayList) {
         completeList = arrayList;
         setSongs(completeList);
+        titles=getTitles();
     }
 
     void showMainPlayer() {
@@ -637,7 +694,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         miniPlayer.setVisibility(View.GONE);
         mToolbar.setVisibility(View.GONE);
         mainPlayer.startAnimation(new CustomAnimation().slide_up(MainActivity.this));
-        if(!sharedPreferenceSingleton.getSavedBoolean(MainActivity.this,"playerSequence")) {
+        if (!sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "playerSequence")) {
             new TapTargetSequence(this).target(
                     TapTarget.forToolbarMenuItem(toolbarPlayer, R.id.youtube, getString(R.string.app_walk3))
                             .dimColor(android.R.color.black)
@@ -647,8 +704,8 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
                             .textColor(android.R.color.white)
                             .targetRadius(25)
                             .id(1)).start();
-            sharedPreferenceSingleton.saveAs(MainActivity.this,"playerSequence",true);
-       }
+            sharedPreferenceSingleton.saveAs(MainActivity.this, "playerSequence", true);
+        }
 
     }
 
@@ -666,19 +723,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         return musicService;
     }
 
-    @Override
-    public void onSearchViewShown() {
-
-    }
-
-    @Override
-    public void onSearchViewClosed() {
-
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-
+    public void playFromSearch(String s){
         for (Song song : completeList) {
             if (song != null && song.getName().equalsIgnoreCase(s)) {
                 musicService.setSongs(completeList);
@@ -687,36 +732,74 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
             }
         }
-        return false;
     }
 
-    @Override
-    public void onQueryTextChange(String s) {
-
+    private void doCircularReveal(View view) {
+        tabLayout.setVisibility(View.GONE);
+        autoComplete.requestFocus();
+        mToolbar.setVisibility(View.GONE);
+        miniPlayer.setVisibility(View.GONE);
+        mViewPager.setVisibility(View.GONE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            appBarLayout.setElevation(10.0f);
+            searchBar.setVisibility(View.VISIBLE);
+            int centerX = view.getWidth();
+            int centerY = view.getHeight()/2;
+            int startRadius = 0;
+            int endRadius =view.getWidth();
+            Animator anim = null;
+            anim = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
+            anim.setDuration(220);
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                }
+            });
+            anim.start();
+        } else {
+            searchBar.setVisibility(View.VISIBLE);
+        }
+        InputMethodManager keyboard = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.showSoftInput(autoComplete, 0);
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_main;
+    void doExitReveal(View view) {
+        InputMethodManager imm = (InputMethodManager)
+        getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(
+                searchBar.getWindowToken(), 0);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            appBarLayout.setElevation(0.0f);
+            int centerX = view.getWidth();
+            int centerY = view.getHeight()/2;
+            int startRadius = view.getWidth();
+            Animator anim =
+                    ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, 0);
+            anim.setDuration(220);
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    searchBar.setVisibility(View.GONE);
+                    tabLayout.setVisibility(View.VISIBLE);
+                    mToolbar.setVisibility(View.VISIBLE);
+                    miniPlayer.setVisibility(View.VISIBLE);
+                    mViewPager.setVisibility(View.VISIBLE);
+                }
+            });
+            anim.start();
+        } else {
+            searchBar.setVisibility(View.GONE);
+            tabLayout.setVisibility(View.VISIBLE);
+            mToolbar.setVisibility(View.VISIBLE);
+            miniPlayer.setVisibility(View.VISIBLE);
+            mViewPager.setVisibility(View.VISIBLE);
+        }
+        autoComplete.setText("");
     }
 
-    @Override
-    protected void initCustom() {
-        //getTitles();
-        //String[] arrays = getResources().getStringArray(R.array.query_suggestions);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                String[] arrays = getTitles();
-                SuggestionMaterialSearchView cast = (SuggestionMaterialSearchView) mSearchView;
-                cast.setSuggestion(arrays);
-                mSearchView.setOnSearchViewListener(MainActivity.this);
-            }
-        },1500);
-
-        //super.initCustom();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -736,9 +819,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
             toolbarContext.setVisibility(View.GONE);
             mToolbar.setVisibility(View.VISIBLE);
             miniPlayer.setVisibility(View.VISIBLE);
-            long array[]=new long[selectedID.size()];
-            int c=0;
-            for(long id:selectedID) {
+            long array[] = new long[selectedID.size()];
+            int c = 0;
+            for (long id : selectedID) {
                 array[c] = id;
                 c++;
             }
@@ -758,9 +841,9 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     private String[] getTitles() {
         ArrayList<Song> list = completeList;
-        String[] array={""};
-        if(list!=null) {
-             array = new String[list.size()];
+        String[] array = {""};
+        if (list != null) {
+            array = new String[list.size()];
             for (int i = 0; i < array.length; i++) {
                 array[i] = list.get(i).getName();
             }
@@ -805,7 +888,7 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        String tabTitles[] = new String[]{getResources().getString(R.string.TAB1),getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
+        String tabTitles[] = new String[]{getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
 
         //String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
         SectionsPagerAdapter(FragmentManager fm) {
@@ -888,20 +971,19 @@ public class MainActivity extends BaseMatSearchViewActivity implements Scrolling
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(long id:selectedID){
-                    if(musicService.currSongID==id){
+                for (long id : selectedID) {
+                    if (musicService.currSongID == id) {
                         changeToNextSong();
                     }
                     try {
-                        Uri uri = new FilePathFromId().pathFromID(MainActivity.this,id);
-                        File file=new File(uri.getPath());
-                        if(file.exists()) {
+                        Uri uri = new FilePathFromId().pathFromID(MainActivity.this, id);
+                        File file = new File(uri.getPath());
+                        if (file.exists()) {
                             file.delete();
-                            int rows=getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.Audio.Media._ID + "=" + id, null);
+                            int rows = getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.Audio.Media._ID + "=" + id, null);
                         }
-                    }
-                    catch (Exception e){
-                        Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 selectedID.clear();

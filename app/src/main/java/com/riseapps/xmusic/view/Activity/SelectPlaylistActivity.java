@@ -3,6 +3,7 @@ package com.riseapps.xmusic.view.Activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -198,6 +200,9 @@ public class SelectPlaylistActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if(dialog.getVisibility()==View.VISIBLE)
+            doExitReveal(dialog);
+        else
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
     private void doCircularReveal(View view) {
@@ -226,6 +231,10 @@ public class SelectPlaylistActivity extends AppCompatActivity {
     }
 
     void doExitReveal(View view) {
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(
+                dialog.getWindowToken(), 0);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             int centerX = 0;
             int centerY = view.getHeight();
