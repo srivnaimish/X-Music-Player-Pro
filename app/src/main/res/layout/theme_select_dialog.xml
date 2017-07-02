@@ -1,14 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/theme_dialog"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite">
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
+        android:layout_height="230dp"
+        android:layout_margin="@dimen/size20dp"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?colorPrimary" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/size16dp">
+
+        <Button
+            android:id="@+id/bt1"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:background="@drawable/walkthrough_selected" />
+
+        <Button
+            android:id="@+id/bt2"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/walkthrough_unselected" />
+
+        <Button
+            android:id="@+id/bt3"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/walkthrough_unselected" />
+        <Button
+            android:id="@+id/bt4"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/walkthrough_unselected" />
+
+        <Button
+            android:id="@+id/bt5"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/walkthrough_unselected" />
+
+        <Button
+            android:id="@+id/bt6"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/walkthrough_unselected" />
+
+        <Button
+            android:id="@+id/bt7"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/walkthrough_unselected" />
+
+        <Button
+            android:id="@+id/bt8"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/walkthrough_unselected" />
+
+    </LinearLayout>
+
 </LinearLayout>

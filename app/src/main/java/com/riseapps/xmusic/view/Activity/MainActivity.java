@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     FloatingActionButton play_pause;
     //MiniPlayer items
     TextView title_mini, artist_mini;
-    FloatingActionButton play_pause_mini;
+    ImageView play_pause_mini;
     ImageView album_art_mini;
     //MainPlayer items
     TextView title, artist, currentPosition, totalDuration;
@@ -441,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         title_mini = (TextView) findViewById(R.id.name_mini);
         artist_mini = (TextView) findViewById(R.id.artist_mini);
         album_art_mini = (ImageView) findViewById(R.id.album_art_mini);
-        play_pause_mini = (FloatingActionButton) findViewById(R.id.play_pause_mini);
+        play_pause_mini = (ImageView) findViewById(R.id.play_pause_mini);
         miniPlayer = (CardView) findViewById(R.id.song_list_card);
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
         equalizerView = (EqualizerView) findViewById(R.id.equalizer_view);

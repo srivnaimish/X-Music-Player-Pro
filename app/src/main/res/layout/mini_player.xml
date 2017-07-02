@@ -40,25 +40,23 @@
             tools:text="TextView" />
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageView
         android:id="@+id/play_pause_mini"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/size38dp"
+        android:layout_height="@dimen/size38dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:background="@drawable/ripple"
-        android:scaleType="centerCrop"
-        app:elevation="3dp"
-        app:fabSize="mini"
-        app:srcCompat="@drawable/play"/>
+        app:srcCompat="@drawable/play"
+        android:tint="?android:textColorPrimary"/>
 
     <com.riseapps.xmusic.widgets.EqualizerView xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/equalizer_view"
         android:layout_width="@dimen/size30dp"
         android:layout_height="@dimen/size30dp"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="4dp"
         android:layout_toStartOf="@+id/play_pause_mini"
         custom:animDuration="3500"
-        android:visibility="gone"/>
+        android:visibility="gone"
+       />
 </RelativeLayout>

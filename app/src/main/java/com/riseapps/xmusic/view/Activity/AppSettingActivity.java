@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -41,6 +42,7 @@ import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.model.MusicService;
+import com.riseapps.xmusic.utils.ZoomOutPageTransformer;
 
 public class AppSettingActivity extends AppCompatActivity{
 
@@ -58,8 +60,10 @@ public class AppSettingActivity extends AppCompatActivity{
     private TextView short_time;
     private int previous_set;
     private HoloCircleSeekBar seekBar;
-    private int[] images;
+    private int[] backgroundColors,textColors;
     private String[] texts;
+    LinearLayout theme_dialog;
+    int buttonId[] = {R.id.bt1, R.id.bt2, R.id.bt3, R.id.bt4, R.id.bt5, R.id.bt6, R.id.bt7, R.id.bt8};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +91,10 @@ public class AppSettingActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         init();
-        images = new int[]{R.drawable.theme1,R.drawable.theme2,R.drawable.theme4,R.drawable.theme5,R.drawable.theme8,
-        R.drawable.theme7,R.drawable.theme6,R.drawable.theme3};
-
+        backgroundColors = new int[]{R.color.colorPrimary,R.color.colorPrimaryInverse,R.color.colorPrimary2,R.color.colorPrimary3,
+                R.color.colorPrimary4,R.color.colorPrimary5,R.color.colorPrimary6,R.color.colorPrimary7};
+        textColors = new int[]{R.color.textColorPrimary,R.color.textColorPrimaryInverse,R.color.textColorPrimary2,R.color.textColorPrimary3,
+                R.color.textColorPrimary4,R.color.textColorPrimary5,R.color.textColorPrimary6,R.color.textColorPrimary7};
         texts = new String[]{"Theme 1","Theme 2","Theme 3","Theme 4","Theme 5","Theme 6","Theme 7","Theme 8"};
     }
 
@@ -145,10 +150,13 @@ public class AppSettingActivity extends AppCompatActivity{
    public void changeTheme(View v){
        dialog=new Dialog(this);
        dialog.setContentView(R.layout.theme_select_dialog);
-       dialog.show();
        ViewPager viewpager= (ViewPager) dialog.findViewById(R.id.view_pager);
+       theme_dialog= (LinearLayout) dialog.findViewById(R.id.theme_dialog);
+       viewpager.setPageTransformer(true, new ZoomOutPageTransformer());
+       viewpager.addOnPageChangeListener(viewPagerPageChangeListener);
        MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
        viewpager.setAdapter(myViewPagerAdapter);
+       dialog.show();
    }
 
     public void changeSkipieSwitch(View v){
@@ -322,20 +330,21 @@ public class AppSettingActivity extends AppCompatActivity{
         public Object instantiateItem(ViewGroup container, final int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View itemView = layoutInflater.inflate(R.layout.pager_item, container, false);
-
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-            imageView.setImageResource(images[position]);
+            CardView cardView= (CardView) itemView.findViewById(R.id.card);
+            cardView.setCardBackgroundColor(getResources().getColor(backgroundColors[position]));
 
             TextView textView = (TextView) itemView.findViewById(R.id.text);
             textView.setText(texts[position]);
-
+            textView.setTextColor(getResources().getColor(textColors[position]));
             ImageView tick = (ImageView) itemView.findViewById(R.id.tick);
+
+            Button button= (Button) itemView.findViewById(R.id.button);
+
             int x=sharedPreferenceSingelton.getSavedInt(AppSettingActivity.this,"Theme");
             if(x==position){
                 tick.setImageResource(R.drawable.ic_check);
             }
-
-            itemView.setOnClickListener(new View.OnClickListener() {
+            button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(position==0){
@@ -356,12 +365,12 @@ public class AppSettingActivity extends AppCompatActivity{
                         sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",7);
                     }
                     dialog.dismiss();
-                    recreate();
-                    /*finish();
+                   // recreate();
+                    finish();
                     Intent intent = IntentCompat.makeMainActivity(new ComponentName(
-                            AppSettingActivity.this, SplashScreen.class));
+                            AppSettingActivity.this, MainActivity.class));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);*/
+                    startActivity(intent);
                 }
             });
 
@@ -372,7 +381,7 @@ public class AppSettingActivity extends AppCompatActivity{
 
         @Override
         public int getCount() {
-            return images.length;
+            return backgroundColors.length;
         }
 
         @Override
@@ -387,5 +396,27 @@ public class AppSettingActivity extends AppCompatActivity{
             container.removeView(view);
         }
     }
+
+    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+
+        @Override
+        public void onPageSelected(int position) {
+            theme_dialog.setBackgroundColor(getResources().getColor(backgroundColors[position]));
+            for(int i=0;i<backgroundColors.length;i++){
+                dialog.findViewById(buttonId[i]).setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
+            }
+            dialog.findViewById(buttonId[position]).setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+
+        }
+    };
 
 }
