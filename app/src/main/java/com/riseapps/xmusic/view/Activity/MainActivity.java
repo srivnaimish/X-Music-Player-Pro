@@ -265,10 +265,14 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             public void onClick(View view) {
                 if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Shuffle")) {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", false);
-                    DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
+                    int a=sharedPreferenceSingleton.getSavedInt(MainActivity.this, "Theme");
+                    if(!(a==1||a==2||a==4||a==5||a==7))
+                        shuffle.setColorFilter(Color.argb(255, 0, 0, 0));
+                    else
+                        shuffle.setColorFilter(Color.argb(255, 255, 255, 255));
                 } else {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", true);
-                    DrawableCompat.setTint(shuffle.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                    shuffle.setColorFilter(Color.argb(255,236, 100, 75));
                 }
             }
         });
@@ -297,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 changeToNextSong();
             }
 
-            public void onSwipeDown() {
+            public void onTap() {
                 showMainPlayer();
             }
 
@@ -328,6 +332,16 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 }
             }
 
+            public void onSwipeDown(){
+                hideMainPlayer();
+            }
+
+        });
+
+        mainPlayer.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this){
+            public void onSwipeDown(){
+                hideMainPlayer();
+            }
         });
 
         final WaveView waveView = (WaveView) findViewById(R.id.wave);

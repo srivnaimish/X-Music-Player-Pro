@@ -220,8 +220,8 @@ public class SongAdapter extends RecyclerView.Adapter {
                     songListCard.setCardBackgroundColor(song.isSelected() ? colorSelected : colorNormal);
                 } else {
                     mainListPlayingListener.onPlayingFromTrackList();
-                    new PlaySongExec(ctx, getAdapterPosition()).startPlaying();
                     new SharedPreferenceSingelton().saveAs(ctx, "Shuffle", false);
+                    new PlaySongExec(ctx, getAdapterPosition()).startPlaying();
                 }
             }
         }

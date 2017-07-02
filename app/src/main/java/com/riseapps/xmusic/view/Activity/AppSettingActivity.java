@@ -15,12 +15,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.IntentCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.DragEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -54,6 +58,8 @@ public class AppSettingActivity extends AppCompatActivity{
     private TextView short_time;
     private int previous_set;
     private HoloCircleSeekBar seekBar;
+    private int[] images;
+    private String[] texts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +87,10 @@ public class AppSettingActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         init();
+        images = new int[]{R.drawable.theme1,R.drawable.theme2,R.drawable.theme4,R.drawable.theme5,R.drawable.theme8,
+        R.drawable.theme7,R.drawable.theme6,R.drawable.theme3};
+
+        texts = new String[]{"Theme 1","Theme 2","Theme 3","Theme 4","Theme 5","Theme 6","Theme 7","Theme 8"};
     }
 
     public int getLayoutId() {
@@ -136,77 +146,9 @@ public class AppSettingActivity extends AppCompatActivity{
        dialog=new Dialog(this);
        dialog.setContentView(R.layout.theme_select_dialog);
        dialog.show();
-       ImageView tick1= (ImageView) dialog.findViewById(R.id.tick1);
-       ImageView tick2= (ImageView) dialog.findViewById(R.id.tick2);
-       ImageView tick3= (ImageView) dialog.findViewById(R.id.tick3);
-       ImageView tick4= (ImageView) dialog.findViewById(R.id.tick4);
-       ImageView tick5= (ImageView) dialog.findViewById(R.id.tick5);
-       ImageView tick6= (ImageView) dialog.findViewById(R.id.tick6);
-       ImageView tick7= (ImageView) dialog.findViewById(R.id.tick7);
-       ImageView tick8= (ImageView) dialog.findViewById(R.id.tick8);
-
-       final CardView cardView1= (CardView) dialog.findViewById(R.id.theme1);
-       final CardView cardView2= (CardView) dialog.findViewById(R.id.theme2);
-       final CardView cardView3= (CardView) dialog.findViewById(R.id.theme3);
-       final CardView cardView4= (CardView) dialog.findViewById(R.id.theme4);
-       final CardView cardView5= (CardView) dialog.findViewById(R.id.theme5);
-       final CardView cardView6= (CardView) dialog.findViewById(R.id.theme6);
-       final CardView cardView7= (CardView) dialog.findViewById(R.id.theme7);
-       final CardView cardView8= (CardView) dialog.findViewById(R.id.theme8);
-
-       if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==0){
-           tick1.setImageResource(R.drawable.ic_check);
-       }else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==1){
-           tick2.setImageResource(R.drawable.ic_check);
-       }else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==2){
-           tick3.setImageResource(R.drawable.ic_check);
-       }else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==3){
-           tick4.setImageResource(R.drawable.ic_check);
-       }else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==4){
-           tick5.setImageResource(R.drawable.ic_check);
-       }else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==5){
-           tick6.setImageResource(R.drawable.ic_check);
-       }else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==6){
-           tick7.setImageResource(R.drawable.ic_check);
-       }else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==7){
-           tick8.setImageResource(R.drawable.ic_check);
-       }
-       View.OnClickListener clickListener=new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if(v.getId()==cardView1.getId()){
-                   sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",0);
-               }else if(v.getId()==cardView2.getId()){
-                   sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",1);
-               }else if(v.getId()==cardView3.getId()){
-                   sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",2);
-               }else if(v.getId()==cardView4.getId()){
-                   sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",3);
-               }else if(v.getId()==cardView5.getId()){
-                   sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",4);
-               }else if(v.getId()==cardView6.getId()){
-                   sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",5);
-               }else if(v.getId()==cardView7.getId()){
-                   sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",6);
-               }else if(v.getId()==cardView8.getId()){
-                   sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",7);
-               }
-               dialog.dismiss();
-               finish();
-               Intent intent = IntentCompat.makeMainActivity(new ComponentName(
-                       AppSettingActivity.this, SplashScreen.class));
-               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
-               startActivity(intent);
-           }
-       };
-       cardView1.setOnClickListener(clickListener);
-       cardView2.setOnClickListener(clickListener);
-       cardView3.setOnClickListener(clickListener);
-       cardView4.setOnClickListener(clickListener);
-       cardView5.setOnClickListener(clickListener);
-       cardView6.setOnClickListener(clickListener);
-       cardView7.setOnClickListener(clickListener);
-       cardView8.setOnClickListener(clickListener);
+       ViewPager viewpager= (ViewPager) dialog.findViewById(R.id.view_pager);
+       MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
+       viewpager.setAdapter(myViewPagerAdapter);
    }
 
     public void changeSkipieSwitch(View v){
@@ -370,5 +312,80 @@ public class AppSettingActivity extends AppCompatActivity{
         equalizerPresetListener = listener;
     }
 
+    public class MyViewPagerAdapter extends PagerAdapter {
+        private LayoutInflater layoutInflater;
+
+        public MyViewPagerAdapter() {
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, final int position) {
+            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View itemView = layoutInflater.inflate(R.layout.pager_item, container, false);
+
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            imageView.setImageResource(images[position]);
+
+            TextView textView = (TextView) itemView.findViewById(R.id.text);
+            textView.setText(texts[position]);
+
+            ImageView tick = (ImageView) itemView.findViewById(R.id.tick);
+            int x=sharedPreferenceSingelton.getSavedInt(AppSettingActivity.this,"Theme");
+            if(x==position){
+                tick.setImageResource(R.drawable.ic_check);
+            }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(position==0){
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",0);
+                    }else if(position==1){
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",1);
+                    }else if(position==2){
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",2);
+                    }else if(position==3){
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",3);
+                    }else if(position==4){
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",4);
+                    }else if(position==5){
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",5);
+                    }else if(position==6){
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",6);
+                    }else if(position==7){
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",7);
+                    }
+                    dialog.dismiss();
+                    recreate();
+                    /*finish();
+                    Intent intent = IntentCompat.makeMainActivity(new ComponentName(
+                            AppSettingActivity.this, SplashScreen.class));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);*/
+                }
+            });
+
+            container.addView(itemView);
+
+            return itemView;
+        }
+
+        @Override
+        public int getCount() {
+            return images.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object obj) {
+            return view == obj;
+        }
+
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            View view = (View) object;
+            container.removeView(view);
+        }
+    }
 
 }

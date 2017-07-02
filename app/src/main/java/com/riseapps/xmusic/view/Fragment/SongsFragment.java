@@ -127,7 +127,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
         songsAdapter.setMainListPlayingListener(new MainListPlayingListener() {
             @Override
             public void onPlayingFromTrackList() {
-                if (((MainActivity) getActivity()).getSongs().size() != songsList.size()) {
+                if (((MainActivity) getActivity()).getSongs() != songsList) {
                     ((MainActivity) getActivity()).setSongs(songsList);
                     ((MainActivity) getActivity()).getMusicService().setSongs(songsList);
                 }

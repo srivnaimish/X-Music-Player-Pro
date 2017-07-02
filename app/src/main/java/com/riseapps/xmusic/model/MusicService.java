@@ -43,7 +43,7 @@ public class MusicService extends Service implements
     public Equalizer equalizer;
     public HeadsetPlugReceiver headsetPlugReceiver;
     public ArrayList<Song> songs;
-
+    public ArrayList<Integer> shufflePlayed=new ArrayList<>();
     AudioManager audioManager;
     private int songPos;
 
@@ -234,6 +234,7 @@ public class MusicService extends Service implements
 
     public void setSongs(ArrayList<Song> songs) {
         this.songs = songs;
+        shufflePlayed.clear();
     }
 
     public ArrayList<Song> getSongs() {
@@ -241,8 +242,19 @@ public class MusicService extends Service implements
     }
 
     public void setSong(int songIndex) {
-        if (sharedPreferenceSingelton.getSavedBoolean(this, "Shuffle"))
-            songIndex = new Random().nextInt(songs.size());
+        if (sharedPreferenceSingelton.getSavedBoolean(this, "Shuffle")) {
+            if(shufflePlayed.size()==songs.size()){
+                shufflePlayed.clear();
+            }
+            while (true) {
+                int random = new Random().nextInt(songs.size());
+                if (!shufflePlayed.contains(random)) {
+                    songIndex = random;
+                    shufflePlayed.add(random);
+                    break;
+                }
+            }
+        }
         if (songs.size() <= songIndex || songIndex < 0) // if the list is empty... just return
             return;
         if (songs.get(songIndex) == null) {
@@ -267,7 +279,6 @@ public class MusicService extends Service implements
             }
         });
         playerState = STOPPED;
-
         onSongChangedListener.onSongChanged(songs.get(songPos));
     }
 
