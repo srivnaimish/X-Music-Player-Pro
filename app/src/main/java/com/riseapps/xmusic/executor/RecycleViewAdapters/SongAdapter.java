@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
+import com.riseapps.xmusic.component.ThemeSelector;
 import com.riseapps.xmusic.executor.Interfaces.AdapterToActivityListener;
 import com.riseapps.xmusic.executor.Interfaces.MainListPlayingListener;
 import com.riseapps.xmusic.executor.MyApplication;
@@ -46,37 +47,10 @@ public class SongAdapter extends RecyclerView.Adapter {
     public SongAdapter(Context context, RecyclerView recyclerView, Cursor cursor) {
         dataCursor = cursor;
         adapterToActivityListener = (AdapterToActivityListener) context;
-        SharedPreferenceSingelton sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         c = context;
-        if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==1) {
-            colorSelected = Color.rgb(58, 58, 71);
-            colorNormal = Color.rgb(22, 22, 25);
-        }else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==2) {
-            colorSelected = Color.rgb(163, 87, 66);
-            colorNormal = Color.rgb(110, 60, 27);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==3) {
-            colorSelected = Color.rgb(96, 77, 89);
-            colorNormal = Color.rgb(73, 59, 68);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==4) {
-            colorSelected = Color.rgb(242, 238, 220);
-            colorNormal = Color.rgb(255, 253, 242);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==5) {
-            colorSelected = Color.rgb(81, 109, 137);
-            colorNormal = Color.rgb(52, 73, 94);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==6) {
-            colorSelected = Color.rgb(58, 58, 71);
-            colorNormal = Color.rgb(0, 119, 192);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(c,"Theme")==7) {
-            colorSelected = Color.rgb(242, 207, 169);
-            colorNormal = Color.rgb(255, 233, 209);
-        }
-
+        int colors[]=new ThemeSelector().getThemeForSongAdapter(c);
+        colorSelected=colors[0];
+        colorNormal=colors[1];
     }
 
     public SongAdapter getInstance() {

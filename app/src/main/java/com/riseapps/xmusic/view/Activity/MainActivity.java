@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -66,6 +67,7 @@ import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
+import com.riseapps.xmusic.component.ThemeSelector;
 import com.riseapps.xmusic.executor.FilePathFromId;
 import com.riseapps.xmusic.executor.Interfaces.AdapterToActivityListener;
 import com.riseapps.xmusic.executor.Interfaces.PlaylistRefreshListener;
@@ -227,21 +229,9 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferenceSingleton = new SharedPreferenceSingelton();
-        if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 1) {
-            setTheme(R.style.AppTheme_Dark);
-        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 2) {
-            setTheme(R.style.AppTheme_Dark2);
-        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 3) {
-            setTheme(R.style.AppTheme_Dark3);
-        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 4) {
-            setTheme(R.style.AppTheme_Dark4);
-        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 5) {
-            setTheme(R.style.AppTheme_Dark5);
-        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 6) {
-            setTheme(R.style.AppTheme_Dark6);
-        } else if (sharedPreferenceSingleton.getSavedInt(this, "Theme") == 7) {
-            setTheme(R.style.AppTheme_Dark7);
-        }
+
+        new ThemeSelector().setAppTheme(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkPermission();
@@ -265,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             public void onClick(View view) {
                 if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Shuffle")) {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", false);
-                    int a=sharedPreferenceSingleton.getSavedInt(MainActivity.this, "Theme");
+                    int a=sharedPreferenceSingleton.getSavedInt(MainActivity.this, "Themes");
                     if(!(a==1||a==2||a==4||a==5||a==7))
                         shuffle.setColorFilter(Color.argb(255, 0, 0, 0));
                     else
@@ -282,12 +272,18 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             public void onClick(View view) {
                 if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Repeat")) {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat", false);
+                    int a=sharedPreferenceSingleton.getSavedInt(MainActivity.this, "Themes");
                     Toast.makeText(MainActivity.this, getString(R.string.song_repeat_off_toast), Toast.LENGTH_SHORT).show();
-                    DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
+                    if(!(a==1||a==2||a==4||a==5||a==7))
+                        repeat.setColorFilter(Color.argb(255, 0, 0, 0));
+                    else
+                        repeat.setColorFilter(Color.argb(255, 255, 255, 255));
+                    //DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorBlack));
                 } else {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat", true);
                     Toast.makeText(MainActivity.this, getString(R.string.song_repeat_on_toast), Toast.LENGTH_SHORT).show();
-                    DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                    repeat.setColorFilter(Color.argb(255,236, 100, 75));
+                   // DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 }
             }
         });
@@ -411,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             }
         });
 
-        autoComplete.setThreshold(3);
+        autoComplete.setThreshold(2);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);

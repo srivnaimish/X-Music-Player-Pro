@@ -101,9 +101,12 @@
     <string name="delete_warning">This operation will delete the selected songs from the device also</string>
     <string name="empty_state_playlist_message">You did not create any playlist</string>
     <string name="hide_music">Load music files larger than</string>
-    <string name="action_edit">Edit Song details</string>
     <string name="custom_time">Custom Time</string>
     <string name="pick_time">Pick Time</string>
+    <string name="buy">Buy Theme</string>
+    <string name="thanks">Thanks for the purchase</string>
+    <string name="aborted">Aborted</string>
+    <string name="pick_theme">Pick</string>
     <!--AD UNIT ID'S-->
 
 

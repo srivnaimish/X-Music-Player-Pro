@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
+import com.riseapps.xmusic.component.ThemeSelector;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
@@ -49,36 +50,18 @@ public class SelectPlaylistActivity extends AppCompatActivity {
     ArrayList<PlaylistSelect> playLists = new ArrayList<>();
     AddPlaylistAdapter addPlaylistAdapter;
     CardView cardView,dialog;
-    SharedPreferenceSingelton sharedPreferenceSingelton;
     TextView hint;
     //  private Dialog dialog;
     // utils
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==1) {
-            setTheme(R.style.AppTheme_Dark);
-        }else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==2) {
-            setTheme(R.style.AppTheme_Dark2);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==3) {
-            setTheme(R.style.AppTheme_Dark3);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==4) {
-            setTheme(R.style.AppTheme_Dark4);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==5) {
-            setTheme(R.style.AppTheme_Dark5);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==6) {
-            setTheme(R.style.AppTheme_Dark5);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==7) {
-            setTheme(R.style.AppTheme_Dark7);
-        }
+        new ThemeSelector().setAppTheme(this);
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_select_playlist);
+
         empty_state= (LinearLayout) findViewById(R.id.linearLayout4);
         dialog= (CardView) findViewById(R.id.playlist_new);
         hint= (TextView) findViewById(R.id.hint);

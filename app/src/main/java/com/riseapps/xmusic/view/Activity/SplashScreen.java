@@ -18,9 +18,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setExitTransition(new Fade());
-        }
+
         if (new SharedPreferenceSingelton().getSavedBoolean(SplashScreen.this, "opened_before")) {
             startActivity(new Intent(SplashScreen.this, MainActivity.class));
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

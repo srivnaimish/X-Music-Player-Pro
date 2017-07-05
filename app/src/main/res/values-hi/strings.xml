@@ -78,4 +78,10 @@
     <string name="delete_warning">यह ऑपरेशन डिवाइस से चयनित गीतों को भी हटा देगा</string>
     <string name="empty_state_playlist_message">आपने कोई प्लेलिस्ट नहीं बनाई है</string>
     <string name="hide_music">এই সময়কাল থেকে বড় সঙ্গীত লোড</string>
+    <string name="pick_time">समय चुनें</string>
+    <string name="custom_time">कस्टम समय</string>
+    <string name="aborted">निरस्त</string>
+    <string name="thanks">खरीद के लिए धन्यवाद</string>
+    <string name="buy">थीम खरीदें</string>
+    <string name="pick_theme">यह चुनें</string>
 </resources>

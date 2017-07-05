@@ -77,4 +77,10 @@
     <string name="delete_warning">এই অপারেশন এছাড়াও ডিভাইস থেকে নির্বাচিত গান মুছে ফেলা হবে</string>
     <string name="empty_state_playlist_message">আপনি কোনও প্লেলিস্ট তৈরি করেন নি</string>
     <string name="hide_music">इस अवधि से अधिक संगीत लोड करें</string>
+    <string name="pick_time">সময় চয়ন করুন</string>
+    <string name="custom_time">কাস্টম সময়</string>
+    <string name="aborted">বন্ধ্যা-করা</string>
+    <string name="thanks">ক্রয়ের জন্য ধন্যবাদ</string>
+    <string name="buy">থিম কিনুন</string>
+    <string name="pick_theme">নির্বাচন করা</string>
 </resources>

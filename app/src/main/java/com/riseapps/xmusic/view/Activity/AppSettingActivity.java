@@ -7,9 +7,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.media.audiofx.Equalizer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,34 +18,45 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.view.DragEvent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.model.MusicService;
-import com.riseapps.xmusic.utils.ZoomOutPageTransformer;
+import com.riseapps.xmusic.billing.IabHelper;
+import com.riseapps.xmusic.billing.IabResult;
+import com.riseapps.xmusic.billing.Inventory;
+import com.riseapps.xmusic.billing.Purchase;
+import com.riseapps.xmusic.component.ThemeSelector;
 
-public class AppSettingActivity extends AppCompatActivity{
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class AppSettingActivity extends AppCompatActivity {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
+    private static final String TAG = "In-App Billing";
+
+    IabHelper mHelper;
+
+    boolean billinSupported = false;
 
     private Dialog dialog;
     private EditText min;
@@ -60,42 +68,41 @@ public class AppSettingActivity extends AppCompatActivity{
     private TextView short_time;
     private int previous_set;
     private HoloCircleSeekBar seekBar;
-    private int[] backgroundColors,textColors;
-    private String[] texts;
     LinearLayout theme_dialog;
     int buttonId[] = {R.id.bt1, R.id.bt2, R.id.bt3, R.id.bt4, R.id.bt5, R.id.bt6, R.id.bt7, R.id.bt8};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==1) {
-            setTheme(R.style.AppTheme_Dark);
-        }else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==2) {
-            setTheme(R.style.AppTheme_Dark2);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==3) {
-            setTheme(R.style.AppTheme_Dark3);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==4) {
-            setTheme(R.style.AppTheme_Dark4);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==5) {
-            setTheme(R.style.AppTheme_Dark5);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==6) {
-            setTheme(R.style.AppTheme_Dark6);
-        }
-        else if (sharedPreferenceSingelton.getSavedInt(this,"Theme")==7) {
-            setTheme(R.style.AppTheme_Dark7);
-        }
+
+        new ThemeSelector().setAppTheme(this);
+
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         init();
-        backgroundColors = new int[]{R.color.colorPrimary,R.color.colorPrimaryInverse,R.color.colorPrimary2,R.color.colorPrimary3,
-                R.color.colorPrimary4,R.color.colorPrimary5,R.color.colorPrimary6,R.color.colorPrimary7};
-        textColors = new int[]{R.color.textColorPrimary,R.color.textColorPrimaryInverse,R.color.textColorPrimary2,R.color.textColorPrimary3,
-                R.color.textColorPrimary4,R.color.textColorPrimary5,R.color.textColorPrimary6,R.color.textColorPrimary7};
-        texts = new String[]{"Theme 1","Theme 2","Theme 3","Theme 4","Theme 5","Theme 6","Theme 7","Theme 8"};
+
+        String output=AppConstants.decrypt(AppConstants.encrypted);
+        mHelper = new IabHelper(this, output);
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            @Override
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
+                    Log.d(TAG, "In-app billing failed " + result);
+                    billinSupported = false;
+                } else {
+                    Log.d(TAG, "In-app billing setup OK ");
+                    billinSupported = true;
+                    if (mHelper == null) return;
+                    List<String> st = new ArrayList<String>();
+                    st.addAll(Arrays.asList(AppConstants.ITEM_SKU).subList(2, 8));
+                    try {
+                        mHelper.queryInventoryAsync(true, st, mGotInventoryListener);
+                    } catch (IabHelper.IabAsyncInProgressException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     public int getLayoutId() {
@@ -119,11 +126,11 @@ public class AppSettingActivity extends AppCompatActivity{
             setting_pro.setVisibility(View.GONE);
         }
         pro = (Switch) findViewById(R.id.setting_pro);
-        short_time= (TextView) findViewById(R.id.time_for_short_music);
-        previous_set=sharedPreferenceSingelton.getSavedInt(this,"Short_music_time");
-        String time=previous_set+" seconds";
+        short_time = (TextView) findViewById(R.id.time_for_short_music);
+        previous_set = sharedPreferenceSingelton.getSavedInt(this, "Short_music_time");
+        String time = previous_set + " seconds";
         short_time.setText(time);
-        
+
         if (sharedPreferenceSingelton.getSavedBoolean(this, "Pro_Controls"))
             pro.setChecked(true);
         else
@@ -146,20 +153,19 @@ public class AppSettingActivity extends AppCompatActivity{
 
     }
 
-   /* */
-   public void changeTheme(View v){
-       dialog=new Dialog(this);
-       dialog.setContentView(R.layout.theme_select_dialog);
-       ViewPager viewpager= (ViewPager) dialog.findViewById(R.id.view_pager);
-       theme_dialog= (LinearLayout) dialog.findViewById(R.id.theme_dialog);
-       viewpager.setPageTransformer(true, new ZoomOutPageTransformer());
-       viewpager.addOnPageChangeListener(viewPagerPageChangeListener);
-       MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
-       viewpager.setAdapter(myViewPagerAdapter);
-       dialog.show();
-   }
+    /* */
+    public void changeTheme(View v) {
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.theme_select_dialog);
+        ViewPager viewpager = (ViewPager) dialog.findViewById(R.id.view_pager);
+        theme_dialog = (LinearLayout) dialog.findViewById(R.id.theme_dialog);
+        viewpager.addOnPageChangeListener(viewPagerPageChangeListener);
+        MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
+        viewpager.setAdapter(myViewPagerAdapter);
+        dialog.show();
+    }
 
-    public void changeSkipieSwitch(View v){
+    public void changeSkipieSwitch(View v) {
         if (pro.isChecked()) {
             pro.setChecked(false);
         } else {
@@ -171,36 +177,35 @@ public class AppSettingActivity extends AppCompatActivity{
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.sleep_timer_dialog);
         dialog.show();
-        final CardView fifteen= (CardView) dialog.findViewById(R.id.fifteen);
-        final CardView thirty= (CardView) dialog.findViewById(R.id.thirty);
-        final CardView fortyfive= (CardView) dialog.findViewById(R.id.fortyfive);
-        final CardView sixty= (CardView) dialog.findViewById(R.id.sixty);
+        final CardView fifteen = (CardView) dialog.findViewById(R.id.fifteen);
+        final CardView thirty = (CardView) dialog.findViewById(R.id.thirty);
+        final CardView fortyfive = (CardView) dialog.findViewById(R.id.fortyfive);
+        final CardView sixty = (CardView) dialog.findViewById(R.id.sixty);
         min = (EditText) dialog.findViewById(R.id.minutes);
         final Button done = (Button) dialog.findViewById(R.id.done);
         final Button cancel = (Button) dialog.findViewById(R.id.cancel);
-        View.OnClickListener clickListener=new View.OnClickListener() {
+        View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getId()==fifteen.getId())
+                if (v.getId() == fifteen.getId())
                     setTimer(15);
-                else if(v.getId()==thirty.getId())
+                else if (v.getId() == thirty.getId())
                     setTimer(30);
-                else if(v.getId()==fortyfive.getId())
+                else if (v.getId() == fortyfive.getId())
                     setTimer(45);
-                else if(v.getId()==sixty.getId())
+                else if (v.getId() == sixty.getId())
                     setTimer(60);
-                else if(v.getId()==done.getId()){
-                    String minutes=min.getText().toString();
-                    if(minutes.equalsIgnoreCase("")){
+                else if (v.getId() == done.getId()) {
+                    String minutes = min.getText().toString();
+                    if (minutes.equalsIgnoreCase("")) {
                         Toast.makeText(AppSettingActivity.this, getString(R.string.Invalid_Time_Toast), Toast.LENGTH_SHORT).show();
-                    }else if (minutes.equalsIgnoreCase("0")) {
+                    } else if (minutes.equalsIgnoreCase("0")) {
                         Toast.makeText(AppSettingActivity.this, getString(R.string.Invalid_Time_Toast), Toast.LENGTH_SHORT).show();
                     } else {
-                        int m=Integer.parseInt(minutes);
+                        int m = Integer.parseInt(minutes);
                         setTimer(m);
                     }
-                }
-                else if(v.getId()==cancel.getId())
+                } else if (v.getId() == cancel.getId())
                     dialog.dismiss();
             }
         };
@@ -213,7 +218,7 @@ public class AppSettingActivity extends AppCompatActivity{
 
     }
 
-    void setTimer(int minutes){
+    void setTimer(int minutes) {
         long d = System.currentTimeMillis() + (minutes * 60 * 1000);
         Intent intent = new Intent("Stop");
         PendingIntent pi = PendingIntent.getBroadcast(AppSettingActivity.this, 5, intent, 0);
@@ -276,23 +281,23 @@ public class AppSettingActivity extends AppCompatActivity{
         dialog.show();
     }
 
-    public void hide_short(View v){
+    public void hide_short(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.short_music_hide_dialog);
         dialog.show();
         Button done = (Button) dialog.findViewById(R.id.done);
         Button cancel = (Button) dialog.findViewById(R.id.cancel);
-        seekBar= (HoloCircleSeekBar) dialog.findViewById(R.id.seekBar);
-        previous_set=sharedPreferenceSingelton.getSavedInt(this,"Short_music_time");
-        if(previous_set!=0){
+        seekBar = (HoloCircleSeekBar) dialog.findViewById(R.id.seekBar);
+        previous_set = sharedPreferenceSingelton.getSavedInt(this, "Short_music_time");
+        if (previous_set != 0) {
             seekBar.setValue(previous_set);
         }
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String time=seekBar.getValue()+" Seconds";
+                String time = seekBar.getValue() + " Seconds";
                 short_time.setText(time);
-                sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Short_music_time",seekBar.getValue());
+                sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Short_music_time", seekBar.getValue());
                 dialog.dismiss();
             }
         });
@@ -330,42 +335,62 @@ public class AppSettingActivity extends AppCompatActivity{
         public Object instantiateItem(ViewGroup container, final int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View itemView = layoutInflater.inflate(R.layout.pager_item, container, false);
-            CardView cardView= (CardView) itemView.findViewById(R.id.card);
-            cardView.setCardBackgroundColor(getResources().getColor(backgroundColors[position]));
+            CardView cardView = (CardView) itemView.findViewById(R.id.card);
+            cardView.setCardBackgroundColor(getResources().getColor(AppConstants.backgroundColors[position]));
 
             TextView textView = (TextView) itemView.findViewById(R.id.text);
-            textView.setText(texts[position]);
-            textView.setTextColor(getResources().getColor(textColors[position]));
+            textView.setText(AppConstants.texts[position]);
+            textView.setTextColor(getResources().getColor(AppConstants.textColors[position]));
             ImageView tick = (ImageView) itemView.findViewById(R.id.tick);
 
-            Button button= (Button) itemView.findViewById(R.id.button);
-
-            int x=sharedPreferenceSingelton.getSavedInt(AppSettingActivity.this,"Theme");
-            if(x==position){
+            Button button = (Button) itemView.findViewById(R.id.button);
+            Button buyButton = (Button) itemView.findViewById(R.id.buttonBuy);
+            int x = sharedPreferenceSingelton.getSavedInt(AppSettingActivity.this, "Themes");
+            if (x == position) {
                 tick.setImageResource(R.drawable.ic_check);
             }
+
+            if ((position == 2 && !AppConstants.theme3) || (position == 3 && !AppConstants.theme4) || (position == 4 && !AppConstants.theme5) ||
+                    (position == 5 && !AppConstants.theme6) || (position == 6 && !AppConstants.theme7) || (position == 7 && !AppConstants.theme8)) {
+                button.setVisibility(View.GONE);
+                buyButton.setVisibility(View.VISIBLE);
+            }
+            buyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (billinSupported) {
+                        try {
+                            mHelper.launchPurchaseFlow(AppSettingActivity.this, AppConstants.ITEM_SKU[position], 10001, mPurchaseFinishedListener, "mypurchaseToken");
+                        } catch (IabHelper.IabAsyncInProgressException e) {
+                            e.printStackTrace();
+                        }
+                    } else
+                        Toast.makeText(AppSettingActivity.this, "Billing Not Supported on Your Device", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(position==0){
-                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",0);
-                    }else if(position==1){
-                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",1);
-                    }else if(position==2){
-                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",2);
-                    }else if(position==3){
-                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",3);
-                    }else if(position==4){
-                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",4);
-                    }else if(position==5){
-                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",5);
-                    }else if(position==6){
-                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",6);
-                    }else if(position==7){
-                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this,"Theme",7);
+                    if (position == 0) {
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 0);
+                    } else if (position == 1) {
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 1);
+                    } else if (position == 2) {
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 2);
+                    } else if (position == 3) {
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 3);
+                    } else if (position == 4) {
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 4);
+                    } else if (position == 5) {
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 5);
+                    } else if (position == 6) {
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 6);
+                    } else if (position == 7) {
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 7);
                     }
                     dialog.dismiss();
-                   // recreate();
+                    // recreate();
                     finish();
                     Intent intent = IntentCompat.makeMainActivity(new ComponentName(
                             AppSettingActivity.this, MainActivity.class));
@@ -381,7 +406,7 @@ public class AppSettingActivity extends AppCompatActivity{
 
         @Override
         public int getCount() {
-            return backgroundColors.length;
+            return AppConstants.backgroundColors.length;
         }
 
         @Override
@@ -401,8 +426,8 @@ public class AppSettingActivity extends AppCompatActivity{
 
         @Override
         public void onPageSelected(int position) {
-            theme_dialog.setBackgroundColor(getResources().getColor(backgroundColors[position]));
-            for(int i=0;i<backgroundColors.length;i++){
+            theme_dialog.setBackgroundColor(getResources().getColor(AppConstants.backgroundColors[position]));
+            for (int i = 0; i < AppConstants.backgroundColors.length; i++) {
                 dialog.findViewById(buttonId[i]).setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
             }
             dialog.findViewById(buttonId[position]).setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
@@ -419,4 +444,83 @@ public class AppSettingActivity extends AppCompatActivity{
         }
     };
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!mHelper.handleActivityResult(requestCode, resultCode, data))
+            super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        @Override
+        public void onIabPurchaseFinished(IabResult result, Purchase info) {
+            if (result.isFailure()) {
+                Toast.makeText(AppSettingActivity.this, getString(R.string.aborted), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[2])) {
+                AppConstants.theme3 = true;
+                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
+            } else if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[3])) {
+                AppConstants.theme4 = true;
+                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
+            } else if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[4])) {
+                AppConstants.theme5 = true;
+                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
+            } else if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[5])) {
+                AppConstants.theme6 = true;
+                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
+            } else if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[6])) {
+                AppConstants.theme7 = true;
+                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
+            } else if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[7])) {
+                AppConstants.theme8 = true;
+                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+
+            if (mHelper == null) return;
+
+            if (result.isFailure()) {
+                return;
+            }
+
+            if (inventory.hasPurchase(AppConstants.ITEM_SKU[2])) {
+                AppConstants.theme3 = true;
+            }
+            if (inventory.hasPurchase(AppConstants.ITEM_SKU[3])) {
+                AppConstants.theme4 = true;
+            }
+            if (inventory.hasPurchase(AppConstants.ITEM_SKU[4])) {
+                AppConstants.theme5 = true;
+            }
+            if (inventory.hasPurchase(AppConstants.ITEM_SKU[5])) {
+                AppConstants.theme6 = true;
+            }
+            if (inventory.hasPurchase(AppConstants.ITEM_SKU[6])) {
+                AppConstants.theme7 = true;
+            }
+            if (inventory.hasPurchase(AppConstants.ITEM_SKU[7])) {
+                AppConstants.theme8 = true;
+            }
+
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (billinSupported) {
+            if (mHelper != null) try {
+                mHelper.dispose();
+            } catch (IabHelper.IabAsyncInProgressException e) {
+                e.printStackTrace();
+            }
+            mHelper = null;
+        }
+    }
 }
