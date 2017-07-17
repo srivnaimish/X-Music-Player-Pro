@@ -43,6 +43,8 @@ import java.util.ArrayList;
 
 public class ScrollingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final int MUSIC_LOADER_ID = 4;
+
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
@@ -241,6 +243,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                 nestedFragmentAdapter.delete(position);
             }
         });
+        getLoaderManager().destroyLoader(MUSIC_LOADER_ID);
     }
 
     @Override
@@ -269,9 +272,9 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
 
     void startLoader() {
         if (sharedPreferenceSingelton.getSavedBoolean(getContext(), "Loader"))
-            getActivity().getSupportLoaderManager().restartLoader(4, null, this);
+            getActivity().getSupportLoaderManager().restartLoader(MUSIC_LOADER_ID, null, this);
         else {
-            getActivity().getSupportLoaderManager().initLoader(4, null, this);
+            getActivity().getSupportLoaderManager().initLoader(MUSIC_LOADER_ID, null, this);
             sharedPreferenceSingelton.saveAs(getContext(), "Loader", true);
         }
     }

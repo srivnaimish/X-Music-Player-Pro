@@ -111,6 +111,16 @@ public class AppSettingActivity extends AppCompatActivity {
 
     private void init() {
         // Toolbar
+        ImageView background = (ImageView) findViewById(R.id.back);
+        if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==9) {
+            background.setImageResource(R.drawable.minions);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==8){
+            background.setImageResource(R.drawable.harry_potter);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==10){
+            background.setImageResource(R.drawable.iron_man);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==11){
+            background.setImageResource(R.drawable.deadpool);
+        }
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -120,57 +130,62 @@ public class AppSettingActivity extends AppCompatActivity {
                 AppSettingActivity.this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
-        CardView setting_pro = (CardView) findViewById(R.id.setting_shake);
-        back = (CoordinatorLayout) findViewById(R.id.back);
-        if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_SENSOR_PROXIMITY)) {
-            setting_pro.setVisibility(View.GONE);
-        }
-        pro = (Switch) findViewById(R.id.setting_pro);
+
         short_time = (TextView) findViewById(R.id.time_for_short_music);
         previous_set = sharedPreferenceSingelton.getSavedInt(this, "Short_music_time");
         String time = previous_set + " seconds";
         short_time.setText(time);
 
-        if (sharedPreferenceSingelton.getSavedBoolean(this, "Pro_Controls"))
-            pro.setChecked(true);
-        else
-            pro.setChecked(false);
-
-        pro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (sharedPreferenceSingelton.getSavedBoolean(AppSettingActivity.this, "Pro_Controls")) {
-                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Pro_Controls", false);
-                    MainActivity.mSensorManager.unregisterListener(MainActivity.proximityDetector);
-                    Toast.makeText(AppSettingActivity.this, "Deactivated", Toast.LENGTH_SHORT).show();
-                } else {
-                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Pro_Controls", true);
-                    MainActivity.mSensorManager.registerListener(MainActivity.proximityDetector, MainActivity.mProximity, 2 * 1000 * 1000);
-                    Toast.makeText(AppSettingActivity.this, "Activated", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
     }
 
-    /* */
     public void changeTheme(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.theme_select_dialog);
         ViewPager viewpager = (ViewPager) dialog.findViewById(R.id.view_pager);
         theme_dialog = (LinearLayout) dialog.findViewById(R.id.theme_dialog);
+
+        viewpager.setClipToPadding(false);
+        viewpager.setPadding(40,0,70,0);
+        viewpager.setPageMargin(20);
         viewpager.addOnPageChangeListener(viewPagerPageChangeListener);
         MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
         viewpager.setAdapter(myViewPagerAdapter);
         dialog.show();
     }
 
-    public void changeSkipieSwitch(View v) {
-        if (pro.isChecked()) {
-            pro.setChecked(false);
-        } else {
-            pro.setChecked(true);
-        }
+    public void changeMovieTheme(View v) {
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.movie_theme_dialog);
+        View.OnClickListener clickListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.harry:
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 8);
+                        break;
+                    case R.id.minions:
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 9);
+                        break;
+                    case R.id.iron:
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 10);
+                        break;
+                    case R.id.deadpool:
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 11);
+                        break;
+                }
+                dialog.dismiss();
+                finish();
+                Intent intent = IntentCompat.makeMainActivity(new ComponentName(
+                        AppSettingActivity.this, MainActivity.class));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        };
+        dialog.findViewById(R.id.harry).setOnClickListener(clickListener);
+        dialog.findViewById(R.id.minions).setOnClickListener(clickListener);
+        dialog.findViewById(R.id.iron).setOnClickListener(clickListener);
+        dialog.findViewById(R.id.deadpool).setOnClickListener(clickListener);
+        dialog.show();
     }
 
     public void openSleepDialog(View v) {
@@ -426,7 +441,6 @@ public class AppSettingActivity extends AppCompatActivity {
 
         @Override
         public void onPageSelected(int position) {
-            theme_dialog.setBackgroundColor(getResources().getColor(AppConstants.backgroundColors[position]));
             for (int i = 0; i < AppConstants.backgroundColors.length; i++) {
                 dialog.findViewById(buttonId[i]).setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
             }

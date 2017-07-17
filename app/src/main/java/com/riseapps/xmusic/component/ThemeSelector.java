@@ -47,6 +47,22 @@ public class ThemeSelector {
                 colors[0] = Color.rgb(242, 207, 169);
                 colors[1] = Color.rgb(255, 233, 209);
                 break;
+            case 8:
+                colors[0] = Color.parseColor("#BF172F31");
+                colors[1] = Color.parseColor("#4DFFFFFF");
+                break;
+            case 9:
+                colors[0] = Color.parseColor("#BF80B7ED");
+                colors[1] = Color.parseColor("#4DFFFFFF");
+                break;
+            case 10:
+                colors[0] = Color.parseColor("#BF394249");
+                colors[1] = Color.parseColor("#4DFFFFFF");
+                break;
+            case 11:
+                colors[0] = Color.parseColor("#BFAE1A28");
+                colors[1] = Color.parseColor("#4DFFFFFF");
+                break;
             default:
                 colors[0] = Color.LTGRAY;
                 colors[1] = Color.WHITE;;
@@ -70,5 +86,13 @@ public class ThemeSelector {
             activity.setTheme(R.style.AppTheme_Dark6);
         else if (currentTheme == 7)
             activity.setTheme(R.style.AppTheme_Dark7);
+        else if (currentTheme == 8)
+            activity.setTheme(R.style.HarryTheme);
+        else if (currentTheme == 9)
+            activity.setTheme(R.style.MinionTheme);
+        else if (currentTheme == 10)
+            activity.setTheme(R.style.IronManTheme);
+        else if (currentTheme == 11)
+            activity.setTheme(R.style.DeadpoolTheme);
     }
 }

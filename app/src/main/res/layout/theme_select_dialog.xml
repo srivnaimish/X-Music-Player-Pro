@@ -6,17 +6,17 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorWhite">
+    android:background="@color/colorMainBackground">
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="250dp"
-        android:layout_height="230dp"
-        android:layout_margin="@dimen/size20dp"/>
+        android:layout_height="200dp"
+        android:layout_margin="10dp"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/size16dp">
+        android:layout_marginBottom="@dimen/size8dp">
 
         <Button
             android:id="@+id/bt1"

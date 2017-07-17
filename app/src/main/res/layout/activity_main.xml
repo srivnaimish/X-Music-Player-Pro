@@ -11,7 +11,11 @@
         android:id="@+id/rel1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
         <!-- The toolbar and main content view -->
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"

@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,7 +62,16 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_select_playlist);
-
+        ImageView background = (ImageView) findViewById(R.id.back);
+        if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==9) {
+            background.setImageResource(R.drawable.minions);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==8){
+            background.setImageResource(R.drawable.harry_potter);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==10){
+            background.setImageResource(R.drawable.iron_man);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==11){
+            background.setImageResource(R.drawable.deadpool);
+        }
         empty_state= (LinearLayout) findViewById(R.id.linearLayout4);
         dialog= (CardView) findViewById(R.id.playlist_new);
         hint= (TextView) findViewById(R.id.hint);
@@ -197,7 +207,7 @@ public class SelectPlaylistActivity extends AppCompatActivity {
             int endRadius = Math.max(view.getWidth(), view.getHeight());
             Animator anim = null;
             anim = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
-            anim.setDuration(400);
+            anim.setDuration(300);
             anim.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -211,6 +221,8 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         cardView.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
         hint.setVisibility(View.GONE);
+        if(empty_state.getVisibility()==View.VISIBLE)
+            empty_state.setVisibility(View.GONE);
     }
 
     void doExitReveal(View view) {
@@ -219,17 +231,17 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(
                 dialog.getWindowToken(), 0);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            int centerX = 0;
+            int centerX = view.getWidth();
             int centerY = view.getHeight();
             int initialRadius = view.getWidth();
             Animator anim =
                     ViewAnimationUtils.createCircularReveal(view, centerX, centerY, initialRadius, 0);
-            anim.setDuration(400);
+            anim.setDuration(200);
             anim.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    dialog.setVisibility(View.GONE);
+                    dialog.setVisibility(View.INVISIBLE);
                 }
             });
             anim.start();
@@ -239,6 +251,8 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         cardView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
         hint.setVisibility(View.VISIBLE);
+        if(playLists.size()==0)
+            empty_state.setVisibility(View.VISIBLE);
     }
 
 }

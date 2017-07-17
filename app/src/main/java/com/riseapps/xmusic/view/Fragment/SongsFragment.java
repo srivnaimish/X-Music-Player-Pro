@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
@@ -42,6 +43,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     ArrayList<Song> songsList = new ArrayList<>();
     SongAdapter songsAdapter;
     private static final int SONG_LOADER = 1;
+    ImageView imageView;
 
     public static SongsFragment newInstance() {
         return new SongsFragment();
@@ -58,6 +60,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
 
+        imageView= (ImageView) rootView.findViewById(R.id.empty_state);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.songs);
         int spanCount = 1; // 2 columns
         int spacing = 5; // 50px
@@ -116,6 +119,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
         setPlayingFromThisFragment();
         ((MainActivity) getActivity()).setCompleteSongList(songsList);
         ((MainActivity) getActivity()).startTheService();
+        imageView.setVisibility(View.GONE);
     }
 
     @Override

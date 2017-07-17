@@ -91,7 +91,7 @@
     <string name="zero" translatable="false">0</string>
     <string name="action_share">Share this Song</string>
     <string name="select_the_newly_created_playlist">Select the newly created playlist</string>
-    <string name="theme">Theme</string>
+    <string name="theme">Color Theme</string>
     <string name="switch_betweem_the_light_and_dark_app_themes">App Restarts to switch the theme</string>
 
     <string name="app_walk1">Equalizer, Sleep Timer, Skipie mode, Themes</string>
@@ -107,6 +107,7 @@
     <string name="thanks">Thanks for the purchase</string>
     <string name="aborted">Aborted</string>
     <string name="pick_theme">Pick</string>
+    <string name="movie">Movies Themes</string>
     <!--AD UNIT ID'S-->
 
 

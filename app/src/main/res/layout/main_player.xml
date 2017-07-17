@@ -128,7 +128,8 @@
         android:layout_marginRight="@dimen/size8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginStart="@dimen/size8dp"
-        android:layout_marginEnd="@dimen/size8dp">
+        android:layout_marginEnd="@dimen/size8dp"
+        android:layout_marginTop="4dp">
 
         <com.riseapps.xmusic.widgets.MainTextView
             android:id="@+id/name"

@@ -104,6 +104,59 @@
         <item name="iconDual">@color/colorPrimaryDark7</item>
     </style>
 
+    <style name="HarryTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">#172F31</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/whitePrimary</item>
+        <item name="android:textColorSecondary">#EEEEEE</item>
+        <item name="android:textColorTertiary">@color/whitePrimary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="iconDual">#fafafa</item>
+    </style>
+
+    <style name="MinionTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">#80B7ED</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">#424242</item>
+        <item name="android:textColorTertiary">@color/textColorPrimary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="iconDual">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="IronManTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">#394249</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">#FAFAFA</item>
+        <item name="android:textColorTertiary">@color/textColorPrimary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="iconDual">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="DeadpoolTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">#AE1A28</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/whitePrimary</item>
+        <item name="android:textColorSecondary">#FAFAFA</item>
+        <item name="android:textColorTertiary">@color/whitePrimary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="iconDual">@color/whitePrimary</item>
+    </style>
+
+
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimaryDark">@color/colorWhite</item>
         <item name="android:windowBackground">@drawable/background_splash</item>

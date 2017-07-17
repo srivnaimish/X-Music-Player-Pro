@@ -12,16 +12,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.provider.MediaStore;
@@ -36,7 +31,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,7 +49,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,7 +68,6 @@ import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
-import com.riseapps.xmusic.executor.ProximityDetector;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.ZoomOutPageTransformer;
@@ -106,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     FloatingActionButton play_pause;
     //MiniPlayer items
     TextView title_mini, artist_mini;
-    ImageView play_pause_mini;
+    ImageView play_pause_mini,background;
     ImageView album_art_mini;
     //MainPlayer items
     TextView title, artist, currentPosition, totalDuration;
@@ -118,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     private CardView miniPlayer;
     private ConstraintLayout mainPlayer;
     private SeekBar seekBar;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     private Toolbar toolbarPlayer, toolbarContext, mToolbar;
@@ -133,10 +124,6 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     private ArrayList<Long> selectedID = new ArrayList<>();
 
-    public static SensorManager mSensorManager;
-    @SuppressLint("StaticFieldLeak")
-    public static ProximityDetector proximityDetector;
-    public static Sensor mProximity;
     private Dialog dialog;
     private SharedPreferenceSingelton sharedPreferenceSingleton;
 
@@ -191,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 public void onPlayerStatusChanged(int status) {
                     switch (status) {
                         case MusicService.PLAYING:
-                            play_pause.startAnimation(AnimationUtils.loadAnimation(MainActivity.this,R.anim.play_pause));
+                            play_pause.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.play_pause));
                             play_pause.setImageResource(R.drawable.pause);
                             play_pause_mini.setImageResource(R.drawable.pause);
                             musicPlaying = true;
@@ -200,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                             equalizerView.setVisibility(View.VISIBLE);
                             break;
                         case MusicService.PAUSED:
-                            play_pause.startAnimation(AnimationUtils.loadAnimation(MainActivity.this,R.anim.play_pause));
+                            play_pause.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.play_pause));
                             play_pause.setImageResource(R.drawable.play);
                             play_pause_mini.setImageResource(R.drawable.play);
                             musicPlaying = false;
@@ -231,9 +218,18 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         sharedPreferenceSingleton = new SharedPreferenceSingelton();
 
         new ThemeSelector().setAppTheme(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        background= (ImageView) findViewById(R.id.back);
+        if(sharedPreferenceSingleton.getSavedInt(this,"Themes")==8) {
+            background.setImageResource(R.drawable.harry_potter);
+        }else if(sharedPreferenceSingleton.getSavedInt(this,"Themes")==9) {
+            background.setImageResource(R.drawable.minions);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==10){
+            background.setImageResource(R.drawable.iron_man);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==11){
+            background.setImageResource(R.drawable.deadpool);
+        }
         checkPermission();
         toolbarsInitiallize();
         initiallize();
@@ -255,14 +251,14 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             public void onClick(View view) {
                 if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Shuffle")) {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", false);
-                    int a=sharedPreferenceSingleton.getSavedInt(MainActivity.this, "Themes");
-                    if(!(a==1||a==2||a==4||a==5||a==7))
+                    int a = sharedPreferenceSingleton.getSavedInt(MainActivity.this, "Themes");
+                    if (!(a == 1 || a == 2 || a == 4 || a == 5 || a == 7))
                         shuffle.setColorFilter(Color.argb(255, 0, 0, 0));
                     else
                         shuffle.setColorFilter(Color.argb(255, 255, 255, 255));
                 } else {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", true);
-                    shuffle.setColorFilter(Color.argb(255,236, 100, 75));
+                    shuffle.setColorFilter(Color.argb(255, 236, 100, 75));
                 }
             }
         });
@@ -272,9 +268,9 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             public void onClick(View view) {
                 if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Repeat")) {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat", false);
-                    int a=sharedPreferenceSingleton.getSavedInt(MainActivity.this, "Themes");
+                    int a = sharedPreferenceSingleton.getSavedInt(MainActivity.this, "Themes");
                     Toast.makeText(MainActivity.this, getString(R.string.song_repeat_off_toast), Toast.LENGTH_SHORT).show();
-                    if(!(a==1||a==2||a==4||a==5||a==7))
+                    if (!(a == 1 || a == 2 || a == 4 || a == 5 || a == 7))
                         repeat.setColorFilter(Color.argb(255, 0, 0, 0));
                     else
                         repeat.setColorFilter(Color.argb(255, 255, 255, 255));
@@ -282,8 +278,8 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 } else {
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Repeat", true);
                     Toast.makeText(MainActivity.this, getString(R.string.song_repeat_on_toast), Toast.LENGTH_SHORT).show();
-                    repeat.setColorFilter(Color.argb(255,236, 100, 75));
-                   // DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                    repeat.setColorFilter(Color.argb(255, 236, 100, 75));
+                    // DrawableCompat.setTint(repeat.getDrawable(), ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 }
             }
         });
@@ -328,14 +324,14 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 }
             }
 
-            public void onSwipeDown(){
+            public void onSwipeDown() {
                 hideMainPlayer();
             }
 
         });
 
-        mainPlayer.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this){
-            public void onSwipeDown(){
+        mainPlayer.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeDown() {
                 hideMainPlayer();
             }
         });
@@ -352,19 +348,6 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 Color.parseColor("#F44336"));
         mWaveHelper.start();
 
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-        proximityDetector = new ProximityDetector(this);
-        proximityDetector.setOnProximityListener(new ProximityDetector.OnProximityListener() {
-            @Override
-            public void onProximity() {
-                ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(100);
-                if (musicPlaying)
-                    changeToNextSong();
-                else
-                    musicService.togglePlay();
-            }
-        });
     }
 
     private void changeToPreviousSong() {
@@ -387,7 +370,8 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     }
 
     private void initiallize() {
-        appBarLayout= (AppBarLayout) findViewById(R.id.appbar);
+
+        appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("Stop");
         registerReceiver(stopReceiver, intentFilter);
@@ -398,9 +382,9 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         searchClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(autoComplete.getText().toString().length()>0){
+                if (autoComplete.getText().toString().length() > 0) {
                     autoComplete.setText("");
-                }else {
+                } else {
                     doExitReveal(searchBar);
                 }
 
@@ -408,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         });
 
         autoComplete.setThreshold(2);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(3);
@@ -519,7 +503,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String selection = (String)parent.getItemAtPosition(position);
+                            String selection = (String) parent.getItemAtPosition(position);
                             playFromSearch(selection);
                             doExitReveal(searchBar);
                         }
@@ -628,31 +612,21 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         unregisterReceiver(stopReceiver);
         unbindService(musicConnection);
         stopService(playIntent);
-        if (sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Pro_controls"))
-            mSensorManager.unregisterListener(proximityDetector);
 
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
-        if (sharedPreferenceSingleton.getSavedBoolean(this, "Pro_Controls")) {
-            mSensorManager.registerListener(proximityDetector, mProximity, 2 * 1000 * 1000);
-        }
-        if (mainPlayer.getVisibility() == View.VISIBLE) {
-            miniPlayer.setVisibility(View.VISIBLE);
-            mViewPager.setVisibility(View.VISIBLE);
-            tabLayout.setVisibility(View.VISIBLE);
-            hideMainPlayer();
-        }
+
         super.onResume();
     }
 
     @Override
     public void onBackPressed() {
-        if(searchBar.getVisibility()==View.VISIBLE){
+        if (searchBar.getVisibility() == View.VISIBLE) {
             doExitReveal(searchBar);
-        }else {
+        } else {
             if (mainPlayer.getVisibility() == View.VISIBLE) {
                 hideMainPlayer();
             } else {
@@ -690,7 +664,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     public void setCompleteSongList(ArrayList<Song> arrayList) {
         completeList = arrayList;
         setSongs(completeList);
-        titles=getTitles();
+        titles = getTitles();
     }
 
     void showMainPlayer() {
@@ -733,7 +707,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         return musicService;
     }
 
-    public void playFromSearch(String s){
+    public void playFromSearch(String s) {
         for (Song song : completeList) {
             if (song != null && song.getName().equalsIgnoreCase(s)) {
                 musicService.setSongs(completeList);
@@ -753,13 +727,13 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             appBarLayout.setElevation(10.0f);
             searchBar.setVisibility(View.VISIBLE);
-            int centerX = view.getWidth();
-            int centerY = view.getHeight()/2;
+            int centerX = view.getWidth() - 220;
+            int centerY = view.getHeight() / 2;
             int startRadius = 0;
-            int endRadius =view.getWidth();
+            int endRadius = view.getWidth();
             Animator anim = null;
             anim = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
-            anim.setDuration(220);
+            anim.setDuration(250);
             anim.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -777,17 +751,17 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     void doExitReveal(View view) {
         InputMethodManager imm = (InputMethodManager)
-        getSystemService(Context.INPUT_METHOD_SERVICE);
+                getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(
                 searchBar.getWindowToken(), 0);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             appBarLayout.setElevation(0.0f);
-            int centerX = view.getWidth();
-            int centerY = view.getHeight()/2;
+            int centerX = view.getWidth() - 220;
+            int centerY = view.getHeight() / 2;
             int startRadius = view.getWidth();
             Animator anim =
                     ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, 0);
-            anim.setDuration(220);
+            anim.setDuration(250);
             anim.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -898,7 +872,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        String tabTitles[] = new String[]{getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
+        String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
 
         //String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
         SectionsPagerAdapter(FragmentManager fm) {
@@ -909,16 +883,16 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return PlaylistFragment.newInstance();
-                case 1:
                     return SongsFragment.newInstance();
+                case 1:
+                    return PlaylistFragment.newInstance();
                 case 2:
                     return AlbumFragment.newInstance();
                 case 3:
                     return ArtistFragment.newInstance();
 
             }
-            return PlaylistFragment.newInstance();
+            return SongsFragment.newInstance();
         }
 
         @Override
