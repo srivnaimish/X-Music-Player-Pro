@@ -52,8 +52,8 @@
 
     <com.riseapps.xmusic.widgets.EqualizerView xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/equalizer_view"
-        android:layout_width="@dimen/size30dp"
-        android:layout_height="@dimen/size30dp"
+        android:layout_width="@dimen/size24dp"
+        android:layout_height="@dimen/size24dp"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/play_pause_mini"
         custom:animDuration="3500"

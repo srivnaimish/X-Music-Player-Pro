@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.component.ThemeSelector;
@@ -63,14 +64,31 @@ public class SelectPlaylistActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_select_playlist);
         ImageView background = (ImageView) findViewById(R.id.back);
-        if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==9) {
-            background.setImageResource(R.drawable.minions);
-        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==8){
-            background.setImageResource(R.drawable.harry_potter);
-        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==10){
-            background.setImageResource(R.drawable.iron_man);
-        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==11){
-            background.setImageResource(R.drawable.deadpool);
+        SharedPreferenceSingelton sharedPreferenceSingelton=new SharedPreferenceSingelton();
+        if(sharedPreferenceSingelton.getSavedInt(this,"Themes")==8) {
+            Glide
+                    .with(this)
+                    .load(R.drawable.harry_potter)
+                    .dontAnimate()
+                    .into(background);
+        }else if(sharedPreferenceSingelton.getSavedInt(this,"Themes")==9) {
+            Glide
+                    .with(this)
+                    .load(R.drawable.minions)
+                    .dontAnimate()
+                    .into(background);
+        }else if(sharedPreferenceSingelton.getSavedInt(this,"Themes")==10){
+            Glide
+                    .with(this)
+                    .load(R.drawable.iron_man)
+                    .dontAnimate()
+                    .into(background);
+        }else if(sharedPreferenceSingelton.getSavedInt(this,"Themes")==11){
+            Glide
+                    .with(this)
+                    .load(R.drawable.deadpool)
+                    .dontAnimate()
+                    .into(background);
         }
         empty_state= (LinearLayout) findViewById(R.id.linearLayout4);
         dialog= (CardView) findViewById(R.id.playlist_new);

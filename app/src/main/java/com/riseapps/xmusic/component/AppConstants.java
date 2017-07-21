@@ -9,6 +9,8 @@ import com.riseapps.xmusic.R;
  */
 
 public class AppConstants {
+    public static int[] seekBars={R.id.seekBar0,R.id.seekBar1,R.id.seekBar2,R.id.seekBar3,R.id.seekBar4};
+    public static int[] levels={R.id.level0,R.id.level1,R.id.level2,R.id.level3,R.id.level4};
     public static final String ITEM_SKU[] = {"", "", "theme_3", "theme_4", "theme_5", "theme_6", "theme_7", "theme_8"};
 
     public static boolean theme3 = false;

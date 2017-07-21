@@ -95,10 +95,10 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     public EqualizerView equalizerView;
     public boolean musicPlaying, isMusicShuffled = false;
     public ImageButton prev, next, repeat, shuffle;
-    FloatingActionButton play_pause;
+    FloatingActionButton play_pause, shuffle_play;
     //MiniPlayer items
     TextView title_mini, artist_mini;
-    ImageView play_pause_mini,background;
+    ImageView play_pause_mini, background;
     ImageView album_art_mini;
     //MainPlayer items
     TextView title, artist, currentPosition, totalDuration;
@@ -130,12 +130,17 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     public ArrayList<Song> completeList;
     Toolbar searchBar;
     AutoCompleteTextView autoComplete;
-    private ImageButton searchClear;
 
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            musicService.togglePlay();
+            if (v.getId() == R.id.shuffle_songs) {
+                sharedPreferenceSingleton.saveAs(MainActivity.this, "Shuffle", true);
+                shuffle.setColorFilter(Color.argb(255, 236, 100, 75));
+                changeToNextSong();
+            } else {
+                musicService.togglePlay();
+            }
         }
     };
     private ServiceConnection musicConnection = new ServiceConnection() {
@@ -220,15 +225,31 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         new ThemeSelector().setAppTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        background= (ImageView) findViewById(R.id.back);
-        if(sharedPreferenceSingleton.getSavedInt(this,"Themes")==8) {
-            background.setImageResource(R.drawable.harry_potter);
-        }else if(sharedPreferenceSingleton.getSavedInt(this,"Themes")==9) {
-            background.setImageResource(R.drawable.minions);
-        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==10){
-            background.setImageResource(R.drawable.iron_man);
-        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==11){
-            background.setImageResource(R.drawable.deadpool);
+        background = (ImageView) findViewById(R.id.back);
+        if (sharedPreferenceSingleton.getSavedInt(this, "Themes") == 8) {
+            Glide
+                    .with(MainActivity.this)
+                    .load(R.drawable.harry_potter)
+                    .dontAnimate()
+                    .into(background);
+        } else if (sharedPreferenceSingleton.getSavedInt(this, "Themes") == 9) {
+            Glide
+                    .with(MainActivity.this)
+                    .load(R.drawable.minions)
+                    .dontAnimate()
+                    .into(background);
+        } else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 10) {
+            Glide
+                    .with(MainActivity.this)
+                    .load(R.drawable.iron_man)
+                    .dontAnimate()
+                    .into(background);
+        } else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 11) {
+            Glide
+                    .with(MainActivity.this)
+                    .load(R.drawable.deadpool)
+                    .dontAnimate()
+                    .into(background);
         }
         checkPermission();
         toolbarsInitiallize();
@@ -377,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         registerReceiver(stopReceiver, intentFilter);
 
         searchBar = (Toolbar) findViewById(R.id.search_bar);
-        searchClear = (ImageButton) findViewById(R.id.search_bar_clear);
+        ImageButton searchClear = (ImageButton) findViewById(R.id.search_bar_clear);
         autoComplete = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
         searchClear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -425,7 +446,8 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         miniPlayer = (CardView) findViewById(R.id.song_list_card);
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
         equalizerView = (EqualizerView) findViewById(R.id.equalizer_view);
-
+        shuffle_play = (FloatingActionButton) findViewById(R.id.shuffle_songs);
+        shuffle_play.setOnClickListener(togglePlayBtn);
         play_pause.setOnClickListener(togglePlayBtn);
         play_pause_mini.setOnClickListener(togglePlayBtn);
 
@@ -583,6 +605,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         mToolbar.setVisibility(View.VISIBLE);
         miniPlayer.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
         miniPlayer.setVisibility(View.VISIBLE);
+        shuffle_play.show();
         selectedID = new ArrayList<>();
         songRefreshListener.OnContextBackPressed();
 
@@ -599,6 +622,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     .setDuration(100)
                     .start();
             miniPlayer.setVisibility(View.VISIBLE);
+            shuffle_play.show();
         }
     }
 
@@ -642,8 +666,10 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 } else {
                     if (selectedID.size() > 0) {
                         removeContentSelection();
-                    } else
+                    } else {
+
                         super.onBackPressed();
+                    }
                 }
             }
         }
@@ -670,7 +696,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     void showMainPlayer() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0)
             getSupportFragmentManager().popBackStackImmediate();
-        miniPlayer.setVisibility(View.GONE);
+        shuffle_play.hide();
         mainPlayer.setVisibility(View.VISIBLE);
         toolbarPlayer.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.GONE);
@@ -698,6 +724,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         mainPlayer.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.VISIBLE);
         mViewPager.setVisibility(View.VISIBLE);
+        shuffle_play.show();
         tabLayout.setVisibility(View.VISIBLE);
         toolbarPlayer.setVisibility(View.GONE);
         mToolbar.setVisibility(View.VISIBLE);
@@ -723,6 +750,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         autoComplete.requestFocus();
         mToolbar.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.GONE);
+        shuffle_play.hide();
         mViewPager.setVisibility(View.GONE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             appBarLayout.setElevation(10.0f);
@@ -770,6 +798,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     tabLayout.setVisibility(View.VISIBLE);
                     mToolbar.setVisibility(View.VISIBLE);
                     miniPlayer.setVisibility(View.VISIBLE);
+                    shuffle_play.show();
                     mViewPager.setVisibility(View.VISIBLE);
                 }
             });
@@ -779,6 +808,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             tabLayout.setVisibility(View.VISIBLE);
             mToolbar.setVisibility(View.VISIBLE);
             miniPlayer.setVisibility(View.VISIBLE);
+            shuffle_play.show();
             mViewPager.setVisibility(View.VISIBLE);
         }
         autoComplete.setText("");
@@ -803,6 +833,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             toolbarContext.setVisibility(View.GONE);
             mToolbar.setVisibility(View.VISIBLE);
             miniPlayer.setVisibility(View.VISIBLE);
+            shuffle_play.show();
             long array[] = new long[selectedID.size()];
             int c = 0;
             for (long id : selectedID) {
@@ -857,6 +888,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             mToolbar.setVisibility(View.VISIBLE);
             miniPlayer.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
             miniPlayer.setVisibility(View.VISIBLE);
+            shuffle_play.show();
         }
     }
 
@@ -868,6 +900,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         mToolbar.setVisibility(View.GONE);
         miniPlayer.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out));
         miniPlayer.setVisibility(View.GONE);
+        shuffle_play.hide();
     }
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -974,6 +1007,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 toolbarContext.setVisibility(View.GONE);
                 mToolbar.setVisibility(View.VISIBLE);
                 miniPlayer.setVisibility(View.VISIBLE);
+                shuffle_play.show();
                 songRefreshListener.OnSongDelete();
                 dialog.dismiss();
 
@@ -987,6 +1021,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 toolbarContext.setVisibility(View.GONE);
                 mToolbar.setVisibility(View.VISIBLE);
                 miniPlayer.setVisibility(View.VISIBLE);
+                shuffle_play.show();
                 songRefreshListener.OnContextBackPressed();
                 dialog.dismiss();
             }

@@ -73,16 +73,19 @@
 
     <!--EQUALIZER PRESET DIALOG-->
     <string name="select_a_preset">Select a Preset</string>
-    <string name="normal_preset">Normal</string>
-    <string name="classical_preset">Classical</string>
-    <string name="dance_preset">Dance</string>
-    <string name="flat_preset">Flat</string>
-    <string name="folk_preset">Folk</string>
-    <string name="heavy_metal_preset">Heavy Metal</string>
-    <string name="hip_hop_preset">Hip Hop</string>
-    <string name="jazz_preset">Jazz</string>
-    <string name="pop_preset">Pop music</string>
-    <string name="rock_preset">Rock</string>
+    <string-array name="presets">
+        <item name="normal_preset">Normal</item>
+        <item name="classical_preset">Classical</item>
+        <item name="dance_preset">Dance</item>
+        <item name="flat_preset">Flat</item>
+        <item name="folk_preset">Folk</item>
+        <item name="heavy_metal_preset">Heavy Metal</item>
+        <item name="hip_hop_preset">Hip Hop</item>
+        <item name="jazz_preset">Jazz</item>
+        <item name="pop_preset">Pop music</item>
+        <item name="rock_preset">Rock</item>
+    </string-array>
+
 
     <!--SLEEP TIME DIALOG-->
     <string name="stop_music_after">Stop Music</string>
