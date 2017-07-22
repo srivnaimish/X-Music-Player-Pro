@@ -7,7 +7,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,22 +24,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
-import android.widget.Spinner;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.gelitenight.waveview.library.WaveView;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AppConstants;
@@ -50,8 +44,6 @@ import com.riseapps.xmusic.billing.IabResult;
 import com.riseapps.xmusic.billing.Inventory;
 import com.riseapps.xmusic.billing.Purchase;
 import com.riseapps.xmusic.component.ThemeSelector;
-import com.riseapps.xmusic.model.MusicService;
-import com.riseapps.xmusic.utils.WaveHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +71,7 @@ public class AppSettingActivity extends AppCompatActivity {
     private TextView short_time;
     private int previous_set;
     private HoloCircleSeekBar seekBar;
-    LinearLayout theme_dialog;
+    RelativeLayout theme_dialog;
     int buttonId[] = {R.id.bt1, R.id.bt2, R.id.bt3, R.id.bt4, R.id.bt5, R.id.bt6, R.id.bt7, R.id.bt8};
 
     @Override
@@ -92,7 +84,7 @@ public class AppSettingActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         init();
 
-        String output = AppConstants.decrypt(AppConstants.encrypted);
+        String output=AppConstants.decrypt(AppConstants.encrypted);
         mHelper = new IabHelper(this, output);
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             @Override
@@ -123,30 +115,14 @@ public class AppSettingActivity extends AppCompatActivity {
     private void init() {
         // Toolbar
         ImageView background = (ImageView) findViewById(R.id.back);
-        if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 8) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.harry_potter)
-                    .dontAnimate()
-                    .into(background);
-        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 9) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.minions)
-                    .dontAnimate()
-                    .into(background);
-        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 10) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.iron_man)
-                    .dontAnimate()
-                    .into(background);
-        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 11) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.deadpool)
-                    .dontAnimate()
-                    .into(background);
+        if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==9) {
+            background.setImageResource(R.drawable.minions);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==8){
+            background.setImageResource(R.drawable.harry_potter);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==10){
+            background.setImageResource(R.drawable.iron_man);
+        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==11){
+            background.setImageResource(R.drawable.deadpool);
         }
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);
@@ -167,12 +143,14 @@ public class AppSettingActivity extends AppCompatActivity {
 
     public void changeTheme(View v) {
         dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.theme_select_dialog);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         ViewPager viewpager = (ViewPager) dialog.findViewById(R.id.view_pager);
-        theme_dialog = (LinearLayout) dialog.findViewById(R.id.theme_dialog);
+        theme_dialog = (RelativeLayout) dialog.findViewById(R.id.theme_dialog);
 
         viewpager.setClipToPadding(false);
-        viewpager.setPadding(40, 0, 90, 0);
+        viewpager.setPadding(40,0,70,0);
         viewpager.setPageMargin(20);
         viewpager.addOnPageChangeListener(viewPagerPageChangeListener);
         MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
@@ -183,10 +161,10 @@ public class AppSettingActivity extends AppCompatActivity {
     public void changeMovieTheme(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.movie_theme_dialog);
-        View.OnClickListener clickListener = new View.OnClickListener() {
+        View.OnClickListener clickListener=new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
+                switch (v.getId()){
                     case R.id.harry:
                         sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 8);
                         break;
@@ -277,84 +255,24 @@ public class AppSettingActivity extends AppCompatActivity {
 
     public void openEqualizerDialog(View v) {
         dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.equalizer_dialog);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.show();
+        radioButtonGroup = (RadioGroup) dialog.findViewById(R.id.radio_group);
 
-        final SeekBar seekBars[] = new SeekBar[5];
-        TextView levels[] = new TextView[5];
-        Button reset = (Button) dialog.findViewById(R.id.reset);
-        final short lowerEqualizerBandLevel = MusicService.equalizer.getBandLevelRange()[0];
-        final short upperEqualizerBandLevel = MusicService.equalizer.getBandLevelRange()[1];
-
-        for (short i = 0; i < 5; i++) {
-            final short equalizerBandIndex = i;
-            seekBars[i] = (SeekBar) dialog.findViewById(AppConstants.seekBars[i]);
-            seekBars[i].setMax(upperEqualizerBandLevel - lowerEqualizerBandLevel);
-            levels[i] = (TextView) dialog.findViewById(AppConstants.levels[i]);
-            levels[i].setText((MusicService.equalizer.getCenterFreq(equalizerBandIndex) / 1000) + "Hz");
-            seekBars[i].setProgress((upperEqualizerBandLevel - lowerEqualizerBandLevel) / 2);
-            seekBars[i].setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    MusicService.equalizer.setBandLevel(equalizerBandIndex, (short) (progress + lowerEqualizerBandLevel));
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                }
-            });
+        int x = sharedPreferenceSingelton.getSavedInt(AppSettingActivity.this, "Preset");
+        if (x != 0) {
+            radioButtonGroup.check((radioButtonGroup.getChildAt(x)).getId());
         }
-        reset.setOnClickListener(new View.OnClickListener() {
+        Button done = (Button) dialog.findViewById(R.id.done);
+        done.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                for (short i = 0; i < 5; i++) {
-                    MusicService.equalizer.setBandLevel(i, (short) MusicService.equalizer.getCenterFreq(i));
-                    seekBars[i].setProgress((upperEqualizerBandLevel - lowerEqualizerBandLevel) / 2);
-                }
-            }
-        });
-
-        Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
-        int supportedPresets=MusicService.equalizer.getNumberOfPresets();
-
-        ArrayList<String> arrayList=new ArrayList<>();
-        arrayList.add("Custom");
-        for(short i=0;i<supportedPresets;i++){
-            arrayList.add(MusicService.equalizer.getPresetName(i));
-        }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, arrayList);
-        spinner.setAdapter(arrayAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position!=0){
-                    MusicService.equalizer.usePreset((short) (position - 1));
-                    short numberOfFreqBands = 5;
-
-                    final short lowerEqualizerBandLevel = MusicService.equalizer.getBandLevelRange()[0];
-
-                    for (short i = 0; i < numberOfFreqBands; i++) {
-                        seekBars[i].setProgress(MusicService.equalizer.getBandLevel(i) - lowerEqualizerBandLevel);
-                    }
-                }else {
-                    for (short i = 0; i < 5; i++) {
-                        MusicService.equalizer.setBandLevel(i, (short) MusicService.equalizer.getCenterFreq(i));
-                        seekBars[i].setProgress((upperEqualizerBandLevel - lowerEqualizerBandLevel) / 2);
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View view) {
+                int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
+                View radioButton = radioButtonGroup.findViewById(radioButtonID);
+                int idx = radioButtonGroup.indexOfChild(radioButton);
+                equalizerPresetListener.OnEqualizerPresetChanged((short) idx);
+                sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Preset", idx);
+                dialog.dismiss();
             }
         });
 

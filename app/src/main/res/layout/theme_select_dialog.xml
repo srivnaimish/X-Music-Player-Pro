@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/theme_dialog"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorMainBackground">
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
-        android:layout_width="250dp"
-        android:layout_height="200dp"
-        android:layout_margin="10dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="@dimen/size20dp"
+        android:layout_centerVertical="true"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/size8dp">
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/size30dp">
 
         <Button
             android:id="@+id/bt1"
@@ -74,4 +77,15 @@
 
     </LinearLayout>
 
-</LinearLayout>
+    <com.riseapps.xmusic.widgets.MainTextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/theme"
+        android:layout_above="@+id/view_pager"
+        android:layout_marginBottom="@dimen/size30dp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/size16sp"/>
+
+</RelativeLayout>

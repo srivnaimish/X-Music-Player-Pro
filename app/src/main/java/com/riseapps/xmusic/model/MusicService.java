@@ -40,7 +40,7 @@ public class MusicService extends Service implements
     public SharedPreferenceSingelton sharedPreferenceSingelton;
 
     public MediaPlayer player;
-    public static Equalizer equalizer;
+    public Equalizer equalizer;
     public HeadsetPlugReceiver headsetPlugReceiver;
     public ArrayList<Song> songs;
     public ArrayList<Integer> shufflePlayed=new ArrayList<>();
@@ -264,9 +264,20 @@ public class MusicService extends Service implements
         }
 
         songPos = songIndex;
+        int x = sharedPreferenceSingelton.getSavedInt(this, "Preset");
         equalizer = new Equalizer(0, player.getAudioSessionId());
         equalizer.setEnabled(true);
+        if (equalizer.getNumberOfPresets() > 0)
+            equalizer.usePreset((short) x);
 
+        AppSettingActivity.setEqualizerPresetListener(new AppSettingActivity.EqualizerPresetListener() {
+            @Override
+            public void OnEqualizerPresetChanged(short value) {
+                equalizer = new Equalizer(0, player.getAudioSessionId());
+                equalizer.setEnabled(true);
+                equalizer.usePreset(value);
+            }
+        });
         playerState = STOPPED;
         onSongChangedListener.onSongChanged(songs.get(songPos));
     }
