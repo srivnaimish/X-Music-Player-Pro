@@ -150,7 +150,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
             String[] folders = names.split(",");
             for (int i = 0; i < folders.length; i++) {
                 if (i < folders.length - 1)
-                    selection += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%'" + " OR ";
+                    selection += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%'" + " AND ";
                 else
                     selection += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%'";
             }

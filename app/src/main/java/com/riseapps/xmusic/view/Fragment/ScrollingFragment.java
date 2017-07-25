@@ -301,7 +301,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
             String[] folders = names.split(",");
             for (int i = 0; i < folders.length; i++) {
                 if (i < folders.length - 1)
-                    filter += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%'" + " OR ";
+                    filter += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%'" + " AND ";
                 else
                     filter += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%')";
             }

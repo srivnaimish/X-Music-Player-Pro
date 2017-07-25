@@ -694,8 +694,11 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     }
 
     void showMainPlayer() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0)
-            getSupportFragmentManager().popBackStackImmediate();
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            Fragment fragment= getSupportFragmentManager().findFragmentByTag("ScrollingFragment");
+            if(fragment.getView()!=null)
+            fragment.getView().setVisibility(View.GONE);
+        }
         shuffle_play.hide();
         mainPlayer.setVisibility(View.VISIBLE);
         toolbarPlayer.setVisibility(View.VISIBLE);
@@ -720,7 +723,13 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     }
 
     void hideMainPlayer() {
-        mainPlayer.startAnimation(new CustomAnimation().slide_down(MainActivity.this));
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            Fragment fragment= getSupportFragmentManager().findFragmentByTag("ScrollingFragment");
+            if(fragment.getView()!=null)
+            fragment.getView().setVisibility(View.VISIBLE);
+        }else {
+            mainPlayer.startAnimation(new CustomAnimation().slide_down(MainActivity.this));
+        }
         mainPlayer.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.VISIBLE);
         mViewPager.setVisibility(View.VISIBLE);
@@ -1031,7 +1040,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     public void switchContent(int id, Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(id, fragment);
+        ft.replace(id, fragment,"ScrollingFragment");
         ft.addToBackStack(null);
         ft.commit();
     }

@@ -106,7 +106,7 @@ public class PlaylistFragment extends Fragment {
                 scrollingFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.drawerLayout,scrollingFragment)
+                        .replace(R.id.drawerLayout,scrollingFragment,"ScrollingFragment")
                         .addToBackStack(null)
                         .commit();
 
