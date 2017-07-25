@@ -212,10 +212,64 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/setting_sleep"
+                    android:id="@+id/setting_folders"
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
                     android:layout_below="@id/setting_equalizer"
+                    android:layout_marginTop="3dp"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    card_view:cardCornerRadius="0dp"
+                    card_view:cardElevation="0dp"
+                    card_view:cardBackgroundColor="?colorPrimary"
+                    android:onClick="openFolderDialog">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:id="@+id/setting_folder"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_margin="12dp"
+                            app:srcCompat="@drawable/ic_folder"
+                            android:tint="?android:textColorTertiary"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="8dp"
+                            android:layout_toEndOf="@id/setting_folder"
+                            android:orientation="vertical">
+
+                            <com.riseapps.xmusic.widgets.MainTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Exclude Folder"
+                                android:textColor="?android:textColorPrimary"
+                                android:textSize="@dimen/size16sp" />
+
+                            <com.riseapps.xmusic.widgets.MainTextViewSub
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Set the folders you want to load songs from"
+                                android:textSize="@dimen/size14sp" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/setting_sleep"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:layout_below="@id/setting_folders"
                     android:layout_marginTop="3dp"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"

@@ -7,9 +7,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.view.PagerAdapter;
@@ -17,6 +19,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,6 +40,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AppConstants;
@@ -44,7 +52,14 @@ import com.riseapps.xmusic.billing.IabResult;
 import com.riseapps.xmusic.billing.Inventory;
 import com.riseapps.xmusic.billing.Purchase;
 import com.riseapps.xmusic.component.ThemeSelector;
+import com.riseapps.xmusic.executor.Interfaces.ClickListener;
+import com.riseapps.xmusic.executor.RecycleTouchListener;
+import com.riseapps.xmusic.executor.RecycleViewAdapters.AddPlaylistAdapter;
+import com.riseapps.xmusic.executor.RecycleViewAdapters.FoldersAdapter;
+import com.riseapps.xmusic.model.Pojo.PlaylistSelect;
+import com.riseapps.xmusic.model.Pojo.Song;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,6 +88,7 @@ public class AppSettingActivity extends AppCompatActivity {
     private HoloCircleSeekBar seekBar;
     RelativeLayout theme_dialog;
     int buttonId[] = {R.id.bt1, R.id.bt2, R.id.bt3, R.id.bt4, R.id.bt5, R.id.bt6, R.id.bt7, R.id.bt8};
+    private ArrayList<PlaylistSelect> folders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,14 +131,30 @@ public class AppSettingActivity extends AppCompatActivity {
     private void init() {
         // Toolbar
         ImageView background = (ImageView) findViewById(R.id.back);
-        if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==9) {
-            background.setImageResource(R.drawable.minions);
-        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==8){
-            background.setImageResource(R.drawable.harry_potter);
-        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==10){
-            background.setImageResource(R.drawable.iron_man);
-        }else if(new SharedPreferenceSingelton().getSavedInt(this,"Themes")==11){
-            background.setImageResource(R.drawable.deadpool);
+        if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 8) {
+            Glide
+                    .with(this)
+                    .load(R.drawable.harry_potter)
+                    .dontAnimate()
+                    .into(background);
+        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 9) {
+            Glide
+                    .with(this)
+                    .load(R.drawable.minions)
+                    .dontAnimate()
+                    .into(background);
+        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 10) {
+            Glide
+                    .with(this)
+                    .load(R.drawable.iron_man)
+                    .dontAnimate()
+                    .into(background);
+        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 11) {
+            Glide
+                    .with(this)
+                    .load(R.drawable.deadpool)
+                    .dontAnimate()
+                    .into(background);
         }
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);
@@ -264,6 +296,7 @@ public class AppSettingActivity extends AppCompatActivity {
             radioButtonGroup.check((radioButtonGroup.getChildAt(x)).getId());
         }
         Button done = (Button) dialog.findViewById(R.id.done);
+        Button cancel = (Button) dialog.findViewById(R.id.cancel);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -272,6 +305,12 @@ public class AppSettingActivity extends AppCompatActivity {
                 int idx = radioButtonGroup.indexOfChild(radioButton);
                 equalizerPresetListener.OnEqualizerPresetChanged((short) idx);
                 sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Preset", idx);
+                dialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 dialog.dismiss();
             }
         });
@@ -335,6 +374,83 @@ public class AppSettingActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    public void openFolderDialog(View view) {
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.folder_select);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.show();
+        Button done = (Button) dialog.findViewById(R.id.done);
+        Button cancel = (Button) dialog.findViewById(R.id.cancel);
+
+        RecyclerView recyclerView;
+        FoldersAdapter foldersAdapter;
+        recyclerView = (RecyclerView) dialog.findViewById(R.id.foldersList);
+
+        folders=getFolderNames();
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        foldersAdapter = new FoldersAdapter(this, folders, recyclerView);
+        recyclerView.setAdapter(foldersAdapter);
+
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String unselected="";
+                int x=0;
+                for(int i=0;i<folders.size();i++){
+                    if(!folders.get(i).isSelected()){
+                        x++;
+                        unselected+=folders.get(i).getName()+",";
+                    }
+                }
+                if(x==folders.size()){
+                    Toast.makeText(AppSettingActivity.this, "Cannot unselect All Folders", Toast.LENGTH_SHORT).show();
+                }else {
+                    sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "SkipFolders", unselected);
+                    dialog.dismiss();
+                }
+
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    public ArrayList<PlaylistSelect> getFolderNames() {
+        ArrayList<PlaylistSelect> folders=new ArrayList<>();
+        ArrayList<String> names=new ArrayList<>();
+        Cursor cursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null,null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    int lastSlash=path.lastIndexOf('/');
+                    int secondLastSlash=0;
+                    for(int i=lastSlash-1;i>=0;i--){
+                        if(path.charAt(i)=='/'){
+                            secondLastSlash=i;
+                            break;
+                        }
+                    }
+                    String folder=path.substring(secondLastSlash+1, lastSlash);
+                    if(!names.contains(folder))
+                    names.add(folder);
+            }
+            while (cursor.moveToNext());
+        }
+        for (String s:names){
+            folders.add(new PlaylistSelect(s,true));
+        }
+
+        return folders;
     }
 
     public interface EqualizerPresetListener {

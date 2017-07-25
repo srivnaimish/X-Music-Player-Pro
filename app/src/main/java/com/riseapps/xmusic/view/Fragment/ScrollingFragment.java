@@ -67,6 +67,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
 
 
     private OnFragmentInteractionListener mListener;
+    private String filter=" AND (";
 
     public ScrollingFragment() {
         // Required empty public constructor
@@ -207,6 +208,12 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                 Action.equalsIgnoreCase("Recent_Playlists")) {
             selection = multipleIDs;
         }
+
+        initiallizeMultipleNames();
+        if(filter!=null){
+            selection+=filter;
+        }
+
         return new CursorLoader(getContext(), musicUri, null, selection, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
     }
 
@@ -285,6 +292,22 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                 multipleIDs += MediaStore.Audio.Media._ID + "=" + IDs.get(i) + " OR ";
             else
                 multipleIDs += MediaStore.Audio.Media._ID + "=" + IDs.get(i);
+        }
+    }
+
+    void initiallizeMultipleNames() {
+        String names=sharedPreferenceSingelton.getSavedString(getContext(),"SkipFolders");
+        if(names!=null) {
+            String[] folders = names.split(",");
+            for (int i = 0; i < folders.length; i++) {
+                if (i < folders.length - 1)
+                    filter += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%'" + " OR ";
+                else
+                    filter += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%')";
+            }
+        }
+        else {
+            filter=null;
         }
     }
 

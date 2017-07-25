@@ -198,34 +198,33 @@
             app:layout_constraintLeft_toRightOf="@+id/minutes"
             android:layout_marginLeft="8dp"
             android:textColor="?android:textColorTertiary"/>
-            <Button
-                android:id="@+id/done"
-                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="@string/ok"
-                app:layout_constraintLeft_toLeftOf="@+id/tt1"
-                android:textColor="?android:textColorTertiary"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/minutes"
-                app:layout_constraintRight_toLeftOf="@+id/minutes"
-                android:layout_marginRight="8dp" />
 
-            <Button
-                android:id="@+id/cancel"
-                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:layout_marginTop="0dp"
-                android:text="@string/cancel"
-                app:layout_constraintTop_toTopOf="@+id/done"
-                app:layout_constraintRight_toRightOf="@+id/linearLayout5"
-                android:textColor="?android:textColorTertiary"
-                android:layout_marginRight="12dp"
-                app:layout_constraintLeft_toRightOf="@+id/minutes"
-                android:layout_marginLeft="8dp" />
+    <Button
+        android:id="@+id/done"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/ok"
+        app:layout_constraintLeft_toLeftOf="@+id/tt1"
+        app:layout_constraintRight_toLeftOf="@+id/minutes"
+        app:layout_constraintTop_toBottomOf="@+id/minutes" />
+
+    <Button
+        android:id="@+id/cancel"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="0dp"
+        android:text="@string/cancel"
+        app:layout_constraintLeft_toRightOf="@+id/minutes"
+        app:layout_constraintRight_toRightOf="@+id/linearLayout5"
+        app:layout_constraintTop_toTopOf="@+id/done" />
 
 </android.support.constraint.ConstraintLayout>

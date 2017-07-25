@@ -44,6 +44,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     SongAdapter songsAdapter;
     private static final int SONG_LOADER = 1;
     ImageView imageView;
+    private String selection="";
 
     public static SongsFragment newInstance() {
         return new SongsFragment();
@@ -109,7 +110,11 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        return new CursorLoader(getContext(),musicUri,null,null,null,MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
+        initiallizeMultipleNames();
+        if(selection!=null)
+            return new CursorLoader(getContext(),musicUri,null,selection,null,MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
+        else
+            return new CursorLoader(getContext(),musicUri,null,null,null,MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
     }
 
     @Override
@@ -137,6 +142,22 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
                 }
             }
         });
+    }
+
+    void initiallizeMultipleNames() {
+        String names=new SharedPreferenceSingelton().getSavedString(getContext(),"SkipFolders");
+        if(names!=null) {
+            String[] folders = names.split(",");
+            for (int i = 0; i < folders.length; i++) {
+                if (i < folders.length - 1)
+                    selection += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%'" + " OR ";
+                else
+                    selection += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%'";
+            }
+        }
+        else {
+            selection=null;
+        }
     }
 
 }
