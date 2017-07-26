@@ -11,6 +11,8 @@ import com.riseapps.xmusic.R;
 public class AppConstants {
     public static final String ITEM_SKU[] = {"", "", "theme_3", "theme_4", "theme_5", "theme_6", "theme_7", "theme_8"};
 
+    public static final String THEME_URL="https://xmusicplayerpro.github.io/musicplayer/themes.html";
+
     public static boolean theme3 = false;
     public static boolean theme4 = false;
     public static boolean theme5 = false;

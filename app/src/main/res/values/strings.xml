@@ -63,7 +63,7 @@
     <string name="rate_us_subHeading">Show us some love and give us 5 stars</string>
     <string name="Invalid_Time_Toast">Invalid Time</string>
     <string name="translation_help">Translation Help</string>
-    <string name="translation_help_sub">Thank you for showing interest in translation of X Music Player Pro! .\n\n If you wish to translate, drop us a mail at sriv.naimish@gmail.com to improve or add your language in our app</string>
+    <string name="translation_help_sub">Thank you for showing interest in translation of X Music Player Pro! .\n\n If you help us translate this app to another language,your name would be mentioned on the play store description as a token of appreciation.</string>
 
 
     <!--CREATE PLAYLIST DIALOG-->
@@ -109,6 +109,11 @@
     <string name="aborted">Aborted</string>
     <string name="pick_theme">Pick</string>
     <string name="movie">Movies Themes</string>
+    <string name="scroll_to_view_more">Scroll to view more</string>
+    <string name="hint_restart_app_to_reflect_changes">Hint: Restart App to reflect changes</string>
+    <string name="folders_to_scan">Folders to Scan</string>
+    <string name="exclude_folder">Exclude Folder</string>
+    <string name="set_the_folders_you_want_to_load_songs_from">Set the folders you want to load songs from</string>
     <!--AD UNIT ID'S-->
 
 

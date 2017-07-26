@@ -69,7 +69,7 @@
     <string name="help_heading">अनुवाद में हमारी सहायता करें</string>
     <string name="help_subHeading">हमें ऐप को अपनी मूल भाषा में अनुवाद करने में सहायता की आवश्यकता है</string>
     <string name="translation_help">अनुवाद सहायता</string>
-    <string name="translation_help_sub">एक्स संगीत प्लेयर प्रो के अनुवाद में रुचि दिखाने के लिए धन्यवाद! , आप अनुवाद करना चाहते हैं, तो हमें sriv.naimish@gmail.com पर एक मेल ड्रॉप में सुधार या हमारे अनुप्रयोग में अपनी भाषा जोड़ने के लिए</string>
+    <string name="translation_help_sub">एक्स संगीत प्लेयर प्रो के अनुवाद में रुचि दिखाने के लिए धन्यवाद! । यदि आप इस ऐप का किसी अन्य भाषा में अनुवाद करने में हमारी सहायता करते हैं, तो आपका नाम प्रशंसा के प्रतीक के रूप में प्ले स्टोर विवरण पर उल्लेख किया जाएगा।</string>
     <string name="action_share">এই গানটি শেয়ার করুন</string>
     <string name="select_the_newly_created_playlist">नव निर्मित प्लेलिस्ट का चयन करें</string>
     <string name="switch_betweem_the_light_and_dark_app_themes">थीम को स्विच करने के लिए ऐप पुनरारंभ होता है</string>
@@ -85,4 +85,9 @@
     <string name="buy">थीम खरीदें</string>
     <string name="pick_theme">यह चुनें</string>
     <string name="movie">मूवी थीम</string>
+    <string name="set_the_folders_you_want_to_load_songs_from">वे फ़ोल्डर सेट करें जिन्हें आप गाने से लोड करना चाहते हैं</string>
+    <string name="scroll_to_view_more">अधिक देखने के लिए स्क्रॉल करें</string>
+    <string name="hint_restart_app_to_reflect_changes">संकेत: परिवर्तनों को प्रतिबिंबित करने के लिए ऐप पुनः प्रारंभ करें</string>
+    <string name="folders_to_scan">फ़ोल्डर को स्कैन</string>
+    <string name="exclude_folder">फ़ोल्डर को छोड़ दें</string>
 </resources>

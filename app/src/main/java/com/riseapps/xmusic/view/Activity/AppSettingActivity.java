@@ -481,10 +481,14 @@ public class AppSettingActivity extends AppCompatActivity {
 
             Button button = (Button) itemView.findViewById(R.id.button);
             Button buyButton = (Button) itemView.findViewById(R.id.buttonBuy);
+            Button preview = (Button) itemView.findViewById(R.id.show);
             int x = sharedPreferenceSingelton.getSavedInt(AppSettingActivity.this, "Themes");
             if (x == position) {
                 tick.setImageResource(R.drawable.ic_check);
             }
+
+            if(position == 0)
+                preview.setVisibility(View.GONE);
 
             if ((position == 2 && !AppConstants.theme3) || (position == 3 && !AppConstants.theme4) || (position == 4 && !AppConstants.theme5) ||
                     (position == 5 && !AppConstants.theme6) || (position == 6 && !AppConstants.theme7) || (position == 7 && !AppConstants.theme8)) {
@@ -532,6 +536,34 @@ public class AppSettingActivity extends AppCompatActivity {
                             AppSettingActivity.this, MainActivity.class));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                }
+            });
+
+            preview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (position == 1) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Black"));
+                        startActivity(browserIntent);
+                    } else if (position == 2) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Walnut"));
+                        startActivity(browserIntent);
+                    } else if (position == 3) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Matterhorn"));
+                        startActivity(browserIntent);
+                    } else if (position == 4) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Orchid"));
+                        startActivity(browserIntent);
+                    } else if (position == 5) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#bluewood"));
+                        startActivity(browserIntent);
+                    } else if (position == 6) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Lockmara"));
+                        startActivity(browserIntent);
+                    } else if (position == 7) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Karry"));
+                        startActivity(browserIntent);
+                    }
                 }
             });
 

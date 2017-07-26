@@ -32,11 +32,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginEnd="18dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="30dp"
         android:text="@string/translation_help_sub"
         android:textAlignment="center"
-        android:textSize="@dimen/size15sp" />
+        android:textSize="@dimen/size15sp"
+        android:id="@+id/mainTextView" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        >
+        <com.riseapps.xmusic.widgets.MainTextViewSub
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact : " />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sriv.naimish@gmail.com"
+            android:autoLink="email"/>
+    </LinearLayout>
+
 </RelativeLayout>
