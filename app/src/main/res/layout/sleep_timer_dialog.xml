@@ -208,7 +208,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
-        android:text="@string/ok"
+        android:text="@android:string/ok"
         app:layout_constraintLeft_toLeftOf="@+id/tt1"
         app:layout_constraintRight_toLeftOf="@+id/minutes"
         app:layout_constraintTop_toBottomOf="@+id/minutes" />
@@ -222,7 +222,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="0dp"
-        android:text="@string/cancel"
+        android:text="@android:string/cancel"
         app:layout_constraintLeft_toRightOf="@+id/minutes"
         app:layout_constraintRight_toRightOf="@+id/linearLayout5"
         app:layout_constraintTop_toTopOf="@+id/done" />

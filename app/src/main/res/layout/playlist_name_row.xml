@@ -30,7 +30,7 @@
             android:layout_marginStart="20dp">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageView1"
                 android:layout_width="@dimen/size40dp"
                 android:layout_height="@dimen/size40dp"
                 android:layout_gravity="center_vertical"

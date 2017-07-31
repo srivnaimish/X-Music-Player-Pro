@@ -23,8 +23,6 @@ import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 
-import java.util.List;
-
 public class AlbumsAdapter extends RecyclerView.Adapter {
 
     Context c;
@@ -107,7 +105,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
         AlbumViewHolder(final View view, Context context) {
             super(view);
             this.ctx = context;
-            imageView = (ImageView) view.findViewById(R.id.imageView);
+            imageView = (ImageView) view.findViewById(R.id.imageView1);
             name = (TextView) view.findViewById(R.id.name);
             cardView= (CardView) view.findViewById(R.id.grid_card);
             cardView.setOnClickListener(this);

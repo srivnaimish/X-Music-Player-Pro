@@ -1,20 +1,15 @@
 package com.riseapps.xmusic.executor.RecycleViewAdapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
-import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.model.Pojo.Playlist;
 
 import java.util.List;
@@ -82,7 +77,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
         PlaylistViewHolder(View v, Context context) {
             super(v);
             this.ctx = context;
-            imageView= (ImageView) v.findViewById(R.id.imageView);
+            imageView= (ImageView) v.findViewById(R.id.imageView1);
             name= (TextView) v.findViewById(R.id.name);
             delete= (ImageView) v.findViewById(R.id.delete);
         }

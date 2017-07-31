@@ -34,7 +34,6 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.NestedFragmentAdapter;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.utils.GridItemDecoration;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 import com.riseapps.xmusic.widgets.MainTextView;
 import com.riseapps.xmusic.widgets.MainTextViewSub;
@@ -89,7 +88,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_scrolling, container, false);
-        imageView = (ImageView) rootView.findViewById(R.id.imageView);
+        imageView = (ImageView) rootView.findViewById(R.id.imageView1);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         ImageView circleAlbumArt = (ImageView) rootView.findViewById(R.id.album_art);
         name = (MainTextViewSub) rootView.findViewById(R.id.type_name);

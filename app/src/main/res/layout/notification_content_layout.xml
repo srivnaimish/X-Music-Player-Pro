@@ -7,7 +7,7 @@
     android:background="@color/whitePrimary">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageView1"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_alignParentEnd="true"
@@ -15,8 +15,8 @@
         android:layout_marginBottom="2dp"
         android:layout_marginEnd="2dp"
         android:layout_marginTop="2dp"
-        android:background="#e0e0e0"
         android:src="@drawable/ic_splash"
+        android:background="@color/colorAccent"
         android:scaleType="centerCrop" />
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="4dp"
-        android:layout_toStartOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView1"
         android:ellipsize="marquee"
         android:fadingEdge="horizontal"
         android:fontFamily="sans-serif"
@@ -44,7 +44,7 @@
         android:layout_below="@+id/track"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="10dp"
-        android:layout_toStartOf="@+id/imageView">
+        android:layout_toStartOf="@+id/imageView1">
 
         <ImageButton
             android:id="@+id/prev"

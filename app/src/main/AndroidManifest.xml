@@ -35,10 +35,11 @@
 
         <activity
             android:name=".view.Activity.Walkthrough"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".view.Activity.MainActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
 
         <service
@@ -47,10 +48,10 @@
 
         <activity
             android:name=".view.Activity.SelectPlaylistActivity"
-            />
-
-        <activity android:name=".view.Activity.AppSettingActivity"/>
-
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.Activity.AppSettingActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

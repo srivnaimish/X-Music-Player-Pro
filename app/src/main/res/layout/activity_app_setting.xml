@@ -157,7 +157,7 @@
 
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView
+               <!-- <android.support.v7.widget.CardView
                     android:id="@+id/setting_equalizer"
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
@@ -209,13 +209,13 @@
 
                     </RelativeLayout>
 
-                </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>-->
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/setting_folders"
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
-                    android:layout_below="@id/setting_equalizer"
+                    android:layout_below="@id/setting_theme"
                     android:layout_marginTop="3dp"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"

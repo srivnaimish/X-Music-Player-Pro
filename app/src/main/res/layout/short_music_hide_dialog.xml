@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="@dimen/size20dp"
-        android:text="@string/ok"
+        android:text="@android:string/ok"
         app:layout_constraintLeft_toLeftOf="@+id/seekBar"
         app:layout_constraintTop_toBottomOf="@+id/seekBar"
         android:textSize="@dimen/size16sp"/>
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:layout_marginTop="0dp"
-        android:text="@string/cancel"
+        android:text="@android:string/cancel"
         app:layout_constraintRight_toRightOf="@+id/seekBar"
         app:layout_constraintTop_toTopOf="@+id/done"
         android:textSize="@dimen/size16sp"/>

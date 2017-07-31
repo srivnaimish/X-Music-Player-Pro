@@ -18,6 +18,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,6 +27,7 @@ import com.riseapps.xmusic.executor.GenerateNotification;
 import com.riseapps.xmusic.executor.RecentQueue;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.view.Activity.AppSettingActivity;
+import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ public class MusicService extends Service implements
     public Equalizer equalizer;
     public HeadsetPlugReceiver headsetPlugReceiver;
     public ArrayList<Song> songs;
-    public ArrayList<Integer> shufflePlayed=new ArrayList<>();
+    public ArrayList<Integer> shufflePlayed = new ArrayList<>();
     AudioManager audioManager;
     private int songPos;
 
@@ -64,7 +66,7 @@ public class MusicService extends Service implements
     public TextView mTotalDuration;
     private int mInterval = 1000;
     private static final int NOTIFICATION_ID = 1;
-    ArrayList<Long> ids=new ArrayList<>();
+    ArrayList<Long> ids = new ArrayList<>();
     public long currSongID;
 
     public void onCreate() {
@@ -192,11 +194,7 @@ public class MusicService extends Service implements
     @Override
     public void onAudioFocusChange(int focusChange) {
         if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-            if(player.isPlaying()){
-                togglePlay();
-            }
-        } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-            if (!player.isPlaying()) {
+            if (player.isPlaying()) {
                 togglePlay();
             }
         }
@@ -243,7 +241,7 @@ public class MusicService extends Service implements
 
     public void setSong(int songIndex) {
         if (sharedPreferenceSingelton.getSavedBoolean(this, "Shuffle")) {
-            if(shufflePlayed.size()==songs.size()){
+            if (shufflePlayed.size() == songs.size()) {
                 shufflePlayed.clear();
             }
             while (true) {
@@ -264,20 +262,23 @@ public class MusicService extends Service implements
         }
 
         songPos = songIndex;
-        int x = sharedPreferenceSingelton.getSavedInt(this, "Preset");
         equalizer = new Equalizer(0, player.getAudioSessionId());
-        equalizer.setEnabled(true);
-        if (equalizer.getNumberOfPresets() > 0)
-            equalizer.usePreset((short) x);
-
-        AppSettingActivity.setEqualizerPresetListener(new AppSettingActivity.EqualizerPresetListener() {
-            @Override
-            public void OnEqualizerPresetChanged(short value) {
-                equalizer = new Equalizer(0, player.getAudioSessionId());
-                equalizer.setEnabled(true);
-                equalizer.usePreset(value);
+        if (sharedPreferenceSingelton.getSavedBoolean(this, "Equalizer_Switch")) {
+            equalizer.setEnabled(true);
+            int presetNumber = sharedPreferenceSingelton.getSavedInt(this, "Preset");
+            if (presetNumber != 0)
+                equalizer.usePreset((short) (presetNumber - 1));
+            else{
+                final short lowerEqualizerBandLevel = equalizer.getBandLevelRange()[0];
+                String savedSeekBarProgress=sharedPreferenceSingelton.getSavedString(this,"SeekBarPositions");
+                String progress[]=savedSeekBarProgress.split(" ");
+                for(short i=0;i<5;i++) {
+                    equalizer.setBandLevel(i, (short) (Integer.parseInt(progress[i]) + lowerEqualizerBandLevel));
+                }
             }
-        });
+
+        }
+
         playerState = STOPPED;
         onSongChangedListener.onSongChanged(songs.get(songPos));
     }
@@ -323,24 +324,23 @@ public class MusicService extends Service implements
             player.prepareAsync();
             mProgressRunner.run();
             onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
-            String s=sharedPreferenceSingelton.getSavedString(this,"Recent");
-            if(s==null){
-                ids=new RecentQueue().pushPop(ids,currSongID);
+            String s = sharedPreferenceSingelton.getSavedString(this, "Recent");
+            if (s == null) {
+                ids = new RecentQueue().pushPop(ids, currSongID);
                 Gson gson = new Gson();
                 Type type = new TypeToken<ArrayList<Long>>() {
                 }.getType();
                 String recentJSON = gson.toJson(ids, type);
-                sharedPreferenceSingelton.saveAs(this,"Recent",recentJSON);
-            }
-            else
-            {
-                ids = new Gson().fromJson(s, new TypeToken<ArrayList<Long>>() {}.getType());
-                ids=new RecentQueue().pushPop(ids,currSongID);
+                sharedPreferenceSingelton.saveAs(this, "Recent", recentJSON);
+            } else {
+                ids = new Gson().fromJson(s, new TypeToken<ArrayList<Long>>() {
+                }.getType());
+                ids = new RecentQueue().pushPop(ids, currSongID);
                 Gson gson = new Gson();
                 Type type = new TypeToken<ArrayList<Long>>() {
                 }.getType();
                 String recentJSON = gson.toJson(ids, type);
-                sharedPreferenceSingelton.saveAs(this,"Recent",recentJSON);
+                sharedPreferenceSingelton.saveAs(this, "Recent", recentJSON);
             }
 
         } catch (Exception e) {

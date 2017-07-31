@@ -153,7 +153,7 @@
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimaryDark">@color/colorWhite</item>
         <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="android:statusBarColor">@color/colorAccent</item>
     </style>
 </resources>

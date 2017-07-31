@@ -75,13 +75,9 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
                     dialog.setContentView(R.layout.empty_state_dialog);
                     dialog.show();
                 }
-
-
             }
         });
-
         checkPermission();
-
 
     }
 
@@ -205,7 +201,7 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
                 } else {
                     Snackbar.make(viewPager, R.string.permission_rationale,
                             Snackbar.LENGTH_INDEFINITE)
-                            .setAction(R.string.ok, new View.OnClickListener() {
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     ActivityCompat.requestPermissions(Walkthrough.this,

@@ -78,7 +78,7 @@ public class AppSettingActivity extends AppCompatActivity {
 
     private Dialog dialog;
     private EditText min;
-    private static EqualizerPresetListener equalizerPresetListener;
+    //private static EqualizerPresetListener equalizerPresetListener;
     private RadioGroup radioButtonGroup;
     SharedPreferenceSingelton sharedPreferenceSingelton;
     CoordinatorLayout back;
@@ -187,7 +187,11 @@ public class AppSettingActivity extends AppCompatActivity {
         viewpager.addOnPageChangeListener(viewPagerPageChangeListener);
         MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
         viewpager.setAdapter(myViewPagerAdapter);
+        try{
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        }catch (NullPointerException e){}
         dialog.show();
+
     }
 
     public void changeMovieTheme(View v) {
@@ -222,13 +226,21 @@ public class AppSettingActivity extends AppCompatActivity {
         dialog.findViewById(R.id.minions).setOnClickListener(clickListener);
         dialog.findViewById(R.id.iron).setOnClickListener(clickListener);
         dialog.findViewById(R.id.deadpool).setOnClickListener(clickListener);
+        try{
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        }catch (NullPointerException e){}
         dialog.show();
+
     }
 
     public void openSleepDialog(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.sleep_timer_dialog);
+        try{
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        }catch (NullPointerException e){}
         dialog.show();
+
         final CardView fifteen = (CardView) dialog.findViewById(R.id.fifteen);
         final CardView thirty = (CardView) dialog.findViewById(R.id.thirty);
         final CardView fortyfive = (CardView) dialog.findViewById(R.id.fortyfive);
@@ -285,38 +297,6 @@ public class AppSettingActivity extends AppCompatActivity {
         dialog.dismiss();
     }
 
-    public void openEqualizerDialog(View v) {
-        dialog = new Dialog(this);
-        dialog.setContentView(R.layout.equalizer_dialog);
-        dialog.show();
-        radioButtonGroup = (RadioGroup) dialog.findViewById(R.id.radio_group);
-
-        int x = sharedPreferenceSingelton.getSavedInt(AppSettingActivity.this, "Preset");
-        if (x != 0) {
-            radioButtonGroup.check((radioButtonGroup.getChildAt(x)).getId());
-        }
-        Button done = (Button) dialog.findViewById(R.id.done);
-        Button cancel = (Button) dialog.findViewById(R.id.cancel);
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
-                View radioButton = radioButtonGroup.findViewById(radioButtonID);
-                int idx = radioButtonGroup.indexOfChild(radioButton);
-                equalizerPresetListener.OnEqualizerPresetChanged((short) idx);
-                sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Preset", idx);
-                dialog.dismiss();
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-    }
-
     public void shareAppLink(View v) {
         String message = "https://play.google.com/store/apps/details?id=com.riseapps.xmusic";
         Intent share = new Intent(Intent.ACTION_SEND);
@@ -337,13 +317,23 @@ public class AppSettingActivity extends AppCompatActivity {
     public void helpUsTranslate(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.translation);
+        try{
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        }catch (NullPointerException e){}
         dialog.show();
+
     }
 
     public void hide_short(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.short_music_hide_dialog);
+        try{
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        }catch (NullPointerException e){
+            Log.d("NullPointer","yes");
+        }
         dialog.show();
+
         Button done = (Button) dialog.findViewById(R.id.done);
         Button cancel = (Button) dialog.findViewById(R.id.cancel);
         seekBar = (HoloCircleSeekBar) dialog.findViewById(R.id.seekBar);
@@ -381,7 +371,11 @@ public class AppSettingActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.folder_select);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        try{
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        }catch (NullPointerException e){}
         dialog.show();
+
         Button done = (Button) dialog.findViewById(R.id.done);
         Button cancel = (Button) dialog.findViewById(R.id.cancel);
 
@@ -453,14 +447,14 @@ public class AppSettingActivity extends AppCompatActivity {
         return folders;
     }
 
-    public interface EqualizerPresetListener {
+    /*public interface EqualizerPresetListener {
         void OnEqualizerPresetChanged(short value);
     }
-
-    public static void setEqualizerPresetListener(EqualizerPresetListener listener) {   // Sets a callback to execute when we switch songs.. ie: update UI
+*/
+  /*  public static void setEqualizerPresetListener(EqualizerPresetListener listener) {   // Sets a callback to execute when we switch songs.. ie: update UI
         equalizerPresetListener = listener;
     }
-
+*/
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
 

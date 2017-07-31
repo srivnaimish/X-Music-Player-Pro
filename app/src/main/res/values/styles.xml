@@ -154,11 +154,11 @@
         <item name="iconDual">@color/whitePrimary</item>
     </style>
 
-
-    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/colorAccent</item>
-        <item name="colorControlActivated">@color/colorAccentDark</item>
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
     </style>
+
     <style name="ToolbarTheme" parent="AppTheme">
 
     </style>

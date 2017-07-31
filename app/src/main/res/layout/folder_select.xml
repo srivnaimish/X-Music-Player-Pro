@@ -54,7 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:text="@string/ok" />
+            android:text="@android:string/ok" />
 
         <Button
             android:id="@+id/cancel"
@@ -62,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:text="@string/cancel" />
+            android:text="@android:string/cancel" />
     </LinearLayout>
     <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/hint"
@@ -73,7 +73,7 @@
         android:textColor="?android:textColorTertiary"
         android:layout_marginBottom="10dp"
         android:layout_above="@+id/hint2"
-        android:textSize="12sp"/>
+        android:textSize="@dimen/size12sp"/>
     <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/hint2"
         android:layout_width="wrap_content"
@@ -83,6 +83,7 @@
         android:layout_marginBottom="10dp"
         android:layout_above="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
+        android:textSize="@dimen/size12sp"
         />
 
 </RelativeLayout>

@@ -17,6 +17,14 @@
         />
 
     <item
+        android:id="@+id/equalizer"
+        android:title="@string/equalizer_heading"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:icon="@drawable/ic_equaliser"
+        app:showAsAction="always"
+        />
+
+    <item
         android:id="@+id/share"
         android:title="@string/action_share"
         xmlns:app="http://schemas.android.com/apk/res-auto"

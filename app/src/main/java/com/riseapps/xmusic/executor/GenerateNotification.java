@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.NotificationTarget;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.MusicService;
@@ -71,14 +72,13 @@ public class GenerateNotification {
         mBuilder.setCustomBigContentView(expandedView);
 
         Notification notification=mBuilder.build();
-        if(!song.getImagepath().equalsIgnoreCase("no_image")) {
             Glide.with(context.getApplicationContext()) // safer!
                     .load(Uri.parse(song.getImagepath()))
                     .asBitmap()
                     .into(new NotificationTarget(
                             context,
                             contentView,
-                            R.id.imageView,
+                            R.id.imageView1,
                             notification,
                             NOTIFICATION_ID));
             Glide.with(context.getApplicationContext()) // safer!
@@ -87,49 +87,10 @@ public class GenerateNotification {
                     .into(new NotificationTarget(
                             context,
                             expandedView,
-                            R.id.imageView,
-                            notification,
-                            NOTIFICATION_ID));
-            Glide.with(context.getApplicationContext()) // safer!
-                    .load(Uri.parse(song.getImagepath()))
-                    .asBitmap()
-                    .into(new NotificationTarget(
-                            context,
-                            expandedView,
-                            R.id.notification_background,
-                            notification,
-                            NOTIFICATION_ID));
-        }
-        else {
-            Glide.with(context.getApplicationContext()) // safer!
-                    .load(R.drawable.ic_splash)
-                    .asBitmap()
-                    .into(new NotificationTarget(
-                            context,
-                            contentView,
-                            R.id.imageView,
-                            notification,
-                            NOTIFICATION_ID));
-            Glide.with(context.getApplicationContext()) // safer!
-                    .load(R.drawable.ic_splash)
-                    .asBitmap()
-                    .into(new NotificationTarget(
-                            context,
-                            expandedView,
-                            R.id.imageView,
-                            notification,
-                            NOTIFICATION_ID));
-            Glide.with(context.getApplicationContext()) // safer!
-                    .load(R.drawable.ic_splash)
-                    .asBitmap()
-                    .into(new NotificationTarget(
-                            context,
-                            expandedView,
-                            R.id.notification_background,
+                            R.id.imageView1,
                             notification,
                             NOTIFICATION_ID));
 
-        }
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
       //  return notification;
@@ -146,7 +107,7 @@ public class GenerateNotification {
         contentView.setImageViewResource(R.id.prev,R.drawable.ic_notification_left);
         contentView.setImageViewResource(R.id.next,R.drawable.ic_notification_right);
         if(song.getImagepath().equalsIgnoreCase("no_image"))
-            contentView.setImageViewResource(R.id.imageView,R.drawable.empty);
+            contentView.setImageViewResource(R.id.imageView1,R.drawable.empty);
 
         contentView.setOnClickPendingIntent(R.id.play_pause,pendingPlayIntent);
         contentView.setOnClickPendingIntent(R.id.next,pendingNextIntent);
@@ -167,7 +128,7 @@ public class GenerateNotification {
         expandedView.setImageViewResource(R.id.next,R.drawable.ic_notification_right);
 
         if(song.getImagepath().equalsIgnoreCase("no_image"))
-            expandedView.setImageViewResource(R.id.imageView,R.drawable.empty);
+            expandedView.setImageViewResource(R.id.imageView1,R.drawable.empty);
 
         expandedView.setOnClickPendingIntent(R.id.play_pause,pendingPlayIntent);
         expandedView.setOnClickPendingIntent(R.id.next,pendingNextIntent);

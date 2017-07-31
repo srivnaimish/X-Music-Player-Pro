@@ -71,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="@string/ok"
+            android:text="@android:string/ok"
             android:textSize="@dimen/size16sp"/>
 
         <Button
@@ -80,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="@string/cancel"
+            android:text="@android:string/cancel"
             android:textSize="@dimen/size16sp"/>/>
     </LinearLayout>
 

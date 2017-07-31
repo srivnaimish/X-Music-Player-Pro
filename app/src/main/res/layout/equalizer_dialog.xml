@@ -2,164 +2,227 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/size250dp"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?colorPrimary">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll"
+
+    <com.riseapps.xmusic.widgets.MainTextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/size16dp">
-        <ImageView
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_equalizer"
-            android:background="@null" />
-        <com.riseapps.xmusic.widgets.MainTextView
-            android:id="@+id/dialog_placeholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_a_preset"
-            android:textSize="@dimen/size16sp"
-            android:layout_marginStart="8dp"
-            android:textColor="?android:textColorTertiary"
-            android:layout_gravity="center_vertical"
-            />
-    </LinearLayout>
-
-    <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/equalizer_heading"
+        android:textColor="?android:textColorTertiary"
+        android:textSize="@dimen/size20sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll">
-
-        <RadioButton
-            android:id="@+id/normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:checked="true"
-            android:text="@string/normal_preset"
-            android:textSize="@dimen/size15sp"
-            android:textColor="?android:textColorTertiary"/>
-
-        <RadioButton
-            android:id="@+id/classical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:text="@string/classical_preset"
-            android:textSize="@dimen/size15sp"
-            android:textColor="?android:textColorTertiary"/>
-
-        <RadioButton
-            android:id="@+id/dance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dance_preset"
-            android:textSize="@dimen/size15sp"
-            android:textColor="?android:textColorTertiary"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:text="@string/flat_preset"
-            android:textSize="@dimen/size15sp"
-            android:textColor="?android:textColorTertiary"/>
-
-        <RadioButton
-            android:id="@+id/folk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/folk_preset"
-            android:textSize="@dimen/size15sp"
-            android:textColor="?android:textColorTertiary"/>
-
-        <RadioButton
-            android:id="@+id/heavy_metal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:text="@string/heavy_metal_preset"
-            android:textSize="@dimen/size15sp"
-            android:textColor="?android:textColorTertiary"/>
-
-        <RadioButton
-            android:id="@+id/hip_hop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/hip_hop_preset"
-            android:textSize="@dimen/size14sp"
-            android:textColor="?android:textColorTertiary"/>
-
-        <RadioButton
-            android:id="@+id/jazz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:text="@string/jazz_preset"
-            android:textSize="@dimen/size15sp"
-            android:textColor="?android:textColorTertiary"/>
-
-        <RadioButton
-            android:id="@+id/pop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pop_preset"
-            android:textSize="@dimen/size15sp"
-            android:textColor="?android:textColorTertiary"/>
-
-        <RadioButton
-            android:id="@+id/rock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:text="@string/rock_preset"
-            android:textSize="@dimen/size15sp"
-            android:textColor="?android:textColorTertiary"
-            />
-    </RadioGroup>
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="25dp" />
 
     <LinearLayout
+        android:id="@+id/seekBarLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/level0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size12sp" />
+
+            <com.riseapps.xmusic.widgets.SeekBarRotator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <SeekBar
+                    android:id="@+id/seekBar0"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:thumb="@drawable/thumb" />
+            </com.riseapps.xmusic.widgets.SeekBarRotator>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size16dp"
+            android:orientation="vertical">
+
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/level1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/size12sp" />
+
+            <com.riseapps.xmusic.widgets.SeekBarRotator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <SeekBar
+                    android:id="@+id/seekBar1"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:thumb="@drawable/thumb" />
+            </com.riseapps.xmusic.widgets.SeekBarRotator>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size16dp"
+            android:orientation="vertical">
+
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/level2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/size12sp" />
+
+            <com.riseapps.xmusic.widgets.SeekBarRotator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <SeekBar
+                    android:id="@+id/seekBar2"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:thumb="@drawable/thumb" />
+            </com.riseapps.xmusic.widgets.SeekBarRotator>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size16dp"
+            android:orientation="vertical">
+
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/level3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/size12sp" />
+
+            <com.riseapps.xmusic.widgets.SeekBarRotator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <SeekBar
+                    android:id="@+id/seekBar3"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:thumb="@drawable/thumb" />
+            </com.riseapps.xmusic.widgets.SeekBarRotator>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size16dp"
+            android:orientation="vertical">
+
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/level4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/size12sp" />
+
+            <com.riseapps.xmusic.widgets.SeekBarRotator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <SeekBar
+                    android:id="@+id/seekBar4"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:thumb="@drawable/thumb" />
+            </com.riseapps.xmusic.widgets.SeekBarRotator>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <Spinner
+        android:id="@+id/spinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:weightSum="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+
+    <Button
+        android:id="@+id/done"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="@+id/spinner"
+        android:layout_marginTop="0dp" />
+
+    <com.riseapps.xmusic.widgets.MainTextViewSub
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/equalizer_hint"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="@dimen/size12sp"
+        android:textColor="?android:textColorTertiary"/>
+
+    <com.riseapps.xmusic.widgets.MainTextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_a_preset"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/radio_group">
+        app:layout_constraintTop_toBottomOf="@+id/seekBarLayout"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/spinner"
+        android:textSize="@dimen/size13sp"
+        android:textColor="?android:textColorTertiary"/>
 
-        <Button
-            android:id="@+id/done"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:text="@string/ok" />
-
-        <Button
-            android:id="@+id/cancel"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:text="@string/cancel" />
-    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
