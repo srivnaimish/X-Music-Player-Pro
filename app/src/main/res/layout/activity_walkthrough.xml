@@ -40,6 +40,27 @@
             android:layout_height="7dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/walkthrough_unselected" />
+
+        <Button
+            android:id="@+id/bt4"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/walkthrough_unselected" />
+
+        <Button
+            android:id="@+id/bt5"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/walkthrough_unselected" />
+
+        <Button
+            android:id="@+id/bt6"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/walkthrough_unselected" />
     </LinearLayout>
 
 

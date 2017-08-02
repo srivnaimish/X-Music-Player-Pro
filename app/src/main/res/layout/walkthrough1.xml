@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="@string/fragment1_heading"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="@color/colorPrimaryFontDark"
             android:textSize="@dimen/size23sp"
             android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
             android:paddingRight="20dp"
             android:text="@string/fragment1_subHeading"
             android:textAlignment="center"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorPrimaryFontDark"
             android:textSize="@dimen/size15sp" />
 
     </LinearLayout>

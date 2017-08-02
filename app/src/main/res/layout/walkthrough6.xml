@@ -15,13 +15,14 @@
         <ImageView
             android:layout_width="@dimen/size100dp"
             android:layout_height="@dimen/size100dp"
-            app:srcCompat="@drawable/ic_sleep_timer"/>
+            app:srcCompat="@drawable/ic_folder"
+            android:tint="@color/colorAccentDark"/>
 
         <com.riseapps.xmusic.widgets.MainTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/fragment3_heading"
+            android:text="@string/exclude_folder"
             android:textColor="@color/colorPrimaryFontDark"
             android:textSize="@dimen/size23sp"
             android:textStyle="bold" />
@@ -32,7 +33,7 @@
             android:layout_marginTop="5dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="@string/fragment3_subHeading"
+            android:text="@string/set_the_folders_you_want_to_load_songs_from"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryFontDark"
             android:textSize="@dimen/size15sp" />

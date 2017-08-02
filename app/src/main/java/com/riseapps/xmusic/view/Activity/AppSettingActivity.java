@@ -87,7 +87,7 @@ public class AppSettingActivity extends AppCompatActivity {
     private int previous_set;
     private HoloCircleSeekBar seekBar;
     RelativeLayout theme_dialog;
-    int buttonId[] = {R.id.bt1, R.id.bt2, R.id.bt3, R.id.bt4, R.id.bt5, R.id.bt6, R.id.bt7, R.id.bt8};
+
     private ArrayList<PlaylistSelect> folders;
 
     @Override
@@ -447,14 +447,6 @@ public class AppSettingActivity extends AppCompatActivity {
         return folders;
     }
 
-    /*public interface EqualizerPresetListener {
-        void OnEqualizerPresetChanged(short value);
-    }
-*/
-  /*  public static void setEqualizerPresetListener(EqualizerPresetListener listener) {   // Sets a callback to execute when we switch songs.. ie: update UI
-        equalizerPresetListener = listener;
-    }
-*/
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
 
@@ -589,9 +581,9 @@ public class AppSettingActivity extends AppCompatActivity {
         @Override
         public void onPageSelected(int position) {
             for (int i = 0; i < AppConstants.backgroundColors.length; i++) {
-                dialog.findViewById(buttonId[i]).setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
+                dialog.findViewById(AppConstants.buttonId[i]).setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
             }
-            dialog.findViewById(buttonId[position]).setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
+            dialog.findViewById(AppConstants.buttonId[position]).setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
         }
 
         @Override

@@ -71,4 +71,8 @@
     <string name="set_the_folders_you_want_to_load_songs_from">আপনি থেকে গান লোড করতে চান ফোল্ডার সেট করুন</string>
     <string name="select_a_preset">একটি প্রিসেট নির্বাচন করুন:</string>
     <string name="save">রক্ষা</string>
+    <string name="equalizer_hint">ইঙ্গিত: যদি আপনি সমতুল্য প্রিসেট সংরক্ষণ করতে চান তাহলে সংরক্ষণ করুন প্রেস করুন</string>
+    <string name="beautiful_themes">সুন্দর থিমগুলি</string>
+    <string name="play_song_directly_from_search_results">অনুসন্ধান ফলাফল থেকে সরাসরি গান প্লে করুন</string>
+    <string name="select_from_multiple_color_amp_movie_themes">একাধিক রঙ ও চলচ্চিত্র থিম থেকে নির্বাচন করুন</string>
 </resources>

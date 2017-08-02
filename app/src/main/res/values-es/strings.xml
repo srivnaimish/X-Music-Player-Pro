@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<resources>
+    <!--WALKTHROUGH-->
+    <string name="fragment1_heading">Buscar en YouTube</string>
+    <string name="fragment1_subHeading">Busca la canción que estás escuchando, directamente desde YouTube</string>
+    <string name="fragment2_heading">Mejora la música</string>
+    <string name="fragment2_subHeading">Activar ecualizador</string>
+    <string name="fragment3_heading">Temporizador</string>
+    <string name="fragment3_subHeading">Ajuste un temporizador para detener la música después de algún tiempo a través de Configuración</string>
+    <string name="permission_rationale">La aplicación no podrá recuperar sus canciones ... Por favor, conceda el permiso</string>
+    <string name="start_now">EMPEZAR AHORA</string>
+    <!-- MENU ITEMS -->
+    <string name="action_favourites">Favoritos</string>
+    <string name="action_playlist">Añadir a la lista de reproducción</string>
+    <string name="action_youtube">Buscar la canción en YouTube</string>
+    <string name="action_search">Buscar una canción</string>
+    <!--MAINACTIVITY-->
+    <string name="TAB1">Lista de reproducción</string>
+    <string name="TAB2">Álbumes</string>
+    <string name="TAB3">Artistas</string>
+    <string name="TAB4">Pistas</string>
+    <string name="now_playing">Reproduciendo</string>
+    <string name="song_repeat_off_toast">Repetición de canción desactivada</string>
+    <string name="song_repeat_on_toast">Repetición de canción activada</string>
+    <string name="opening_youtube">Abrir YouTube</string>
+    <string name="song_added_to_playlist">Canción añadida a la lista de reproducción</string>
+    <!--PLAYLIST SELECT ACTIVITY-->
+    <string name="playlist_screen_placeholder">Puedes agregar MULTIPLES listas de reproducción en una sola.</string>
+    <string name="did_not_select">¡No has seleccionado ninguna lista de reproducción para tu canción!</string>
+    <string name="select_atleast_one">Debes seleccionar al menos una lista de reproducción</string>
+    <string name="created">Creado</string>
+    <!--EXTRAS-->
+    <string name="play_all">Escuchar Todo</string>
+    <string name="shuffle">Aleatorio</string>
+    <string name="empty_state_message">Lo sentimos... ¡No encontramos canciones!</string>
+    <string name="swipe_right_or_left_to_change_the_song">Desliza  Derecha/Izquierda o Doble Toque para Álbum de Arte</string>
+    <string name="playing_all">Reproduciendo todas las canciones de</string>
+    <!--SETTINGS-->
+    <string name="settings_title">Ajustes de Aplicación</string>
+    <string name="equalizer_heading">Ecualizador</string>
+    <string name="sleep_timer_heading">Tiempo de Dormir</string>
+    <string name="sleep_timer_subHeading">Apague el reproductor de música automáticamente.</string>
+    <string name="help_heading">Ayúdanos a Traducir</string>
+    <string name="help_subHeading">Necesitamos ayuda para traducir la aplicación a tu idioma nativo</string>
+    <string name="share_app">Compartir Aplicación</string>
+    <string name="recomment_it_to_others">Recomiéndalo a otros</string>
+    <string name="rate_us_heading">¡Califícanos en Play Store!</string>
+    <string name="rate_us_subHeading">Muéstranos un poco de amor y danos 5 estrellas</string>
+    <string name="Invalid_Time_Toast">Tiempo Invalido</string>
+    <string name="translation_help">Ayuda de traducción</string>
+    <string name="translation_help_sub">¡Gracias por mostrar interés en la traducción de X Music Player Pro! .\n\nSi nos ayudas a traducir esta aplicación a otro idioma, tu nombre será mencionado en la descripción de la tienda de juegos como una muestra de agradecimiento.</string>
+    <!--CREATE PLAYLIST DIALOG-->
+    <string name="create_a_new_playlist">Crear Nueva Lista de Reproducción</string>
+    <string name="name">Nombre...</string>
+    <!--SLEEP TIME DIALOG-->
+    <string name="stop_music_after">Detener Música</string>
+    <string name="minutes">Minutos</string>
+    <string name="action_share">Compartir está Canción</string>
+    <string name="theme">Tema de Color</string>
+    <string name="switch_betweem_the_light_and_dark_app_themes">La aplicación necesita reiniciarse para aplicar el tema</string>
+    <string name="app_walk1">Temporizador de suspensión, Temas de película, Saltar carpetas, Temas de color</string>
+    <string name="app_walk2">Toque en Mini Player para abrir el reproductor principal</string>
+    <string name="app_walk3">¿Quieres buscar esta canción en YouTube?</string>
+    <string name="delete_these_songs">¿Eliminar estás canciones?</string>
+    <string name="delete_warning">Esta operación borrará las canciones seleccionadas del dispositivo también</string>
+    <string name="empty_state_playlist_message">No has creado ninguna lista de reproducción</string>
+    <string name="hide_music">Establecer duración mínima para la Exploración de Música</string>
+    <string name="custom_time">Hora Personalizada</string>
+    <string name="pick_time">Escoger Hora</string>
+    <string name="buy">Comprar Tema</string>
+    <string name="thanks">Gracias por la compra</string>
+    <string name="aborted">Abortado</string>
+    <string name="pick_theme">Escoger</string>
+    <string name="movie">Tema de Películas</string>
+    <string name="scroll_to_view_more">Desplace para ver más</string>
+    <string name="hint_restart_app_to_reflect_changes">Sugerencia: reinicie la aplicación para aplicar los cambios</string>
+    <string name="folders_to_scan">Seleccione carpetas para escanear</string>
+    <string name="exclude_folder">Excluir carpeta</string>
+    <string name="set_the_folders_you_want_to_load_songs_from">Establezca las carpetas que desea cargar canciones</string>
+    <string name="save">Guardar</string>
+    <string name="equalizer_hint">Sugerencia: presione Guardar si desea guardar la presintonia del ecualizador</string>
+    <string name="select_a_preset">Seleccionar Presintonia:</string>
+    <string name="beautiful_themes">Hermosos Temas</string>
+    <string name="select_from_multiple_color_amp_movie_themes"><![CDATA[Selecciona desde varios Colores y Temas de Películas]]></string>
+    <string name="play_song_directly_from_search_results">Reproducir canción directamente desde los resultados de la búsqueda</string>
+</resources>

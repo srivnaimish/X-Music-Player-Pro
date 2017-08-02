@@ -5,7 +5,7 @@
     <string name="fragment1_heading">Search on Youtube</string>
     <string name="fragment1_subHeading">Search the song you are listening to,directly on Youtube</string>
     <string name="fragment2_heading">Enhance your Music</string>
-    <string name="fragment2_subHeading">Select from multiple presets available in Settings</string>
+    <string name="fragment2_subHeading">Enable the equalizer </string>
     <string name="fragment3_heading">Timer for your music</string>
     <string name="fragment3_subHeading">Set a timer to stop the music after some time through Settings</string>
     <string name="permission_rationale">The app will not be able to retrieve your Songs…Please Give the Permission</string>
@@ -92,5 +92,8 @@
     <string name="save">Save</string>
     <string name="equalizer_hint">Hint: Press Save if you want to save the Equalizer preset</string>
     <string name="select_a_preset">Select a Preset :</string>
+    <string name="beautiful_themes">Beautiful Themes</string>
+    <string name="select_from_multiple_color_amp_movie_themes"><![CDATA[Select from multiple Color & Movie Themes]]></string>
+    <string name="play_song_directly_from_search_results">Play Song directly from search results</string>
 
 </resources>

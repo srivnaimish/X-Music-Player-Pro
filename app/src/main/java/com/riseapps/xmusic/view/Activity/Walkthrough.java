@@ -28,13 +28,13 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 
 public class Walkthrough extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private ViewPager viewPager;
     private int[] layouts;
-    private Button btn1, btn2, btn3;
     boolean found;
 
     private static final int REQUEST_PERMISSION = 0;
@@ -51,15 +51,16 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
         }
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         RelativeLayout btnSkip = (RelativeLayout) findViewById(R.id.btn_skip);
-        btn1 = (Button) findViewById(R.id.bt1);
-        btn2 = (Button) findViewById(R.id.bt2);
-        btn3 = (Button) findViewById(R.id.bt3);
+
 
 
         layouts = new int[]{
                 R.layout.walkthrough1,
                 R.layout.walkthrough2,
-                R.layout.walkthrough3};
+                R.layout.walkthrough3,
+                R.layout.walkthrough4,
+                R.layout.walkthrough6,
+                R.layout.walkthrough5};
 
         MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
@@ -85,19 +86,10 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
 
         @Override
         public void onPageSelected(int position) {
-            if (position == layouts.length - 1) {
-                btn3.setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
-                btn2.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
-            } else if (position == 1) {
-                // still pages are left
-                btn1.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
-                btn3.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
-                btn2.setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
-
-            } else {
-                btn1.setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
-                btn2.setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
+            for (int i = 0; i < 6; i++) {
+                findViewById(AppConstants.buttonId[i]).setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
             }
+            findViewById(AppConstants.buttonId[position]).setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
         }
 
         @Override

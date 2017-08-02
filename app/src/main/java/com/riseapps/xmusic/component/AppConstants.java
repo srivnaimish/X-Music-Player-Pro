@@ -14,6 +14,8 @@ public class AppConstants {
     public static int[] seekBars={R.id.seekBar0,R.id.seekBar1,R.id.seekBar2,R.id.seekBar3,R.id.seekBar4};
     public static int[] levels={R.id.level0,R.id.level1,R.id.level2,R.id.level3,R.id.level4};
 
+    public static int buttonId[] = {R.id.bt1, R.id.bt2, R.id.bt3, R.id.bt4, R.id.bt5, R.id.bt6, R.id.bt7, R.id.bt8};
+
     public static final String THEME_URL="https://xmusicplayerpro.github.io/musicplayer/themes.html";
 
     public static boolean theme3 = false;

@@ -15,14 +15,15 @@
         <ImageView
             android:layout_width="@dimen/size100dp"
             android:layout_height="@dimen/size100dp"
-            app:srcCompat="@drawable/ic_equalizer" />
+            app:srcCompat="@drawable/ic_equaliser"
+            android:tint="@color/colorAccentDark"/>
 
         <com.riseapps.xmusic.widgets.MainTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="@string/fragment2_heading"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="@color/colorPrimaryFontDark"
             android:textSize="@dimen/size23sp"
             android:textStyle="bold" />
 
@@ -34,7 +35,7 @@
             android:paddingRight="30dp"
             android:text="@string/fragment2_subHeading"
             android:textAlignment="center"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorPrimaryFontDark"
             android:textSize="@dimen/size15sp" />
 
     </LinearLayout>

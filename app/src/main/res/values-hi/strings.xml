@@ -72,4 +72,8 @@
     <string name="exclude_folder">फ़ोल्डर को छोड़ दें</string>
     <string name="select_a_preset">एक प्रीसेट चुनें:</string>
     <string name="save">बचाना</string>
+    <string name="equalizer_hint">संकेत: यदि आप तुल्यकारक प्रीसेट को सहेजना चाहते हैं तो प्रेस सहेजें</string>
+    <string name="beautiful_themes">सुंदर थीम्स</string>
+    <string name="play_song_directly_from_search_results">सीधे खोज परिणामों से गाने चलाएं</string>
+    <string name="select_from_multiple_color_amp_movie_themes">एकाधिक रंग और मूवी थीम्स से चुनें</string>
 </resources>
