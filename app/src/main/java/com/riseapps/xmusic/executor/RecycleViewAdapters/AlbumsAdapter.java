@@ -32,8 +32,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
     private ScrollingFragment scrollingFragment;
     private FragmentTransitionListener fragmentTransitionListener;
 
-    public AlbumsAdapter(Context context, RecyclerView recyclerView,Cursor cursor) {
-        dataCursor=cursor;
+    public AlbumsAdapter(Context context, RecyclerView recyclerView, Cursor cursor) {
+        dataCursor = cursor;
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
                 .getLayoutManager();
         c = context;
@@ -83,18 +83,17 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
                 .placeholder(R.drawable.dummy)
                 .error(R.drawable.dummy)
                 .into(((AlbumViewHolder) holder).imageView);
-        
-        ((AlbumViewHolder) holder).album = new Album(album_id,albumName,imagepath);
+
+        ((AlbumViewHolder) holder).album = new Album(album_id, albumName, imagepath);
     }
 
-   
 
     @Override
     public int getItemCount() {
         return (dataCursor == null) ? 0 : dataCursor.getCount();
     }
 
-    private class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imageView;
         TextView name;
@@ -107,10 +106,10 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
             this.ctx = context;
             imageView = (ImageView) view.findViewById(R.id.imageView1);
             name = (TextView) view.findViewById(R.id.name);
-            cardView= (CardView) view.findViewById(R.id.grid_card);
+            cardView = (CardView) view.findViewById(R.id.grid_card);
             cardView.setOnClickListener(this);
         }
-        
+
         private void fragmentJump(Album album) {
             scrollingFragment = new ScrollingFragment();
             Bundle bundle = new Bundle();

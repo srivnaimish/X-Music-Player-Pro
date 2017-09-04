@@ -19,12 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.riseapps.xmusic.R;
-import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.FragmentTransitionListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.AlbumsAdapter;
 import com.riseapps.xmusic.utils.GridItemDecoration;
-
-import java.util.ArrayList;
 
 public class AlbumFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     static {
@@ -66,7 +63,7 @@ public class AlbumFragment extends Fragment implements LoaderManager.LoaderCallb
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 2);
         recyclerView.setLayoutManager(grid);
 
-        albumAdapter = new AlbumsAdapter(getActivity(),recyclerView,null);
+        albumAdapter = new AlbumsAdapter(getActivity(), recyclerView, null);
         recyclerView.setAdapter(albumAdapter);
 
         albumAdapter.setFragmentTransitionListener(new FragmentTransitionListener() {
@@ -101,7 +98,7 @@ public class AlbumFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-      albumAdapter.swapCursor(data);
+        albumAdapter.swapCursor(data);
     }
 
     @Override

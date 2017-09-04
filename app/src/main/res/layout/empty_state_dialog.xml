@@ -19,8 +19,7 @@
         <ImageView
             android:layout_width="@dimen/size100dp"
             android:layout_height="@dimen/size100dp"
-            app:srcCompat="@drawable/ic_not_found"
-            />
+            app:srcCompat="@drawable/ic_not_found" />
 
         <com.riseapps.xmusic.widgets.MainTextView
             android:layout_width="wrap_content"

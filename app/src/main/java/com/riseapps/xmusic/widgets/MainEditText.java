@@ -18,6 +18,7 @@ public class MainEditText extends EditText {
         super(context);
         applyFont(context);
     }
+
     public MainEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         applyFont(context);

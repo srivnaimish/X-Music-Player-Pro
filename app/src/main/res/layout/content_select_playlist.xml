@@ -63,7 +63,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"/>
+        android:layout_marginTop="4dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/playlists"
@@ -73,7 +73,7 @@
         android:scrollbars="none"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout4"
@@ -83,8 +83,7 @@
         android:layout_centerVertical="true"
         android:orientation="horizontal"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/size20dp"
-        >
+        android:layout_marginTop="@dimen/size20dp">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -92,7 +91,7 @@
             android:layout_height="@dimen/size50dp"
             app:srcCompat="@drawable/ic_not_found"
             android:layout_marginStart="10dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical" />
 
         <com.riseapps.xmusic.widgets.MainTextViewSub
             android:layout_width="wrap_content"
@@ -109,7 +108,8 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:padding="10dp">
-        <include layout="@layout/playlist_create_dialog"/>
+
+        <include layout="@layout/playlist_create_dialog" />
     </RelativeLayout>
 
 </RelativeLayout>

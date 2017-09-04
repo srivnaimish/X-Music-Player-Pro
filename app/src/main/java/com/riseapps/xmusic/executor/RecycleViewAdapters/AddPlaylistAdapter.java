@@ -77,8 +77,7 @@ public class AddPlaylistAdapter extends RecyclerView.Adapter {
                 if (add.isChecked()) {
                     add.setChecked(false);
                     playlist.setSelected(false);
-                }
-                else {
+                } else {
                     add.setChecked(true);
                     playlist.setSelected(true);
                 }

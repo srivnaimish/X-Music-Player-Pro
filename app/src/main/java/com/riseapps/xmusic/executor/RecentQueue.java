@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 
 public class RecentQueue {
-    public ArrayList<Long> pushPop(ArrayList<Long> list,long id){
+    public ArrayList<Long> pushPop(ArrayList<Long> list, long id) {
 
-        if(!list.contains(id)) {
+        if (!list.contains(id)) {
             if (list.size() > 19) {
                 list.remove(0);
                 list.add(id);
@@ -17,6 +17,6 @@ public class RecentQueue {
                 list.add(id);
             }
         }
-        return  list;
+        return list;
     }
 }

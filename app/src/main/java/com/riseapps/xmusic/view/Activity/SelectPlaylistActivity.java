@@ -2,12 +2,9 @@ package com.riseapps.xmusic.view.Activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -51,7 +48,7 @@ public class SelectPlaylistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<PlaylistSelect> playLists = new ArrayList<>();
     AddPlaylistAdapter addPlaylistAdapter;
-    CardView cardView,dialog;
+    CardView cardView, dialog;
     TextView hint;
     //  private Dialog dialog;
     // utils
@@ -64,35 +61,35 @@ public class SelectPlaylistActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_select_playlist);
         ImageView background = (ImageView) findViewById(R.id.back);
-        SharedPreferenceSingelton sharedPreferenceSingelton=new SharedPreferenceSingelton();
-        if(sharedPreferenceSingelton.getSavedInt(this,"Themes")==8) {
+        SharedPreferenceSingelton sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 8) {
             Glide
                     .with(this)
                     .load(R.drawable.harry_potter)
                     .dontAnimate()
                     .into(background);
-        }else if(sharedPreferenceSingelton.getSavedInt(this,"Themes")==9) {
+        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 9) {
             Glide
                     .with(this)
-                    .load(R.drawable.minions)
+                    .load(R.drawable.batman)
                     .dontAnimate()
                     .into(background);
-        }else if(sharedPreferenceSingelton.getSavedInt(this,"Themes")==10){
+        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 10) {
             Glide
                     .with(this)
                     .load(R.drawable.iron_man)
                     .dontAnimate()
                     .into(background);
-        }else if(sharedPreferenceSingelton.getSavedInt(this,"Themes")==11){
+        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 11) {
             Glide
                     .with(this)
                     .load(R.drawable.deadpool)
                     .dontAnimate()
                     .into(background);
         }
-        empty_state= (LinearLayout) findViewById(R.id.linearLayout4);
-        dialog= (CardView) findViewById(R.id.playlist_new);
-        hint= (TextView) findViewById(R.id.hint);
+        empty_state = (LinearLayout) findViewById(R.id.linearLayout4);
+        dialog = (CardView) findViewById(R.id.playlist_new);
+        hint = (TextView) findViewById(R.id.hint);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -122,7 +119,7 @@ public class SelectPlaylistActivity extends AppCompatActivity {
                         /*Intent i = new Intent();
                         setResult(RESULT_CANCELED, i);*/
                         Toast.makeText(SelectPlaylistActivity.this, getString(R.string.did_not_select), Toast.LENGTH_SHORT).show();
-                      //  finish();
+                        //  finish();
                     } else {
                         Intent i = new Intent();
                         i.putExtra("selected_playlist", selection);
@@ -142,10 +139,10 @@ public class SelectPlaylistActivity extends AppCompatActivity {
                 EditText editText = (EditText) dialog.findViewById(R.id.dialogEditText);
                 String s = editText.getText().toString();
                 if (!s.equalsIgnoreCase("")) {
-                    if(playLists.contains(new PlaylistSelect(s,false))){
+                    if (playLists.contains(new PlaylistSelect(s, false))) {
                         Snackbar.make(cardView, "Playlist already created", Snackbar.LENGTH_SHORT).show();
-                    }else {
-                        if(empty_state.getVisibility()==View.VISIBLE){
+                    } else {
+                        if (empty_state.getVisibility() == View.VISIBLE) {
                             empty_state.setVisibility(View.GONE);
                         }
                         playLists.add(new PlaylistSelect(s, false));
@@ -178,7 +175,7 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         });
 
         playLists = new MyApplication(this).getWritableDatabase().readPlaylistsSelect();
-        if(playLists.size()==0){
+        if (playLists.size() == 0) {
             empty_state.setVisibility(View.VISIBLE);
         }
         addPlaylistAdapter = new AddPlaylistAdapter(this, playLists, recyclerView);
@@ -211,11 +208,12 @@ public class SelectPlaylistActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(dialog.getVisibility()==View.VISIBLE)
+        if (dialog.getVisibility() == View.VISIBLE)
             doExitReveal(dialog);
         else
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
+
     private void doCircularReveal(View view) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             dialog.setVisibility(View.VISIBLE);
@@ -239,7 +237,7 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         cardView.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
         hint.setVisibility(View.GONE);
-        if(empty_state.getVisibility()==View.VISIBLE)
+        if (empty_state.getVisibility() == View.VISIBLE)
             empty_state.setVisibility(View.GONE);
     }
 
@@ -269,7 +267,7 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         cardView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
         hint.setVisibility(View.VISIBLE);
-        if(playLists.size()==0)
+        if (playLists.size() == 0)
             empty_state.setVisibility(View.VISIBLE);
     }
 

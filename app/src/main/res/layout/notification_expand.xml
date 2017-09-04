@@ -15,8 +15,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/ic_splash"
-        android:background="@color/colorAccent"
-        />
+        android:background="@color/colorAccent" />
 
 
     <TextView

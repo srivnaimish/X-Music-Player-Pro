@@ -1,21 +1,17 @@
 package com.riseapps.xmusic.executor.RecycleViewAdapters;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.provider.MediaStore;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
@@ -26,11 +22,9 @@ import com.riseapps.xmusic.executor.Interfaces.AdapterToActivityListener;
 import com.riseapps.xmusic.executor.Interfaces.MainListPlayingListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
-import com.riseapps.xmusic.model.Pojo.Album;
 import com.riseapps.xmusic.model.Pojo.Song;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter {
 
@@ -48,9 +42,9 @@ public class SongAdapter extends RecyclerView.Adapter {
         dataCursor = cursor;
         adapterToActivityListener = (AdapterToActivityListener) context;
         c = context;
-        int colors[]=new ThemeSelector().getThemeForSongAdapter(c);
-        colorSelected=colors[0];
-        colorNormal=colors[1];
+        int colors[] = new ThemeSelector().getThemeForSongAdapter(c);
+        colorSelected = colors[0];
+        colorNormal = colors[1];
     }
 
     public SongAdapter getInstance() {

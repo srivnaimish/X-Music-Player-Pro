@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.riseapps.xmusic.view.Activity.AppSettingActivity">
+
     <ImageView
         android:id="@+id/back"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        />
+        android:scaleType="centerCrop" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            app:elevation="0dp">
+            >
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -55,9 +56,10 @@
                     android:id="@+id/setting_movie"
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     card_view:cardCornerRadius="0dp"
                     card_view:cardElevation="0dp"
                     card_view:cardBackgroundColor="?colorPrimary"
@@ -74,7 +76,7 @@
                             android:layout_height="40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
-                            app:srcCompat="@drawable/ic_video_player"/>
+                            app:srcCompat="@drawable/ic_video_player" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -107,10 +109,11 @@
                     android:id="@+id/setting_theme"
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:clickable="true"
+                    android:focusable="true"
                     android:layout_below="@id/setting_movie"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     card_view:cardCornerRadius="0dp"
                     card_view:cardElevation="0dp"
                     card_view:cardBackgroundColor="?colorPrimary"
@@ -121,104 +124,52 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center">
 
-                            <ImageView
-                                android:id="@+id/setting_theme_icon"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_alignParentStart="true"
-                                android:layout_margin="12dp"
-                                app:srcCompat="@drawable/ic_color"
-                                android:tint="?android:textColorTertiary"/>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_margin="8dp"
-                                android:layout_toEndOf="@id/setting_theme_icon"
-                                android:orientation="vertical">
-
-                                <com.riseapps.xmusic.widgets.MainTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/theme"
-                                    android:textColor="?android:textColorPrimary"
-                                    android:textSize="@dimen/size16sp" />
-
-                                <com.riseapps.xmusic.widgets.MainTextViewSub
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/switch_betweem_the_light_and_dark_app_themes"
-                                    android:textSize="@dimen/size14sp" />
-
-                            </LinearLayout>
-
-                    </RelativeLayout>
-
-                </android.support.v7.widget.CardView>
-
-               <!-- <android.support.v7.widget.CardView
-                    android:id="@+id/setting_equalizer"
-                    android:layout_width="match_parent"
-                    android:layout_height="85dp"
-                    android:layout_below="@id/setting_theme"
-                    android:layout_marginTop="3dp"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    card_view:cardCornerRadius="0dp"
-                    card_view:cardElevation="0dp"
-                    card_view:cardBackgroundColor="?colorPrimary"
-                    android:onClick="openEqualizerDialog">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
-
                         <ImageView
-                            android:id="@+id/setting_one_icon"
+                            android:id="@+id/setting_theme_icon"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
-                            app:srcCompat="@drawable/ic_equaliser"
-                            android:tint="?android:textColorTertiary"/>
+                            app:srcCompat="@drawable/ic_color"
+                            android:tint="?android:textColorTertiary" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_margin="8dp"
-                            android:layout_toEndOf="@id/setting_one_icon"
+                            android:layout_toEndOf="@id/setting_theme_icon"
                             android:orientation="vertical">
 
                             <com.riseapps.xmusic.widgets.MainTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/equalizer_heading"
+                                android:text="@string/theme"
                                 android:textColor="?android:textColorPrimary"
                                 android:textSize="@dimen/size16sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/equalizer_subHeading"
+                                android:text="@string/switch_betweem_the_light_and_dark_app_themes"
                                 android:textSize="@dimen/size14sp" />
 
                         </LinearLayout>
 
                     </RelativeLayout>
 
-                </android.support.v7.widget.CardView>-->
+                </android.support.v7.widget.CardView>
+
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/setting_folders"
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
                     android:layout_below="@id/setting_theme"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     card_view:cardCornerRadius="0dp"
                     card_view:cardElevation="0dp"
                     card_view:cardBackgroundColor="?colorPrimary"
@@ -236,7 +187,7 @@
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
                             app:srcCompat="@drawable/ic_folder"
-                            android:tint="?android:textColorTertiary"/>
+                            android:tint="?android:textColorTertiary" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -270,9 +221,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
                     android:layout_below="@id/setting_folders"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     card_view:cardCornerRadius="0dp"
                     card_view:cardElevation="0dp"
                     card_view:cardBackgroundColor="?colorPrimary"
@@ -323,14 +275,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
                     android:layout_below="@id/setting_sleep"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     android:onClick="hide_short"
                     card_view:cardCornerRadius="0dp"
                     card_view:cardElevation="0dp"
-                    card_view:cardBackgroundColor="?colorPrimary"
-                    >
+                    card_view:cardBackgroundColor="?colorPrimary">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -373,13 +325,62 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/setting_translation"
+                    android:id="@+id/setting_hide_anim"
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
                     android:layout_below="@id/setting_hide_short"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:onClick="hide_anim"
+                    card_view:cardCornerRadius="0dp"
+                    card_view:cardElevation="0dp"
+                    card_view:cardBackgroundColor="?colorPrimary">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:id="@+id/setting_wave"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_margin="12dp"
+                            app:srcCompat="@drawable/ic_waves" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="8dp"
+                            android:layout_toEndOf="@id/setting_wave"
+                            android:orientation="vertical">
+
+                            <com.riseapps.xmusic.widgets.MainTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/animation_toggle"
+                                android:textColor="?android:textColorPrimary"
+                                android:textSize="@dimen/size16sp" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/setting_translation"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:layout_below="@id/setting_hide_anim"
+                    android:layout_marginTop="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     android:onClick="helpUsTranslate"
                     card_view:cardCornerRadius="0dp"
                     card_view:cardElevation="0dp"
@@ -430,9 +431,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
                     android:layout_below="@id/setting_translation"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     card_view:cardCornerRadius="0dp"
                     card_view:cardElevation="0dp"
                     card_view:cardBackgroundColor="?colorPrimary"
@@ -484,9 +486,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="85dp"
                     android:layout_below="@id/setting_rate"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     card_view:cardCornerRadius="0dp"
                     card_view:cardElevation="0dp"
                     card_view:cardBackgroundColor="?colorPrimary"
@@ -504,7 +507,7 @@
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
                             app:srcCompat="@drawable/ic_share"
-                            android:tint="?android:textColorTertiary"/>
+                            android:tint="?android:textColorTertiary" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"

@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -29,11 +28,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -41,25 +37,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.riseapps.xmusic.R;
-import com.riseapps.xmusic.component.AppConstants;
-import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.billing.IabHelper;
 import com.riseapps.xmusic.billing.IabResult;
 import com.riseapps.xmusic.billing.Inventory;
 import com.riseapps.xmusic.billing.Purchase;
+import com.riseapps.xmusic.component.AppConstants;
+import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.component.ThemeSelector;
-import com.riseapps.xmusic.executor.Interfaces.ClickListener;
-import com.riseapps.xmusic.executor.RecycleTouchListener;
-import com.riseapps.xmusic.executor.RecycleViewAdapters.AddPlaylistAdapter;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.FoldersAdapter;
 import com.riseapps.xmusic.model.Pojo.PlaylistSelect;
-import com.riseapps.xmusic.model.Pojo.Song;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,8 +67,6 @@ public class AppSettingActivity extends AppCompatActivity {
 
     private Dialog dialog;
     private EditText min;
-    //private static EqualizerPresetListener equalizerPresetListener;
-    private RadioGroup radioButtonGroup;
     SharedPreferenceSingelton sharedPreferenceSingelton;
     CoordinatorLayout back;
     Switch pro;
@@ -100,7 +87,7 @@ public class AppSettingActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         init();
 
-        String output=AppConstants.decrypt(AppConstants.encrypted);
+        String output = AppConstants.decrypt(AppConstants.encrypted);
         mHelper = new IabHelper(this, output);
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             @Override
@@ -140,7 +127,7 @@ public class AppSettingActivity extends AppCompatActivity {
         } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 9) {
             Glide
                     .with(this)
-                    .load(R.drawable.minions)
+                    .load(R.drawable.batman)
                     .dontAnimate()
                     .into(background);
         } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 10) {
@@ -182,14 +169,15 @@ public class AppSettingActivity extends AppCompatActivity {
         theme_dialog = (RelativeLayout) dialog.findViewById(R.id.theme_dialog);
 
         viewpager.setClipToPadding(false);
-        viewpager.setPadding(40,0,70,0);
+        viewpager.setPadding(40, 0, 70, 0);
         viewpager.setPageMargin(20);
         viewpager.addOnPageChangeListener(viewPagerPageChangeListener);
         MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter();
         viewpager.setAdapter(myViewPagerAdapter);
-        try{
+        try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        }catch (NullPointerException e){}
+        } catch (NullPointerException e) {
+        }
         dialog.show();
 
     }
@@ -197,10 +185,10 @@ public class AppSettingActivity extends AppCompatActivity {
     public void changeMovieTheme(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.movie_theme_dialog);
-        View.OnClickListener clickListener=new View.OnClickListener() {
+        View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()){
+                switch (v.getId()) {
                     case R.id.harry:
                         sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 8);
                         break;
@@ -226,9 +214,10 @@ public class AppSettingActivity extends AppCompatActivity {
         dialog.findViewById(R.id.minions).setOnClickListener(clickListener);
         dialog.findViewById(R.id.iron).setOnClickListener(clickListener);
         dialog.findViewById(R.id.deadpool).setOnClickListener(clickListener);
-        try{
+        try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        }catch (NullPointerException e){}
+        } catch (NullPointerException e) {
+        }
         dialog.show();
 
     }
@@ -236,9 +225,10 @@ public class AppSettingActivity extends AppCompatActivity {
     public void openSleepDialog(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.sleep_timer_dialog);
-        try{
+        try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        }catch (NullPointerException e){}
+        } catch (NullPointerException e) {
+        }
         dialog.show();
 
         final CardView fifteen = (CardView) dialog.findViewById(R.id.fifteen);
@@ -317,9 +307,10 @@ public class AppSettingActivity extends AppCompatActivity {
     public void helpUsTranslate(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.translation);
-        try{
+        try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        }catch (NullPointerException e){}
+        } catch (NullPointerException e) {
+        }
         dialog.show();
 
     }
@@ -327,10 +318,10 @@ public class AppSettingActivity extends AppCompatActivity {
     public void hide_short(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.short_music_hide_dialog);
-        try{
+        try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        }catch (NullPointerException e){
-            Log.d("NullPointer","yes");
+        } catch (NullPointerException e) {
+            Log.d("NullPointer", "yes");
         }
         dialog.show();
 
@@ -371,9 +362,10 @@ public class AppSettingActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.folder_select);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        try{
+        try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        }catch (NullPointerException e){}
+        } catch (NullPointerException e) {
+        }
         dialog.show();
 
         Button done = (Button) dialog.findViewById(R.id.done);
@@ -383,7 +375,7 @@ public class AppSettingActivity extends AppCompatActivity {
         FoldersAdapter foldersAdapter;
         recyclerView = (RecyclerView) dialog.findViewById(R.id.foldersList);
 
-        folders=getFolderNames();
+        folders = getFolderNames();
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
@@ -394,17 +386,17 @@ public class AppSettingActivity extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String unselected="";
-                int x=0;
-                for(int i=0;i<folders.size();i++){
-                    if(!folders.get(i).isSelected()){
+                String unselected = "";
+                int x = 0;
+                for (int i = 0; i < folders.size(); i++) {
+                    if (!folders.get(i).isSelected()) {
                         x++;
-                        unselected+=folders.get(i).getName()+",";
+                        unselected += folders.get(i).getName() + ",";
                     }
                 }
-                if(x==folders.size()){
+                if (x == folders.size()) {
                     Toast.makeText(AppSettingActivity.this, "Cannot unselect All Folders", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "SkipFolders", unselected);
                     dialog.dismiss();
                 }
@@ -420,31 +412,44 @@ public class AppSettingActivity extends AppCompatActivity {
     }
 
     public ArrayList<PlaylistSelect> getFolderNames() {
-        ArrayList<PlaylistSelect> folders=new ArrayList<>();
-        ArrayList<String> names=new ArrayList<>();
-        Cursor cursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null,null);
+        ArrayList<PlaylistSelect> folders = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        Cursor cursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                    int lastSlash=path.lastIndexOf('/');
-                    int secondLastSlash=0;
-                    for(int i=lastSlash-1;i>=0;i--){
-                        if(path.charAt(i)=='/'){
-                            secondLastSlash=i;
-                            break;
-                        }
+                String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                int lastSlash = path.lastIndexOf('/');
+                int secondLastSlash = 0;
+                for (int i = lastSlash - 1; i >= 0; i--) {
+                    if (path.charAt(i) == '/') {
+                        secondLastSlash = i;
+                        break;
                     }
-                    String folder=path.substring(secondLastSlash+1, lastSlash);
-                    if(!names.contains(folder))
+                }
+                String folder = path.substring(secondLastSlash + 1, lastSlash);
+                if (!names.contains(folder))
                     names.add(folder);
             }
             while (cursor.moveToNext());
         }
-        for (String s:names){
-            folders.add(new PlaylistSelect(s,true));
+        for (String s : names) {
+            folders.add(new PlaylistSelect(s, true));
         }
 
         return folders;
+    }
+
+    public void hide_anim(View view) {
+        boolean hidden = sharedPreferenceSingelton.getSavedBoolean(this, "Waves");
+        if (hidden) {
+            MainActivity.waveView.setVisibility(View.VISIBLE);
+            sharedPreferenceSingelton.saveAs(this, "Waves", false);
+            Toast.makeText(this, "Showing Wave Animation", Toast.LENGTH_SHORT).show();
+        } else {
+            MainActivity.waveView.setVisibility(View.GONE);
+            sharedPreferenceSingelton.saveAs(this, "Waves", true);
+            Toast.makeText(this, "Wave Animation Hidden", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public class MyViewPagerAdapter extends PagerAdapter {
@@ -473,7 +478,7 @@ public class AppSettingActivity extends AppCompatActivity {
                 tick.setImageResource(R.drawable.ic_check);
             }
 
-            if(position == 0)
+            if (position == 0)
                 preview.setVisibility(View.GONE);
 
             if ((position == 2 && !AppConstants.theme3) || (position == 3 && !AppConstants.theme4) || (position == 4 && !AppConstants.theme5) ||
@@ -529,25 +534,25 @@ public class AppSettingActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (position == 1) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Black"));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL + "#Black"));
                         startActivity(browserIntent);
                     } else if (position == 2) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Walnut"));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL + "#Walnut"));
                         startActivity(browserIntent);
                     } else if (position == 3) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Matterhorn"));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL + "#Matterhorn"));
                         startActivity(browserIntent);
                     } else if (position == 4) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Orchid"));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL + "#Orchid"));
                         startActivity(browserIntent);
                     } else if (position == 5) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#bluewood"));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL + "#bluewood"));
                         startActivity(browserIntent);
                     } else if (position == 6) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Lockmara"));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL + "#Lockmara"));
                         startActivity(browserIntent);
                     } else if (position == 7) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL+"#Karry"));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.THEME_URL + "#Karry"));
                         startActivity(browserIntent);
                     }
                 }
@@ -663,6 +668,7 @@ public class AppSettingActivity extends AppCompatActivity {
 
         }
     };
+
 
     @Override
     protected void onDestroy() {

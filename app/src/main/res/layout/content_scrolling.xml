@@ -38,8 +38,7 @@
             android:text="@string/empty_state_message"
             android:textSize="18sp"
             android:visibility="gone"
-            android:textColor="?android:textColorTertiary"
-            />
+            android:textColor="?android:textColorTertiary" />
     </RelativeLayout>
 
 </android.support.v4.widget.NestedScrollView>

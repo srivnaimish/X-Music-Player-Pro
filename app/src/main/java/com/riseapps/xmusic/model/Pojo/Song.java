@@ -1,25 +1,21 @@
 package com.riseapps.xmusic.model.Pojo;
 
-import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by naimish on 4/1/17.
  */
 
-public class Song{
+public class Song {
     private long ID, duration;
-    private String Name, Artist,Imagepath;
-    private boolean favourite,isSelected=false;
+    private String Name, Artist, Imagepath;
+    private boolean favourite, isSelected = false;
 
-    public Song(){
+    public Song() {
 
     }
 
-    public Song(long id, long duration, String name, String artist, String imagepath,boolean favourite) {
+    public Song(long id, long duration, String name, String artist, String imagepath, boolean favourite) {
         Name = name;
         ID = id;
         Artist = artist;
@@ -28,9 +24,9 @@ public class Song{
         this.favourite = favourite;
     }
 
-    public Song(Song song){
-        if(song==null)
-            Log.d("Null","yes");
+    public Song(Song song) {
+        if (song == null)
+            Log.d("Null", "yes");
 
     }
 
@@ -55,7 +51,9 @@ public class Song{
     }
 
 
-    public boolean getFavourite(){ return favourite; }
+    public boolean getFavourite() {
+        return favourite;
+    }
 
     public void setID(long ID) {
         this.ID = ID;

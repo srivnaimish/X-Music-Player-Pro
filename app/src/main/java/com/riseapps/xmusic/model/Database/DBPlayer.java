@@ -27,7 +27,7 @@ public class DBPlayer {
         c = context;
         playerHelper = new PlayerHelper(context);
         mDatabase = playerHelper.getWritableDatabase();
-        sharedPreferenceSingelton=new SharedPreferenceSingelton();
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
     }
 
     public void insertFavourite(long id) {
@@ -49,7 +49,7 @@ public class DBPlayer {
         mDatabase.close();
     }
 
-    public boolean isFavourite(long id){
+    public boolean isFavourite(long id) {
         boolean b = false;
         String[] columns = {
                 PlayerHelper.COLUMN_ID
@@ -142,6 +142,7 @@ public class DBPlayer {
         mDatabase.close();
         return playlists;
     }
+
     public ArrayList<PlaylistSelect> readPlaylistsSelect() {
         ArrayList<PlaylistSelect> playlists = new ArrayList<>();
         String[] columns = {
@@ -167,8 +168,8 @@ public class DBPlayer {
         String[] columns = {
                 PlayerHelper.PLAYLIST_SONG_ID
         };
-        String selection="PLAYLIST_NAME=?";
-        String args[]={""+playlist};
+        String selection = "PLAYLIST_NAME=?";
+        String args[] = {"" + playlist};
         Cursor cursor = mDatabase.query(PlayerHelper.PLAYLIST_TRACKS_TABLE_NAME, columns, selection, args, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -189,9 +190,9 @@ public class DBPlayer {
         Log.d("Playlist", "Deleted");
     }
 
-    public void deleteSongFromPlaylist(String playlist,long id){
-        String whereClause = PlayerHelper.PLAYLIST_NAME + "=? AND " +PlayerHelper.PLAYLIST_SONG_ID + "=?" ;
-        String whereArgs[] = {playlist,""+id};
+    public void deleteSongFromPlaylist(String playlist, long id) {
+        String whereClause = PlayerHelper.PLAYLIST_NAME + "=? AND " + PlayerHelper.PLAYLIST_SONG_ID + "=?";
+        String whereArgs[] = {playlist, "" + id};
         mDatabase.delete(PlayerHelper.PLAYLIST_TRACKS_TABLE_NAME, whereClause, whereArgs);
         mDatabase.close();
     }

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorPrimary"
@@ -37,8 +35,7 @@
         android:layout_marginTop="@dimen/size16dp"
         android:layout_below="@+id/ll"
         android:layout_above="@id/hint"
-        android:scrollbars="vertical"/>
-
+        android:scrollbars="vertical" />
 
 
     <LinearLayout
@@ -64,6 +61,7 @@
             android:layout_weight=".5"
             android:text="@android:string/cancel" />
     </LinearLayout>
+
     <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/hint"
         android:layout_width="wrap_content"
@@ -73,7 +71,8 @@
         android:textColor="?android:textColorTertiary"
         android:layout_marginBottom="10dp"
         android:layout_above="@+id/hint2"
-        android:textSize="@dimen/size12sp"/>
+        android:textSize="@dimen/size12sp" />
+
     <com.riseapps.xmusic.widgets.MainTextViewSub
         android:id="@+id/hint2"
         android:layout_width="wrap_content"
@@ -83,7 +82,6 @@
         android:layout_marginBottom="10dp"
         android:layout_above="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
-        android:textSize="@dimen/size12sp"
-        />
+        android:textSize="@dimen/size12sp" />
 
 </RelativeLayout>

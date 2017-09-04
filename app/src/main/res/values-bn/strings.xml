@@ -75,4 +75,7 @@
     <string name="beautiful_themes">সুন্দর থিমগুলি</string>
     <string name="play_song_directly_from_search_results">অনুসন্ধান ফলাফল থেকে সরাসরি গান প্লে করুন</string>
     <string name="select_from_multiple_color_amp_movie_themes">একাধিক রঙ ও চলচ্চিত্র থিম থেকে নির্বাচন করুন</string>
+    <string name="recently_added">সম্প্রতি জোড়া গান</string>
+    <string name="recently_played">সম্প্রতি গানগুলি প্লে করা হয়েছে</string>
+    <string name="animation_toggle">মুভি প্লেয়ারে তরঙ্গ অ্যানিমেশন টগল করুন</string>
 </resources>

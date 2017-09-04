@@ -5,6 +5,7 @@ package com.riseapps.xmusic.executor.Interfaces;
  */
 
 public interface AdapterToActivityListener {
-    public void onTrackLongPress(int c,long songId,boolean songAdded);
+    public void onTrackLongPress(int c, long songId, boolean songAdded);
+
     public void onFirstTrackLongPress();
 }

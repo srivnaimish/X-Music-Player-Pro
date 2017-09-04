@@ -37,15 +37,15 @@ public class MainTextView extends TextView {
     }
 
     private void applyFont(Context context) {
-        SharedPreferenceSingelton sharedPreferenceSingelton=new SharedPreferenceSingelton();
-        Typeface font=FontCache.getTypeface("fonts/Meera_Inimai/MeeraInimai-Regular.ttf", context);
-        if(sharedPreferenceSingelton.getSavedInt(context,"Themes")==9){
+        SharedPreferenceSingelton sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        Typeface font = FontCache.getTypeface("fonts/Meera_Inimai/MeeraInimai-Regular.ttf", context);
+        if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 9) {
             font = FontCache.getTypeface("fonts/minions.ttf", context);
-        }else if(sharedPreferenceSingelton.getSavedInt(context,"Themes")==8){
+        } else if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 8) {
             font = FontCache.getTypeface("fonts/harry_potter.ttf", context);
-        }else if(sharedPreferenceSingelton.getSavedInt(context,"Themes")==10){
+        } else if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 10) {
             font = FontCache.getTypeface("fonts/iron_man.ttf", context);
-        }else if(sharedPreferenceSingelton.getSavedInt(context,"Themes")==11){
+        } else if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 11) {
             font = FontCache.getTypeface("fonts/deadpool.ttf", context);
         }
         setTypeface(font);

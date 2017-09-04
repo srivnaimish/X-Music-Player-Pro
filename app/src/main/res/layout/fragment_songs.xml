@@ -7,14 +7,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingStart="2dp"
-    android:paddingEnd="2dp"
-    android:paddingTop="2dp">
+    android:paddingEnd="2dp">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/songs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"/>
+        android:scrollbars="none" />
 
     <ImageView
         android:id="@+id/empty_state"
@@ -22,7 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/ic_hourglass"
-        />
+        app:srcCompat="@drawable/ic_hourglass" />
 
 </RelativeLayout>

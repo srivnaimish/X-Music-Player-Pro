@@ -95,5 +95,8 @@
     <string name="beautiful_themes">Beautiful Themes</string>
     <string name="select_from_multiple_color_amp_movie_themes"><![CDATA[Select from multiple Color & Movie Themes]]></string>
     <string name="play_song_directly_from_search_results">Play Song directly from search results</string>
+    <string name="recently_added">Recently Added</string>
+    <string name="recently_played">Recently Played</string>
+    <string name="animation_toggle">Toggle Wave animation in Main Player</string>
 
 </resources>

@@ -10,6 +10,7 @@
     android:animateLayoutChanges="true"
     android:visibility="gone"
     android:background="?colorPrimary">
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/imageContainer"
         android:layout_width="0dp"
@@ -32,15 +33,14 @@
             android:layout_marginRight="@dimen/size8dp"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginStart="@dimen/size8dp"
-            android:layout_marginEnd="@dimen/size8dp"
-            >
+            android:layout_marginEnd="@dimen/size8dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/album_art"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/empty"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
             <com.gelitenight.waveview.library.WaveView
                 android:id="@+id/wave"
@@ -48,7 +48,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="0dp"
                 app:layout_constraintHorizontal_bias="1.0"
-                android:alpha="0.5"/>
+                android:alpha="0.5" />
+
             <ImageView
                 android:id="@+id/liked"
                 android:layout_width="70dp"
@@ -58,7 +59,7 @@
                 android:layout_centerVertical="true"
                 android:alpha="0.8"
                 android:visibility="invisible"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true" />
 
         </RelativeLayout>
 
@@ -144,7 +145,7 @@
             android:textAlignment="center"
             android:textAllCaps="true"
             tools:text="Song Name"
-            android:maxLines="1"/>
+            android:maxLines="1" />
 
         <com.riseapps.xmusic.widgets.MainTextViewSub
             android:id="@+id/artist"
@@ -157,7 +158,7 @@
             android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/size16sp"
             tools:text="Song Artist"
-            android:maxLines="1"/>
+            android:maxLines="1" />
     </LinearLayout>
 
 

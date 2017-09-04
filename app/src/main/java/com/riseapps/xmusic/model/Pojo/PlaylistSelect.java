@@ -8,11 +8,12 @@ public class PlaylistSelect {
     private String name;
     boolean selected;
 
-    public PlaylistSelect(){}
+    public PlaylistSelect() {
+    }
 
-    public PlaylistSelect(String name,boolean selected) {
+    public PlaylistSelect(String name, boolean selected) {
         this.name = name;
-        this.selected=selected;
+        this.selected = selected;
     }
 
     public void setName(String name) {

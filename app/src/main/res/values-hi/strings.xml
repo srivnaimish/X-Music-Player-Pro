@@ -76,4 +76,7 @@
     <string name="beautiful_themes">सुंदर थीम्स</string>
     <string name="play_song_directly_from_search_results">सीधे खोज परिणामों से गाने चलाएं</string>
     <string name="select_from_multiple_color_amp_movie_themes">एकाधिक रंग और मूवी थीम्स से चुनें</string>
+    <string name="animation_toggle">मुख्य प्लेयर में वेव एनिमेशन टॉगल करें</string>
+    <string name="recently_played">हाल ही में बजाया</string>
+    <string name="recently_added">हाल ही में जोड़ा गीत</string>
 </resources>

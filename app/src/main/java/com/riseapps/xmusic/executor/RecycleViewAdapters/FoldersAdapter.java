@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -28,7 +27,7 @@ public class FoldersAdapter extends RecyclerView.Adapter {
         this.folders = folders;
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         c = context;
-        unselected=new SharedPreferenceSingelton().getSavedString(c,"SkipFolders");
+        unselected = new SharedPreferenceSingelton().getSavedString(c, "SkipFolders");
 
     }
 
@@ -44,7 +43,7 @@ public class FoldersAdapter extends RecyclerView.Adapter {
         String name = folder.getName();
         ((FolderViewHolder) holder).name.setText(name);
         ((FolderViewHolder) holder).folder = folder;
-        if(unselected!=null && unselected.contains(name)) {
+        if (unselected != null && unselected.contains(name)) {
             ((FolderViewHolder) holder).add.setChecked(false);
             folder.setSelected(false);
         }
@@ -81,17 +80,15 @@ public class FoldersAdapter extends RecyclerView.Adapter {
                 if (add.isChecked()) {
                     add.setChecked(false);
                     folder.setSelected(false);
-                }
-                else {
+                } else {
                     add.setChecked(true);
                     folder.setSelected(true);
                 }
 
-            }else if(v.getId() == add.getId()){
+            } else if (v.getId() == add.getId()) {
                 if (folder.isSelected()) {
                     folder.setSelected(false);
-                }
-                else {
+                } else {
                     folder.setSelected(true);
                 }
             }

@@ -1,6 +1,5 @@
 package com.riseapps.xmusic.view.Fragment;
 
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -34,7 +32,7 @@ import java.util.ArrayList;
  * Created by naimish on 11/3/17.
  */
 
-public class SongsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class SongsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
@@ -44,7 +42,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     SongAdapter songsAdapter;
     private static final int SONG_LOADER = 1;
     ImageView imageView;
-    private String selection="";
+    private String selection = "";
 
     public static SongsFragment newInstance() {
         return new SongsFragment();
@@ -61,7 +59,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_songs, container, false);
 
-        imageView= (ImageView) rootView.findViewById(R.id.empty_state);
+        imageView = (ImageView) rootView.findViewById(R.id.empty_state);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.songs);
         int spanCount = 1; // 2 columns
         int spacing = 5; // 50px
@@ -70,30 +68,30 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        songsAdapter = new SongAdapter(getActivity(),recyclerView,null);
+        songsAdapter = new SongAdapter(getActivity(), recyclerView, null);
         recyclerView.setAdapter(songsAdapter);
 
-        ((MainActivity)getActivity()).setSongRefreshListener(new SongRefreshListener() {
+        ((MainActivity) getActivity()).setSongRefreshListener(new SongRefreshListener() {
 
             @Override
             public void OnContextBackPressed() {
-                for(Song song:songsList){
-                    if(song.isSelected())
+                for (Song song : songsList) {
+                    if (song.isSelected())
                         song.setSelected(false);
                 }
-                songsAdapter.count=0;
+                songsAdapter.count = 0;
                 songsAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void OnSongDelete() {
-                for(int i=songsList.size()-1;i>=0;i--){
-                    Song song=songsList.get(i);
-                    if(song.isSelected()){
+                for (int i = songsList.size() - 1; i >= 0; i--) {
+                    Song song = songsList.get(i);
+                    if (song.isSelected()) {
                         songsAdapter.delete(i);
                     }
                 }
-                songsAdapter.count=0;
+                songsAdapter.count = 0;
             }
         });
 
@@ -104,23 +102,23 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().getSupportLoaderManager().initLoader(SONG_LOADER,null,this);
+        getActivity().getSupportLoaderManager().initLoader(SONG_LOADER, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         initiallizeMultipleNames();
-        if(selection!=null)
-            return new CursorLoader(getContext(),musicUri,null,selection,null,MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
+        if (selection != null)
+            return new CursorLoader(getContext(), musicUri, null, selection, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
         else
-            return new CursorLoader(getContext(),musicUri,null,null,null,MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
+            return new CursorLoader(getContext(), musicUri, null, null, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         songsAdapter.swapCursor(data);
-        songsList=songsAdapter.songsList;
+        songsList = songsAdapter.songsList;
         setPlayingFromThisFragment();
         ((MainActivity) getActivity()).setCompleteSongList(songsList);
         ((MainActivity) getActivity()).startTheService();
@@ -132,7 +130,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
         songsAdapter.swapCursor(null);
     }
 
-    void setPlayingFromThisFragment(){
+    void setPlayingFromThisFragment() {
         songsAdapter.setMainListPlayingListener(new MainListPlayingListener() {
             @Override
             public void onPlayingFromTrackList() {
@@ -145,8 +143,8 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     void initiallizeMultipleNames() {
-        String names=new SharedPreferenceSingelton().getSavedString(getContext(),"SkipFolders");
-        if(names!=null) {
+        String names = new SharedPreferenceSingelton().getSavedString(getContext(), "SkipFolders");
+        if (names != null) {
             String[] folders = names.split(",");
             for (int i = 0; i < folders.length; i++) {
                 if (i < folders.length - 1)
@@ -154,9 +152,8 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
                 else
                     selection += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%'";
             }
-        }
-        else {
-            selection=null;
+        } else {
+            selection = null;
         }
     }
 

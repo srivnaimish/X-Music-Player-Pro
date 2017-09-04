@@ -7,11 +7,13 @@
             android:dither="true"
             >
             <corners
-                android:radius="2dp"/>
-            <solid android:color="@color/colorAccent"/>
+                android:radius="3dp"/>
+            <solid android:color="@color/colorWhite"/>
             <size
                 android:width="20dp"
                 android:height="20dp" />
+            <stroke android:width="2dp"
+                android:color="#E0E0E0" />
         </shape>
     </item>
     <item android:state_pressed="false">
@@ -19,12 +21,14 @@
             android:shape="rectangle"
             android:visible="true"
             android:dither="true">
-            <solid android:color="@color/colorAccent"/>
+            <solid android:color="@color/colorWhite"/>
             <corners
-                android:radius="2dp"/>
+                android:radius="3dp"/>
             <size
                 android:width="20dp"
                 android:height="20dp" />
+            <stroke android:width="2dp"
+                android:color="#E0E0E0" />
         </shape>
     </item>
 </selector>

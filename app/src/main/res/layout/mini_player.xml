@@ -48,7 +48,7 @@
         android:layout_centerVertical="true"
         android:background="@drawable/ripple"
         app:srcCompat="@drawable/play"
-        android:tint="?android:textColorPrimary"/>
+        android:tint="?android:textColorPrimary" />
 
     <com.riseapps.xmusic.widgets.EqualizerView xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/equalizer_view"
@@ -57,6 +57,5 @@
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/play_pause_mini"
         custom:animDuration="3500"
-        android:visibility="gone"
-       />
+        android:visibility="gone" />
 </RelativeLayout>

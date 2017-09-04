@@ -100,7 +100,7 @@
 
     <style name="HarryTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@android:color/transparent</item>
-        <item name="colorPrimaryDark">#172F31</item>
+        <item name="colorPrimaryDark">#000</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/whitePrimary</item>
         <item name="android:textColorSecondary">#EEEEEE</item>
@@ -110,21 +110,21 @@
         <item name="iconDual">#fafafa</item>
     </style>
 
-    <style name="MinionTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="MinionTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@android:color/transparent</item>
-        <item name="colorPrimaryDark">#80B7ED</item>
-        <item name="colorAccent">@color/colorAccentDark</item>
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        <item name="android:textColorSecondary">#424242</item>
-        <item name="android:textColorTertiary">@color/textColorPrimary</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/whitePrimary</item>
+        <item name="android:textColorSecondary">#FAFAFA</item>
+        <item name="android:textColorTertiary">@color/whitePrimary</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="iconDual">@color/colorPrimaryDark</item>
+        <item name="iconDual">@color/whitePrimary</item>
     </style>
 
     <style name="IronManTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@android:color/transparent</item>
-        <item name="colorPrimaryDark">#394249</item>
+        <item name="colorPrimaryDark">#42474A</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/whitePrimary</item>
         <item name="android:textColorSecondary">#FAFAFA</item>
@@ -155,5 +155,6 @@
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
         <item name="android:statusBarColor">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/colorAccent</item>
     </style>
 </resources>

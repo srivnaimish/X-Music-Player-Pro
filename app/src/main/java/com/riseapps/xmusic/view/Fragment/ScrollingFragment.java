@@ -40,7 +40,7 @@ import com.riseapps.xmusic.widgets.MainTextViewSub;
 
 import java.util.ArrayList;
 
-public class ScrollingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ScrollingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int MUSIC_LOADER_ID = 4;
 
@@ -66,7 +66,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
 
 
     private OnFragmentInteractionListener mListener;
-    private String filter=" AND (";
+    private String filter = " AND (";
 
     public ScrollingFragment() {
         // Required empty public constructor
@@ -199,21 +199,26 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String selection = "";
-        if (Action.equalsIgnoreCase("Albums")) {
-            selection = MediaStore.Audio.Media.ALBUM_ID + "=" + this.id;
-        } else if (Action.equalsIgnoreCase("Artists")) {
-            selection = MediaStore.Audio.Media.ARTIST_ID + "=" + this.id;
-        } else if (Action.equalsIgnoreCase("Favourites") || Action.equalsIgnoreCase("Playlists") ||
-                Action.equalsIgnoreCase("Recent_Playlists")) {
-            selection = multipleIDs;
-        }
+        if (Action.equalsIgnoreCase("Recent_Added_Playlist")) {
+            int X = 2 * (3600 * 24 * 7);
+            selection = MediaStore.MediaColumns.DATE_ADDED + ">" + (System.currentTimeMillis() / 1000 - X);
+        } else {
+            if (Action.equalsIgnoreCase("Albums")) {
+                selection = MediaStore.Audio.Media.ALBUM_ID + "=" + this.id;
+            } else if (Action.equalsIgnoreCase("Artists")) {
+                selection = MediaStore.Audio.Media.ARTIST_ID + "=" + this.id;
+            } else if (Action.equalsIgnoreCase("Favourites") || Action.equalsIgnoreCase("Playlists") ||
+                    Action.equalsIgnoreCase("Recent_Playlists")) {
+                selection = multipleIDs;
+            }
 
-        initiallizeMultipleNames();
-        if(filter!=null){
-            selection+=filter;
+            initiallizeMultipleNames();
+            if (filter != null) {
+                selection += filter;
+            }
         }
-
         return new CursorLoader(getContext(), musicUri, null, selection, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
+
     }
 
     @Override
@@ -245,7 +250,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
 
             @Override
             public void onDeleteClick(int position) {
-                new MyApplication(getContext()).getWritableDatabase().deleteSongFromPlaylist(Name,songMainArrayList.get(position).getID());
+                new MyApplication(getContext()).getWritableDatabase().deleteSongFromPlaylist(Name, songMainArrayList.get(position).getID());
                 nestedFragmentAdapter.delete(position);
             }
         });
@@ -295,8 +300,8 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     void initiallizeMultipleNames() {
-        String names=sharedPreferenceSingelton.getSavedString(getContext(),"SkipFolders");
-        if(names!=null) {
+        String names = sharedPreferenceSingelton.getSavedString(getContext(), "SkipFolders");
+        if (names != null) {
             String[] folders = names.split(",");
             for (int i = 0; i < folders.length; i++) {
                 if (i < folders.length - 1)
@@ -304,9 +309,8 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                 else
                     filter += MediaStore.Audio.Media.DATA + " NOT LIKE '%/" + folders[i] + "/%')";
             }
-        }
-        else {
-            filter=null;
+        } else {
+            filter = null;
         }
     }
 

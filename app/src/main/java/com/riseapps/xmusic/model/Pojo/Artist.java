@@ -1,8 +1,5 @@
 package com.riseapps.xmusic.model.Pojo;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
  * Created by naimish on 16/3/17.
  */
@@ -12,11 +9,13 @@ public class Artist {
     private long id;
 
     private int viewType;
-    public Artist(){}
 
-    public Artist(String name,long id) {
+    public Artist() {
+    }
+
+    public Artist(String name, long id) {
         this.name = name;
-        this.id=id;
+        this.id = id;
     }
 
     public void setName(String name) {

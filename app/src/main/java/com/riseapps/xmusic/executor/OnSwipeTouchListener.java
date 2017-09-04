@@ -23,13 +23,13 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     public void onSwipeRight() {
     }
 
-    public void onTap(){
+    public void onTap() {
     }
 
-    public void onDoubleTapping(){
+    public void onDoubleTapping() {
     }
 
-    public void onSwipeDown(){
+    public void onSwipeDown() {
     }
 
 
@@ -69,9 +69,8 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
                 else
                     onSwipeLeft();
                 return true;
-            }
-            else if(Math.abs(distanceX) < Math.abs(distanceY) && Math.abs(distanceY) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD){
-                if(distanceY>0)
+            } else if (Math.abs(distanceX) < Math.abs(distanceY) && Math.abs(distanceY) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                if (distanceY > 0)
                     onSwipeDown();
 
             }

@@ -18,7 +18,6 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,8 +25,6 @@ import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.GenerateNotification;
 import com.riseapps.xmusic.executor.RecentQueue;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.view.Activity.AppSettingActivity;
-import com.riseapps.xmusic.view.Activity.MainActivity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -268,11 +265,11 @@ public class MusicService extends Service implements
             int presetNumber = sharedPreferenceSingelton.getSavedInt(this, "Preset");
             if (presetNumber != 0)
                 equalizer.usePreset((short) (presetNumber - 1));
-            else{
+            else {
                 final short lowerEqualizerBandLevel = equalizer.getBandLevelRange()[0];
-                String savedSeekBarProgress=sharedPreferenceSingelton.getSavedString(this,"SeekBarPositions");
-                String progress[]=savedSeekBarProgress.split(" ");
-                for(short i=0;i<5;i++) {
+                String savedSeekBarProgress = sharedPreferenceSingelton.getSavedString(this, "SeekBarPositions");
+                String progress[] = savedSeekBarProgress.split(" ");
+                for (short i = 0; i < 5; i++) {
                     equalizer.setBandLevel(i, (short) (Integer.parseInt(progress[i]) + lowerEqualizerBandLevel));
                 }
             }
@@ -426,6 +423,7 @@ public class MusicService extends Service implements
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            assert action != null;
             switch (action) {
                 case "play":
                     togglePlay();

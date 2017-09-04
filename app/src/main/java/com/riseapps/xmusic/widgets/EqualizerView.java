@@ -9,7 +9,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;

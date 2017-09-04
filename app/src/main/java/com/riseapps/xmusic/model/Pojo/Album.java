@@ -1,13 +1,10 @@
 package com.riseapps.xmusic.model.Pojo;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
  * Created by naimish on 16/3/17.
  */
 
-public class Album{
+public class Album {
     private String name;
     private String imagepath;
     private long id;
@@ -15,10 +12,10 @@ public class Album{
     public Album() {
     }
 
-    public Album(long id,String name,String imagepath) {
-        this.id=id;
+    public Album(long id, String name, String imagepath) {
+        this.id = id;
         this.name = name;
-        this.imagepath=imagepath;
+        this.imagepath = imagepath;
     }
 
     public void setName(String name) {

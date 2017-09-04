@@ -39,7 +39,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
         RecyclerView.ViewHolder vh;
         v = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.playlist_name_row, parent, false);
-        return new PlaylistViewHolder(v,c);
+        return new PlaylistViewHolder(v, c);
 
     }
 
@@ -48,8 +48,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
 
         if (holder instanceof PlaylistViewHolder) {
             Playlist playlist = (Playlist) playlistsList.get(position);
-            String name=playlist.getName().trim();
-            ((PlaylistViewHolder)holder).name.setText(name);
+            String name = playlist.getName().trim();
+            ((PlaylistViewHolder) holder).name.setText(name);
 
             ((PlaylistViewHolder) holder).playlist = playlist;
 
@@ -60,12 +60,13 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
         playlistsList.remove(position);
         notifyItemRemoved(position);
     }
+
     @Override
     public int getItemCount() {
         return playlistsList.size();
     }
 
-    private class PlaylistViewHolder extends RecyclerView.ViewHolder{
+    private class PlaylistViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
         TextView name;
@@ -77,9 +78,9 @@ public class PlaylistAdapter extends RecyclerView.Adapter {
         PlaylistViewHolder(View v, Context context) {
             super(v);
             this.ctx = context;
-            imageView= (ImageView) v.findViewById(R.id.imageView1);
-            name= (TextView) v.findViewById(R.id.name);
-            delete= (ImageView) v.findViewById(R.id.delete);
+            imageView = (ImageView) v.findViewById(R.id.imageView1);
+            name = (TextView) v.findViewById(R.id.name);
+            delete = (ImageView) v.findViewById(R.id.delete);
         }
 
     }

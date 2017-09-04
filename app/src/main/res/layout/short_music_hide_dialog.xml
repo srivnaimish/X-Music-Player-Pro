@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
     android:background="?colorPrimary">
+
     <com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar
         android:layout_centerInParent="true"
         android:id="@+id/seekBar"
@@ -19,7 +19,7 @@
         app:text_color="?android:textColorTertiary"
         app:text_size="65sp"
         app:wheel_active_color="@color/colorAccent"
-        app:wheel_unactive_color="?android:textColorTertiary"/>
+        app:wheel_unactive_color="?android:textColorTertiary" />
 
     <Button
         android:id="@+id/done"
@@ -31,7 +31,7 @@
         android:text="@android:string/ok"
         app:layout_constraintLeft_toLeftOf="@+id/seekBar"
         app:layout_constraintTop_toBottomOf="@+id/seekBar"
-        android:textSize="@dimen/size16sp"/>
+        android:textSize="@dimen/size16sp" />
 
     <Button
         android:id="@+id/cancel"
@@ -43,5 +43,5 @@
         android:text="@android:string/cancel"
         app:layout_constraintRight_toRightOf="@+id/seekBar"
         app:layout_constraintTop_toTopOf="@+id/done"
-        android:textSize="@dimen/size16sp"/>
+        android:textSize="@dimen/size16sp" />
 </android.support.constraint.ConstraintLayout>

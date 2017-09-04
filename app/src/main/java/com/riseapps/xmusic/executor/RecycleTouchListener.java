@@ -12,7 +12,7 @@ import com.riseapps.xmusic.executor.Interfaces.ClickListener;
  * Created by naimish on 22/3/17.
  */
 
-public  class RecycleTouchListener implements RecyclerView.OnItemTouchListener {
+public class RecycleTouchListener implements RecyclerView.OnItemTouchListener {
     private GestureDetector gestureDetector;
     private ClickListener clickListener;
 

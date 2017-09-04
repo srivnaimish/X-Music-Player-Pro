@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -21,14 +20,8 @@ import android.view.ViewGroup;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.Interfaces.FragmentTransitionListener;
-import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.ArtistAdapter;
-import com.riseapps.xmusic.model.Pojo.Artist;
-import com.riseapps.xmusic.utils.GridItemDecoration;
-
-import java.util.ArrayList;
 
 public class ArtistFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     static {
@@ -68,7 +61,7 @@ public class ArtistFragment extends Fragment implements LoaderManager.LoaderCall
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
 
-        artistAdapter = new ArtistAdapter(getActivity(), recyclerView,null);
+        artistAdapter = new ArtistAdapter(getActivity(), recyclerView, null);
         recyclerView.setAdapter(artistAdapter);
 
         artistAdapter.setFragmentTransitionListener(new FragmentTransitionListener() {

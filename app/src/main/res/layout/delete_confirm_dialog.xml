@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -42,7 +41,7 @@
             android:layout_height="@dimen/size40dp"
             app:srcCompat="@drawable/ic_not_found"
             android:layout_marginStart="10dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical" />
 
         <com.riseapps.xmusic.widgets.MainTextViewSub
             android:layout_width="wrap_content"
@@ -72,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="@android:string/ok"
-            android:textSize="@dimen/size16sp"/>
+            android:textSize="@dimen/size16sp" />
 
         <Button
             android:id="@+id/cancel"
@@ -81,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="@android:string/cancel"
-            android:textSize="@dimen/size16sp"/>/>
+            android:textSize="@dimen/size16sp" />/>
     </LinearLayout>
 
 

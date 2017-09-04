@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.Interfaces.ScrollingClick;
@@ -25,9 +24,9 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
     ScrollingClick scrollingClick;
 
 
-    public NestedFragmentAdapter(Context context, ArrayList<Song> songs, RecyclerView recyclerView,String Action) {
+    public NestedFragmentAdapter(Context context, ArrayList<Song> songs, RecyclerView recyclerView, String Action) {
         songsList = songs;
-        this.Action=Action;
+        this.Action = Action;
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
                 .getLayoutManager();
         c = context;
@@ -76,7 +75,7 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
         return songsList.size();
     }
 
-    private class NestedSongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class NestedSongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name, artist;
         private Context ctx;
@@ -85,27 +84,26 @@ public class NestedFragmentAdapter extends RecyclerView.Adapter {
         ImageButton delete;
         CardView cardView;
 
-        NestedSongViewHolder(View v, Context context,String Action) {
+        NestedSongViewHolder(View v, Context context, String Action) {
             super(v);
             this.ctx = context;
-            this.Action=Action;
+            this.Action = Action;
             name = (TextView) v.findViewById(R.id.name);
             artist = (TextView) v.findViewById(R.id.artist);
-            delete= (ImageButton) v.findViewById(R.id.delete_playlist);
-            if(Action.equalsIgnoreCase("Playlists")){
+            delete = (ImageButton) v.findViewById(R.id.delete_playlist);
+            if (Action.equalsIgnoreCase("Playlists")) {
                 delete.setVisibility(View.VISIBLE);
             }
-            cardView= (CardView) v.findViewById(R.id.song_list_card);
+            cardView = (CardView) v.findViewById(R.id.song_list_card);
             cardView.setOnClickListener(this);
             delete.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if(v.getId()==delete.getId()){
+            if (v.getId() == delete.getId()) {
                 scrollingClick.onDeleteClick(getAdapterPosition());
-            }
-            else {
+            } else {
                 scrollingClick.onClick(getAdapterPosition());
             }
         }

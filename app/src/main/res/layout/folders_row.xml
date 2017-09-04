@@ -11,8 +11,7 @@
     card_view:cardElevation="0dp"
     card_view:cardBackgroundColor="?colorPrimary"
     android:layout_marginTop="2dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    >
+    android:foreground="?android:attr/selectableItemBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,8 +19,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:layout_marginEnd="4dp"
-        >
+        android:layout_marginEnd="4dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -34,7 +32,8 @@
                 android:layout_width="@dimen/size40dp"
                 android:layout_height="@dimen/size40dp"
                 android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_folder"/>
+                app:srcCompat="@drawable/ic_folder" />
+
             <com.riseapps.xmusic.widgets.MainTextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
@@ -44,7 +43,7 @@
                 android:textSize="@dimen/size16sp"
                 tools:text="TextView"
                 android:layout_marginStart="25dp"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="4dp" />
 
         </LinearLayout>
 
@@ -55,7 +54,6 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/size8dp"
-            android:checked="true"
-            />
+            android:checked="true" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

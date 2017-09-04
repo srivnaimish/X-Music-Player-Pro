@@ -83,4 +83,7 @@
     <string name="beautiful_themes">Hermosos Temas</string>
     <string name="select_from_multiple_color_amp_movie_themes"><![CDATA[Selecciona desde varios Colores y Temas de Películas]]></string>
     <string name="play_song_directly_from_search_results">Reproducir canción directamente desde los resultados de la búsqueda</string>
+    <string name="recently_added">Recientemente añadido</string>
+    <string name="recently_played">Canciones recientes</string>
+    <string name="animation_toggle">Activar la animación de las olas en el reproductor principal</string>
 </resources>

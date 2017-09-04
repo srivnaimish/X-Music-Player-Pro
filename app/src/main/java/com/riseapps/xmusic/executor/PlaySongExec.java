@@ -3,7 +3,6 @@ package com.riseapps.xmusic.executor;
 import android.app.Activity;
 import android.content.Context;
 
-import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 
@@ -23,7 +22,7 @@ public class PlaySongExec {
     }
 
     public void startPlaying() {
-        MusicService musicService =((MainActivity)ctx).getMusicService();
+        MusicService musicService = ((MainActivity) ctx).getMusicService();
         musicService.setSong(mPos);
         musicService.togglePlay();
     }

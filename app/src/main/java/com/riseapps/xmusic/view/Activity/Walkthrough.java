@@ -24,14 +24,13 @@ import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 
-public class Walkthrough extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class Walkthrough extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private ViewPager viewPager;
     private int[] layouts;
@@ -39,7 +38,7 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
 
     private static final int REQUEST_PERMISSION = 0;
     String[] permissionsRequired = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,6 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
         }
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         RelativeLayout btnSkip = (RelativeLayout) findViewById(R.id.btn_skip);
-
 
 
         layouts = new int[]{
@@ -69,8 +67,8 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(found)
-                moveToMain();
+                if (found)
+                    moveToMain();
                 else {
                     Dialog dialog = new Dialog(Walkthrough.this);
                     dialog.setContentView(R.layout.empty_state_dialog);
@@ -106,7 +104,7 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        return new CursorLoader(this,musicUri,null,null,null,null);
+        return new CursorLoader(this, musicUri, null, null, null, null);
     }
 
     @Override
@@ -157,7 +155,7 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.checkSelfPermission(this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED|| ActivityCompat.checkSelfPermission(this, permissionsRequired[2]) != PackageManager.PERMISSION_GRANTED) {
+                    || ActivityCompat.checkSelfPermission(this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, permissionsRequired[2]) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[0])
                         || ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[1])) {
                     Snackbar.make(findViewById(android.R.id.content),
@@ -174,13 +172,11 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
                 } else {
                     ActivityCompat.requestPermissions(this, permissionsRequired, REQUEST_PERMISSION);
                 }
+            } else {
+                getSupportLoaderManager().initLoader(6, null, this);
             }
-            else{
-                getSupportLoaderManager().initLoader(6,null,this);
-            }
-        }
-        else {
-            getSupportLoaderManager().initLoader(6,null,this);
+        } else {
+            getSupportLoaderManager().initLoader(6, null, this);
         }
     }
 
@@ -188,8 +184,8 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
     public void onRequestPermissionsResult(int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_PERMISSION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED ) {
-                    getSupportLoaderManager().initLoader(6,null,this);
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                    getSupportLoaderManager().initLoader(6, null, this);
                 } else {
                     Snackbar.make(viewPager, R.string.permission_rationale,
                             Snackbar.LENGTH_INDEFINITE)
@@ -206,7 +202,7 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
         }
     }
 
-    public void moveToMain(){
+    public void moveToMain() {
         new SharedPreferenceSingelton().saveAs(Walkthrough.this, "opened_before", true);
         startActivity(new Intent(Walkthrough.this, MainActivity.class));
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

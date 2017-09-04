@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
@@ -31,7 +32,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
@@ -42,7 +42,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -76,14 +75,14 @@ import com.riseapps.xmusic.executor.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.utils.ZoomOutPageTransformer;
-import com.riseapps.xmusic.widgets.EqualizerView;
 import com.riseapps.xmusic.utils.WaveHelper;
+import com.riseapps.xmusic.utils.ZoomOutPageTransformer;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
 import com.riseapps.xmusic.view.Fragment.ArtistFragment;
 import com.riseapps.xmusic.view.Fragment.PlaylistFragment;
 import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 import com.riseapps.xmusic.view.Fragment.SongsFragment;
+import com.riseapps.xmusic.widgets.EqualizerView;
 import com.riseapps.xmusic.widgets.MainTextView;
 
 import java.io.File;
@@ -221,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             mWaveHelper.cancel();
         }
     };
+    public static WaveView waveView;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         } else if (sharedPreferenceSingleton.getSavedInt(this, "Themes") == 9) {
             Glide
                     .with(MainActivity.this)
-                    .load(R.drawable.minions)
+                    .load(R.drawable.batman)
                     .dontAnimate()
                     .into(background);
         } else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 10) {
@@ -362,8 +362,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 hideMainPlayer();
             }
         });
-
-        final WaveView waveView = (WaveView) findViewById(R.id.wave);
+        waveView = (WaveView) findViewById(R.id.wave);
         int mBorderWidth = 5;
         waveView.setBorder(mBorderWidth, mBorderColor);
 
@@ -373,7 +372,11 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         waveView.setWaveColor(
                 Color.parseColor("#D32F2F"),
                 Color.parseColor("#F44336"));
-        mWaveHelper.start();
+        if (!sharedPreferenceSingleton.getSavedBoolean(this, "Waves")) {
+            mWaveHelper.start();
+        } else {
+            waveView.setVisibility(View.GONE);
+        }
 
     }
 
@@ -571,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                         startActivity(Intent.createChooser(share, "Share Sound File"));
                     }
 
-                }else if (item.getItemId()==R.id.equalizer){
+                } else if (item.getItemId() == R.id.equalizer) {
                     openEqualizerDialog();
                 }
                 return true;
@@ -1011,10 +1014,10 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     private void openDeleteDialog() {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.delete_confirm_dialog);
-        try{
+        try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        }catch (NullPointerException e){
-            Log.d("NullPointer","yes");
+        } catch (NullPointerException e) {
+            Log.d("NullPointer", "yes");
         }
         dialog.show();
         Button done = (Button) dialog.findViewById(R.id.done);
@@ -1066,24 +1069,24 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.equalizer_dialog);
-        try{
+        try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        }catch (NullPointerException e){
-            Log.d("NullPointer","yes");
+        } catch (NullPointerException e) {
+            Log.d("NullPointer", "yes");
         }
         dialog.show();
 
         final SeekBar seekBars[] = new SeekBar[5];
         TextView levels[] = new TextView[5];
         final Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
-        Switch toggleSwitch= (Switch) dialog.findViewById(R.id.switch1);
+        Switch toggleSwitch = (Switch) dialog.findViewById(R.id.switch1);
         int supportedPresets = musicService.equalizer.getNumberOfPresets();
         final short lowerEqualizerBandLevel = musicService.equalizer.getBandLevelRange()[0];
         final short upperEqualizerBandLevel = musicService.equalizer.getBandLevelRange()[1];
         ArrayList<String> presetList = new ArrayList<>();
-        int savedPreset=sharedPreferenceSingleton.getSavedInt(MainActivity.this,"Preset");
-        String savedSeekBarProgress=sharedPreferenceSingleton.getSavedString(MainActivity.this,"SeekBarPositions");
-        final boolean switchOn=sharedPreferenceSingleton.getSavedBoolean(MainActivity.this,"Equalizer_Switch");
+        int savedPreset = sharedPreferenceSingleton.getSavedInt(MainActivity.this, "Preset");
+        String savedSeekBarProgress = sharedPreferenceSingleton.getSavedString(MainActivity.this, "SeekBarPositions");
+        final boolean switchOn = sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "Equalizer_Switch");
 
         for (short i = 0; i < 5; i++) {
             final short equalizerBandIndex = i;
@@ -1117,13 +1120,13 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, presetList);
         spinner.setAdapter(arrayAdapter);
 
-        if(savedPreset!=0){
-            for(int i=0;i<5;i++){
+        if (savedPreset != 0) {
+            for (int i = 0; i < 5; i++) {
                 seekBars[i].setEnabled(false);
             }
             spinner.setSelection(savedPreset);
-        }else {
-            if(savedSeekBarProgress!=null) {
+        } else {
+            if (savedSeekBarProgress != null) {
                 String progress[] = savedSeekBarProgress.split(" ");
 
                 for (short i = 0; i < 5; i++) {
@@ -1131,23 +1134,22 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 }
             }
         }
-        if (switchOn){
+        if (switchOn) {
             toggleSwitch.setChecked(true);
         }
-
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position!=0) {
+                if (position != 0) {
                     musicService.equalizer.usePreset((short) (position - 1));
                     final short lowerEqualizerBandLevel = musicService.equalizer.getBandLevelRange()[0];
                     for (short i = 0; i < 5; i++) {
                         seekBars[i].setProgress(musicService.equalizer.getBandLevel(i) - lowerEqualizerBandLevel);
                         seekBars[i].setEnabled(false);
                     }
-                }else {
+                } else {
                     for (short i = 0; i < 5; i++) {
                         seekBars[i].setEnabled(true);
                     }
@@ -1163,12 +1165,12 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         toggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    if(!musicService.equalizer.getEnabled()) {
+                if (isChecked) {
+                    if (!musicService.equalizer.getEnabled()) {
                         musicService.equalizer.setEnabled(true);
                         sharedPreferenceSingleton.saveAs(MainActivity.this, "Equalizer_Switch", true);
                     }
-                }else {
+                } else {
                     musicService.equalizer.setEnabled(false);
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "Equalizer_Switch", false);
                 }
@@ -1180,9 +1182,9 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             @Override
             public void onClick(View view) {
                 String seekBarPositions = "";
-                if(spinner.getSelectedItemPosition()==0) {      //if spinner is set to custom
+                if (spinner.getSelectedItemPosition() == 0) {      //if spinner is set to custom
                     for (int i = 0; i < 5; i++) {
-                        seekBarPositions += seekBars[i].getProgress()+" ";
+                        seekBarPositions += seekBars[i].getProgress() + " ";
                     }
                     sharedPreferenceSingleton.saveAs(MainActivity.this, "SeekBarPositions", seekBarPositions);     //save all seekbar progress
                 }

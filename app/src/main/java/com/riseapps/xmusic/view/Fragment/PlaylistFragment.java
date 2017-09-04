@@ -1,15 +1,11 @@
 package com.riseapps.xmusic.view.Fragment;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
@@ -17,19 +13,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
@@ -38,10 +27,8 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.PlaylistAdapter;
 import com.riseapps.xmusic.model.Pojo.Playlist;
-import com.riseapps.xmusic.utils.GridItemDecoration;
 import com.riseapps.xmusic.view.Activity.MainActivity;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
@@ -50,13 +37,14 @@ public class PlaylistFragment extends Fragment {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
     SharedPreferenceSingelton sharedPreferenceSingelton;
     NestedScrollView nestedScrollView;
     RecyclerView recyclerView;
     ArrayList<Playlist> playLists = new ArrayList<>();
     PlaylistAdapter playlistAdapter;
     private OnFragmentInteractionListener mListener;
-    CardView cardView;
+    CardView cardView, added_card;
 
     public PlaylistFragment() {
         // Required empty public constructor
@@ -83,8 +71,8 @@ public class PlaylistFragment extends Fragment {
         nestedScrollView = (NestedScrollView) v.findViewById(R.id.nestedScrollView);
 
         sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        cardView= (CardView) v.findViewById(R.id.recent_played);
-
+        cardView = (CardView) v.findViewById(R.id.recent_played);
+        added_card = v.findViewById(R.id.recent_added);
         recyclerView = (RecyclerView) v.findViewById(R.id.playlists);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager grid = new GridLayoutManager(v.getContext(), 1);
@@ -93,7 +81,7 @@ public class PlaylistFragment extends Fragment {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScrollingFragment scrollingFragment=new ScrollingFragment();
+                ScrollingFragment scrollingFragment = new ScrollingFragment();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     setExitTransition(TransitionInflater.from(
                             getActivity()).inflateTransition(android.R.transition.fade));
@@ -106,10 +94,32 @@ public class PlaylistFragment extends Fragment {
                 scrollingFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.drawerLayout,scrollingFragment,"ScrollingFragment")
+                        .replace(R.id.drawerLayout, scrollingFragment, "ScrollingFragment")
                         .addToBackStack(null)
                         .commit();
 
+            }
+        });
+
+        added_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ScrollingFragment scrollingFragment = new ScrollingFragment();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    setExitTransition(TransitionInflater.from(
+                            getActivity()).inflateTransition(android.R.transition.fade));
+                    scrollingFragment.setEnterTransition(TransitionInflater.from(
+                            getActivity()).inflateTransition(android.R.transition.fade));
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("Name", "Recent Added");
+                bundle.putString("Action", "Recent_Added_Playlist");
+                scrollingFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.drawerLayout, scrollingFragment, "ScrollingFragment")
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
@@ -121,8 +131,8 @@ public class PlaylistFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                String name=playLists.get(viewHolder.getAdapterPosition()).getName();
-                deletePlaylist(playLists.get(viewHolder.getAdapterPosition()).getName(),viewHolder.getAdapterPosition());
+                String name = playLists.get(viewHolder.getAdapterPosition()).getName();
+                deletePlaylist(playLists.get(viewHolder.getAdapterPosition()).getName(), viewHolder.getAdapterPosition());
             }
         };
 
@@ -139,9 +149,9 @@ public class PlaylistFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         if (v.getId() == R.id.delete) {
-                            deletePlaylist(playLists.get(position).getName(),position);
+                            deletePlaylist(playLists.get(position).getName(), position);
                         } else if (v.getId() == R.id.playlist_list_card) {
-                            ScrollingFragment scrollingFragment=new ScrollingFragment();
+                            ScrollingFragment scrollingFragment = new ScrollingFragment();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 setExitTransition(TransitionInflater.from(
                                         getActivity()).inflateTransition(android.R.transition.fade));
@@ -154,7 +164,7 @@ public class PlaylistFragment extends Fragment {
                             scrollingFragment.setArguments(bundle);
                             FragmentManager fragmentManager = getFragmentManager();
                             fragmentManager.beginTransaction()
-                                    .replace(R.id.drawerLayout,scrollingFragment)
+                                    .replace(R.id.drawerLayout, scrollingFragment)
                                     .addToBackStack(null)
                                     .commit();
                         }
@@ -233,12 +243,12 @@ public class PlaylistFragment extends Fragment {
 
     public void refreshPlaylists() {
 
-        playLists=new MyApplication(getActivity()).getWritableDatabase().readPlaylists();
+        playLists = new MyApplication(getActivity()).getWritableDatabase().readPlaylists();
         playlistAdapter = new PlaylistAdapter(getActivity(), playLists, recyclerView);
         recyclerView.setAdapter(playlistAdapter);
     }
 
-    public void deletePlaylist(String name,int position){
+    public void deletePlaylist(String name, int position) {
         new MyApplication(getActivity()).getWritableDatabase().deletePlaylist(name);
         playlistAdapter.delete(position);
         Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();

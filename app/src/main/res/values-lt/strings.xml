@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<resources>
+    <!--WALKTHROUGH-->
+    <string name="fragment1_heading">Ieškoti Youtube</string>
+    <string name="fragment1_subHeading">Susiraskite dainą kurios norite pasiklausyti Youtube tinklapyje</string>
+    <string name="fragment2_heading">Patobulinkite savo muziką</string>
+    <string name="fragment2_subHeading">Ekvalaizerio įjungimas</string>
+    <string name="fragment3_heading">Muzikos laikmatis</string>
+    <string name="fragment3_subHeading">Nustatykite laikmatį, norėdami sustabdyti muziką po kurio laiko tai padarykite per nustatymus</string>
+    <string name="permission_rationale">Programa negali atkurti jūsų dainų ... Prašome suteikti leidimą</string>
+    <string name="start_now">PRADĖKITE DABAR!</string>
+    <!-- MENU ITEMS -->
+    <string name="action_favourites">Mėgstamiausios</string>
+    <string name="action_playlist">Įtraukti į grojaraštį</string>
+    <string name="action_youtube">Susiraskite dainą kurios norite pasiklausyti Youtube tinklapyje</string>
+    <string name="action_search">Ieškokite dainos</string>
+    <!--MAINACTIVITY-->
+    <string name="TAB1">Grojaraštos</string>
+    <string name="TAB2">Albumai</string>
+    <string name="TAB3">Atlikėjai</string>
+    <string name="TAB4">Dainos</string>
+    <string name="now_playing">Gorjama</string>
+    <string name="song_repeat_off_toast">Dainų kartojimas išjungtas</string>
+    <string name="song_repeat_on_toast">Dainų kartojimas įjungtas</string>
+    <string name="opening_youtube">Atidaroma Youtube</string>
+    <string name="song_added_to_playlist">Daina pridėta į grojaraštį</string>
+    <!--PLAYLIST SELECT ACTIVITY-->
+    <string name="playlist_screen_placeholder">Jūs galite pridėti į KELETĄ grojaraščių vienu metu</string>
+    <string name="did_not_select">Jūs neparinkote jokio grojaraščio savo dainai!</string>
+    <string name="select_atleast_one">Jūs turite pasirinkti bent jau vieną gorjaraštį</string>
+    <string name="created">Sukurta</string>
+    <!--EXTRAS-->
+    <string name="play_all">Groti visas</string>
+    <string name="shuffle">Maišyti</string>
+    <string name="empty_state_message">Atsiprašome... Dainų nerandame !!</string>
+    <string name="swipe_right_or_left_to_change_the_song">Braukite dešinėn/Kairėn arba du kartus paspauskite ant Albumo</string>
+    <string name="playing_all">Grojamos visos dainos</string>
+    <!--SETTINGS-->
+    <string name="settings_title">Programos nustatymai</string>
+    <string name="equalizer_heading">Ekvalaizeris</string>
+    <string name="sleep_timer_heading">Miego laikmatis</string>
+    <string name="sleep_timer_subHeading">Išjunkite muzikos grotuvą automatiškai.</string>
+    <string name="help_heading">Padėkit mums išversti</string>
+    <string name="help_subHeading">Mums reikia jūsų pagalbos verčiant programėlę į savo gimtąja kalba</string>
+    <string name="share_app">Pasidalinkite programėle</string>
+    <string name="recomment_it_to_others">Rekomenduokite kitiems</string>
+    <string name="rate_us_heading">Įvertinkite mus \"Google Play\" parduotuvėje!</string>
+    <string name="rate_us_subHeading">Parodyk mums šiek tieks meilės ir duok mums 5 žvaigždutes</string>
+    <string name="Invalid_Time_Toast">Netinkamas laikas</string>
+    <string name="translation_help">Pagalba verčiant</string>
+    <string name="translation_help_sub">Dėkojame už susidomėjimą X Music Player Pro vertimu! .\n\nJei padėsite mums išversti šią programą į kitą kalbą, jūsų vardas bus paminėtas žaidimų parduotuvės aprašyme kaip dėkingumo simbolis.</string>
+    <!--CREATE PLAYLIST DIALOG-->
+    <string name="create_a_new_playlist">Sukurkite naują grojaraštį</string>
+    <string name="name">Pavadinimas...</string>
+    <!--SLEEP TIME DIALOG-->
+    <string name="stop_music_after">Sustabdyti muziką</string>
+    <string name="minutes">Minučių</string>
+    <string name="action_share">Pasidalinkite daina</string>
+    <string name="theme">Vientisos spalvos tema</string>
+    <string name="switch_betweem_the_light_and_dark_app_themes">Programa vėl paleidžiama, kad perjungtumėme temą</string>
+    <string name="app_walk1">Miego laikmatis, filmų temos, aplankalų praleidimas, vientisų spalvų temos</string>
+    <string name="app_walk2">Bakstelėkite sumažintą gotuvą, kad atidarytumėte pagrindinį grotuvą</string>
+    <string name="app_walk3">Norite ieškoti šios dainos \"YouTube\"?</string>
+    <string name="delete_these_songs">Ištrinti šias dainas?</string>
+    <string name="delete_warning">Ši operacija taip pat ištrins pasirinktas dainas iš įrenginio</string>
+    <string name="empty_state_playlist_message">Jūs nesukūrėte jokio grojaraščio</string>
+    <string name="hide_music">Nustatykite minimalią trukmę dainų skenavimui</string>
+    <string name="custom_time">Pasirinktinis laikas</string>
+    <string name="pick_time">Pasirinkite laiką</string>
+    <string name="buy">Pirkite temą</string>
+    <string name="thanks">Dėkojame, kad įsigijote</string>
+    <string name="aborted">Nutraukta</string>
+    <string name="pick_theme">Pasirinkite</string>
+    <string name="movie">Filmų temos</string>
+    <string name="scroll_to_view_more">Slinkite, kad peržiūrėtumėte daugiau</string>
+    <string name="hint_restart_app_to_reflect_changes">Patarimas: paleiskite programą iš naujo, kad pamatytūte pakeitimus</string>
+    <string name="folders_to_scan">Pasirinkite aplankus, kuriuos norite nuskaityti</string>
+    <string name="exclude_folder">Neįtraukti aplanko</string>
+    <string name="set_the_folders_you_want_to_load_songs_from">Nustatykite aplankus iš kurių norite girdėti dainas</string>
+    <string name="save">Išsaugoti</string>
+    <string name="equalizer_hint">Patarimas: Jei norite išsaugoti ekvalaizerio nustatymus, paspauskite Išsaugoti</string>
+    <string name="select_a_preset">Pasirinkite iš anksto:</string>
+    <string name="beautiful_themes">Gražios temos</string>
+    <string name="select_from_multiple_color_amp_movie_themes"><![CDATA[Pasirinkite iš kelių spalvų ir filmų temų]]></string>
+    <string name="play_song_directly_from_search_results">Groti dainą tiesiai iš paieškos rezultatų</string>
+    <string name="animation_toggle">Įjunkite bangos animaciją pagrindiniame grotuve</string>
+    <string name="recently_played">Neseniai gauta dainos</string>
+    <string name="recently_added">Paskutinės pridėtos dainos</string>
+</resources>

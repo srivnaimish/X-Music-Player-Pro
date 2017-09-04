@@ -3,7 +3,6 @@ package com.riseapps.xmusic.component;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.widget.Toast;
 
 import com.riseapps.xmusic.R;
 
@@ -14,18 +13,18 @@ import com.riseapps.xmusic.R;
 public class ThemeSelector {
     private SharedPreferenceSingelton sharedPreferenceSingelton;
 
-    public int[] getThemeForSongAdapter(Context context){
-        sharedPreferenceSingelton=new SharedPreferenceSingelton();
-        int currentTheme=sharedPreferenceSingelton.getSavedInt(context, "Themes");
-        int colors[]={0,0};
-        switch (currentTheme){
+    public int[] getThemeForSongAdapter(Context context) {
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        int currentTheme = sharedPreferenceSingelton.getSavedInt(context, "Themes");
+        int colors[] = {0, 0};
+        switch (currentTheme) {
             case 1:
                 colors[0] = Color.rgb(58, 58, 71);
                 colors[1] = Color.rgb(22, 22, 25);
                 break;
             case 2:
                 colors[0] = Color.rgb(163, 87, 66);
-                colors[1] = Color.rgb(110, 60, 27);
+                colors[1] = Color.rgb(158, 108, 75);
                 break;
             case 3:
                 colors[0] = Color.rgb(96, 77, 89);
@@ -65,13 +64,15 @@ public class ThemeSelector {
                 break;
             default:
                 colors[0] = Color.LTGRAY;
-                colors[1] = Color.WHITE;;
+                colors[1] = Color.WHITE;
+                ;
         }
         return colors;
     }
-    public void setAppTheme(Activity activity){
-        sharedPreferenceSingelton=new SharedPreferenceSingelton();
-        int currentTheme=sharedPreferenceSingelton.getSavedInt(activity, "Themes");
+
+    public void setAppTheme(Activity activity) {
+        sharedPreferenceSingelton = new SharedPreferenceSingelton();
+        int currentTheme = sharedPreferenceSingelton.getSavedInt(activity, "Themes");
         if (currentTheme == 1)
             activity.setTheme(R.style.AppTheme_Dark);
         else if (currentTheme == 2)
