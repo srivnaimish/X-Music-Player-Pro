@@ -222,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     };
     public static WaveView waveView;
 
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,25 +234,25 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         if (sharedPreferenceSingleton.getSavedInt(this, "Themes") == 8) {
             Glide
                     .with(MainActivity.this)
-                    .load(R.drawable.harry_potter)
+                    .load(R.drawable.harry_background)
                     .dontAnimate()
                     .into(background);
         } else if (sharedPreferenceSingleton.getSavedInt(this, "Themes") == 9) {
             Glide
                     .with(MainActivity.this)
-                    .load(R.drawable.batman)
+                    .load(R.drawable.batman_background)
                     .dontAnimate()
                     .into(background);
         } else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 10) {
             Glide
                     .with(MainActivity.this)
-                    .load(R.drawable.iron_man)
+                    .load(R.drawable.iron_man_background)
                     .dontAnimate()
                     .into(background);
         } else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 11) {
             Glide
                     .with(MainActivity.this)
-                    .load(R.drawable.deadpool)
+                    .load(R.drawable.deadpool_background)
                     .dontAnimate()
                     .into(background);
         }

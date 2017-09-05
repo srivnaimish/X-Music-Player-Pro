@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
@@ -105,14 +106,15 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
 
         if (Imagepath == null) {
             circleAlbumArt.setImageResource(R.drawable.play);
-            Glide.with(getContext()).load("https://cdn.pixabay.com/photo/2016/09/08/21/09/piano-1655558_960_720.jpg")
+            Glide.with(getContext())
+                    .load(R.drawable.placeholder)
                     .crossFade()
-                    .placeholder(R.drawable.dummy)
+                    .placeholder(R.drawable.placeholder)
                     .into(imageView);
         } else {
             Glide.with(getContext()).load(Uri.parse(Imagepath))
                     .crossFade()
-                    .placeholder(R.drawable.dummy)
+                    .placeholder(R.drawable.placeholder)
                     .into(imageView);
 
             Glide.with(getContext()).load(Uri.parse(Imagepath))

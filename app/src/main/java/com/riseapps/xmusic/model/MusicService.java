@@ -423,7 +423,6 @@ public class MusicService extends Service implements
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            assert action != null;
             switch (action) {
                 case "play":
                     togglePlay();

@@ -16,38 +16,27 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="4dp">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="@dimen/size30dp"
+            android:layout_height="@dimen/size30dp"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/playlist"
+            android:layout_marginStart="20dp"/>
+
+        <com.riseapps.xmusic.widgets.MainTextView
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="20dp">
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="@dimen/size40dp"
-                android:layout_height="@dimen/size40dp"
-                android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/playlist" />
-
-            <com.riseapps.xmusic.widgets.MainTextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="@dimen/size16sp"
-                tools:text="TextView"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="4dp" />
-
-        </LinearLayout>
-
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/size16sp"
+            tools:text="TextView"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/imageView1"/>
 
         <ImageView
             android:id="@+id/delete"
@@ -56,9 +45,12 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/size8dp"
-            android:background="?colorPrimary"
+            android:background="@drawable/ripple"
             android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
+            android:focusable="true"
             app:srcCompat="@drawable/ic_delete" />
+
+
+        <!---->
     </RelativeLayout>
 </android.support.v7.widget.CardView>

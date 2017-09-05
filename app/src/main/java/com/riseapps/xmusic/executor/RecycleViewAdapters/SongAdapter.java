@@ -107,7 +107,7 @@ public class SongAdapter extends RecyclerView.Adapter {
         Glide.with(c).load(imagepath)
                 .dontAnimate()
                 .centerCrop()
-                .placeholder(R.drawable.dummy)
+                .placeholder(R.drawable.placeholder)
                 .into(((SongViewHolder) holder).iv);
         if (new MyApplication(c).getWritableDatabase().isFavourite(song.getID())) {
             song.setFavourite(true);

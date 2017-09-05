@@ -31,7 +31,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:alpha="0.9"
+                android:alpha="0.8"
                 android:background="@color/colorBlack"
                 android:gravity="center"
                 app:layout_collapseMode="parallax"

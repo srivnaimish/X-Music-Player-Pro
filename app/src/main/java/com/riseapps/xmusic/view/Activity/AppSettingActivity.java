@@ -121,25 +121,25 @@ public class AppSettingActivity extends AppCompatActivity {
         if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 8) {
             Glide
                     .with(this)
-                    .load(R.drawable.harry_potter)
+                    .load(R.drawable.harry_background)
                     .dontAnimate()
                     .into(background);
         } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 9) {
             Glide
                     .with(this)
-                    .load(R.drawable.batman)
+                    .load(R.drawable.batman_background)
                     .dontAnimate()
                     .into(background);
         } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 10) {
             Glide
                     .with(this)
-                    .load(R.drawable.iron_man)
+                    .load(R.drawable.iron_man_background)
                     .dontAnimate()
                     .into(background);
         } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 11) {
             Glide
                     .with(this)
-                    .load(R.drawable.deadpool)
+                    .load(R.drawable.deadpool_background)
                     .dontAnimate()
                     .into(background);
         }

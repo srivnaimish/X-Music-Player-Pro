@@ -80,8 +80,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
         Glide.with(c).load(imagepath)
                 .dontAnimate()
                 .centerCrop()
-                .placeholder(R.drawable.dummy)
-                .error(R.drawable.dummy)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
                 .into(((AlbumViewHolder) holder).imageView);
 
         ((AlbumViewHolder) holder).album = new Album(album_id, albumName, imagepath);

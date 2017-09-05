@@ -11,7 +11,7 @@
         android:layout_width="@dimen/size45dp"
         android:layout_height="@dimen/size45dp"
         android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         app:srcCompat="@drawable/empty" />
 
     <LinearLayout

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,44 +19,37 @@
             android:layout_height="70dp"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?selectableItemBackgroundBorderless"
+            card_view:cardBackgroundColor="?colorPrimary"
             card_view:cardCornerRadius="1dp"
             card_view:cardElevation="0dp"
-            card_view:cardBackgroundColor="?colorPrimary"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="4dp"
-            android:foreground="?selectableItemBackgroundBorderless">
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center">
+                android:layout_height="match_parent">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="@dimen/size30dp"
+                    android:layout_height="@dimen/size30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    app:srcCompat="@drawable/playlist" />
+
+                <com.riseapps.xmusic.widgets.MainTextView
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp">
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_toEndOf="@id/imageView1"
+                    android:text="@string/recently_played"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/size16sp" />
 
-                    <ImageView
-                        android:id="@+id/imageView1"
-                        android:layout_width="@dimen/size40dp"
-                        android:layout_height="@dimen/size40dp"
-                        android:layout_gravity="center_vertical"
-                        app:srcCompat="@drawable/playlist" />
-
-                    <com.riseapps.xmusic.widgets.MainTextView
-                        android:id="@+id/name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="@dimen/size16sp"
-                        android:text="@string/recently_played"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="4dp" />
-
-                </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -67,45 +61,42 @@
             android:layout_height="70dp"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?selectableItemBackgroundBorderless"
+            card_view:cardBackgroundColor="?colorPrimary"
             card_view:cardCornerRadius="1dp"
             card_view:cardElevation="0dp"
-            card_view:cardBackgroundColor="?colorPrimary"
+            android:layout_below="@+id/recent_played"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_below="@id/recent_played"
-            android:foreground="?selectableItemBackgroundBorderless">
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center">
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="4dp">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="@dimen/size30dp"
+                    android:layout_height="@dimen/size30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    app:srcCompat="@drawable/playlist" />
+
+                <com.riseapps.xmusic.widgets.MainTextView
+                    android:id="@+id/name2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp">
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_toEndOf="@id/imageView2"
+                    android:text="@string/recently_added"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="@dimen/size16sp" />
 
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="@dimen/size40dp"
-                        android:layout_height="@dimen/size40dp"
-                        android:layout_gravity="center_vertical"
-                        app:srcCompat="@drawable/playlist" />
-
-                    <com.riseapps.xmusic.widgets.MainTextView
-                        android:id="@+id/name2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="@dimen/size16sp"
-                        android:text="@string/recently_added"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="4dp" />
-
-                </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -113,10 +104,10 @@
             android:id="@+id/playlists"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/recent_added"
             android:scrollbars="none"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_below="@id/recent_added" />
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"/>
     </RelativeLayout>
 
 
