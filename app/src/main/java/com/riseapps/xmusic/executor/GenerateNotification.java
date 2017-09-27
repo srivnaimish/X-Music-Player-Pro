@@ -1,10 +1,12 @@
 package com.riseapps.xmusic.executor;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
@@ -91,6 +93,22 @@ public class GenerateNotification {
                         NOTIFICATION_ID));
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String id = "Music";
+            CharSequence name = "Music Playing notification";
+            String description = "Shows the current track playing in notification";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel mChannel = new NotificationChannel(id, name, importance);
+            mChannel.setDescription(description);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            mNotificationManager.createNotificationChannel(mChannel);
+            mBuilder.setChannelId(id);
+        }
+
+
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
         //  return notification;
     }

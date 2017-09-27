@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<resources>
+    <!--WALKTHROUGH-->
+    <string name="fragment1_heading">在 YouTube 上搜尋</string>
+    <string name="fragment1_subHeading">直接在 YouTube 上搜尋你正在聽的歌曲</string>
+    <string name="fragment2_heading">增強你的音樂</string>
+    <string name="fragment2_subHeading">啟用等化器</string>
+    <string name="fragment3_heading">你的音樂定時器</string>
+    <string name="fragment3_subHeading">你後續可以在設定中建立一個定時器來停止播放音樂</string>
+    <string name="permission_rationale">這個程式不能夠檢索你的歌曲...請授予權限</string>
+    <string name="start_now">開始使用</string>
+    <!-- MENU ITEMS -->
+    <string name="action_favourites">收藏</string>
+    <string name="action_playlist">添加到歌單</string>
+    <string name="action_youtube">在 YouTube 上搜尋這首歌曲</string>
+    <string name="action_search">搜尋歌曲</string>
+    <!--MAINACTIVITY-->
+    <string name="TAB1">歌單</string>
+    <string name="TAB2">專輯</string>
+    <string name="TAB3">歌手</string>
+    <string name="TAB4">歌曲</string>
+    <string name="now_playing">正在播放</string>
+    <string name="song_repeat_off_toast">單曲循環關閉</string>
+    <string name="song_repeat_on_toast">單曲循環開啟</string>
+    <string name="opening_youtube">正在開啟 YouTube</string>
+    <string name="song_added_to_playlist">歌曲已添加到歌單</string>
+    <!--PLAYLIST SELECT ACTIVITY-->
+    <string name="playlist_screen_placeholder">你可以一次性添加到多個歌單</string>
+    <string name="did_not_select">你還沒有為你的歌曲選擇任何歌單！</string>
+    <string name="select_atleast_one">你必須至少選擇 1 個歌單</string>
+    <string name="created">已建立</string>
+    <!--EXTRAS-->
+    <string name="play_all">全部播放</string>
+    <string name="shuffle">隨機播放</string>
+    <string name="empty_state_message">抱歉..沒有尋找到歌曲！！</string>
+    <string name="swipe_right_or_left_to_change_the_song">向右/向左輕掃或者雙擊專輯封面</string>
+    <string name="playing_all">播放所有歌曲 :</string>
+    <!--SETTINGS-->
+    <string name="settings_title">程式設定</string>
+    <string name="equalizer_heading">等化器</string>
+    <string name="sleep_timer_heading">休眠定時器</string>
+    <string name="sleep_timer_subHeading">自動關閉音樂播放器</string>
+    <string name="help_heading">協助我們翻譯</string>
+    <string name="help_subHeading">我們需要你的協助將這個程式翻譯成你的本地語言</string>
+    <string name="share_app">分享程式</string>
+    <string name="recomment_it_to_others">推薦給其他人</string>
+    <string name="rate_us_heading">在 Play 商店上給我們打分！</string>
+    <string name="rate_us_subHeading">顯示你對我們的愛並給予五星評級</string>
+    <string name="Invalid_Time_Toast">無效時間</string>
+    <string name="translation_help">協助翻譯</string>
+    <string name="translation_help_sub">感謝你對翻譯 X Music Player 高級版的興趣！\n\n如果你協助我們翻譯這個程式為其他語言，在 Play 商店的描述上會提到你的名字，以此作為感謝。</string>
+    <!--CREATE PLAYLIST DIALOG-->
+    <string name="create_a_new_playlist">建立新的歌單</string>
+    <string name="name">名稱...</string>
+    <!--SLEEP TIME DIALOG-->
+    <string name="stop_music_after">停止播放音樂</string>
+    <string name="minutes">分鐘</string>
+    <string name="action_share">分享這首歌</string>
+    <string name="theme">顏色主題</string>
+    <string name="switch_betweem_the_light_and_dark_app_themes">需要重啟程式才能切換這個主題</string>
+    <string name="app_walk1">休眠定時器、電影主題、忽略文件夾、顏色主題</string>
+    <string name="app_walk2">輕觸迷你播放器來開啟主播放器</string>
+    <string name="app_walk3">想在 YouTube 上搜尋這首歌曲？</string>
+    <string name="delete_these_songs">刪除這些歌曲？</string>
+    <string name="delete_warning">這個操作會同時從裝置中刪除選定歌曲</string>
+    <string name="empty_state_playlist_message">你尚未建立任何歌單</string>
+    <string name="hide_music">設定音樂掃描的最短時長</string>
+    <string name="custom_time">自訂時間</string>
+    <string name="pick_time">選取時間</string>
+    <string name="buy">購買主題</string>
+    <string name="thanks">感謝你的購買</string>
+    <string name="aborted">已中止</string>
+    <string name="pick_theme">選取</string>
+    <string name="movie">電影主題</string>
+    <string name="scroll_to_view_more">滾動以檢視更多</string>
+    <string name="hint_restart_app_to_reflect_changes">貼士: 重啟程式才能生效</string>
+    <string name="folders_to_scan">選擇要掃描的資料夾</string>
+    <string name="exclude_folder">排除資料夾</string>
+    <string name="set_the_folders_you_want_to_load_songs_from">設定要從中載入歌曲的資料夾</string>
+    <string name="save">儲存</string>
+    <string name="equalizer_hint">貼士: 如果你想儲存等化器預設，請點選儲存</string>
+    <string name="select_a_preset">選擇一個預設 :</string>
+    <string name="beautiful_themes">美麗的主題</string>
+    <string name="select_from_multiple_color_amp_movie_themes"><![CDATA[選擇多個顏色 & 電影主題]]></string>
+    <string name="play_song_directly_from_search_results">直接從搜尋結果中播放歌曲</string>
+    <string name="recently_added">最近添加的</string>
+    <string name="recently_played">最近播放的歌曲</string>
+    <string name="animation_toggle">在主播放器中切换Wave动画</string>
+</resources>

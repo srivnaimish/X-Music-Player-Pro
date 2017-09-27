@@ -18,6 +18,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -50,7 +51,6 @@ public class MusicService extends Service implements
 
     private OnSongChangedListener onSongChangedListener;
 
-    private boolean isPausedOnCall = false;
     private PhoneStateListener phoneStateListener;
     private TelephonyManager telephonyManager;
 
@@ -92,39 +92,26 @@ public class MusicService extends Service implements
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        phoneStateListener = new PhoneStateListener() {
+        PhoneStateListener phoneStateListener = new PhoneStateListener() {
             @Override
             public void onCallStateChanged(int state, String incomingNumber) {
-                switch (state) {
-                    case TelephonyManager.CALL_STATE_OFFHOOK:
-                        if (player.isPlaying()) {
-                            isPausedOnCall = true;
-                            togglePlay();
+                if (state == TelephonyManager.CALL_STATE_RINGING) {
+                    if(playerState==PLAYING){
+                        togglePlay();
+                    }
 
-                        }
-                        break;
-                    case TelephonyManager.CALL_STATE_RINGING:
-                        if (player.isPlaying()) {
-                            isPausedOnCall = true;
-                            togglePlay();
+                } else if(state == TelephonyManager.CALL_STATE_IDLE) {
 
-                        }
-                        break;
-                    case TelephonyManager.CALL_STATE_IDLE:
-                        if (player != null) {
-                            if (isPausedOnCall) {
-                                isPausedOnCall = false;
-                                togglePlay();
-
-                            }
-                        }
-
+                } else if(state == TelephonyManager.CALL_STATE_OFFHOOK) {
+                    //A call is dialing, active or on hold
                 }
+                super.onCallStateChanged(state, incomingNumber);
             }
         };
-        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
-
+        telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        if(telephonyManager != null) {
+            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -175,7 +162,7 @@ public class MusicService extends Service implements
             mSeekBar = null;
         onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
         unregisterReceiver(myReceiver);
-        if (phoneStateListener != null) {
+        if(telephonyManager != null) {
             telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
         }
         if (headsetPlugReceiver != null) {
