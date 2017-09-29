@@ -79,7 +79,7 @@
     <string name="hide_music">Set minimum duration for Music Scan</string>
     <string name="custom_time">Custom Time</string>
     <string name="pick_time">Pick Time</string>
-    <string name="buy">Buy Theme</string>
+    <string name="buy">Buy All Themes</string>
     <string name="thanks">Thanks for the purchase</string>
     <string name="aborted">Aborted</string>
     <string name="pick_theme">Pick</string>
@@ -98,5 +98,7 @@
     <string name="recently_added">Recently Added</string>
     <string name="recently_played">Recently Played</string>
     <string name="animation_toggle">Toggle Wave animation in Main Player</string>
+    <string name="not_found_youtube">Youtube not found on device</string>
+    <string name="try_taplor">Try our new game — Taplor</string>
 
 </resources>

@@ -5,8 +5,8 @@
     <item
         android:drawable="@color/colorAccent"/>
 
-    <item >
+   <!-- <item >
         <bitmap android:src="@drawable/ic_splash" android:gravity="center"/>
-    </item>
+    </item>-->
 
 </layer-list>

@@ -4,10 +4,11 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
-import com.riseapps.xmusic.utils.FontCache;
+import com.riseapps.xmusic.R;
 
 /**
  * Created by naimish on 3/4/17.
@@ -38,7 +39,7 @@ public class MainEditText extends EditText {
         //Typeface font = FontCache.getTypeface("fonts/Mada/Mada-Regular.ttf", context);
         //Typeface font = FontCache.getTypeface("fonts/Montserrat/Montserrat-Medium.ttf", context);
         //Typeface font = FontCache.getTypeface("fonts/Work_Sans/WorkSans-Regular.ttf", context);
-        Typeface font = FontCache.getTypeface("fonts/Meera_Inimai/MeeraInimai-Regular.ttf", context);
+        Typeface font = ResourcesCompat.getFont(context, R.font.meerainimal);
         setTypeface(font);
     }
 }

@@ -4,11 +4,12 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.utils.FontCache;
 
 /**
  * Created by naimish on 13/3/17.
@@ -38,15 +39,15 @@ public class MainTextViewSub extends TextView {
 
     private void applyFont(Context context) {
         SharedPreferenceSingelton sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        Typeface font = FontCache.getTypeface("fonts/Overpass/Overpass-Regular.ttf", context);
+        Typeface font = ResourcesCompat.getFont(context, R.font.overpass);
         if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 8) {
-            font = FontCache.getTypeface("fonts/harry_potter.ttf", context);
+            font = ResourcesCompat.getFont(context, R.font.harry_potter);
         } else if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 9) {
-            font = FontCache.getTypeface("fonts/minions.ttf", context);
+            font = ResourcesCompat.getFont(context, R.font.minions);
         } else if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 10) {
-            font = FontCache.getTypeface("fonts/iron_man.ttf", context);
+            font = ResourcesCompat.getFont(context, R.font.iron_man);
         } else if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 11) {
-            font = FontCache.getTypeface("fonts/deadpool.ttf", context);
+            font = ResourcesCompat.getFont(context, R.font.deadpool);
         }
         setTypeface(font);
     }

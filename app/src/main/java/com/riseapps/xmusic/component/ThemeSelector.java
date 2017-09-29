@@ -39,8 +39,8 @@ public class ThemeSelector {
                 colors[1] = Color.rgb(52, 73, 94);
                 break;
             case 6:
-                colors[0] = Color.rgb(58, 58, 71);
-                colors[1] = Color.rgb(0, 119, 192);
+                colors[0] = Color.rgb(168, 135, 70);
+                colors[1] = Color.rgb(243, 216, 159);
                 break;
             case 7:
                 colors[0] = Color.rgb(242, 207, 169);

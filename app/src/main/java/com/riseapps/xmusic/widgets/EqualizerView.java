@@ -84,9 +84,7 @@ public class EqualizerView extends LinearLayout {
             public void onGlobalLayout() {
                 if (musicBar1.getHeight() > 0) {
                     musicBar1.setPivotY(musicBar1.getHeight());
-                    if (Build.VERSION.SDK_INT >= 16) {
-                        musicBar1.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
+                    musicBar1.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
 
             }
@@ -96,9 +94,7 @@ public class EqualizerView extends LinearLayout {
             public void onGlobalLayout() {
                 if (musicBar2.getHeight() > 0) {
                     musicBar2.setPivotY(musicBar2.getHeight());
-                    if (Build.VERSION.SDK_INT >= 16) {
-                        musicBar2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
+                    musicBar2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
 
             }
@@ -108,9 +104,7 @@ public class EqualizerView extends LinearLayout {
             public void onGlobalLayout() {
                 if (musicBar3.getHeight() > 0) {
                     musicBar3.setPivotY(musicBar3.getHeight());
-                    if (Build.VERSION.SDK_INT >= 16) {
-                        musicBar3.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
+                    musicBar3.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
 
             }

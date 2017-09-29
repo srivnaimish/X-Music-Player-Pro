@@ -17,17 +17,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:layout_marginTop="0dp"
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_below="@+id/recyclerView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:indeterminate="true"
-            android:visibility="gone" />
+            />
 
         <com.riseapps.xmusic.widgets.MainTextView
             android:id="@+id/empty"

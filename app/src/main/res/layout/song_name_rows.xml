@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/song_list_card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
+    android:layout_height="70dp"
+    android:layout_marginEnd="1dp"
+    android:layout_marginStart="1dp"
     android:layout_marginTop="4dp"
     android:clickable="true"
     android:focusable="true"
@@ -15,7 +15,76 @@
     card_view:cardCornerRadius="0dp"
     card_view:cardElevation="0dp">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?colorPrimary">
+
+        <ImageView
+            android:id="@+id/album_art_card"
+            android:layout_width="@dimen/size45dp"
+            android:layout_height="@dimen/size45dp"
+            android:layout_marginBottom="@dimen/size8dp"
+            android:layout_marginStart="@dimen/size8dp"
+            android:layout_marginTop="@dimen/size8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/empty" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/delete_playlist"
+            app:layout_constraintStart_toEndOf="@+id/album_art_card"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.riseapps.xmusic.widgets.MainTextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="@dimen/size14sp"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:singleLine="true"
+                tools:text="Song Name" />
+
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:singleLine="true"
+                android:textSize="@dimen/size13sp"
+                tools:text="TextView" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/delete_playlist"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ripple"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_remove"
+            android:visibility="gone"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -26,8 +95,8 @@
 
         <ImageView
             android:id="@+id/album_art_card"
-            android:layout_width="@dimen/size40dp"
-            android:layout_height="@dimen/size40dp"
+            android:layout_width="@dimen/size45dp"
+            android:layout_height="@dimen/size45dp"
             android:layout_marginBottom="@dimen/size8dp"
             android:layout_marginStart="@dimen/size8dp"
             android:layout_marginTop="@dimen/size8dp"
@@ -37,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="20dp"
             android:layout_toEndOf="@+id/album_art_card"
             android:orientation="vertical">
 
@@ -54,7 +123,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/size13sp"
-                tools:text="TextView" />
+                tools:text="TextView"
+                android:layout_marginTop="2dp"/>
         </LinearLayout>
 
         <ImageButton
@@ -68,5 +138,5 @@
             android:visibility="gone"
             app:srcCompat="@drawable/ic_remove" />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 </android.support.v7.widget.CardView>

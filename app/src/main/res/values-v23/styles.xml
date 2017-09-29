@@ -80,7 +80,7 @@
         <item name="android:colorBackground">@color/colorPrimaryDark5</item>
         <item name="iconDual">#FAFAFA</item>
     </style>
-    <style name="AppTheme.Dark6" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.Dark6" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary6</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark6</item>
         <item name="colorAccent">@color/colorAccentDark</item>
@@ -89,7 +89,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:colorBackground">@color/colorPrimaryDark6</item>
-        <item name="iconDual">#FAFAFA</item>
+        <item name="iconDual">#45362E</item>
     </style>
 
     <style name="AppTheme.Dark7" parent="Theme.AppCompat.Light.NoActionBar">

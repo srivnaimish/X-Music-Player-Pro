@@ -3,6 +3,7 @@ package com.riseapps.xmusic.view.Fragment;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -116,13 +117,19 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        songsAdapter.swapCursor(data);
-        songsList = songsAdapter.songsList;
-        setPlayingFromThisFragment();
-        ((MainActivity) getActivity()).setCompleteSongList(songsList);
-        ((MainActivity) getActivity()).startTheService();
-        imageView.setVisibility(View.GONE);
+    public void onLoadFinished(Loader<Cursor> loader, final Cursor data) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                songsAdapter.swapCursor(data);
+                songsList = songsAdapter.songsList;
+                setPlayingFromThisFragment();
+                ((MainActivity) getActivity()).setCompleteSongList(songsList);
+                ((MainActivity) getActivity()).startTheService();
+                imageView.setVisibility(View.GONE);
+            }
+        },300);
+
     }
 
     @Override

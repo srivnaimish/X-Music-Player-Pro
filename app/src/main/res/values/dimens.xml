@@ -32,4 +32,5 @@
     <dimen name="size40dp">40dp</dimen>
     <dimen name="size20dp">20dp</dimen>
     <dimen name="size35dp">35dp</dimen>
+    <dimen name="size32sp">32sp</dimen>
 </resources>

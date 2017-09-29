@@ -12,46 +12,55 @@
     card_view:cardElevation="0dp"
     card_view:cardBackgroundColor="?colorPrimary">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/album_art"
             android:layout_width="@dimen/size45dp"
             android:layout_height="@dimen/size45dp"
-            android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/size8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/size8dp"
             android:layout_marginTop="@dimen/size8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/empty" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/album_art"
-            android:layout_alignTop="@+id/album_art"
-            android:layout_marginStart="12sp"
-            android:layout_toEndOf="@+id/album_art"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/like"
+            app:layout_constraintStart_toEndOf="@+id/album_art"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.riseapps.xmusic.widgets.MainTextView
                 android:id="@+id/name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:singleLine="true"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/size14sp"
                 tools:text="TextView" />
 
             <com.riseapps.xmusic.widgets.MainTextViewSub
                 android:id="@+id/artist_mini"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:singleLine="true"
                 android:textSize="@dimen/size13sp"
                 tools:text="TextView" />
 
@@ -61,11 +70,15 @@
             android:id="@+id/like"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="@dimen/size8dp"
+            android:layout_marginTop="@dimen/size8dp"
             android:background="@drawable/ripple"
             android:tint="?android:textColorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_like" />
+    </android.support.constraint.ConstraintLayout>
 
-    </RelativeLayout>
 </android.support.v7.widget.CardView>

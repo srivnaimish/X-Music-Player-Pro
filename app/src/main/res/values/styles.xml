@@ -54,7 +54,7 @@
         <item name="iconDual">#FAFAFA</item>
     </style>
 
-    <style name="AppTheme.Dark4" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.Dark4" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary4</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark4</item>
@@ -90,10 +90,10 @@
         <item name="android:textColorTertiary">@color/colorPrimaryFontDark6</item>
         <item name="actionModeBackground">@color/colorPrimary6</item>
         <item name="android:colorBackground">@color/colorPrimaryDark6</item>
-        <item name="iconDual">#FAFAFA</item>
+        <item name="iconDual">#45362E</item>
     </style>
 
-    <style name="AppTheme.Dark7" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.Dark7" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary7</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark7</item>

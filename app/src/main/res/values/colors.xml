@@ -32,10 +32,10 @@
     <color name="textColorPrimary5">#FFFFFF</color>
     <color name="colorPrimaryFontDark5">#FAFAFA</color>
 
-    <color name="colorPrimary6">#0077c0</color>
-    <color name="colorPrimaryDark6">#0067b0</color>
-    <color name="textColorPrimary6">#FFFFFF</color>
-    <color name="colorPrimaryFontDark6">#FAFAFA</color>
+    <color name="colorPrimary6">#F3D89F</color>
+    <color name="colorPrimaryDark6">#e5cb95</color>
+    <color name="textColorPrimary6">#000000</color>
+    <color name="colorPrimaryFontDark6">#45362E</color>
 
     <color name="colorPrimary7">#ffe9d1</color>
     <color name="colorPrimaryDark7">#1e003d</color>

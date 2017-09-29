@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -523,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     bundle.putString("Action", "Favourites");
                     scrollingFragment.setArguments(bundle);
                     fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment);
+                    fragmentTransaction.replace(R.id.drawerLayout, scrollingFragment, "ScrollingFragment");
                     fragmentTransaction.commit();
                 } else if (item.getItemId() == R.id.action_search) {
                     doCircularReveal(searchBar);
@@ -562,8 +563,13 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     intent.setPackage("com.google.android.youtube");
                     intent.putExtra("query", song.getName());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    Toast.makeText(MainActivity.this, getString(R.string.opening_youtube), Toast.LENGTH_SHORT).show();
+                    try {
+                        startActivity(intent);
+                        Toast.makeText(MainActivity.this, getString(R.string.opening_youtube), Toast.LENGTH_SHORT).show();
+                    }catch (ActivityNotFoundException e){
+                        Toast.makeText(MainActivity.this, getString(R.string.not_found_youtube), Toast.LENGTH_SHORT).show();
+                    }
+
                 } else if (item.getItemId() == R.id.share) {
                     Uri uri = new FilePathFromId().pathFromID(MainActivity.this, song.getID());
                     if (uri != null) {
@@ -746,8 +752,11 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     void hideMainPlayer() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag("ScrollingFragment");
-            if (fragment.getView() != null)
-                fragment.getView().setVisibility(View.VISIBLE);
+            try {
+                if (fragment.getView() != null)
+                    fragment.getView().setVisibility(View.VISIBLE);
+            }catch (NullPointerException e){}
+
         } else {
             mainPlayer.startAnimation(new CustomAnimation().slide_down(MainActivity.this));
         }

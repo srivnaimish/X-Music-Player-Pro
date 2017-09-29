@@ -30,7 +30,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -100,7 +99,7 @@ public class AppSettingActivity extends AppCompatActivity {
                     billinSupported = true;
                     if (mHelper == null) return;
                     List<String> st = new ArrayList<String>();
-                    st.addAll(Arrays.asList(AppConstants.ITEM_SKU).subList(2, 8));
+                    st.addAll(Arrays.asList(AppConstants.ITEM_SKU).subList(2, 9));
                     try {
                         mHelper.queryInventoryAsync(true, st, mGotInventoryListener);
                     } catch (IabHelper.IabAsyncInProgressException e) {
@@ -452,6 +451,16 @@ public class AppSettingActivity extends AppCompatActivity {
         }
     }
 
+    public void tryTaplor(View view) {
+
+        final Uri uri = Uri.parse("market://details?id=" + "com.riseapps.taplor");
+        final Intent rateAppIntent = new Intent(Intent.ACTION_VIEW, uri);
+
+        if (getPackageManager().queryIntentActivities(rateAppIntent, 0).size() > 0) {
+            startActivity(rateAppIntent);
+        }
+    }
+
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
 
@@ -481,17 +490,17 @@ public class AppSettingActivity extends AppCompatActivity {
             if (position == 0)
                 preview.setVisibility(View.GONE);
 
-            if ((position == 2 && !AppConstants.theme3) || (position == 3 && !AppConstants.theme4) || (position == 4 && !AppConstants.theme5) ||
-                    (position == 5 && !AppConstants.theme6) || (position == 6 && !AppConstants.theme7) || (position == 7 && !AppConstants.theme8)) {
+            if (!AppConstants.themesPurchased) {
                 button.setVisibility(View.GONE);
                 buyButton.setVisibility(View.VISIBLE);
             }
+
             buyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (billinSupported) {
                         try {
-                            mHelper.launchPurchaseFlow(AppSettingActivity.this, AppConstants.ITEM_SKU[position], 10001, mPurchaseFinishedListener, "mypurchaseToken");
+                            mHelper.launchPurchaseFlow(AppSettingActivity.this, AppConstants.ITEM_SKU[8], 10001, mPurchaseFinishedListener, "mypurchaseToken");
                         } catch (IabHelper.IabAsyncInProgressException e) {
                             e.printStackTrace();
                         }
@@ -616,23 +625,8 @@ public class AppSettingActivity extends AppCompatActivity {
                 Toast.makeText(AppSettingActivity.this, getString(R.string.aborted), Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[2])) {
-                AppConstants.theme3 = true;
-                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
-            } else if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[3])) {
-                AppConstants.theme4 = true;
-                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
-            } else if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[4])) {
-                AppConstants.theme5 = true;
-                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
-            } else if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[5])) {
-                AppConstants.theme6 = true;
-                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
-            } else if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[6])) {
-                AppConstants.theme7 = true;
-                Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
-            } else if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[7])) {
-                AppConstants.theme8 = true;
+            if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[9])) {
+                AppConstants.themesPurchased = true;
                 Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
             }
         }
@@ -647,23 +641,15 @@ public class AppSettingActivity extends AppCompatActivity {
                 return;
             }
 
-            if (inventory.hasPurchase(AppConstants.ITEM_SKU[2])) {
-                AppConstants.theme3 = true;
-            }
-            if (inventory.hasPurchase(AppConstants.ITEM_SKU[3])) {
-                AppConstants.theme4 = true;
-            }
-            if (inventory.hasPurchase(AppConstants.ITEM_SKU[4])) {
-                AppConstants.theme5 = true;
-            }
-            if (inventory.hasPurchase(AppConstants.ITEM_SKU[5])) {
-                AppConstants.theme6 = true;
-            }
-            if (inventory.hasPurchase(AppConstants.ITEM_SKU[6])) {
-                AppConstants.theme7 = true;
-            }
-            if (inventory.hasPurchase(AppConstants.ITEM_SKU[7])) {
-                AppConstants.theme8 = true;
+            if (inventory.hasPurchase(AppConstants.ITEM_SKU[2]) ||
+                    inventory.hasPurchase(AppConstants.ITEM_SKU[3]) ||
+                    inventory.hasPurchase(AppConstants.ITEM_SKU[4]) ||
+                    inventory.hasPurchase(AppConstants.ITEM_SKU[5]) ||
+                    inventory.hasPurchase(AppConstants.ITEM_SKU[6]) ||
+                    inventory.hasPurchase(AppConstants.ITEM_SKU[7]) ||
+                    inventory.hasPurchase(AppConstants.ITEM_SKU[8]) ||
+                    inventory.hasPurchase(AppConstants.ITEM_SKU[9])) {
+                AppConstants.themesPurchased = true;
             }
 
         }

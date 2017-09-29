@@ -255,10 +255,13 @@ public class MusicService extends Service implements
             else {
                 final short lowerEqualizerBandLevel = equalizer.getBandLevelRange()[0];
                 String savedSeekBarProgress = sharedPreferenceSingelton.getSavedString(this, "SeekBarPositions");
-                String progress[] = savedSeekBarProgress.split(" ");
-                for (short i = 0; i < 5; i++) {
-                    equalizer.setBandLevel(i, (short) (Integer.parseInt(progress[i]) + lowerEqualizerBandLevel));
+                if (savedSeekBarProgress != null) {
+                    String progress[] = savedSeekBarProgress.split(" ");
+                    for (short i = 0; i < 5; i++) {
+                        equalizer.setBandLevel(i, (short) (Integer.parseInt(progress[i]) + lowerEqualizerBandLevel));
+                    }
                 }
+
             }
 
         }

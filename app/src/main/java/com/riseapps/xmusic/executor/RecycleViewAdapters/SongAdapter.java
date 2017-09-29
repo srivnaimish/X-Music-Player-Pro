@@ -36,7 +36,7 @@ public class SongAdapter extends RecyclerView.Adapter {
     private int colorSelected = Color.LTGRAY;
     private int colorNormal = Color.WHITE;
     private Cursor dataCursor;
-    private int textLimit = 27;
+    //private int textLimit = 27;
 
     public SongAdapter(Context context, RecyclerView recyclerView, Cursor cursor) {
         dataCursor = cursor;
@@ -77,12 +77,12 @@ public class SongAdapter extends RecyclerView.Adapter {
                     String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     String imagepath = "content://media/external/audio/media/" + id + "/albumart";
-                    if (title.length() > textLimit)
-                        title = title.substring(0, textLimit) + "...";
+                   // if (title.length() > textLimit)
+                       // title = title.substring(0, textLimit) + "...";
                     if (artist == null)
                         artist = "Unknown";
-                    if (artist.length() > textLimit)
-                        artist = artist.substring(0, textLimit) + "...";
+                    //if (artist.length() > textLimit)
+                       // artist = artist.substring(0, textLimit) + "...";
                     songsList.add(new Song(id, duration, title, artist, imagepath, false));
                 }
             }
