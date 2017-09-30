@@ -104,55 +104,55 @@
         <item name="iconDual">@color/colorPrimaryDark7</item>
     </style>
     <style name="HarryTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@android:color/transparent</item>
-        <item name="colorPrimaryDark">#000</item>
+        <item name="colorPrimary">@color/colorPrimaryHarryPotter</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkHarryPotter</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/whitePrimary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryHarryPotter</item>
         <item name="android:textColorSecondary">#EEEEEE</item>
-        <item name="android:textColorTertiary">@color/whitePrimary</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDarkHarryPotter</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:colorBackground">@color/colorMainBackgroundHarryPotter</item>
         <item name="iconDual">#fafafa</item>
     </style>
 
-    <style name="MinionTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@android:color/transparent</item>
-        <item name="colorPrimaryDark">#000</item>
+    <style name="BatmanTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryBatman</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkBatman</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/whitePrimary</item>
-        <item name="android:textColorSecondary">#FAFAFA</item>
-        <item name="android:textColorTertiary">@color/whitePrimary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryBatman</item>
+        <item name="android:textColorSecondary">#EEEEEE</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDarkBatman</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="iconDual">@color/whitePrimary</item>
+        <item name="android:colorBackground">@color/colorMainBackgroundBatman</item>
+        <item name="iconDual">#fafafa</item>
     </style>
 
     <style name="IronManTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@android:color/transparent</item>
-        <item name="colorPrimaryDark">#42474A</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/whitePrimary</item>
-        <item name="android:textColorSecondary">#FAFAFA</item>
-        <item name="android:textColorTertiary">@color/whitePrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryIronMan</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkIronMan</item>
+        <item name="colorAccent">@color/ironManAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryIronMan</item>
+        <item name="android:textColorSecondary">#EEEEEE</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDarkIronMan</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="iconDual">@color/whitePrimary</item>
+        <item name="android:colorBackground">@color/colorMainBackgroundIronMan</item>
+        <item name="iconDual">#fafafa</item>
     </style>
 
     <style name="DeadpoolTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@android:color/transparent</item>
-        <item name="colorPrimaryDark">#AE1A28</item>
+        <item name="colorPrimary">@color/colorPrimaryDeadpool</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDeadpool</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/whitePrimary</item>
-        <item name="android:textColorSecondary">#FAFAFA</item>
-        <item name="android:textColorTertiary">@color/whitePrimary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryDeadpool</item>
+        <item name="android:textColorSecondary">#EEEEEE</item>
+        <item name="android:textColorTertiary">@color/colorPrimaryFontDarkDeadpool</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="iconDual">@color/whitePrimary</item>
+        <item name="android:colorBackground">@color/colorMainBackgroundDeadpool</item>
+        <item name="iconDual">#fafafa</item>
     </style>
 
 

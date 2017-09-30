@@ -30,6 +30,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -75,6 +76,7 @@ public class AppSettingActivity extends AppCompatActivity {
     RelativeLayout theme_dialog;
 
     private ArrayList<PlaylistSelect> folders;
+    private LinearLayout movie_dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,32 +118,6 @@ public class AppSettingActivity extends AppCompatActivity {
 
     private void init() {
         // Toolbar
-        ImageView background = (ImageView) findViewById(R.id.back);
-        if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 8) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.harry_background)
-                    .dontAnimate()
-                    .into(background);
-        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 9) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.batman_background)
-                    .dontAnimate()
-                    .into(background);
-        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 10) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.iron_man_background)
-                    .dontAnimate()
-                    .into(background);
-        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 11) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.deadpool_background)
-                    .dontAnimate()
-                    .into(background);
-        }
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -163,7 +139,9 @@ public class AppSettingActivity extends AppCompatActivity {
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.theme_select_dialog);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        try {
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        }catch (Exception e){}
         ViewPager viewpager = (ViewPager) dialog.findViewById(R.id.view_pager);
         theme_dialog = (RelativeLayout) dialog.findViewById(R.id.theme_dialog);
 
@@ -183,7 +161,11 @@ public class AppSettingActivity extends AppCompatActivity {
 
     public void changeMovieTheme(View v) {
         dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.movie_theme_dialog);
+        try {
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        }catch (Exception e){}
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,7 +173,7 @@ public class AppSettingActivity extends AppCompatActivity {
                     case R.id.harry:
                         sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 8);
                         break;
-                    case R.id.minions:
+                    case R.id.batman:
                         sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 9);
                         break;
                     case R.id.iron:
@@ -200,19 +182,23 @@ public class AppSettingActivity extends AppCompatActivity {
                     case R.id.deadpool:
                         sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 11);
                         break;
+                    case R.id.inception:
+                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 12);
+                        break;
                 }
                 dialog.dismiss();
                 finish();
                 Intent intent = IntentCompat.makeMainActivity(new ComponentName(
-                        AppSettingActivity.this, MainActivity.class));
+                        AppSettingActivity.this, Splash2Activity.class));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         };
         dialog.findViewById(R.id.harry).setOnClickListener(clickListener);
-        dialog.findViewById(R.id.minions).setOnClickListener(clickListener);
+        dialog.findViewById(R.id.batman).setOnClickListener(clickListener);
         dialog.findViewById(R.id.iron).setOnClickListener(clickListener);
         dialog.findViewById(R.id.deadpool).setOnClickListener(clickListener);
+        dialog.findViewById(R.id.inception).setOnClickListener(clickListener);
         try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         } catch (NullPointerException e) {
@@ -533,7 +519,7 @@ public class AppSettingActivity extends AppCompatActivity {
                     // recreate();
                     finish();
                     Intent intent = IntentCompat.makeMainActivity(new ComponentName(
-                            AppSettingActivity.this, MainActivity.class));
+                            AppSettingActivity.this, Splash2Activity.class));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }

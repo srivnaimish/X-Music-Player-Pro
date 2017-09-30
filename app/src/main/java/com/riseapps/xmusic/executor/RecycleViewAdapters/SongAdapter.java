@@ -36,6 +36,7 @@ public class SongAdapter extends RecyclerView.Adapter {
     private int colorSelected = Color.LTGRAY;
     private int colorNormal = Color.WHITE;
     private Cursor dataCursor;
+    private SharedPreferenceSingelton sharedPreferenceSingleton=new SharedPreferenceSingelton();
     //private int textLimit = 27;
 
     public SongAdapter(Context context, RecyclerView recyclerView, Cursor cursor) {
@@ -76,14 +77,15 @@ public class SongAdapter extends RecyclerView.Adapter {
                     long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                     String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                    String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                     String imagepath = "content://media/external/audio/media/" + id + "/albumart";
                    // if (title.length() > textLimit)
                        // title = title.substring(0, textLimit) + "...";
                     if (artist == null)
                         artist = "Unknown";
                     //if (artist.length() > textLimit)
-                       // artist = artist.substring(0, textLimit) + "...";
-                    songsList.add(new Song(id, duration, title, artist, imagepath, false));
+                    // artist = artist.substring(0, textLimit) + "...";
+                    songsList.add(new Song(id, duration, album, title, artist, imagepath, false));
                 }
             }
             while (cursor.moveToNext());
@@ -114,7 +116,7 @@ public class SongAdapter extends RecyclerView.Adapter {
             ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_liked_toolbar);
         } else {
             song.setFavourite(false);
-            ((SongViewHolder) holder).like.setImageResource(R.drawable.ic_like);
+            ((SongViewHolder) holder).like.setImageResource(ThemeSelector.theme_like_drawable);
         }
 
         ((SongViewHolder) holder).songListCard.setCardBackgroundColor(song.isSelected() ? colorSelected : colorNormal);
@@ -167,7 +169,7 @@ public class SongAdapter extends RecyclerView.Adapter {
                 like.startAnimation(new CustomAnimation().likeAnimation(ctx));
                 if (song.getFavourite()) {
                     new MyApplication(ctx).getWritableDatabase().deleteFavourite(song.getID());
-                    like.setImageResource(R.drawable.ic_like);
+                    like.setImageResource(ThemeSelector.theme_like_drawable);
                     song.setFavourite(false);
                 } else {
                     new MyApplication(ctx).getWritableDatabase().insertFavourite(song.getID());

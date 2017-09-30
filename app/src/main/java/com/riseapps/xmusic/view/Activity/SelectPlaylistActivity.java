@@ -60,33 +60,7 @@ public class SelectPlaylistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_select_playlist);
-        ImageView background = (ImageView) findViewById(R.id.back);
-        SharedPreferenceSingelton sharedPreferenceSingelton = new SharedPreferenceSingelton();
-        if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 8) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.harry_background)
-                    .dontAnimate()
-                    .into(background);
-        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 9) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.batman_background)
-                    .dontAnimate()
-                    .into(background);
-        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 10) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.iron_man_background)
-                    .dontAnimate()
-                    .into(background);
-        } else if (sharedPreferenceSingelton.getSavedInt(this, "Themes") == 11) {
-            Glide
-                    .with(this)
-                    .load(R.drawable.deadpool_background)
-                    .dontAnimate()
-                    .into(background);
-        }
+
         empty_state = (LinearLayout) findViewById(R.id.linearLayout4);
         dialog = (CardView) findViewById(R.id.playlist_new);
         hint = (TextView) findViewById(R.id.hint);

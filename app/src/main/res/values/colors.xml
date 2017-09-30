@@ -43,6 +43,31 @@
     <color name="colorPrimaryFontDark7">#1e003d</color>
     <color name="colorMainBackground7">#f7dec3</color>
 
+    <color name="colorPrimaryHarryPotter">#04140b</color>
+    <color name="colorPrimaryDarkHarryPotter">#04140b</color>
+    <color name="textColorPrimaryHarryPotter">#FFFFFF</color>
+    <color name="colorPrimaryFontDarkHarryPotter">#FAFAFA</color>
+    <color name="colorMainBackgroundHarryPotter">#05190e</color>
+
+    <color name="colorPrimaryBatman">#000</color>
+    <color name="colorPrimaryDarkBatman">#000</color>
+    <color name="textColorPrimaryBatman">#FFFFFF</color>
+    <color name="colorPrimaryFontDarkBatman">#FAFAFA</color>
+    <color name="colorMainBackgroundBatman">#1e1e1e</color>
+
+    <color name="colorPrimaryIronMan">#790D0D</color>
+    <color name="colorPrimaryDarkIronMan">#790D0D</color>
+    <color name="ironManAccent">#ddda13</color>
+    <color name="textColorPrimaryIronMan">#FFFFFF</color>
+    <color name="colorPrimaryFontDarkIronMan">#FAFAFA</color>
+    <color name="colorMainBackgroundIronMan">#394249</color>
+
+    <color name="colorPrimaryDeadpool">#8b2323</color>
+    <color name="colorPrimaryDarkDeadpool">#171717</color>
+    <color name="textColorPrimaryDeadpool">#FFFFFF</color>
+    <color name="colorPrimaryFontDarkDeadpool">#FAFAFA</color>
+    <color name="colorMainBackgroundDeadpool">#292929</color>
+
     <color name="colorAccent">#EC644B</color>
     <color name="colorMainBackground">#EEEEEE</color>
     <color name="colorWhite">#FFF</color>

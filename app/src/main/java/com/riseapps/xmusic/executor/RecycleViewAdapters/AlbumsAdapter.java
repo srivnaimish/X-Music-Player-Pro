@@ -73,9 +73,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
         long album_id = dataCursor.getLong(dataCursor.getColumnIndex(MediaStore.Audio.Albums._ID));
         String albumName = dataCursor.getString(dataCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM));
         String imagepath = ContentUris.withAppendedId(sArtworkUri, album_id).toString();
-        if (albumName.length() > 40)
+        /*if (albumName.length() > 40)
             albumName = albumName.substring(0, 32) + "...";
-
+*/
         ((AlbumViewHolder) holder).name.setText(albumName);
         Glide.with(c).load(imagepath)
                 .dontAnimate()

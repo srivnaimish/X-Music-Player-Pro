@@ -9,13 +9,30 @@ import android.view.View;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
+import com.riseapps.xmusic.component.ThemeSelector;
 
 public class Splash2Activity extends AppCompatActivity {
+
+    private SharedPreferenceSingelton sharedPreferenceSingleton=new SharedPreferenceSingelton();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash2);
+
+        if (sharedPreferenceSingleton.getSavedInt(this, "Themes") == 8) {
+            ThemeSelector.theme_like_drawable=R.drawable.ic_harry_potter;
+        } else if (sharedPreferenceSingleton.getSavedInt(this, "Themes") == 9) {
+            ThemeSelector.theme_like_drawable=R.drawable.ic_batman;
+        } else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 10) {
+            ThemeSelector.theme_like_drawable=R.drawable.ic_iron_man;
+        } else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 11) {
+            ThemeSelector.theme_like_drawable=R.drawable.ic_deadpool;
+        }else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 12) {
+            ThemeSelector.theme_like_drawable=R.drawable.ic_inception;
+        }else {
+            ThemeSelector.theme_like_drawable=R.drawable.ic_like;
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

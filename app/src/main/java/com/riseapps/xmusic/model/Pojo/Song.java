@@ -8,20 +8,21 @@ import android.util.Log;
 
 public class Song {
     private long ID, duration;
-    private String Name, Artist, Imagepath;
+    private String Name, Artist, Imagepath,Album;
     private boolean favourite, isSelected = false;
 
     public Song() {
 
     }
 
-    public Song(long id, long duration, String name, String artist, String imagepath, boolean favourite) {
+    public Song(long id, long duration,String album ,String name, String artist, String imagepath, boolean favourite) {
         Name = name;
         ID = id;
         Artist = artist;
         Imagepath = imagepath;
         this.duration = duration;
         this.favourite = favourite;
+        this.Album=album;
     }
 
     public Song(Song song) {
@@ -88,4 +89,11 @@ public class Song {
         isSelected = selected;
     }
 
+    public String getAlbum() {
+        return Album;
+    }
+
+    public void setAlbum(String album) {
+        Album = album;
+    }
 }

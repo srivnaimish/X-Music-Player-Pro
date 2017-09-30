@@ -7,12 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.riseapps.xmusic.view.Activity.AppSettingActivity">
 
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

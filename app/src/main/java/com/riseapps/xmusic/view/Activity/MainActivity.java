@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -50,6 +51,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-
+    Song currentSong;
     AppBarLayout appBarLayout;
     public EqualizerView equalizerView;
     public boolean musicPlaying, isMusicShuffled = false;
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     FloatingActionButton play_pause, shuffle_play;
     //MiniPlayer items
     TextView title_mini, artist_mini;
-    ImageView play_pause_mini, background;
+    ImageView play_pause_mini;
     ImageView album_art_mini;
     //MainPlayer items
     TextView title, artist, currentPosition, totalDuration;
@@ -175,6 +177,8 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     title.setText(song.getName());
                     title_mini.setText(song.getName());
 
+                    currentSong=song;
+
                     artist.setText(song.getArtist());
                     artist_mini.setText(song.getArtist());
 
@@ -231,32 +235,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         new ThemeSelector().setAppTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        background = (ImageView) findViewById(R.id.back);
-        if (sharedPreferenceSingleton.getSavedInt(this, "Themes") == 8) {
-            Glide
-                    .with(MainActivity.this)
-                    .load(R.drawable.harry_background)
-                    .dontAnimate()
-                    .into(background);
-        } else if (sharedPreferenceSingleton.getSavedInt(this, "Themes") == 9) {
-            Glide
-                    .with(MainActivity.this)
-                    .load(R.drawable.batman_background)
-                    .dontAnimate()
-                    .into(background);
-        } else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 10) {
-            Glide
-                    .with(MainActivity.this)
-                    .load(R.drawable.iron_man_background)
-                    .dontAnimate()
-                    .into(background);
-        } else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 11) {
-            Glide
-                    .with(MainActivity.this)
-                    .load(R.drawable.deadpool_background)
-                    .dontAnimate()
-                    .into(background);
-        }
+
         checkPermission();
         toolbarsInitiallize();
         initiallize();
@@ -340,13 +319,13 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 if (song.getFavourite()) {
                     new MyApplication(MainActivity.this).getWritableDatabase().deleteFavourite(song.getID());
                     song.setFavourite(false);
-                    Toast.makeText(MainActivity.this, "Song Removed from Favourites", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.song_removed_from_favourites, Toast.LENGTH_SHORT).show();
                 } else {
                     new MyApplication(MainActivity.this).getWritableDatabase().insertFavourite(song.getID());
                     liked.setVisibility(View.VISIBLE);
                     liked.startAnimation(new CustomAnimation().likeAnimation(MainActivity.this));
                     liked.setVisibility(View.INVISIBLE);
-                    Toast.makeText(MainActivity.this, "Song Added to Favourites", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.song_added_to_favourites, Toast.LENGTH_SHORT).show();
                     song.setFavourite(true);
                 }
             }
@@ -545,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         });
         toolbarPlayer = (Toolbar) findViewById(R.id.toolbar_player);
         toolbarPlayer.inflateMenu(R.menu.player_menu);
-        toolbarPlayer.setNavigationIcon(R.drawable.ic_back);
+       // toolbarPlayer.setNavigationIcon(R.drawable.ic_back);
 
         toolbarPlayer.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -581,16 +560,18 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
                 } else if (item.getItemId() == R.id.equalizer) {
                     openEqualizerDialog();
+                }else if(item.getItemId() == R.id.edit){
+                    openUpdateDialog();
                 }
                 return true;
             }
         });
-        toolbarPlayer.setNavigationOnClickListener(new View.OnClickListener() {
+       /* toolbarPlayer.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 hideMainPlayer();
             }
-        });
+        });*/
         toolbarContext = (Toolbar) findViewById(R.id.toolbar_context);
         toolbarContext.inflateMenu(R.menu.context_menu);
         toolbar_context_title = (MainTextView) findViewById(R.id.toolbar_context_title);
@@ -613,6 +594,56 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 removeContentSelection();
             }
         });
+    }
+
+    private void openUpdateDialog() {
+        try {
+            dialog = new Dialog(MainActivity.this);
+            dialog.setContentView(R.layout.edit_dialog);
+            dialog.show();
+            final EditText editTextTitle = dialog.findViewById(R.id.dialogTitle);
+            final EditText editTextArtist = dialog.findViewById(R.id.dialogArtist);
+            final EditText editTextAlbum = dialog.findViewById(R.id.dialogAlbum);
+
+            editTextTitle.setText(currentSong.getName());
+            editTextArtist.setText(currentSong.getArtist());
+            editTextAlbum.setText(currentSong.getAlbum());
+            dialog.findViewById(R.id.create).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String newName = editTextTitle.getText().toString();
+                    String newArtist = editTextArtist.getText().toString();
+                    String newAlbum = editTextAlbum.getText().toString();
+                    if (newName.length() > 0 && newArtist.length() > 0 && newAlbum.length() > 0) {
+                        updateName(newName, newArtist, newAlbum);
+                        Toast.makeText(MainActivity.this, R.string.successfully_updated, Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                }
+            });
+            dialog.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateName(String newTitle,String newArtist,String newAlbum) {
+        ContentValues values = new ContentValues(3);
+        values.put(MediaStore.Audio.Media.TITLE, newTitle);
+        values.put(MediaStore.Audio.Media.ARTIST, newArtist);
+        values.put(MediaStore.Audio.Media.ALBUM, newAlbum);
+        getContentResolver().update(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                values, MediaStore.Audio.Media._ID+"=" + currentSong.getID(), null);
+        title.setText(newTitle);
+        title_mini.setText(newTitle);
+        artist.setText(newArtist);
+        artist_mini.setText(newArtist);
+        musicService.updateDetails(newTitle,newArtist,newAlbum);
     }
 
     private void removeContentSelection() {

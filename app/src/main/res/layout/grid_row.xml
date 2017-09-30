@@ -32,7 +32,7 @@
 
         <LinearLayout
             android:id="@+id/linearlayout"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
@@ -46,19 +46,19 @@
 
             <com.riseapps.xmusic.widgets.MainTextView
                 android:id="@+id/name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="sans-serif-light"
-                android:maxLines="1"
                 android:textAlignment="center"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/size13sp"
-                tools:text="Song Name" />
+                tools:text="Song Name"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:singleLine="true"/>
 
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>

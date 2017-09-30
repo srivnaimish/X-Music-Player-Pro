@@ -232,12 +232,13 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                 long duration = data.getLong(data.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
                 String title = data.getString(data.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String artist = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                String album = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                 String imagepath = "content://media/external/audio/media/" + id + "/albumart";
-                if (title.length() > 27)
+               /* if (title.length() > 27)
                     title = title.substring(0, textLimit) + "...";
                 if (artist.length() > 35)
-                    artist = artist.substring(0, 30) + "...";
-                songMainArrayList.add(new Song(id, duration, title, artist, imagepath, false));
+                    artist = artist.substring(0, 30) + "...";*/
+                songMainArrayList.add(new Song(id, duration,album, title, artist, imagepath, false));
             }
             while (data.moveToNext());
             data.close();

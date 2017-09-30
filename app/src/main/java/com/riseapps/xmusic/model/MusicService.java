@@ -184,6 +184,12 @@ public class MusicService extends Service implements
         }
     }
 
+    public void updateDetails(String title,String artist,String album) {
+        songs.get(songPos).setName(title);
+        songs.get(songPos).setArtist(artist);
+        songs.get(songPos).setAlbum(album);
+    }
+
     public class MusicBinder extends Binder {
         public MusicService getService() {
             return MusicService.this;
