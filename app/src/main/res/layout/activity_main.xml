@@ -143,7 +143,13 @@
             android:layout_height="match_parent"
             android:layout_below="@id/appbar">
 
-
+            <View
+                android:id="@+id/center_view"
+                android:layout_width="@dimen/size20dp"
+                android:layout_height="@dimen/size20dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="32dp"/>
             <android.support.v4.view.ViewPager
                 android:id="@+id/container"
                 android:layout_width="match_parent"
@@ -180,9 +186,9 @@
                 <include layout="@layout/mini_player" />
 
             </android.support.v7.widget.CardView>
-
-
         </RelativeLayout>
+
+
 
         <include layout="@layout/main_player" />
 

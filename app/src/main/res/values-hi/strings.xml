@@ -79,4 +79,14 @@
     <string name="animation_toggle">मुख्य प्लेयर में वेव एनिमेशन टॉगल करें</string>
     <string name="recently_played">हाल ही में बजाया</string>
     <string name="recently_added">हाल ही में जोड़ा गीत</string>
+    <string name="not_found_youtube">डिवाइस पर यूट्यूब नहीं मिला</string>
+    <string name="try_taplor">हमारा नया गेम आज़माएं - Taplor</string>
+    <string name="action_edit">गीत विवरण संपादित करें</string>
+    <string name="song_removed_from_favourites">गीत पसंदीदा से हटा दिया गया</string>
+    <string name="song_added_to_favourites">गीत पसंदीदा में जोड़ा गया</string>
+    <string name="successfully_updated">सफलतापूर्वक उत्परिवर्तित</string>
+    <string name="title">शीर्षक</string>
+    <string name="artist">कलाकार</string>
+    <string name="album">एल्बम</string>
+    <string name="app_walk4">हटाने के लिए ट्रैक का चयन करने के लिए लंबे समय तक दबाएं</string>
 </resources>

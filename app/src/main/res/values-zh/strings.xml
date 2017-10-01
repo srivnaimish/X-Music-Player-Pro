@@ -86,4 +86,14 @@
     <string name="recently_added">最近添加的</string>
     <string name="recently_played">最近播放的歌曲</string>
     <string name="animation_toggle">在主播放器中切换Wave动画</string>
+    <string name="not_found_youtube">设备上没有找到Youtube</string>
+    <string name="try_taplor">尝试我们的新游戏 - Taplor</string>
+    <string name="action_edit">编辑歌曲详细信息</string>
+    <string name="song_removed_from_favourites">歌曲从收藏夹中删除</string>
+    <string name="song_added_to_favourites">歌曲添加到收藏夹</string>
+    <string name="successfully_updated">成功更新</string>
+    <string name="title">标题</string>
+    <string name="artist">艺术家</string>
+    <string name="album">专辑</string>
+    <string name="app_walk4">长按选择要删除的曲目</string>
 </resources>

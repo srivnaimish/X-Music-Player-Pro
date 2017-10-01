@@ -86,4 +86,14 @@
     <string name="recently_added">സമീപകാലത്ത് ചേർത്തത്</string>
     <string name="recently_played">സമീപകാലത്ത് പ്ലേ ചെയ്തത്</string>
     <string name="animation_toggle">വേവ് ആനിമേഷൻ പ്രധാന പ്ലേയറിൽ നിന്നും ടോഗിൾ  ചെയ്യുക</string>
+    <string name="not_found_youtube">ഉപകരണത്തിൽ Youtube കണ്ടെത്തിയില്ല</string>
+    <string name="try_taplor">ഞങ്ങളുടെ പുതിയ ഗെയിം പരീക്ഷിക്കുക -</string>
+    <string name="action_edit">ഗാനവിവരങ്ങൾ പ്രദർശിപ്പിക്കുക</string>
+    <string name="song_removed_from_favourites">പ്രിയങ്കരങ്ങളിൽ നിന്ന് പാട്ട് നീക്കംചെയ്തു</string>
+    <string name="song_added_to_favourites">പ്രിയപ്പെട്ടവയിലേക്ക് പാത്ത് ചേർത്തു</string>
+    <string name="successfully_updated">വിജയകരമായി അപ്ഡേറ്റുചെയ്തു</string>
+    <string name="title">ശീർഷകം</string>
+    <string name="artist">കലാകാരൻ</string>
+    <string name="album">ആൽബം</string>
+    <string name="app_walk4">നിങ്ങൾ മായ്ക്കാൻ താൽപ്പര്യപ്പെടുന്ന ട്രാക്കുകൾ തിരഞ്ഞെടുക്കുന്നതിന് അമർത്തിപ്പിടിക്കുക</string>
 </resources>

@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         shuffle_play.setOnClickListener(togglePlayBtn);
         play_pause.setOnClickListener(togglePlayBtn);
         play_pause_mini.setOnClickListener(togglePlayBtn);
-
+        View centerview=findViewById(R.id.center_view);
         if (!sharedPreferenceSingleton.getSavedBoolean(this, "mainScreenSequence")) {
             new TapTargetSequence(this).targets(
                     TapTarget.forToolbarNavigationIcon(mToolbar, getString(R.string.app_walk1))
@@ -449,8 +449,18 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                             .textTypeface(Typeface.SANS_SERIF)
                             .textColor(android.R.color.white)
                             .targetRadius(20)
-                            .cancelable(true)
+                            .cancelable(false)
                             .id(1),
+                    TapTarget.forView(centerview, getString(R.string.app_walk4))
+                            .dimColor(android.R.color.black)
+                            .outerCircleColor(R.color.colorAccentDark)
+                            .targetCircleColor(R.color.colorWhite)
+                            .textTypeface(Typeface.SANS_SERIF)
+                            .transparentTarget(true)
+                            .cancelable(false)
+                            .textColor(R.color.colorWhite)
+                            .targetRadius(30)
+                            .id(2),
                     TapTarget.forView(album_art_mini, getString(R.string.app_walk2))
                             .dimColor(android.R.color.black)
                             .outerCircleColor(R.color.colorAccentDark)
@@ -459,7 +469,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                             .transparentTarget(true)
                             .textColor(R.color.colorWhite)
                             .targetRadius(30)
-                            .id(2)
+                            .id(3)
             ).listener(new TapTargetSequence.Listener() {
                 @Override
                 public void onSequenceFinish() {
@@ -468,7 +478,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
                 @Override
                 public void onSequenceStep(TapTarget tapTarget, boolean b) {
-                    if (tapTarget.id() == 2)
+                    if (tapTarget.id() == 3)
                         showMainPlayer();
                 }
 

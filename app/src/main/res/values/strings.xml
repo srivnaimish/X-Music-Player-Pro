@@ -100,13 +100,13 @@
     <string name="animation_toggle">Toggle Wave animation in Main Player</string>
     <string name="not_found_youtube">Youtube not found on device</string>
     <string name="try_taplor">Try our new game — Taplor</string>
-    <string name="action_edit">Edit Song Name</string>
-    <string name="song_details">Edit Song Details</string>
+    <string name="action_edit">Edit Song Details</string>
     <string name="song_removed_from_favourites">Song Removed from Favourites</string>
     <string name="song_added_to_favourites">Song Added to Favourites</string>
     <string name="successfully_updated">Successfully updated</string>
     <string name="title">Title</string>
     <string name="artist">Artist</string>
     <string name="album">Album</string>
+    <string name="app_walk4">Long press to select tracks for deletion</string>
 
 </resources>

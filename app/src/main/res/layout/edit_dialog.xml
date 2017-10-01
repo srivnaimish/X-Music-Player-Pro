@@ -31,7 +31,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/song_details"
+                android:text="@string/action_edit"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -56,7 +56,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="2dp"
-                android:background="?colorAccent"
+                android:background="@color/colorAccentDark"
                 android:hint="@string/name"
                 android:textSize="@dimen/size13sp"
                 android:padding="10dp"
@@ -83,12 +83,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="2dp"
-                android:background="?colorAccent"
+                android:background="@color/colorAccentDark"
+                android:textColor="@color/colorWhite"
                 android:hint="@string/name"
                 android:textSize="@dimen/size13sp"
                 android:padding="10dp"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
                 app:layout_constraintStart_toStartOf="@+id/artistSub"
                 app:layout_constraintTop_toBottomOf="@+id/artistSub" />
 
@@ -109,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="2dp"
-                android:background="?colorAccent"
+                android:background="@color/colorAccentDark"
                 android:hint="@string/name"
                 android:textSize="@dimen/size13sp"
                 android:padding="10dp"
@@ -119,6 +118,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/albumSub" />
 
             <LinearLayout
+                android:id="@+id/linearLayout6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -127,7 +127,7 @@
                 android:weightSum="1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dialogAlbum">
+                app:layout_constraintTop_toBottomOf="@+id/textView8">
 
                 <Button
                     android:id="@+id/create"
@@ -145,8 +145,20 @@
                     android:layout_weight="0.5"
                     android:text="@android:string/cancel" />
             </LinearLayout>
-            <!--
-            -->
+
+            <com.riseapps.xmusic.widgets.MainTextViewSub
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:text="Caution : Please restart the app \nafter renaming your tracks \nto correctly order them"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="?android:textColorPrimary"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialogAlbum" />
 
 
         </android.support.constraint.ConstraintLayout>

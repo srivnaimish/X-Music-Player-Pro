@@ -78,4 +78,14 @@
     <string name="recently_added">সম্প্রতি জোড়া গান</string>
     <string name="recently_played">সম্প্রতি গানগুলি প্লে করা হয়েছে</string>
     <string name="animation_toggle">মুভি প্লেয়ারে তরঙ্গ অ্যানিমেশন টগল করুন</string>
+    <string name="not_found_youtube">ডিভাইসে ইউটিউব পাওয়া যায় না</string>
+    <string name="try_taplor">আমাদের নতুন গেম চেষ্টা করুন — Taplor</string>
+    <string name="action_edit">গান বিশদ সম্পাদনা করুন</string>
+    <string name="song_removed_from_favourites">গানগুলি পছন্দগুলি থেকে সরানো হয়েছে</string>
+    <string name="song_added_to_favourites">গান পছন্দসই যোগ করা হয়েছে</string>
+    <string name="successfully_updated">সফলভাবে আপডেট</string>
+    <string name="title">খেতাব</string>
+    <string name="artist">শিল্পী</string>
+    <string name="album">অ্যালবাম</string>
+    <string name="app_walk4">অপসারণের জন্য ট্র্যাকগুলি নির্বাচন করতে লম্বা চাপুন</string>
 </resources>

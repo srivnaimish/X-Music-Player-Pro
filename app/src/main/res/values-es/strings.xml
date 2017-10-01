@@ -86,4 +86,14 @@
     <string name="recently_added">Recientemente añadido</string>
     <string name="recently_played">Canciones recientes</string>
     <string name="animation_toggle">Activar la animación de las olas en el reproductor principal</string>
+    <string name="not_found_youtube">Youtube no se encuentra en el dispositivo</string>
+    <string name="try_taplor">Pruebe nuestro nuevo juego - Taplor</string>
+    <string name="action_edit">Editar detalles de la canción</string>
+    <string name="song_removed_from_favourites">Canción eliminada de los favoritos</string>
+    <string name="song_added_to_favourites">Canción añadida a los favoritos</string>
+    <string name="successfully_updated">Actualizado exitosamente</string>
+    <string name="title">Título</string>
+    <string name="artist">Artista</string>
+    <string name="album">Álbum</string>
+    <string name="app_walk4">Mantenga pulsado para seleccionar las pistas que desea borrar</string>
 </resources>

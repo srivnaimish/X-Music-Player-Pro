@@ -86,4 +86,14 @@
     <string name="animation_toggle">Įjunkite bangos animaciją pagrindiniame grotuve</string>
     <string name="recently_played">Neseniai gauta dainos</string>
     <string name="recently_added">Paskutinės pridėtos dainos</string>
+    <string name="not_found_youtube">Youtube nerastas įrenginyje</string>
+    <string name="album">Albumas</string>
+    <string name="artist">Atlikėjai</string>
+    <string name="title">Pavadinimas</string>
+    <string name="successfully_updated">Sėkmingai atnaujinta</string>
+    <string name="song_added_to_favourites">Daina Įtraukta į Favoritus</string>
+    <string name="song_removed_from_favourites">Dainą pašalinta iš mėgstamiausių</string>
+    <string name="action_edit">Redaguoti daina informaciją</string>
+    <string name="try_taplor">Išbandyk naują žaidimą - Taplor</string>
+    <string name="app_walk4">Paspauskite ir palaikykite, norėdami pasirinkti takelius, kuriuos norite ištrinti</string>
 </resources>
