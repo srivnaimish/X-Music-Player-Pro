@@ -29,6 +29,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.ScrollingClick;
 import com.riseapps.xmusic.executor.MyApplication;
@@ -233,12 +234,9 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                 String title = data.getString(data.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String artist = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 String album = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-                String imagepath = "content://media/external/audio/media/" + id + "/albumart";
-               /* if (title.length() > 27)
-                    title = title.substring(0, textLimit) + "...";
-                if (artist.length() > 35)
-                    artist = artist.substring(0, 30) + "...";*/
-                songMainArrayList.add(new Song(id, duration,album, title, artist, imagepath, false));
+                long albumid = data.getLong(data.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+
+                songMainArrayList.add(new Song(id, duration,album, title, artist, AppConstants.getAlbumArtUri(albumid), false));
             }
             while (data.moveToNext());
             data.close();

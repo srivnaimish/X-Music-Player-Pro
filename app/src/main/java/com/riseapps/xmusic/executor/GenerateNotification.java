@@ -56,7 +56,7 @@ public class GenerateNotification {
 
             Notification notification = nb.build();
 
-            Glide.with(context.getApplicationContext()) // safer!
+           /* Glide.with(context.getApplicationContext()) // safer!
                     .load(Uri.parse(song.getImagepath()))
                     .asBitmap()
                     .into(new NotificationTarget(
@@ -73,7 +73,7 @@ public class GenerateNotification {
                             expandedView,
                             R.id.imageView1,
                             notification,
-                            NOTIFICATION_ID));
+                            NOTIFICATION_ID));*/
 
             mNotificationUtils.getManager().notify(NOTIFICATION_ID, nb.build());
         } else {
@@ -99,7 +99,7 @@ public class GenerateNotification {
             mBuilder.setCustomBigContentView(expandedView);
 
             Notification notification = mBuilder.build();
-            Glide.with(context.getApplicationContext()) // safer!
+          /*  Glide.with(context.getApplicationContext()) // safer!
                     .load(Uri.parse(song.getImagepath()))
                     .asBitmap()
                     .into(new NotificationTarget(
@@ -116,7 +116,7 @@ public class GenerateNotification {
                             expandedView,
                             R.id.imageView1,
                             notification,
-                            NOTIFICATION_ID));
+                            NOTIFICATION_ID));*/
 
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -135,9 +135,9 @@ public class GenerateNotification {
         contentView.setTextViewText(R.id.track, song.getName());
         contentView.setImageViewResource(R.id.prev, R.drawable.ic_notification_left);
         contentView.setImageViewResource(R.id.next, R.drawable.ic_notification_right);
-        if (song.getImagepath().equalsIgnoreCase("no_image"))
+       /* if (song.getImagepath().equalsIgnoreCase("no_image"))
             contentView.setImageViewResource(R.id.imageView1, R.drawable.placeholder);
-
+*/
         contentView.setOnClickPendingIntent(R.id.play_pause, pendingPlayIntent);
         contentView.setOnClickPendingIntent(R.id.next, pendingNextIntent);
         contentView.setOnClickPendingIntent(R.id.prev, pendingPrevIntent);
@@ -156,9 +156,9 @@ public class GenerateNotification {
         expandedView.setImageViewResource(R.id.prev, R.drawable.ic_notification_left);
         expandedView.setImageViewResource(R.id.next, R.drawable.ic_notification_right);
 
-        if (song.getImagepath().equalsIgnoreCase("no_image"))
+       /* if (song.getImagepath().equalsIgnoreCase("no_image"))
             expandedView.setImageViewResource(R.id.imageView1, R.drawable.placeholder);
-
+*/
         expandedView.setOnClickPendingIntent(R.id.play_pause, pendingPlayIntent);
         expandedView.setOnClickPendingIntent(R.id.next, pendingNextIntent);
         expandedView.setOnClickPendingIntent(R.id.prev, pendingPrevIntent);

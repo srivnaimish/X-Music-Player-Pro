@@ -1,5 +1,6 @@
 package com.riseapps.xmusic.model.Pojo;
 
+import android.net.Uri;
 import android.util.Log;
 
 /**
@@ -8,14 +9,14 @@ import android.util.Log;
 
 public class Song {
     private long ID, duration;
-    private String Name, Artist, Imagepath,Album;
+    private String Name, Artist,Album;
     private boolean favourite, isSelected = false;
-
+    private Uri Imagepath;
     public Song() {
 
     }
 
-    public Song(long id, long duration,String album ,String name, String artist, String imagepath, boolean favourite) {
+    public Song(long id, long duration,String album ,String name, String artist, Uri imagepath, boolean favourite) {
         Name = name;
         ID = id;
         Artist = artist;
@@ -47,7 +48,7 @@ public class Song {
         return duration;
     }
 
-    public String getImagepath() {
+    public Uri getImagepath() {
         return Imagepath;
     }
 
@@ -68,7 +69,7 @@ public class Song {
         Artist = artist;
     }
 
-    public void setImagepath(String imagepath) {
+    public void setImagepath(Uri imagepath) {
         Imagepath = imagepath;
     }
 

@@ -50,6 +50,11 @@
         <activity android:name=".view.Activity.Splash2Activity"
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait"></activity>
+        <receiver android:name="android.support.v4.media.session.MediaButtonReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

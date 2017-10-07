@@ -3,6 +3,7 @@ package com.riseapps.xmusic.executor.RecycleViewAdapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.CustomAnimation;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.component.ThemeSelector;
@@ -78,14 +80,12 @@ public class SongAdapter extends RecyclerView.Adapter {
                     String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-                    String imagepath = "content://media/external/audio/media/" + id + "/albumart";
-                   // if (title.length() > textLimit)
-                       // title = title.substring(0, textLimit) + "...";
+                    //String imagepath = "content://media/external/audio/media/" + id + "/albumart";
+                    long albumid = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+
                     if (artist == null)
                         artist = "Unknown";
-                    //if (artist.length() > textLimit)
-                    // artist = artist.substring(0, textLimit) + "...";
-                    songsList.add(new Song(id, duration, album, title, artist, imagepath, false));
+                   songsList.add(new Song(id, duration, album, title, artist, AppConstants.getAlbumArtUri(albumid), false));
                 }
             }
             while (cursor.moveToNext());
@@ -100,7 +100,7 @@ public class SongAdapter extends RecyclerView.Adapter {
         Song song = songsList.get(position);
         String name = song.getName();
         String artist = song.getArtist();
-        String imagepath = song.getImagepath();
+        Uri imagepath = song.getImagepath();
 
         ((SongViewHolder) holder).name.setText(name);
 

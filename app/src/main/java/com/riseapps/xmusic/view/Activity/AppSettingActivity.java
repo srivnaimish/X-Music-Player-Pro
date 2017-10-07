@@ -476,7 +476,7 @@ public class AppSettingActivity extends AppCompatActivity {
             if (position == 0)
                 preview.setVisibility(View.GONE);
 
-            if (!AppConstants.themesPurchased) {
+            if (!AppConstants.themesPurchased && position!=0 && position!=1 ) {
                 button.setVisibility(View.GONE);
                 buyButton.setVisibility(View.VISIBLE);
             }
@@ -611,7 +611,7 @@ public class AppSettingActivity extends AppCompatActivity {
                 Toast.makeText(AppSettingActivity.this, getString(R.string.aborted), Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[9])) {
+            if (info.getSku().equalsIgnoreCase(AppConstants.ITEM_SKU[8])) {
                 AppConstants.themesPurchased = true;
                 Toast.makeText(AppSettingActivity.this, getString(R.string.thanks), Toast.LENGTH_SHORT).show();
             }
@@ -633,8 +633,7 @@ public class AppSettingActivity extends AppCompatActivity {
                     inventory.hasPurchase(AppConstants.ITEM_SKU[5]) ||
                     inventory.hasPurchase(AppConstants.ITEM_SKU[6]) ||
                     inventory.hasPurchase(AppConstants.ITEM_SKU[7]) ||
-                    inventory.hasPurchase(AppConstants.ITEM_SKU[8]) ||
-                    inventory.hasPurchase(AppConstants.ITEM_SKU[9])) {
+                    inventory.hasPurchase(AppConstants.ITEM_SKU[8])) {
                 AppConstants.themesPurchased = true;
             }
 

@@ -1,6 +1,14 @@
 package com.riseapps.xmusic.component;
 
+import android.content.ContentUris;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+
 import com.riseapps.xmusic.R;
+
+import java.io.FileNotFoundException;
 
 /**
  * Created by naimish on 3/7/17.
@@ -58,5 +66,45 @@ public class AppConstants {
         }
         return output;
     }
+
+    public static final String ACTION_PLAY = "com.riseapps.xplayer.ACTION_PLAY";
+    public static final String ACTION_PAUSE = "com.riseapps.xplayer.ACTION_PAUSE";
+    public static final String ACTION_PREVIOUS = "com.riseapps.xplayer.ACTION_PREVIOUS";
+    public static final String ACTION_NEXT = "com.riseapps.xplayer.ACTION_NEXT";
+    public static final String ACTION_STOP = "com.riseapps.xplayer.ACTION_STOP";
+    private static final int NOTIFICATION_ID = 101;
+
+    public static Bitmap decodeUri(Context c, Uri uri, final int requiredSize)
+            throws FileNotFoundException, SecurityException {
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+
+
+        BitmapFactory.decodeStream(c.getContentResolver().openInputStream(uri), null, o);
+
+        int width_tmp = o.outWidth
+                , height_tmp = o.outHeight;
+        int scale = 1;
+
+        while(true) {
+            if(width_tmp / 2 < requiredSize || height_tmp / 2 < requiredSize)
+                break;
+            width_tmp /= 2;
+            height_tmp /= 2;
+            scale *= 2;
+        }
+
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        return BitmapFactory.decodeStream(c.getContentResolver().openInputStream(uri), null, o2);
+    }
+
+    public static Uri getAlbumArtUri(long albumid){
+        Uri sArtworkUri = Uri
+                .parse("content://media/external/audio/albumart");
+
+        return ContentUris.withAppendedId(sArtworkUri,albumid);
+    }
+
 
 }

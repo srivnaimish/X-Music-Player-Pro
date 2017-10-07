@@ -1,44 +1,70 @@
 package com.riseapps.xmusic.model;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.audiofx.Equalizer;
+import android.media.session.MediaSessionManager;
+import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.RemoteException;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.app.NotificationCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.GenerateNotification;
 import com.riseapps.xmusic.executor.RecentQueue;
 import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.view.Activity.MainActivity;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import static com.riseapps.xmusic.component.AppConstants.ACTION_NEXT;
+import static com.riseapps.xmusic.component.AppConstants.ACTION_PAUSE;
+import static com.riseapps.xmusic.component.AppConstants.ACTION_PLAY;
+import static com.riseapps.xmusic.component.AppConstants.ACTION_PREVIOUS;
+import static com.riseapps.xmusic.component.AppConstants.ACTION_STOP;
+
 public class MusicService extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
         MediaPlayer.OnCompletionListener, AudioManager.OnAudioFocusChangeListener {
 
     public SharedPreferenceSingelton sharedPreferenceSingelton;
-
+    private MediaSessionCompat mediaSession;
+    private MediaControllerCompat.TransportControls transportControls;
     public MediaPlayer player;
     public Equalizer equalizer;
     public HeadsetPlugReceiver headsetPlugReceiver;
@@ -77,11 +103,6 @@ public class MusicService extends Service implements
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.intent.action.HEADSET_PLUG");
         registerReceiver(headsetPlugReceiver, intentFilter);
-        intentFilter = new IntentFilter();
-        intentFilter.addAction("play");
-        intentFilter.addAction("next");
-        intentFilter.addAction("previous");
-        registerReceiver(myReceiver, intentFilter);
 
     }
 
@@ -92,6 +113,7 @@ public class MusicService extends Service implements
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        handleIncomingActions(intent);
         PhoneStateListener phoneStateListener = new PhoneStateListener() {
             @Override
             public void onCallStateChanged(int state, String incomingNumber) {
@@ -161,7 +183,6 @@ public class MusicService extends Service implements
         if (mSeekBar != null)
             mSeekBar = null;
         onSongChangedListener.onPlayerStatusChanged(playerState = STOPPED);
-        unregisterReceiver(myReceiver);
         if(telephonyManager != null) {
             telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
         }
@@ -170,6 +191,7 @@ public class MusicService extends Service implements
             headsetPlugReceiver = null;
         }
         player.release();
+        mediaSession.release();
         audioManager.abandonAudioFocus(this);
 
         super.onDestroy();
@@ -223,6 +245,14 @@ public class MusicService extends Service implements
     public void setSongs(ArrayList<Song> songs) {
         this.songs = songs;
         shufflePlayed.clear();
+        if (playerState==STOPPED) {
+            try {
+                initMediaSession();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                stopSelf();
+            }
+        }
     }
 
     public ArrayList<Song> getSongs() {
@@ -281,7 +311,7 @@ public class MusicService extends Service implements
             case STOPPED:
                 if (requestAudioFocus()) {
                     playSong();
-                    new GenerateNotification(1).getNotification(this, getInstance());
+                    buildNotification(playerState);
                 }
                 break;
             case PAUSED:
@@ -289,14 +319,14 @@ public class MusicService extends Service implements
                     player.start();
                     onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
                     mProgressRunner.run();
-                    new GenerateNotification(1).getNotification(this, getInstance());
+                    buildNotification(playerState);
                 }
                 break;
             case PLAYING:
                 player.pause();
                 onSongChangedListener.onPlayerStatusChanged(playerState = PAUSED);
                 mSeekBar.removeCallbacks(mProgressRunner);
-                new GenerateNotification(0).getNotification(this, getInstance());
+                buildNotification(playerState);
                 break;
         }
     }
@@ -314,6 +344,7 @@ public class MusicService extends Service implements
                 currSongID);
         try {
             player.setDataSource(getApplicationContext(), trackUri);
+            updateMetaData();
             player.prepareAsync();
             mProgressRunner.run();
             onSongChangedListener.onPlayerStatusChanged(playerState = PLAYING);
@@ -414,36 +445,191 @@ public class MusicService extends Service implements
         }
     }
 
+    private void initMediaSession() throws RemoteException {
+        //if (mediaSessionManager != null) return; //mediaSessionManager exists
 
-    private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            switch (action) {
-                case "play":
-                    togglePlay();
-                    break;
-                case "next": {
-                    int current = getCurrentIndex();
-                    int next = current + 1;
-                    if (next == songs.size())// If current was the last song, then play the first song in the list
-                        next = 0;
-                    setSong(next);
-                    togglePlay();
-                    break;
-                }
-                case "previous": {
-                    int current = getCurrentIndex();
-                    int previous = current - 1;
-                    if (previous < 0)            // If current was 0, then play the last song in the list
-                        previous = songs.size() - 1;
-                    setSong(previous);
-                    togglePlay();
-                    break;
-                }
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            MediaSessionManager mediaSessionManager = (MediaSessionManager) getSystemService(Context.MEDIA_SESSION_SERVICE);
         }
-    };
+        // Create a new MediaSession
+        mediaSession = new MediaSessionCompat(getApplicationContext(), "XMusicPro");
+        //Get MediaSessions transport controls
+        transportControls = mediaSession.getController().getTransportControls();
+        //set MediaSession -> ready to receive media commands
+        mediaSession.setActive(true);
+        //indicate that the MediaSession handles transport control commands
+        // through its MediaSessionCompat.Callback.
+        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS|MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
+        // Attach Callback to receive MediaSession updates
+        mediaSession.setCallback(new MediaSessionCompat.Callback() {
+            // Implement callbacks
+            @Override
+            public void onPlay() {
+                super.onPlay();
+                togglePlay();
+                buildNotification(playerState);
+            }
+
+            @Override
+            public void onPause() {
+                super.onPause();
+                togglePlay();
+                buildNotification(playerState);
+            }
+
+            @Override
+            public void onSkipToNext() {
+                super.onSkipToNext();
+                int current = getCurrentIndex();
+                int next = current + 1;
+                if (next == songs.size())// If current was the last song, then play the first song in the list
+                    next = 0;
+                setSong(next);
+                togglePlay();
+                updateMetaData();
+                buildNotification(playerState);
+            }
+
+            @Override
+            public void onSkipToPrevious() {
+                super.onSkipToPrevious();
+                int current = getCurrentIndex();
+                int previous = current - 1;
+                if (previous < 0)            // If current was 0, then play the last song in the list
+                    previous = songs.size() - 1;
+                setSong(previous);
+                togglePlay();
+                updateMetaData();
+                buildNotification(playerState);
+            }
+
+            @Override
+            public void onStop() {
+                super.onStop();
+                removeNotification();
+                //Stop the service
+                stopSelf();
+            }
+
+            @Override
+            public void onSeekTo(long position) {
+                super.onSeekTo(position);
+            }
+        });
+    }
+
+    private void updateMetaData() {
+        Bitmap albumArt = BitmapFactory.decodeResource(getResources(),
+                R.drawable.placeholder);
+        MediaMetadataCompat.Builder metadataBuilder = new MediaMetadataCompat.Builder();
+        metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, songs.get(songPos).getName());
+        metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, songs.get(songPos).getArtist());
+        metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, songs.get(songPos).getAlbum());
+        metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,albumArt);
+
+        mediaSession.setMetadata(metadataBuilder.build());
+
+        PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder();
+        stateBuilder.setActions(PlaybackStateCompat.ACTION_PLAY | PlaybackStateCompat.ACTION_PLAY_PAUSE | PlaybackStateCompat.ACTION_PAUSE );
+        stateBuilder.setState(playerState,PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1.0f);
+        mediaSession.setPlaybackState(stateBuilder.build());
+    }
+
+    private void buildNotification(int playerState) {
+
+        int notificationAction = android.R.drawable.ic_media_pause;//needs to be initialized
+        PendingIntent play_pauseAction = null;
+        boolean ongoing=false;
+        if (playerState==PLAYING) {
+            notificationAction = android.R.drawable.ic_media_pause;
+            ongoing=true;
+            //create the pause action
+            play_pauseAction = playbackAction(1);
+        } else if (playerState==PAUSED||playerState==STOPPED) {
+            notificationAction = android.R.drawable.ic_media_play;
+            ongoing=false;
+            //create the play action
+            play_pauseAction = playbackAction(0);
+        }
+        Bitmap albumArt=null;
+        try {
+            albumArt = AppConstants.decodeUri(getApplication()
+                    , songs.get(songPos).getImagepath(),200);
+        } catch (FileNotFoundException e) {
+            albumArt = BitmapFactory.decodeResource(getResources(),R.drawable.placeholder);
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 2, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setShowWhen(false)
+                .setStyle(new NotificationCompat.MediaStyle()
+                        .setMediaSession(mediaSession.getSessionToken())
+                        .setShowActionsInCompactView(0, 1, 2))
+                .setColor(getResources().getColor(R.color.colorPrimary))
+                .setOngoing(ongoing)
+                .setLargeIcon(albumArt)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentText(songs.get(songPos).getArtist())
+                .setContentTitle(songs.get(songPos).getName())
+                .setContentInfo(songs.get(songPos).getAlbum())
+                .setContentIntent(resultPendingIntent)
+                .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))
+                .addAction(notificationAction, "pause", play_pauseAction)
+                .addAction(android.R.drawable.ic_media_next, "next", playbackAction(2))
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+    private PendingIntent playbackAction(int actionNumber) {
+        Intent playbackAction = new Intent(this, MusicService.class);
+        switch (actionNumber) {
+            case 0:
+                // Play
+                playbackAction.setAction(ACTION_PLAY);
+                return PendingIntent.getService(this, actionNumber, playbackAction, 0);
+            case 1:
+                // Pause
+                playbackAction.setAction(ACTION_PAUSE);
+                return PendingIntent.getService(this, actionNumber, playbackAction, 0);
+            case 2:
+                // Next track
+                playbackAction.setAction(ACTION_NEXT);
+                return PendingIntent.getService(this, actionNumber, playbackAction, 0);
+            case 3:
+                // Previous track
+                playbackAction.setAction(ACTION_PREVIOUS);
+                return PendingIntent.getService(this, actionNumber, playbackAction, 0);
+            default:
+                break;
+        }
+        return null;
+    }
+
+    private void handleIncomingActions(Intent playbackAction) {
+        if (playbackAction == null || playbackAction.getAction() == null) return;
+
+        String actionString = playbackAction.getAction();
+        if (actionString.equalsIgnoreCase(ACTION_PLAY)) {
+            transportControls.play();
+        } else if (actionString.equalsIgnoreCase(ACTION_PAUSE)) {
+            transportControls.pause();
+        } else if (actionString.equalsIgnoreCase(ACTION_NEXT)) {
+            transportControls.skipToNext();
+        } else if (actionString.equalsIgnoreCase(ACTION_PREVIOUS)) {
+            transportControls.skipToPrevious();
+        } else if (actionString.equalsIgnoreCase(ACTION_STOP)) {
+            transportControls.stop();
+        }
+    }
+
+    private void removeNotification() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(NOTIFICATION_ID);
+    }
 
 }
