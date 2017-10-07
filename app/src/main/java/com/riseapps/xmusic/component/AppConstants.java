@@ -106,5 +106,8 @@ public class AppConstants {
         return ContentUris.withAppendedId(sArtworkUri,albumid);
     }
 
+    public static final String ANDROID_CHANNEL_ID = "Music";
+    public static final String ANDROID_CHANNEL_NAME = "Music Playing Notification";
+
 
 }

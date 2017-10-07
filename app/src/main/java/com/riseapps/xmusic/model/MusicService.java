@@ -1,5 +1,7 @@
 package com.riseapps.xmusic.model;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -10,17 +12,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.audiofx.Equalizer;
 import android.media.session.MediaSessionManager;
-import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.RemoteException;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -30,17 +33,12 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
-import com.riseapps.xmusic.executor.GenerateNotification;
 import com.riseapps.xmusic.executor.RecentQueue;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.view.Activity.MainActivity;
@@ -57,6 +55,8 @@ import static com.riseapps.xmusic.component.AppConstants.ACTION_PAUSE;
 import static com.riseapps.xmusic.component.AppConstants.ACTION_PLAY;
 import static com.riseapps.xmusic.component.AppConstants.ACTION_PREVIOUS;
 import static com.riseapps.xmusic.component.AppConstants.ACTION_STOP;
+import static com.riseapps.xmusic.component.AppConstants.ANDROID_CHANNEL_ID;
+import static com.riseapps.xmusic.component.AppConstants.ANDROID_CHANNEL_NAME;
 
 public class MusicService extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
@@ -538,16 +538,16 @@ public class MusicService extends Service implements
 
     private void buildNotification(int playerState) {
 
-        int notificationAction = android.R.drawable.ic_media_pause;//needs to be initialized
+        int notificationAction = R.drawable.ic_notification_pause;//needs to be initialized
         PendingIntent play_pauseAction = null;
         boolean ongoing=false;
         if (playerState==PLAYING) {
-            notificationAction = android.R.drawable.ic_media_pause;
+            notificationAction = R.drawable.ic_notification_pause;
             ongoing=true;
             //create the pause action
             play_pauseAction = playbackAction(1);
         } else if (playerState==PAUSED||playerState==STOPPED) {
-            notificationAction = android.R.drawable.ic_media_play;
+            notificationAction = R.drawable.ic_notification_play;
             ongoing=false;
             //create the play action
             play_pauseAction = playbackAction(0);
@@ -564,25 +564,55 @@ public class MusicService extends Service implements
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 2, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                .setShowWhen(false)
-                .setStyle(new NotificationCompat.MediaStyle()
-                        .setMediaSession(mediaSession.getSessionToken())
-                        .setShowActionsInCompactView(0, 1, 2))
-                .setColor(getResources().getColor(R.color.colorPrimary))
-                .setOngoing(ongoing)
-                .setLargeIcon(albumArt)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setContentText(songs.get(songPos).getArtist())
-                .setContentTitle(songs.get(songPos).getName())
-                .setContentInfo(songs.get(songPos).getAlbum())
-                .setContentIntent(resultPendingIntent)
-                .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))
-                .addAction(notificationAction, "pause", play_pauseAction)
-                .addAction(android.R.drawable.ic_media_next, "next", playbackAction(2))
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        if(Build.VERSION.SDK_INT<26) {
+            NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                    .setShowWhen(false)
+                    .setStyle(new NotificationCompat.MediaStyle()
+                            .setMediaSession(mediaSession.getSessionToken())
+                            .setShowActionsInCompactView(0, 1, 2))
+                    .setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+                    .setOngoing(ongoing)
+                    .setLargeIcon(albumArt)
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setContentText(songs.get(songPos).getArtist())
+                    .setContentTitle(songs.get(songPos).getName())
+                    .setContentInfo(songs.get(songPos).getAlbum())
+                    .setContentIntent(resultPendingIntent)
+                    .addAction(R.drawable.ic_notification_prev, "previous", playbackAction(3))
+                    .addAction(notificationAction, "pause", play_pauseAction)
+                    .addAction(R.drawable.ic_notification_next, "next", playbackAction(2))
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
-        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notificationBuilder.build());
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notificationBuilder.build());
+        }else{
+            android.support.v4.app.NotificationCompat.Builder mBuilder=new android.support.v4.app.NotificationCompat.Builder(getApplicationContext(),ANDROID_CHANNEL_ID);
+            mBuilder.setChannelId(ANDROID_CHANNEL_ID);
+            mBuilder.setShowWhen(false)
+                    .setStyle(new NotificationCompat.MediaStyle()
+                            .setMediaSession(mediaSession.getSessionToken())
+                            .setShowActionsInCompactView(0, 1, 2))
+                    .setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+                    .setOngoing(ongoing)
+                    .setLargeIcon(albumArt)
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setContentText(songs.get(songPos).getArtist())
+                    .setContentTitle(songs.get(songPos).getName())
+                    .setContentInfo(songs.get(songPos).getAlbum())
+                    .setContentIntent(resultPendingIntent)
+                    .addAction(R.drawable.ic_notification_prev, "previous", playbackAction(3))
+                    .addAction(notificationAction, "pause", play_pauseAction)
+                    .addAction(R.drawable.ic_notification_next, "next", playbackAction(2));
+
+            NotificationManager mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel androidChannel = new NotificationChannel(ANDROID_CHANNEL_ID,
+                        ANDROID_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+                androidChannel.enableLights(true);
+                androidChannel.setLightColor(Color.RED);
+                androidChannel.setSound(null,null);
+                androidChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                mManager.createNotificationChannel(androidChannel);
+            mManager.notify(NOTIFICATION_ID, mBuilder.build());
+        }
     }
 
     private PendingIntent playbackAction(int actionNumber) {
