@@ -19,6 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@android:drawable/stat_sys_headset" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimaryFontDark" />
         <activity
             android:name=".view.Activity.SplashScreen"
             android:theme="@style/SplashTheme">
