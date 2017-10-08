@@ -130,9 +130,9 @@
                 app:tabGravity="fill"
                 app:tabIndicatorColor="?colorAccent"
                 app:tabMaxWidth="0dp"
-                app:tabMode="fixed"
-                app:tabPaddingEnd="-1dp"
-                app:tabPaddingStart="-1dp"
+                app:tabMode="scrollable"
+                app:tabPaddingEnd="22dp"
+                app:tabPaddingStart="22dp"
                 app:tabSelectedTextColor="?colorAccent" />
 
         </android.support.design.widget.AppBarLayout>

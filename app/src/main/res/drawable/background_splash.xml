@@ -3,7 +3,7 @@
     android:opacity="opaque">
 
     <item
-        android:drawable="@color/colorAccent"/>
+        android:drawable="@color/colorAccentDark"/>
 
    <!-- <item >
         <bitmap android:src="@drawable/ic_splash" android:gravity="center"/>

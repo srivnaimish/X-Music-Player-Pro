@@ -124,8 +124,7 @@
                             android:layout_height="40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
-                            app:srcCompat="@drawable/ic_color"
-                            android:tint="?android:textColorTertiary" />
+                            app:srcCompat="@drawable/ic_color" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -228,8 +227,7 @@
                             android:layout_height="40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
-                            app:srcCompat="@drawable/ic_folder"
-                            android:tint="?android:textColorTertiary" />
+                            app:srcCompat="@drawable/ic_folder" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -493,8 +491,7 @@
                             android:layout_height="40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
-                            android:tint="?android:textColorTertiary"
-                            app:srcCompat="@drawable/ic_like" />
+                            app:srcCompat="@drawable/ic_rate" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -548,8 +545,7 @@
                             android:layout_height="40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
-                            app:srcCompat="@drawable/ic_share"
-                            android:tint="?android:textColorTertiary" />
+                            app:srcCompat="@drawable/ic_share" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"

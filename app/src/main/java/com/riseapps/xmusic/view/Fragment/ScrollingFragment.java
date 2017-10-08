@@ -205,7 +205,11 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         if (Action.equalsIgnoreCase("Recent_Added_Playlist")) {
             int X = 2 * (3600 * 24 * 7);
             selection = MediaStore.MediaColumns.DATE_ADDED + ">" + (System.currentTimeMillis() / 1000 - X);
-        } else {
+        }
+        else if(Action.equalsIgnoreCase("Folder")){
+            return new CursorLoader(getContext(), musicUri, null, MediaStore.Audio.Media.DATA + " like ? ", new String[] {"%"+Name+"%"}, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
+        }
+        else {
             if (Action.equalsIgnoreCase("Albums")) {
                 selection = MediaStore.Audio.Media.ALBUM_ID + "=" + this.id;
             } else if (Action.equalsIgnoreCase("Artists")) {
@@ -214,7 +218,6 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                     Action.equalsIgnoreCase("Recent_Playlists")) {
                 selection = multipleIDs;
             }
-
             initiallizeMultipleNames();
             if (filter != null) {
                 selection += filter;

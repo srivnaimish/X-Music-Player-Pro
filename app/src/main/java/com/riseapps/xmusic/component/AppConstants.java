@@ -2,13 +2,17 @@ package com.riseapps.xmusic.component;
 
 import android.content.ContentUris;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 import com.riseapps.xmusic.R;
+import com.riseapps.xmusic.model.Pojo.PlaylistSelect;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 /**
  * Created by naimish on 3/7/17.
@@ -72,7 +76,6 @@ public class AppConstants {
     public static final String ACTION_PREVIOUS = "com.riseapps.xplayer.ACTION_PREVIOUS";
     public static final String ACTION_NEXT = "com.riseapps.xplayer.ACTION_NEXT";
     public static final String ACTION_STOP = "com.riseapps.xplayer.ACTION_STOP";
-    private static final int NOTIFICATION_ID = 101;
 
     public static Bitmap decodeUri(Context c, Uri uri, final int requiredSize)
             throws FileNotFoundException, SecurityException {
@@ -108,6 +111,34 @@ public class AppConstants {
 
     public static final String ANDROID_CHANNEL_ID = "Music";
     public static final String ANDROID_CHANNEL_NAME = "Music Playing Notification";
+
+    public static ArrayList<PlaylistSelect> getFolderNames(Context context) {
+        ArrayList<PlaylistSelect> folders = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                int lastSlash = path.lastIndexOf('/');
+                int secondLastSlash = 0;
+                for (int i = lastSlash - 1; i >= 0; i--) {
+                    if (path.charAt(i) == '/') {
+                        secondLastSlash = i;
+                        break;
+                    }
+                }
+                String folder = path.substring(secondLastSlash + 1, lastSlash);
+                if (!names.contains(folder))
+                    names.add(folder);
+            }
+            while (cursor.moveToNext());
+        }
+        for (String s : names) {
+            folders.add(new PlaylistSelect(s, true));
+        }
+
+        return folders;
+    }
 
 
 }

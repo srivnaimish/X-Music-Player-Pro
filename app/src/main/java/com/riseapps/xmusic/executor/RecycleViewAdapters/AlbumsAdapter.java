@@ -29,7 +29,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
     private Cursor dataCursor;
     private final Uri sArtworkUri = Uri
             .parse("content://media/external/audio/albumart");
-    private ScrollingFragment scrollingFragment;
     private FragmentTransitionListener fragmentTransitionListener;
 
     public AlbumsAdapter(Context context, RecyclerView recyclerView, Cursor cursor) {
@@ -111,7 +110,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter {
         }
 
         private void fragmentJump(Album album) {
-            scrollingFragment = new ScrollingFragment();
+            ScrollingFragment scrollingFragment = new ScrollingFragment();
             Bundle bundle = new Bundle();
             bundle.putLong("ID", album.getId());
             bundle.putString("Name", album.getName());

@@ -360,7 +360,7 @@ public class AppSettingActivity extends AppCompatActivity {
         FoldersAdapter foldersAdapter;
         recyclerView = (RecyclerView) dialog.findViewById(R.id.foldersList);
 
-        folders = getFolderNames();
+        folders = AppConstants.getFolderNames(this);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
@@ -385,7 +385,6 @@ public class AppSettingActivity extends AppCompatActivity {
                     sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "SkipFolders", unselected);
                     dialog.dismiss();
                 }
-
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -394,34 +393,6 @@ public class AppSettingActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-    }
-
-    public ArrayList<PlaylistSelect> getFolderNames() {
-        ArrayList<PlaylistSelect> folders = new ArrayList<>();
-        ArrayList<String> names = new ArrayList<>();
-        Cursor cursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                int lastSlash = path.lastIndexOf('/');
-                int secondLastSlash = 0;
-                for (int i = lastSlash - 1; i >= 0; i--) {
-                    if (path.charAt(i) == '/') {
-                        secondLastSlash = i;
-                        break;
-                    }
-                }
-                String folder = path.substring(secondLastSlash + 1, lastSlash);
-                if (!names.contains(folder))
-                    names.add(folder);
-            }
-            while (cursor.moveToNext());
-        }
-        for (String s : names) {
-            folders.add(new PlaylistSelect(s, true));
-        }
-
-        return folders;
     }
 
     public void hide_anim(View view) {

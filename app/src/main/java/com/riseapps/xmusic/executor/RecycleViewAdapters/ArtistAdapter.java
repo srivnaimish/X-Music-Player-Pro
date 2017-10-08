@@ -53,8 +53,6 @@ public class ArtistAdapter extends RecyclerView.Adapter {
         dataCursor.moveToPosition(position);
         String artist = dataCursor.getString(dataCursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST));
         long id = dataCursor.getLong(dataCursor.getColumnIndex(MediaStore.Audio.Artists._ID));
-       /* if (artist.length() > 40)
-            artist = artist.substring(0, 32) + "...";*/
 
         ((ArtistViewHolder) holder).name.setText(artist);
         ((ArtistViewHolder) holder).artist = new Artist(artist, id);

@@ -24,8 +24,10 @@ import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -50,6 +52,11 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
         }
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         RelativeLayout btnSkip = (RelativeLayout) findViewById(R.id.btn_skip);
+
+
+        ImageView background=findViewById(R.id.background_image);
+        Glide.with(this).load(R.drawable.placeholder)
+                .crossFade().centerCrop().into(background);
 
 
         layouts = new int[]{

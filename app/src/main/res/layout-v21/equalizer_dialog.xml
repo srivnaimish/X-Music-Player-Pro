@@ -51,7 +51,9 @@
                 <SeekBar
                     android:id="@+id/seekBar0"
                     android:layout_width="220dp"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:thumb="@drawable/thumb"
+                    android:progressDrawable="@drawable/seekbar_progressbar"/>
             </com.riseapps.xmusic.widgets.SeekBarRotator>
         </LinearLayout>
 
@@ -77,7 +79,8 @@
                     android:id="@+id/seekBar1"
                     android:layout_width="220dp"
                     android:layout_height="wrap_content"
-                    />
+                    android:thumb="@drawable/thumb"
+                    android:progressDrawable="@drawable/seekbar_progressbar" />
             </com.riseapps.xmusic.widgets.SeekBarRotator>
         </LinearLayout>
 
@@ -102,7 +105,9 @@
                 <SeekBar
                     android:id="@+id/seekBar2"
                     android:layout_width="220dp"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:thumb="@drawable/thumb"
+                    android:progressDrawable="@drawable/seekbar_progressbar"/>
             </com.riseapps.xmusic.widgets.SeekBarRotator>
         </LinearLayout>
 
@@ -127,7 +132,9 @@
                 <SeekBar
                     android:id="@+id/seekBar3"
                     android:layout_width="220dp"
-                    android:layout_height="wrap_content"/>
+                    android:thumb="@drawable/thumb"
+                    android:layout_height="wrap_content"
+                    android:progressDrawable="@drawable/seekbar_progressbar" />
             </com.riseapps.xmusic.widgets.SeekBarRotator>
         </LinearLayout>
 
@@ -153,7 +160,8 @@
                     android:id="@+id/seekBar4"
                     android:layout_width="220dp"
                     android:layout_height="wrap_content"
-                    />
+                    android:thumb="@drawable/thumb"
+                    android:progressDrawable="@drawable/seekbar_progressbar" />
             </com.riseapps.xmusic.widgets.SeekBarRotator>
         </LinearLayout>
 

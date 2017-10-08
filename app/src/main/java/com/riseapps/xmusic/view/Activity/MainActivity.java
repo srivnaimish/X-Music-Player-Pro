@@ -82,6 +82,7 @@ import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.utils.ZoomOutPageTransformer;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
 import com.riseapps.xmusic.view.Fragment.ArtistFragment;
+import com.riseapps.xmusic.view.Fragment.FolderFragment;
 import com.riseapps.xmusic.view.Fragment.PlaylistFragment;
 import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 import com.riseapps.xmusic.view.Fragment.SongsFragment;
@@ -404,11 +405,11 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             assert tab != null;
@@ -985,7 +986,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
+        String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3),"Folders"};
 
         //String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
         SectionsPagerAdapter(FragmentManager fm) {
@@ -1003,6 +1004,8 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     return AlbumFragment.newInstance();
                 case 3:
                     return ArtistFragment.newInstance();
+                case 4:
+                    return FolderFragment.newInstance();
 
             }
             return SongsFragment.newInstance();
@@ -1010,7 +1013,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
         @Override
         public int getCount() {
-            return 4;
+            return 5;
         }
 
         @Override
