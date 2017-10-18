@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.riseapps.xmusic.model.MusicService;
-import com.riseapps.xmusic.view.Activity.MainActivity;
+import com.riseapps.xmusic.view.activity.MainActivity;
 
 /**
  * Created by naimish on 14/3/17.

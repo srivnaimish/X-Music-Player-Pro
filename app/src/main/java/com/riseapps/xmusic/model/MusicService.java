@@ -41,7 +41,7 @@ import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.RecentQueue;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.view.Activity.MainActivity;
+import com.riseapps.xmusic.view.activity.MainActivity;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Type;

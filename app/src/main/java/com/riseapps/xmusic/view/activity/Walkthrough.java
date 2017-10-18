@@ -1,4 +1,4 @@
-package com.riseapps.xmusic.view.Activity;
+package com.riseapps.xmusic.view.activity;
 
 import android.Manifest;
 import android.app.Dialog;

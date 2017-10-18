@@ -25,7 +25,7 @@
         <meta-data android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimaryFontDark" />
         <activity
-            android:name=".view.Activity.SplashScreen"
+            android:name=".view.activity.SplashScreen"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,11 +34,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.Activity.Walkthrough"
+            android:name=".view.activity.Walkthrough"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".view.Activity.MainActivity"
+            android:name=".view.activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
 
@@ -47,14 +47,14 @@
             android:enabled="true" />
 
         <activity
-            android:name=".view.Activity.SelectPlaylistActivity"
+            android:name=".view.activity.SelectPlaylistActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.Activity.AppSettingActivity"
+            android:name=".view.activity.AppSettingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.Activity.Splash2Activity"
+        <activity android:name=".view.activity.Splash2Activity"
             android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <receiver android:name="android.support.v4.media.session.MediaButtonReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />

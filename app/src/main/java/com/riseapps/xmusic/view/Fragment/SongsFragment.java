@@ -25,7 +25,7 @@ import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.SongAdapter;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.GridItemDecoration;
-import com.riseapps.xmusic.view.Activity.MainActivity;
+import com.riseapps.xmusic.view.activity.MainActivity;
 
 import java.util.ArrayList;
 

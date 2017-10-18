@@ -1,4 +1,4 @@
-package com.riseapps.xmusic.view.Activity;
+package com.riseapps.xmusic.view.activity;
 
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -6,11 +6,9 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.view.PagerAdapter;
@@ -36,7 +34,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.billing.IabHelper;

@@ -89,4 +89,5 @@
     <string name="artist">कलाकार</string>
     <string name="album">एल्बम</string>
     <string name="app_walk4">हटाने के लिए ट्रैक का चयन करने के लिए लंबे समय तक दबाएं</string>
+    <string name="folder">फ़ोल्डर</string>
 </resources>

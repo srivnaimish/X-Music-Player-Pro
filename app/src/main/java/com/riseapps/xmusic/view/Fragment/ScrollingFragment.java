@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riseapps.xmusic.R;
@@ -36,7 +35,7 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.NestedFragmentAdapter;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.view.Activity.MainActivity;
+import com.riseapps.xmusic.view.activity.MainActivity;
 import com.riseapps.xmusic.widgets.MainTextView;
 import com.riseapps.xmusic.widgets.MainTextViewSub;
 
@@ -203,7 +202,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String selection = "";
         if (Action.equalsIgnoreCase("Recent_Added_Playlist")) {
-            int X = 2 * (3600 * 24 * 7);
+            int X = 3 * (3600 * 24 * 7);
             selection = MediaStore.MediaColumns.DATE_ADDED + ">" + (System.currentTimeMillis() / 1000 - X);
         }
         else if(Action.equalsIgnoreCase("Folder")){

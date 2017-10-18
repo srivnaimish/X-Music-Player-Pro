@@ -27,7 +27,7 @@ import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.PlaylistAdapter;
 import com.riseapps.xmusic.model.Pojo.Playlist;
-import com.riseapps.xmusic.view.Activity.MainActivity;
+import com.riseapps.xmusic.view.activity.MainActivity;
 
 import java.util.ArrayList;
 

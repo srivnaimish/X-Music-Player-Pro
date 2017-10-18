@@ -5,7 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.riseapps.xmusic.view.Activity.MainActivity">
+    tools:context="com.riseapps.xmusic.view.activity.MainActivity">
 
     <RelativeLayout
         android:id="@+id/rel1"

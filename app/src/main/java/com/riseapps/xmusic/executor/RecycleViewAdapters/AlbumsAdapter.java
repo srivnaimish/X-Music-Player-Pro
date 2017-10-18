@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.executor.Interfaces.FragmentTransitionListener;
 import com.riseapps.xmusic.model.Pojo.Album;
-import com.riseapps.xmusic.view.Activity.MainActivity;
+import com.riseapps.xmusic.view.activity.MainActivity;
 import com.riseapps.xmusic.view.Fragment.ScrollingFragment;
 
 public class AlbumsAdapter extends RecyclerView.Adapter {

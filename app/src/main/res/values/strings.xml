@@ -108,8 +108,6 @@
     <string name="artist">Artist</string>
     <string name="album">Album</string>
     <string name="app_walk4">Long press to select tracks for deletion</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="folder">Folders</string>
 
 </resources>
