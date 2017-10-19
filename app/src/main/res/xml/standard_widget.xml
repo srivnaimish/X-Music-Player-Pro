@@ -3,6 +3,7 @@
     android:minWidth="250dp"
     android:minHeight="40dp"
     android:updatePeriodMillis="86400000"
-    android:previewImage="@drawable/placeholder"
+    android:previewImage="@drawable/widget_demo"
     android:initialLayout="@layout/widget_standard"
-    android:widgetCategory="home_screen"/>
+    android:widgetCategory="home_screen"
+    />

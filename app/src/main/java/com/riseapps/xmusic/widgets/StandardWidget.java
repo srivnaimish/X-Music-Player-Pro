@@ -8,11 +8,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.model.MusicService;

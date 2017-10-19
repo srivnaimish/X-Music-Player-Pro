@@ -1,2 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version="1.0"?>
+<resources>
+    <!--WALKTHROUGH-->
+    <string name="fragment1_heading">ابحث في يوتيوب</string>
+    <string name="fragment1_subHeading">ابحث عن الاغنية التي تستمع اليها حاليا ، في يوتيوب</string>
+    <string name="fragment2_heading">"عزز موسيقاك المفضلة "</string>
+    <string name="fragment2_subHeading">فعِل المسوي</string>
+    <string name="fragment3_heading">عداد للموسيقى</string>
+    <string name="fragment3_subHeading">ضع مؤقت لتوقيف الموسيقى بعد مدة زمنية من الاعدادات</string>
+    <string name="permission_rationale">التطبيق لن يستطيع استرجاع الموسيقى … يرجى اعطاء الصلاحية</string>
+    <string name="start_now">إبدأ الآن</string>
+    <!-- MENU ITEMS -->
+    <string name="action_favourites">المفضلة</string>
+    <string name="action_playlist">أضف الى قائمة التشغيل</string>
+    <string name="action_youtube">"إبحث عن هذه الأغنية في يوتيوب "</string>
+    <string name="action_search">إبحث عن أغنية</string>
+    <!--MAINACTIVITY-->
+    <string name="TAB1">قائمة التشغيل</string>
+    <string name="TAB2">الألبومات</string>
+    <string name="TAB3">الفنانين</string>
+    <string name="TAB4">المقاطع</string>
+    <string name="now_playing">يشتغل الآن</string>
+    <string name="song_repeat_off_toast">توقف إعادة تشغيل الأغنية</string>
+    <string name="song_repeat_on_toast">"تشغيل إعادة الأغنية "</string>
+    <string name="opening_youtube">جارِِ فتح يوتيوب</string>
+    <string name="song_added_to_playlist">الأغنية اٌضيفت لقائمة التشغيل</string>
+    <!--PLAYLIST SELECT ACTIVITY-->
+    <string name="playlist_screen_placeholder">يمكن إضافة عدة قوائم في البداية</string>
+    <string name="did_not_select">لم تحدد أي قائمة لأغنيتك!</string>
+    <string name="select_atleast_one">يجب عليك تحديد أغنية واحدة على الأقل</string>
+    <string name="created">تَم</string>
+    <!--EXTRAS-->
+    <string name="play_all">شغَل الكل</string>
+    <string name="shuffle">خلط عشوائي</string>
+    <string name="empty_state_message">للأسف... لم توجد أي أغنية</string>
+    <string name="swipe_right_or_left_to_change_the_song">مرر يميناً / يسارا أو نقرة مزدوجة على غلاف الصورة</string>
+    <string name="playing_all">تشغيل كل الأغاني من</string>
+    <!--SETTINGS-->
+    <string name="settings_title">إعدادات التطبيق</string>
+    <string name="equalizer_heading">المسوي</string>
+    <string name="sleep_timer_heading">عداد النوم</string>
+    <string name="sleep_timer_subHeading">وقَف مشغل الموسقى أوتوماتيكيا</string>
+    <string name="help_heading">ساعدنا في الترجمة</string>
+    <string name="help_subHeading">نحتاج المساعدة في ترجمة التطبيق الى لغتك الأم</string>
+    <string name="share_app">أُنشر التطبيق</string>
+    <string name="recomment_it_to_others">أوصي بها للآخرين</string>
+    <string name="rate_us_heading">قيم التطبيق في متجر قوقل بلاي</string>
+    <string name="rate_us_subHeading">أظهر لنا الحب بمنحنا 5 نجوم كتقييم</string>
+    <string name="Invalid_Time_Toast">توقيت خاطىء</string>
+    <string name="translation_help">مساعدة في الترجمة</string>
+    <string name="translation_help_sub">شكرا لك لإظهار إهتمامك في ترجمة تطبيق Xmusic Player Pro.\n\nإذا ساعدتنا في ترجمة هذا التطبيق الى لغة أخرى , سيظهر اسمك في وصف التطبيق علو متجر قوقل بلاي و ذلك كتعبير عن الشكر .\n</string>
+    <!--CREATE PLAYLIST DIALOG-->
+    <string name="create_a_new_playlist">أنشأ قائمة جديدة</string>
+    <string name="name">اسم ...</string>
+    <!--SLEEP TIME DIALOG-->
+    <string name="stop_music_after">وقَف الموسيقى</string>
+    <string name="minutes">الدقائق</string>
+    <string name="action_share">شارك التطبيق</string>
+    <string name="switch_betweem_the_light_and_dark_app_themes">إعادة تشغيل التطبيق لتغيير الثيم</string>
+    <string name="app_walk1">مئقت النوم ، ثيمات الأفلام ، تخطى المجلدات ، ألوان الثيمات</string>
+    <string name="app_walk2">أنقر على المشغل الصغير لفتح المشغل الأساسي</string>
+    <string name="app_walk3">هل تريد البحث عن هذه الأغنية في يوتيوب ؟</string>
+    <string name="delete_these_songs">حذف هذه الأغاني ؟</string>
+    <string name="delete_warning">هذه العملية ستحذف كل الأغاني المحددة من الجهاز أيضا</string>
+    <string name="empty_state_playlist_message">لم تنشئ أي قائمة تشغيل</string>
+    <string name="hide_music">حدد التوقيت الأدنى لمسح الأغاني</string>
+    <string name="custom_time">وقت مفضل</string>
+    <string name="pick_time">إختر وقت</string>
+    <string name="buy">إشتري كل الثيمات</string>
+    <string name="thanks">نشكرك على الإشتراء</string>
+    <string name="aborted">أُجهضت</string>
+    <string name="pick_theme">إختر</string>
+    <string name="movie">ثيمات الأفلام</string>
+    <string name="scroll_to_view_more">مرر لمشاهدة المزيد</string>
+    <string name="hint_restart_app_to_reflect_changes">ملاحظة : أعد تشغيل التطبيق لتأكيد التغييرات</string>
+    <string name="folders_to_scan">حدد المجلدات للمسح</string>
+    <string name="exclude_folder">ألغي مجلد</string>
+    <string name="set_the_folders_you_want_to_load_songs_from">حدد المجلدات التي تريدها لتشغيل الموسيقى منها</string>
+    <string name="save">حفظ</string>
+    <string name="equalizer_hint">ملاحظة : أنقر على حفظ ان كنت تريد حفظ تعديل المسوي</string>
+    <string name="select_a_preset">حدد التعديل</string>
+    <string name="beautiful_themes">ثيمات جميلة</string>
+    <string name="select_from_multiple_color_amp_movie_themes"><![CDATA[حدد من مختلف ألوان و و ثيمات الأفلام]]></string>
+    <string name="play_song_directly_from_search_results">شغل الأغنية مباشرة من نتائج البحث</string>
+    <string name="recently_added">أضيفت حاليا</string>
+    <string name="recently_played">شٌغلت حاليا</string>
+    <string name="animation_toggle">"الموجات المتحركة في المشغل الرئيسي "</string>
+    <string name="not_found_youtube">لا يوجد يوتيوب مثبت على الهاتف</string>
+    <string name="try_taplor">جرب لعبتنا الجديدة - Taplor</string>
+    <string name="action_edit">عدِل معلومات الأغنية</string>
+    <string name="song_removed_from_favourites">الاغنية حٌذفت من المفضلة</string>
+    <string name="song_added_to_favourites">الاغنية أضيفت الى المفضلة</string>
+    <string name="successfully_updated">تم التحديث بنجاح</string>
+    <string name="title">عنوان</string>
+    <string name="artist">فنان</string>
+    <string name="album">الألبوم</string>
+    <string name="app_walk4">ضغط مطول لتحديد المقاطع المراد حذفها</string>
+</resources>

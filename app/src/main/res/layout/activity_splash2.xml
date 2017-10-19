@@ -31,11 +31,7 @@
         android:layout_marginTop="32dp"
         android:text="@string/app_name"
         android:textColor="@color/whitePrimary"
-        android:textSize="@dimen/size32sp"
-        android:shadowColor="#000"
-        android:shadowDy="2"
-        android:shadowRadius="1"
-        android:shadowDx="2"
+        android:textSize="@dimen/size26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
