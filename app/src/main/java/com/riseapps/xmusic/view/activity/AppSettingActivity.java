@@ -286,17 +286,6 @@ public class AppSettingActivity extends AppCompatActivity {
         }
     }
 
-    public void helpUsTranslate(View v) {
-        dialog = new Dialog(this);
-        dialog.setContentView(R.layout.translation);
-        try {
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        } catch (NullPointerException e) {
-        }
-        dialog.show();
-
-    }
-
     public void hide_short(View v) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.short_music_hide_dialog);

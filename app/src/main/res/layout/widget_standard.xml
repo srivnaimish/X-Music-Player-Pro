@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBlack"
+    android:id="@+id/background">
+
+    <ImageView
+        android:id="@+id/imageView_cover"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/placeholder" />
+
+    <TextView
+        android:id="@+id/textView_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@+id/imageView_cover"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:fontFamily="@font/overpass"
+        android:paddingStart="@dimen/size8dp"
+        android:paddingEnd="@dimen/size8dp"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="false"
+        android:singleLine="true"
+        android:textColor="@color/whitePrimary"
+        tools:text="Text"/>
+    <TextView
+        android:id="@+id/textView_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/textView_title"
+        android:layout_toEndOf="@id/imageView_cover"
+        android:layout_toRightOf="@id/imageView_cover"
+        android:textColor="@android:color/white"
+        tools:text="Artist"
+        android:singleLine="true"
+        android:textSize="@dimen/size13sp"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:fontFamily="@font/overpass"
+        android:paddingStart="@dimen/size8dp"
+        android:paddingEnd="@dimen/size8dp"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_subtitle"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/imageView_cover"
+        android:weightSum="1">
+
+        <ImageButton
+            android:id="@+id/image_prev"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:background="@drawable/ripple"
+            android:src="@drawable/ic_notification_prev" />
+
+        <ImageButton
+            android:id="@+id/image_playpause"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.4"
+            android:background="@drawable/ripple"
+            app:srcCompat="@drawable/ic_notification_play" />
+
+        <ImageButton
+            android:id="@+id/image_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="0.3"
+            android:background="@drawable/ripple"
+            android:src="@drawable/ic_notification_next" />
+    </LinearLayout>
+
+</RelativeLayout>

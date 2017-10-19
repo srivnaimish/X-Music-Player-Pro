@@ -109,5 +109,6 @@
     <string name="album">Album</string>
     <string name="app_walk4">Long press to select tracks for deletion</string>
     <string name="folder">Folders</string>
+    <string name="widget_standard">XMusic Pro Widget</string>
 
 </resources>

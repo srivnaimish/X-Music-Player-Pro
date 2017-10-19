@@ -33,6 +33,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -91,6 +92,7 @@ public class MusicService extends Service implements
     private static final int NOTIFICATION_ID = 1;
     ArrayList<Long> ids = new ArrayList<>();
     public long currSongID;
+    private Intent widgetIntent = new Intent("com.riseapps.xmusic.playstatechanged");
 
     public void onCreate() {
 
@@ -113,7 +115,14 @@ public class MusicService extends Service implements
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        handleIncomingActions(intent);
+        try {
+            handleIncomingActions(intent);
+        }catch (Exception e){
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+            Toast.makeText(this, "Please start song from app first", Toast.LENGTH_SHORT).show();
+        }
+
         PhoneStateListener phoneStateListener = new PhoneStateListener() {
             @Override
             public void onCallStateChanged(int state, String incomingNumber) {
@@ -329,6 +338,15 @@ public class MusicService extends Service implements
                 buildNotification(playerState);
                 break;
         }
+        widgetIntent.putExtra("track",songs.get(songPos).getName());
+        widgetIntent.putExtra("artist",songs.get(songPos).getArtist());
+        widgetIntent.putExtra("album",songs.get(songPos).getAlbum());
+
+        if(playerState==PLAYING)
+            widgetIntent.putExtra("playing",true);
+        else
+            widgetIntent.putExtra("playing",false);
+        sendBroadcast(widgetIntent);
     }
 
     private void playSong() {
@@ -469,6 +487,15 @@ public class MusicService extends Service implements
                 super.onPlay();
                 togglePlay();
                 buildNotification(playerState);
+                widgetIntent.putExtra("track",songs.get(songPos).getName());
+                widgetIntent.putExtra("artist",songs.get(songPos).getArtist());
+                widgetIntent.putExtra("album",songs.get(songPos).getAlbum());
+                if(playerState==PLAYING)
+                    widgetIntent.putExtra("playing",true);
+                else
+                    widgetIntent.putExtra("playing",false);
+                sendBroadcast(widgetIntent);
+                //Toast.makeText(MusicService.this, ""+playerState, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -476,6 +503,14 @@ public class MusicService extends Service implements
                 super.onPause();
                 togglePlay();
                 buildNotification(playerState);
+                widgetIntent.putExtra("track",songs.get(songPos).getName());
+                widgetIntent.putExtra("artist",songs.get(songPos).getArtist());
+                widgetIntent.putExtra("album",songs.get(songPos).getAlbum());
+                if(playerState==PLAYING)
+                    widgetIntent.putExtra("playing",true);
+                else
+                    widgetIntent.putExtra("playing",false);
+                sendBroadcast(widgetIntent);
             }
 
             @Override
@@ -489,6 +524,14 @@ public class MusicService extends Service implements
                 togglePlay();
                 updateMetaData();
                 buildNotification(playerState);
+                widgetIntent.putExtra("track",songs.get(songPos).getName());
+                widgetIntent.putExtra("artist",songs.get(songPos).getArtist());
+                widgetIntent.putExtra("album",songs.get(songPos).getAlbum());
+                if(playerState==PLAYING)
+                    widgetIntent.putExtra("playing",true);
+                else
+                    widgetIntent.putExtra("playing",false);
+                sendBroadcast(widgetIntent);
             }
 
             @Override
@@ -502,6 +545,14 @@ public class MusicService extends Service implements
                 togglePlay();
                 updateMetaData();
                 buildNotification(playerState);
+                widgetIntent.putExtra("track",songs.get(songPos).getName());
+                widgetIntent.putExtra("artist",songs.get(songPos).getArtist());
+                widgetIntent.putExtra("album",songs.get(songPos).getAlbum());
+                if(playerState==PLAYING)
+                    widgetIntent.putExtra("playing",true);
+                else
+                    widgetIntent.putExtra("playing",false);
+                sendBroadcast(widgetIntent);
             }
 
             @Override
