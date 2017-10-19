@@ -85,7 +85,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.4"
                 android:background="@drawable/ripple"
-                app:srcCompat="@drawable/ic_notification_play" />
+                android:src="@drawable/ic_notification_play" />
 
             <ImageView
                 android:id="@+id/image_next"

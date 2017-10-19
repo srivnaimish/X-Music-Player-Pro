@@ -73,7 +73,7 @@ public class StandardWidget extends BaseWidget {
                 remoteView.setTextViewText(R.id.textView_subtitle, t);
             }
             remoteView.setImageViewResource(R.id.image_playpause,
-                    extras.getBoolean("playing") ? R.drawable.pause : R.drawable.play);
+                    extras.getBoolean("playing") ? R.drawable.ic_notification_pause : R.drawable.ic_notification_play);
 
         }
         Intent intent = new Intent(context, MainActivity.class);

@@ -181,11 +181,11 @@ public class SongAdapter extends RecyclerView.Adapter {
                     if (song.isSelected()) {
                         song.setSelected(false);
                         count--;
-                        adapterToActivityListener.onTrackLongPress(count, song.getID(), false);
+                        adapterToActivityListener.onTrackLongPress(count, song.getID(), false,songsList.get(getAdapterPosition()));
                     } else {
                         song.setSelected(true);
                         count++;
-                        adapterToActivityListener.onTrackLongPress(count, song.getID(), true);
+                        adapterToActivityListener.onTrackLongPress(count, song.getID(), true,songsList.get(getAdapterPosition()));
                     }
                     songListCard.setCardBackgroundColor(song.isSelected() ? colorSelected : colorNormal);
                 } else {
@@ -205,11 +205,11 @@ public class SongAdapter extends RecyclerView.Adapter {
             if (song.isSelected()) {
                 song.setSelected(false);
                 count--;
-                adapterToActivityListener.onTrackLongPress(count, song.getID(), false);
+                adapterToActivityListener.onTrackLongPress(count, song.getID(), false,songsList.get(getAdapterPosition()));
             } else {
                 song.setSelected(true);
                 count++;
-                adapterToActivityListener.onTrackLongPress(count, song.getID(), true);
+                adapterToActivityListener.onTrackLongPress(count, song.getID(), true,songsList.get(getAdapterPosition()));
             }
             songListCard.setCardBackgroundColor(song.isSelected() ? colorSelected : colorNormal);
             return true;

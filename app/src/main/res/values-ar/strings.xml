@@ -95,4 +95,7 @@
     <string name="artist">فنان</string>
     <string name="album">الألبوم</string>
     <string name="app_walk4">ضغط مطول لتحديد المقاطع المراد حذفها</string>
+    <string name="folder">المجلدات</string>
+    <string name="action_play_now">قائمة التشغيل السريعة</string>
+    <string name="theme">موضوع اللون</string>
 </resources>

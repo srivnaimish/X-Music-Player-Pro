@@ -97,4 +97,5 @@
     <string name="album">Álbum</string>
     <string name="app_walk4">Mantenga pulsado para seleccionar las pistas que desea borrar</string>
     <string name="folder">Carpetas</string>
+    <string name="action_play_now">Lista de reproducción rápida</string>
 </resources>

@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     String[] permissionsRequired = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private ArrayList<Long> selectedID = new ArrayList<>();
+    private ArrayList<Song> selectedSongs = new ArrayList<>();
 
     private Dialog dialog;
     private SharedPreferenceSingelton sharedPreferenceSingleton;
@@ -577,12 +578,6 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 return true;
             }
         });
-       /* toolbarPlayer.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideMainPlayer();
-            }
-        });*/
         toolbarContext = (Toolbar) findViewById(R.id.toolbar_context);
         toolbarContext.inflateMenu(R.menu.context_menu);
         toolbar_context_title = (MainTextView) findViewById(R.id.toolbar_context_title);
@@ -595,6 +590,11 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     startActivityForResult(i, 2);
                 } else if (item.getItemId() == R.id.delete) {
                     openDeleteDialog();
+                } else if (item.getItemId() == R.id.play_now) {
+                    setSongs(selectedSongs);
+                    musicService.setSongs(selectedSongs);
+                    removeContentSelection();
+                    new PlaySongExec(MainActivity.this, 0).startPlaying();
                 }
                 return true;
             }
@@ -665,6 +665,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         miniPlayer.setVisibility(View.VISIBLE);
         shuffle_play.show();
         selectedID = new ArrayList<>();
+        selectedSongs=new ArrayList<>();
         songRefreshListener.OnContextBackPressed();
 
     }
@@ -956,12 +957,14 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     }
 
     @Override
-    public void onTrackLongPress(int c, long songId, boolean songAdded) {
+    public void onTrackLongPress(int c, long songId, boolean songAdded,Song song) {
         toolbar_context_title.setText(c + " Selected");
         if (songAdded) {
             selectedID.add(songId);
+            selectedSongs.add(song);
         } else {
             selectedID.remove(songId);
+            selectedSongs.remove(song);
         }
         if (c == 0) {
             toolbarContext.setVisibility(View.GONE);
@@ -1092,6 +1095,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     }
                 }
                 selectedID.clear();
+                selectedSongs.clear();
                 toolbarContext.setVisibility(View.GONE);
                 mToolbar.setVisibility(View.VISIBLE);
                 miniPlayer.setVisibility(View.VISIBLE);
@@ -1106,6 +1110,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             @Override
             public void onClick(View view) {
                 selectedID.clear();
+                selectedSongs.clear();
                 toolbarContext.setVisibility(View.GONE);
                 mToolbar.setVisibility(View.VISIBLE);
                 miniPlayer.setVisibility(View.VISIBLE);

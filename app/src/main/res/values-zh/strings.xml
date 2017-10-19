@@ -97,4 +97,5 @@
     <string name="album">专辑</string>
     <string name="app_walk4">长按选择要删除的曲目</string>
     <string name="folder">文件夹</string>
+    <string name="action_play_now">快速播放列表</string>
 </resources>

@@ -119,6 +119,7 @@ public class MusicService extends Service implements
             handleIncomingActions(intent);
         }catch (Exception e){
             Intent i = new Intent(this, MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
             Toast.makeText(this, "Please start song from app first", Toast.LENGTH_SHORT).show();
         }

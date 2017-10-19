@@ -89,4 +89,5 @@
     <string name="album">অ্যালবাম</string>
     <string name="app_walk4">অপসারণের জন্য ট্র্যাকগুলি নির্বাচন করতে লম্বা চাপুন</string>
     <string name="folder">ফোল্ডার</string>
+    <string name="action_play_now">দ্রুত প্লেলিস্ট</string>
 </resources>
