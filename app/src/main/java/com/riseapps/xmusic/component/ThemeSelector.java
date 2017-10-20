@@ -96,8 +96,6 @@ public class ThemeSelector {
             activity.setTheme(R.style.IronManTheme);
         else if (currentTheme == 11)
             activity.setTheme(R.style.DeadpoolTheme);
-        else if(currentTheme == 12)
-            activity.setTheme(R.style.AppTheme);
     }
 
     public static int theme_like_drawable=0;

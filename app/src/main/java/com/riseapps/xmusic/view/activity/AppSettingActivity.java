@@ -179,9 +179,7 @@ public class AppSettingActivity extends AppCompatActivity {
                     case R.id.deadpool:
                         sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 11);
                         break;
-                    case R.id.inception:
-                        sharedPreferenceSingelton.saveAs(AppSettingActivity.this, "Themes", 12);
-                        break;
+
                 }
                 dialog.dismiss();
                 finish();
@@ -195,7 +193,6 @@ public class AppSettingActivity extends AppCompatActivity {
         dialog.findViewById(R.id.batman).setOnClickListener(clickListener);
         dialog.findViewById(R.id.iron).setOnClickListener(clickListener);
         dialog.findViewById(R.id.deadpool).setOnClickListener(clickListener);
-        dialog.findViewById(R.id.inception).setOnClickListener(clickListener);
         try {
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         } catch (NullPointerException e) {

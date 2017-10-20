@@ -48,8 +48,6 @@ public class MainTextViewSub extends TextView {
             font = ResourcesCompat.getFont(context, R.font.iron_man);
         } else if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 11) {
             font = ResourcesCompat.getFont(context, R.font.deadpool);
-        } else if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 12) {
-            font = ResourcesCompat.getFont(context, R.font.inception);
         }
         setTypeface(font);
     }

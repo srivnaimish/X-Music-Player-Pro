@@ -2,11 +2,8 @@ package com.riseapps.xmusic.widgets;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
@@ -15,7 +12,8 @@ import com.riseapps.xmusic.component.SharedPreferenceSingelton;
  * Created by naimish on 13/3/17.
  */
 
-public class MainTextView extends TextView {
+public class MainTextView extends android.support.v7.widget.AppCompatTextView {
+
 
     public MainTextView(Context context) {
         super(context);
@@ -29,11 +27,6 @@ public class MainTextView extends TextView {
 
     public MainTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public MainTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         applyFont(context);
     }
 
@@ -48,8 +41,6 @@ public class MainTextView extends TextView {
             font = ResourcesCompat.getFont(context, R.font.iron_man);
         } else if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 11) {
             font = ResourcesCompat.getFont(context, R.font.deadpool);
-        } else if (sharedPreferenceSingelton.getSavedInt(context, "Themes") == 12) {
-            font = ResourcesCompat.getFont(context, R.font.inception);
         }
         setTypeface(font);
     }

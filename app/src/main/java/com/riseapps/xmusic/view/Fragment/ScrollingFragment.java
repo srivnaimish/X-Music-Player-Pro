@@ -216,6 +216,10 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
             } else if (Action.equalsIgnoreCase("Favourites") || Action.equalsIgnoreCase("Playlists") ||
                     Action.equalsIgnoreCase("Recent_Playlists")) {
                 selection = multipleIDs;
+            } else if(Action.equalsIgnoreCase("Genres")) {
+                musicUri=MediaStore.Audio.Genres.Members.getContentUri("external",this.id);
+                selection = null;
+                //Toast.makeText(getContext(), ""+this.id, Toast.LENGTH_SHORT).show();
             }
             initiallizeMultipleNames();
             if (filter != null) {
@@ -228,7 +232,7 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        int textLimit = 26;
+        //int textLimit = 26;
         if (data != null && data.moveToFirst()) {
             do {
                 long id = data.getLong(data.getColumnIndex(MediaStore.Audio.Media._ID));
@@ -237,7 +241,6 @@ public class ScrollingFragment extends Fragment implements LoaderManager.LoaderC
                 String artist = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 String album = data.getString(data.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                 long albumid = data.getLong(data.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
-
                 songMainArrayList.add(new Song(id, duration,album, title, artist, AppConstants.getAlbumArtUri(albumid), false));
             }
             while (data.moveToNext());

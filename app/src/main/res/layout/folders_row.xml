@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:clickable="true"
+    android:focusable="true"
     card_view:cardCornerRadius="1dp"
     card_view:cardElevation="0dp"
     card_view:cardBackgroundColor="?colorPrimary"

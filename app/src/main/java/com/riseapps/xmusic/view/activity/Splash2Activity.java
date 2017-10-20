@@ -26,8 +26,6 @@ public class Splash2Activity extends AppCompatActivity {
             ThemeSelector.theme_like_drawable=R.drawable.ic_iron_man;
         } else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 11) {
             ThemeSelector.theme_like_drawable=R.drawable.ic_deadpool;
-        }else if (new SharedPreferenceSingelton().getSavedInt(this, "Themes") == 12) {
-            ThemeSelector.theme_like_drawable=R.drawable.ic_inception;
         }else {
             ThemeSelector.theme_like_drawable=R.drawable.ic_like;
         }
