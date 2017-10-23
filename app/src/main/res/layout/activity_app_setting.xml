@@ -49,7 +49,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/setting_movie"
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
+                    android:layout_height="75dp"
                     android:layout_marginTop="2dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -66,34 +66,21 @@
 
                         <ImageView
                             android:id="@+id/setting_movie_theme"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="@dimen/size40dp"
+                            android:layout_height="@dimen/size40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
                             app:srcCompat="@drawable/ic_video_player" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="8dp"
-                            android:layout_toEndOf="@id/setting_movie_theme"
-                            android:orientation="vertical">
 
                             <com.riseapps.xmusic.widgets.MainTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/movie"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp" />
-
-                            <com.riseapps.xmusic.widgets.MainTextViewSub
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/switch_betweem_the_light_and_dark_app_themes"
-                                android:textSize="@dimen/size14sp" />
-
-                        </LinearLayout>
+                                android:textSize="@dimen/size16sp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="8dp"
+                                android:layout_toEndOf="@id/setting_movie_theme"/>
 
                     </RelativeLayout>
 
@@ -102,7 +89,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/setting_theme"
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
+                    android:layout_height="75dp"
                     android:layout_marginTop="2dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -120,83 +107,21 @@
 
                         <ImageView
                             android:id="@+id/setting_theme_icon"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="@dimen/size40dp"
+                            android:layout_height="@dimen/size40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
                             app:srcCompat="@drawable/ic_color" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="8dp"
-                            android:layout_toEndOf="@id/setting_theme_icon"
-                            android:orientation="vertical">
 
                             <com.riseapps.xmusic.widgets.MainTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/theme"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp" />
-
-                            <com.riseapps.xmusic.widgets.MainTextViewSub
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/switch_betweem_the_light_and_dark_app_themes"
-                                android:textSize="@dimen/size14sp" />
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/setting_taplor"
-                    android:layout_width="match_parent"
-                    android:layout_height="85dp"
-                    android:layout_below="@id/setting_theme"
-                    android:layout_marginTop="2dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?selectableItemBackgroundBorderless"
-                    card_view:cardCornerRadius="0dp"
-                    card_view:cardElevation="0dp"
-                    card_view:cardBackgroundColor="?colorPrimary"
-                    android:onClick="tryTaplor">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
-
-                        <ImageView
-                            android:id="@+id/taplor_icon"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_margin="12dp"
-                            android:src="@drawable/taplor"
-                            android:scaleType="centerInside"/>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="8dp"
-                            android:layout_toEndOf="@id/taplor_icon"
-                            android:orientation="vertical">
-
-                            <com.riseapps.xmusic.widgets.MainTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/try_taplor"
-                                android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp" />
-
-                        </LinearLayout>
+                                android:textSize="@dimen/size16sp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="8dp"
+                                android:layout_toEndOf="@id/setting_theme_icon"/>
 
                     </RelativeLayout>
 
@@ -205,8 +130,8 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/setting_folders"
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
-                    android:layout_below="@id/setting_taplor"
+                    android:layout_height="75dp"
+                    android:layout_below="@id/setting_theme"
                     android:layout_marginTop="2dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -223,34 +148,21 @@
 
                         <ImageView
                             android:id="@+id/setting_folder"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="@dimen/size40dp"
+                            android:layout_height="@dimen/size40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
                             app:srcCompat="@drawable/ic_folder" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="8dp"
-                            android:layout_toEndOf="@id/setting_folder"
-                            android:orientation="vertical">
-
                             <com.riseapps.xmusic.widgets.MainTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/exclude_folder"
+                                android:text="Hide Folders"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp" />
-
-                            <com.riseapps.xmusic.widgets.MainTextViewSub
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/set_the_folders_you_want_to_load_songs_from"
-                                android:textSize="@dimen/size14sp" />
-
-                        </LinearLayout>
+                                android:textSize="@dimen/size16sp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="8dp"
+                                android:layout_toEndOf="@id/setting_folder"/>
 
                     </RelativeLayout>
 
@@ -259,7 +171,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/setting_sleep"
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
+                    android:layout_height="75dp"
                     android:layout_below="@id/setting_folders"
                     android:layout_marginTop="2dp"
                     android:clickable="true"
@@ -277,34 +189,21 @@
 
                         <ImageView
                             android:id="@+id/setting_two_icon"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="@dimen/size40dp"
+                            android:layout_height="@dimen/size40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
                             app:srcCompat="@drawable/ic_sleep_timer" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="8dp"
-                            android:layout_toEndOf="@id/setting_two_icon"
-                            android:orientation="vertical">
 
                             <com.riseapps.xmusic.widgets.MainTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/sleep_timer_heading"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp" />
-
-                            <com.riseapps.xmusic.widgets.MainTextViewSub
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/sleep_timer_subHeading"
-                                android:textSize="@dimen/size14sp" />
-
-                        </LinearLayout>
+                                android:textSize="@dimen/size16sp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="8dp"
+                                android:layout_toEndOf="@id/setting_two_icon"/>
 
                     </RelativeLayout>
 
@@ -313,7 +212,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/setting_hide_short"
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
+                    android:layout_height="75dp"
                     android:layout_below="@id/setting_sleep"
                     android:layout_marginTop="2dp"
                     android:clickable="true"
@@ -331,8 +230,8 @@
 
                         <ImageView
                             android:id="@+id/setting_hide_icon"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="@dimen/size40dp"
+                            android:layout_height="@dimen/size40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
                             app:srcCompat="@drawable/ic_timelapse" />
@@ -367,7 +266,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/setting_hide_anim"
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
+                    android:layout_height="75dp"
                     android:layout_below="@id/setting_hide_short"
                     android:layout_marginTop="2dp"
                     android:clickable="true"
@@ -385,8 +284,8 @@
 
                         <ImageView
                             android:id="@+id/setting_wave"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="@dimen/size40dp"
+                            android:layout_height="@dimen/size40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
                             app:srcCompat="@drawable/ic_waves" />
@@ -416,7 +315,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/setting_rate"
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
+                    android:layout_height="75dp"
                     android:layout_below="@id/setting_hide_anim"
                     android:layout_marginTop="2dp"
                     android:clickable="true"
@@ -434,34 +333,21 @@
 
                         <ImageView
                             android:id="@+id/ad_icon"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="@dimen/size40dp"
+                            android:layout_height="@dimen/size40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
                             app:srcCompat="@drawable/ic_rate" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="8dp"
-                            android:layout_toEndOf="@id/ad_icon"
-                            android:orientation="vertical">
 
                             <com.riseapps.xmusic.widgets.MainTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/rate_us_heading"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp" />
-
-                            <com.riseapps.xmusic.widgets.MainTextViewSub
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/rate_us_subHeading"
-                                android:textSize="@dimen/size14sp" />
-
-                        </LinearLayout>
+                                android:textSize="@dimen/size16sp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="8dp"
+                                android:layout_toEndOf="@id/ad_icon"/>
 
                     </RelativeLayout>
 
@@ -470,7 +356,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/setting_share"
                     android:layout_width="match_parent"
-                    android:layout_height="85dp"
+                    android:layout_height="75dp"
                     android:layout_below="@id/setting_rate"
                     android:layout_marginTop="2dp"
                     android:clickable="true"
@@ -488,34 +374,21 @@
 
                         <ImageView
                             android:id="@+id/share"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="@dimen/size40dp"
+                            android:layout_height="@dimen/size40dp"
                             android:layout_alignParentStart="true"
                             android:layout_margin="12dp"
                             app:srcCompat="@drawable/ic_share" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="8dp"
-                            android:layout_toEndOf="@id/share"
-                            android:orientation="vertical">
 
                             <com.riseapps.xmusic.widgets.MainTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/share_app"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp" />
-
-                            <com.riseapps.xmusic.widgets.MainTextViewSub
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/recomment_it_to_others"
-                                android:textSize="@dimen/size14sp" />
-
-                        </LinearLayout>
+                                android:textSize="@dimen/size16sp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="8dp"
+                                android:layout_toEndOf="@id/share"/>
 
                     </RelativeLayout>
 

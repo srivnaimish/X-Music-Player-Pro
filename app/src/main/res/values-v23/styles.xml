@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">@color/colorWhite</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorTertiary">@color/colorPrimaryFontDark</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

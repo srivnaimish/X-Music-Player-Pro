@@ -24,7 +24,7 @@ import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.Interfaces.PlaylistRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
-import com.riseapps.xmusic.executor.RecycleTouchListener;
+import com.riseapps.xmusic.utils.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.PlaylistAdapter;
 import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.view.activity.MainActivity;

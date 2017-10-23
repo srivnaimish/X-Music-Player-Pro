@@ -24,6 +24,7 @@ import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -37,13 +38,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.Window;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -71,11 +76,14 @@ import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.component.ThemeSelector;
 import com.riseapps.xmusic.executor.FilePathFromId;
 import com.riseapps.xmusic.executor.Interfaces.AdapterToActivityListener;
+import com.riseapps.xmusic.executor.Interfaces.OnStartDragListener;
 import com.riseapps.xmusic.executor.Interfaces.PlaylistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
-import com.riseapps.xmusic.executor.OnSwipeTouchListener;
+import com.riseapps.xmusic.utils.ItemTouchHelperCallback;
+import com.riseapps.xmusic.utils.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
+import com.riseapps.xmusic.executor.RecycleViewAdapters.QueueAdapter;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
 import com.riseapps.xmusic.utils.WaveHelper;
@@ -95,7 +103,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AdapterToActivityListener {
+public class MainActivity extends AppCompatActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AdapterToActivityListener,OnStartDragListener {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -137,10 +145,14 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     private Dialog dialog;
     private SharedPreferenceSingelton sharedPreferenceSingleton;
+    public static WaveView waveView;
 
     public ArrayList<Song> completeList;
     Toolbar searchBar;
     AutoCompleteTextView autoComplete;
+    RecyclerView recyclerView;
+    QueueAdapter queueAdapter;
+    private CoordinatorLayout queue;
 
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
         @Override
@@ -228,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             mWaveHelper.cancel();
         }
     };
-    public static WaveView waveView;
+    private ItemTouchHelper mItemTouchHelper;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -438,9 +450,11 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
         equalizerView = (EqualizerView) findViewById(R.id.equalizer_view);
         shuffle_play = (FloatingActionButton) findViewById(R.id.shuffle_songs);
+        queue=findViewById(R.id.queue_layout);
         shuffle_play.setOnClickListener(togglePlayBtn);
         play_pause.setOnClickListener(togglePlayBtn);
         play_pause_mini.setOnClickListener(togglePlayBtn);
+
         View centerview=findViewById(R.id.center_view);
         if (!sharedPreferenceSingleton.getSavedBoolean(this, "mainScreenSequence")) {
             new TapTargetSequence(this).targets(
@@ -491,6 +505,9 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             }).start();
             sharedPreferenceSingleton.saveAs(this, "mainScreenSequence", true);
         }
+        recyclerView=findViewById(R.id.recyclerView);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void toolbarsInitiallize() {
@@ -508,7 +525,14 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.favourites) {
+                if (item.getItemId() == R.id.action_queue) {
+                    if(queue.getVisibility()==View.VISIBLE){
+                        hideQueue();
+                    }else {
+                        showQueue();
+                    }
+                }
+                else if (item.getItemId() == R.id.favourites) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     ScrollingFragment scrollingFragment = new ScrollingFragment();
@@ -713,7 +737,11 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         } else {
             if (mainPlayer.getVisibility() == View.VISIBLE) {
                 hideMainPlayer();
-            } else {
+            }
+            else if(queue.getVisibility()==View.VISIBLE){
+                hideQueue();
+            }
+            else {
                 if (musicPlaying) {
                     if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                         getSupportFragmentManager().popBackStackImmediate();
@@ -745,12 +773,38 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     public void setSongs(ArrayList<Song> songList) {
         this.songList = songList;
+        queueAdapter=new QueueAdapter(this,songList,recyclerView);
+        recyclerView.setAdapter(queueAdapter);
+        ItemTouchHelper.Callback callback =
+                new ItemTouchHelperCallback(queueAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     public void setCompleteSongList(ArrayList<Song> presetList) {
         completeList = presetList;
         setSongs(completeList);
         titles = getTitles();
+    }
+
+    void showQueue(){
+        shuffle_play.hide();
+        queue.setVisibility(View.VISIBLE);
+        tabLayout.setVisibility(View.GONE);
+        mViewPager.setVisibility(View.GONE);
+        miniPlayer.setVisibility(View.GONE);
+        mToolbar.setVisibility(View.GONE);
+        queue.startAnimation(AnimationUtils.loadAnimation(this,R.anim.real_fade_in));
+    }
+
+    void hideQueue(){
+        queue.startAnimation(AnimationUtils.loadAnimation(this,R.anim.real_fade_out));
+        queue.setVisibility(View.GONE);
+        miniPlayer.setVisibility(View.VISIBLE);
+        mViewPager.setVisibility(View.VISIBLE);
+        shuffle_play.show();
+        tabLayout.setVisibility(View.VISIBLE);
+        mToolbar.setVisibility(View.VISIBLE);
     }
 
     void showMainPlayer() {
@@ -986,6 +1040,11 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         miniPlayer.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out));
         miniPlayer.setVisibility(View.GONE);
         shuffle_play.hide();
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
     }
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {

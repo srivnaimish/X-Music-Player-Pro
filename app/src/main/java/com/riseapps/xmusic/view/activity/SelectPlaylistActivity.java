@@ -28,7 +28,7 @@ import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.ThemeSelector;
 import com.riseapps.xmusic.executor.Interfaces.ClickListener;
 import com.riseapps.xmusic.executor.MyApplication;
-import com.riseapps.xmusic.executor.RecycleTouchListener;
+import com.riseapps.xmusic.utils.RecycleTouchListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.AddPlaylistAdapter;
 import com.riseapps.xmusic.model.Pojo.PlaylistSelect;
 

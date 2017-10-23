@@ -113,10 +113,9 @@
                     android:id="@+id/toolbar_context_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textAlignment="textStart"
+                    android:gravity="center_vertical"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/size16sp" />
+                    android:textSize="@dimen/size14sp" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -191,6 +190,8 @@
 
 
         <include layout="@layout/main_player" />
+
+        <include layout="@layout/queue"/>
 
     </RelativeLayout>
 
