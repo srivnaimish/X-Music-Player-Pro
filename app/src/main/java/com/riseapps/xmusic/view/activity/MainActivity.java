@@ -620,6 +620,12 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     musicService.setSongs(selectedSongs);
                     removeContentSelection();
                     new PlaySongExec(MainActivity.this, 0).startPlaying();
+                } else if(item.getItemId()==R.id.add_to_queue){
+                    for(Song song: selectedSongs){
+                        addToQueue(song);
+                    }
+                    removeContentSelection();
+                    Toast.makeText(MainActivity.this, "Added to Queue", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
@@ -785,6 +791,11 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         completeList = presetList;
         setSongs(completeList);
         titles = getTitles();
+    }
+
+    public void addToQueue(Song song){
+        songList.add(song);
+        queueAdapter.notifyItemInserted(songList.size()-1);
     }
 
     void showQueue(){
@@ -1013,7 +1024,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     @Override
     public void onTrackLongPress(int c, long songId, boolean songAdded,Song song) {
-        toolbar_context_title.setText(c + " Selected");
+        toolbar_context_title.setText(c + "");
         if (songAdded) {
             selectedID.add(songId);
             selectedSongs.add(song);

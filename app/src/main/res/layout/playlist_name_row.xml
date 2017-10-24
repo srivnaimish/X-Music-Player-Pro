@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:textColor="?android:textColorPrimary"
-            android:textSize="@dimen/size16sp"
+            android:textSize="@dimen/size14sp"
             tools:text="TextView"
             android:layout_marginStart="25dp"
             android:layout_marginTop="4dp"

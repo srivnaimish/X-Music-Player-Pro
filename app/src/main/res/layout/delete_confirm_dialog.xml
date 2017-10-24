@@ -49,7 +49,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="2dp"
             android:text="@string/delete_warning"
-            android:textSize="@dimen/size14sp" />
+            android:textSize="@dimen/size13sp" />
     </LinearLayout>
     <!---->
 

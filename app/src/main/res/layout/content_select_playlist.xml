@@ -22,7 +22,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:focusable="true"
+        android:foreground="?selectableItemBackgroundBorderless"
         card_view:cardBackgroundColor="@color/colorAccentDark"
         card_view:cardCornerRadius="1dp"
         card_view:cardElevation="2dp">
@@ -37,11 +38,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_add" />
-
                 <com.riseapps.xmusic.widgets.MainTextViewSub
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,7 +45,7 @@
                     android:layout_marginStart="10dp"
                     android:text="@string/create_a_new_playlist"
                     android:textColor="@color/whitePrimary"
-                    android:textSize="@dimen/size18sp" />
+                    android:textSize="@dimen/size16sp" />
             </LinearLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>

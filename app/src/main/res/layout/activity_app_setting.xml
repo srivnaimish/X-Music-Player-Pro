@@ -30,7 +30,7 @@
                     android:text="@string/settings_title"
                     android:textAlignment="textStart"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/size16sp" />
+                    android:textSize="@dimen/size15sp" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -77,7 +77,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/movie"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp"
+                                android:textSize="@dimen/size15sp"
                                 android:layout_centerVertical="true"
                                 android:layout_margin="8dp"
                                 android:layout_toEndOf="@id/setting_movie_theme"/>
@@ -118,7 +118,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/theme"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp"
+                                android:textSize="@dimen/size15sp"
                                 android:layout_centerVertical="true"
                                 android:layout_margin="8dp"
                                 android:layout_toEndOf="@id/setting_theme_icon"/>
@@ -159,7 +159,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Hide Folders"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp"
+                                android:textSize="@dimen/size15sp"
                                 android:layout_centerVertical="true"
                                 android:layout_margin="8dp"
                                 android:layout_toEndOf="@id/setting_folder"/>
@@ -200,7 +200,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/sleep_timer_heading"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp"
+                                android:textSize="@dimen/size15sp"
                                 android:layout_centerVertical="true"
                                 android:layout_margin="8dp"
                                 android:layout_toEndOf="@id/setting_two_icon"/>
@@ -249,7 +249,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/hide_music"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp" />
+                                android:textSize="@dimen/size15sp" />
 
                             <com.riseapps.xmusic.widgets.MainTextViewSub
                                 android:id="@+id/time_for_short_music"
@@ -303,7 +303,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/animation_toggle"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp" />
+                                android:textSize="@dimen/size15sp" />
 
                         </LinearLayout>
 
@@ -344,7 +344,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/rate_us_heading"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp"
+                                android:textSize="@dimen/size15sp"
                                 android:layout_centerVertical="true"
                                 android:layout_margin="8dp"
                                 android:layout_toEndOf="@id/ad_icon"/>
@@ -385,7 +385,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/share_app"
                                 android:textColor="?android:textColorPrimary"
-                                android:textSize="@dimen/size16sp"
+                                android:textSize="@dimen/size15sp"
                                 android:layout_centerVertical="true"
                                 android:layout_margin="8dp"
                                 android:layout_toEndOf="@id/share"/>

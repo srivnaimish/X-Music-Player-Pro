@@ -49,7 +49,7 @@
                     android:layout_toEndOf="@id/imageView1"
                     android:text="@string/recently_played"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/size16sp" />
+                    android:textSize="@dimen/size13sp" />
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>
@@ -96,7 +96,7 @@
                     android:layout_toEndOf="@id/imageView2"
                     android:text="@string/recently_added"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/size16sp" />
+                    android:textSize="@dimen/size13sp" />
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>

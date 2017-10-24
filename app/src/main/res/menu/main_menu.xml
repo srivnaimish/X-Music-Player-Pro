@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item android:id="@+id/action_queue"
-        android:icon="@drawable/playlist"
-        android:title="@string/action_search"
+        android:icon="@drawable/ic_queue"
+        android:title="@string/queue"
         app:showAsAction="always"
         android:orderInCategory="1"/>
     <item android:id="@+id/action_search"

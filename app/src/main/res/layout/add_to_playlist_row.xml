@@ -29,8 +29,8 @@
 
             <ImageView
                 android:id="@+id/imageView1"
-                android:layout_width="@dimen/size40dp"
-                android:layout_height="@dimen/size40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/playlist" />
 
@@ -42,7 +42,7 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="4dp"
                 android:textColor="?android:textColorPrimary"
-                android:textSize="@dimen/size18sp"
+                android:textSize="@dimen/size16sp"
                 tools:text="TextView" />
 
         </LinearLayout>

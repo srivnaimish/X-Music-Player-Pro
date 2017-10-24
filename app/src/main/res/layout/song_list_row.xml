@@ -51,7 +51,7 @@
                 android:fadingEdge="horizontal"
                 android:singleLine="true"
                 android:textColor="?android:textColorPrimary"
-                android:textSize="@dimen/size14sp"
+                android:textSize="@dimen/size13sp"
                 tools:text="TextView" />
 
             <com.riseapps.xmusic.widgets.MainTextViewSub
@@ -61,7 +61,7 @@
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
                 android:singleLine="true"
-                android:textSize="@dimen/size13sp"
+                android:textSize="@dimen/size12sp"
                 tools:text="TextView" />
 
         </LinearLayout>

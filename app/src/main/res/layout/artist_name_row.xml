@@ -46,7 +46,7 @@
             android:fadingEdge="horizontal"
             android:singleLine="true"
             android:textColor="?android:textColorPrimary"
-            android:textSize="@dimen/size14sp"
+            android:textSize="@dimen/size13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/artist_art_card"

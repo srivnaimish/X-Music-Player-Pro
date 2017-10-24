@@ -111,7 +111,8 @@
     <string name="folder">Folders</string>
     <string name="widget_standard" translatable="false">XMusic Pro Widget</string>
     <string name="action_play_now">Play Now</string>
-    <string name="queue">Queue</string>
     <string name="preview">Preview</string>
+    <string name="add_to_queue">Add to queue</string>
+    <string name="queue">Queue</string>
 
 </resources>
