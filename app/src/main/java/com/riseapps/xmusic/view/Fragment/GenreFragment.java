@@ -86,12 +86,15 @@ public class GenreFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getActivity().getSupportLoaderManager().initLoader(Genre_LOADER, null, GenreFragment.this);
-            }
-        },2000);
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getActivity().getSupportLoaderManager().initLoader(Genre_LOADER, null, GenreFragment.this);
+                }
+            },1000);
+        }catch (Exception e){}
+
     }
 
     @Override

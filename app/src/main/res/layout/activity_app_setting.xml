@@ -396,6 +396,8 @@
 
             </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>
+
     </RelativeLayout>
 
+    <include layout="@layout/theme_select_dialog"/>
 </android.support.design.widget.CoordinatorLayout>
