@@ -144,11 +144,12 @@
 
             <View
                 android:id="@+id/center_view"
-                android:layout_width="@dimen/size20dp"
-                android:layout_height="@dimen/size20dp"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="32dp"/>
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"/>
             <android.support.v4.view.ViewPager
                 android:id="@+id/container"
                 android:layout_width="match_parent"

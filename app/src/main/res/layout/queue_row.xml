@@ -52,7 +52,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Song Name" />
 
-
         <ImageButton
             android:id="@+id/delete"
             android:layout_width="@dimen/size40dp"

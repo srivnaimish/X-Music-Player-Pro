@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "962096493651",
-    "firebase_url": "https://xmusic-f6955.firebaseio.com",
-    "project_id": "xmusic-f6955",
-    "storage_bucket": "xmusic-f6955.appspot.com"
+    "project_number": "571754136498",
+    "firebase_url": "https://xmusic-pro.firebaseio.com",
+    "project_id": "xmusic-pro",
+    "storage_bucket": "xmusic-pro.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:962096493651:android:da3711ffd84af7f8",
+        "mobilesdk_app_id": "1:571754136498:android:da3711ffd84af7f8",
         "android_client_info": {
           "package_name": "com.riseapps.xmusic"
         }
       },
       "oauth_client": [
         {
-          "client_id": "962096493651-i8i5v1ucf305ehg4736hvbnh7uerdd54.apps.googleusercontent.com",
+          "client_id": "571754136498-9p9ppnr45os1mt0b7vk0ldf6nt4nd3is.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.riseapps.xmusic",
-            "certificate_hash": "6c144bfb9e125666fb3f0e93abbe31709b58e759"
+            "certificate_hash": "41ed17204427f470a6f98a4aedc165d90132ae80"
           }
         },
         {
-          "client_id": "962096493651-5oonc4hp5f4t9vhkl02vj4vkbiaagu5f.apps.googleusercontent.com",
+          "client_id": "571754136498-679u3fbukskthr6qsj30mktabpvtqobh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAv3nSqDZKHm6PcXBSf5rZYrjSnnhe-vzU"
+          "current_key": "AIzaSyChsT4myZqT5hTt3km5N2uzRVNpmiqZXik"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "962096493651-5oonc4hp5f4t9vhkl02vj4vkbiaagu5f.apps.googleusercontent.com",
+              "client_id": "571754136498-679u3fbukskthr6qsj30mktabpvtqobh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -39,16 +39,9 @@
     <string name="settings_title">程式設定</string>
     <string name="equalizer_heading">等化器</string>
     <string name="sleep_timer_heading">休眠定時器</string>
-    <string name="sleep_timer_subHeading">自動關閉音樂播放器</string>
-    <string name="help_heading">協助我們翻譯</string>
-    <string name="help_subHeading">我們需要你的協助將這個程式翻譯成你的本地語言</string>
     <string name="share_app">分享程式</string>
-    <string name="recomment_it_to_others">推薦給其他人</string>
     <string name="rate_us_heading">在 Play 商店上給我們打分！</string>
-    <string name="rate_us_subHeading">顯示你對我們的愛並給予五星評級</string>
     <string name="Invalid_Time_Toast">無效時間</string>
-    <string name="translation_help">協助翻譯</string>
-    <string name="translation_help_sub">感謝你對翻譯 X Music Player 高級版的興趣！\n\n如果你協助我們翻譯這個程式為其他語言，在 Play 商店的描述上會提到你的名字，以此作為感謝。</string>
     <!--CREATE PLAYLIST DIALOG-->
     <string name="create_a_new_playlist">建立新的歌單</string>
     <string name="name">名稱...</string>
@@ -57,10 +50,6 @@
     <string name="minutes">分鐘</string>
     <string name="action_share">分享這首歌</string>
     <string name="theme">顏色主題</string>
-    <string name="switch_betweem_the_light_and_dark_app_themes">需要重啟程式才能切換這個主題</string>
-    <string name="app_walk1">休眠定時器、電影主題、忽略文件夾、顏色主題</string>
-    <string name="app_walk2">輕觸迷你播放器來開啟主播放器</string>
-    <string name="app_walk3">想在 YouTube 上搜尋這首歌曲？</string>
     <string name="delete_these_songs">刪除這些歌曲？</string>
     <string name="delete_warning">這個操作會同時從裝置中刪除選定歌曲</string>
     <string name="empty_state_playlist_message">你尚未建立任何歌單</string>
@@ -70,7 +59,6 @@
     <string name="buy">购买所有主题</string>
     <string name="thanks">感謝你的購買</string>
     <string name="aborted">已中止</string>
-    <string name="pick_theme">選取</string>
     <string name="movie">電影主題</string>
     <string name="scroll_to_view_more">滾動以檢視更多</string>
     <string name="hint_restart_app_to_reflect_changes">貼士: 重啟程式才能生效</string>
@@ -87,7 +75,6 @@
     <string name="recently_played">最近播放的歌曲</string>
     <string name="animation_toggle">在主播放器中切换Wave动画</string>
     <string name="not_found_youtube">设备上没有找到Youtube</string>
-    <string name="try_taplor">尝试我们的新游戏 - Taplor</string>
     <string name="action_edit">编辑歌曲详细信息</string>
     <string name="song_removed_from_favourites">歌曲从收藏夹中删除</string>
     <string name="song_added_to_favourites">歌曲添加到收藏夹</string>
@@ -95,7 +82,11 @@
     <string name="title">标题</string>
     <string name="artist">艺术家</string>
     <string name="album">专辑</string>
-    <string name="app_walk4">长按选择要删除的曲目</string>
     <string name="folder">文件夹</string>
     <string name="action_play_now">快速播放列表</string>
+    <string name="add_to_queue">添加到队列</string>
+    <string name="queue">队列</string>
+    <string name="showcase1">按住并选择多个曲目 - 1.添加到队列 2.删除歌曲 3.添加到播放列表。   4.仅播放选定的曲目。</string>
+    <string name="showcase2">1.点击迷你播放器打开主播放器屏幕2.滑动以更改歌曲。</string>
+    <string name="showcase3">向右/向左輕掃或者雙擊專輯封面</string>
 </resources>

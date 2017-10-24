@@ -23,7 +23,7 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@android:drawable/stat_sys_headset" />
         <meta-data android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorPrimaryFontDark" />
+            android:resource="@color/colorAccent" />
         <activity
             android:name=".view.activity.SplashScreen"
             android:theme="@style/SplashTheme">

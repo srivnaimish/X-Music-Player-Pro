@@ -16,10 +16,10 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
@@ -43,12 +43,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.Window;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -67,8 +67,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.gelitenight.waveview.library.WaveView;
-import com.getkeepsafe.taptargetview.TapTarget;
-import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.CustomAnimation;
@@ -80,12 +78,12 @@ import com.riseapps.xmusic.executor.Interfaces.OnStartDragListener;
 import com.riseapps.xmusic.executor.Interfaces.PlaylistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
-import com.riseapps.xmusic.utils.ItemTouchHelperCallback;
-import com.riseapps.xmusic.utils.OnSwipeTouchListener;
 import com.riseapps.xmusic.executor.PlaySongExec;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.QueueAdapter;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
+import com.riseapps.xmusic.utils.ItemTouchHelperCallback;
+import com.riseapps.xmusic.utils.OnSwipeTouchListener;
 import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.utils.ZoomOutPageTransformer;
 import com.riseapps.xmusic.view.Fragment.AlbumFragment;
@@ -103,11 +101,17 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AdapterToActivityListener,OnStartDragListener {
+import me.toptas.fancyshowcase.DismissListener;
+import me.toptas.fancyshowcase.FancyShowCaseQueue;
+import me.toptas.fancyshowcase.FancyShowCaseView;
+import me.toptas.fancyshowcase.FocusShape;
+
+public class MainActivity extends AppCompatActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AdapterToActivityListener, OnStartDragListener {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
     Song currentSong;
     AppBarLayout appBarLayout;
     public EqualizerView equalizerView;
@@ -192,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     title.setText(song.getName());
                     title_mini.setText(song.getName());
 
-                    currentSong=song;
+                    currentSong = song;
 
                     artist.setText(song.getArtist());
                     artist_mini.setText(song.getArtist());
@@ -241,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         }
     };
     private ItemTouchHelper mItemTouchHelper;
+    private FancyShowCaseView fancyShowCaseView1, fancyShowCaseView2;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -450,62 +455,58 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
         equalizerView = (EqualizerView) findViewById(R.id.equalizer_view);
         shuffle_play = (FloatingActionButton) findViewById(R.id.shuffle_songs);
-        queue=findViewById(R.id.queue_layout);
+        queue = findViewById(R.id.queue_layout);
         shuffle_play.setOnClickListener(togglePlayBtn);
         play_pause.setOnClickListener(togglePlayBtn);
         play_pause_mini.setOnClickListener(togglePlayBtn);
 
-        View centerview=findViewById(R.id.center_view);
-        if (!sharedPreferenceSingleton.getSavedBoolean(this, "mainScreenSequence")) {
-            new TapTargetSequence(this).targets(
-                    TapTarget.forToolbarNavigationIcon(mToolbar, getString(R.string.app_walk1))
-                            .dimColor(android.R.color.black)
-                            .outerCircleColor(R.color.colorAccentDark)
-                            .targetCircleColor(R.color.colorWhite)
-                            .transparentTarget(true)
-                            .textTypeface(Typeface.SANS_SERIF)
-                            .textColor(android.R.color.white)
-                            .targetRadius(20)
-                            .cancelable(false)
-                            .id(1),
-                    TapTarget.forView(centerview, getString(R.string.app_walk4))
-                            .dimColor(android.R.color.black)
-                            .outerCircleColor(R.color.colorAccentDark)
-                            .targetCircleColor(R.color.colorWhite)
-                            .textTypeface(Typeface.SANS_SERIF)
-                            .transparentTarget(true)
-                            .cancelable(false)
-                            .textColor(R.color.colorWhite)
-                            .targetRadius(30)
-                            .id(2),
-                    TapTarget.forView(album_art_mini, getString(R.string.app_walk2))
-                            .dimColor(android.R.color.black)
-                            .outerCircleColor(R.color.colorAccentDark)
-                            .targetCircleColor(R.color.colorWhite)
-                            .textTypeface(Typeface.SANS_SERIF)
-                            .transparentTarget(true)
-                            .textColor(R.color.colorWhite)
-                            .targetRadius(30)
-                            .id(3)
-            ).listener(new TapTargetSequence.Listener() {
+        if (!sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "sequence1")) {
+
+            View centerview = findViewById(R.id.center_view);
+            fancyShowCaseView1 = new FancyShowCaseView.Builder(this)
+                    .focusOn(centerview)
+                    .title(getString(R.string.showcase1))
+                    .closeOnTouch(true)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                    .titleGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL)
+                    .titleSize((int) getResources().getDimension(R.dimen.size8dp), 1)
+                    .backgroundColor(Color.parseColor("#F221242B"))
+                    .build();
+            fancyShowCaseView2 = new FancyShowCaseView.Builder(this)
+                    .focusOn(miniPlayer)
+                    .title(getString(R.string.showcase2))
+                    .closeOnTouch(true)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                    .dismissListener(new DismissListener() {
+                        @Override
+                        public void onDismiss(String id) {
+                            showMainPlayer();
+                        }
+
+                        @Override
+                        public void onSkipped(String id) {
+
+                        }
+                    })
+                    .titleGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL)
+                    .titleSize((int) getResources().getDimension(R.dimen.size8dp), 1)
+                    .backgroundColor(Color.parseColor("#F221242B"))
+                    .build();
+
+            new Handler().postDelayed(new Runnable() {
                 @Override
-                public void onSequenceFinish() {
+                public void run() {
+                    new FancyShowCaseQueue()
+                            .add(fancyShowCaseView1)
+                            .add(fancyShowCaseView2)
+                            .show();
+                    sharedPreferenceSingleton.saveAs(MainActivity.this, "sequence1", true);
 
                 }
-
-                @Override
-                public void onSequenceStep(TapTarget tapTarget, boolean b) {
-                    if (tapTarget.id() == 3)
-                        showMainPlayer();
-                }
-
-                @Override
-                public void onSequenceCanceled(TapTarget tapTarget) {
-                }
-            }).start();
-            sharedPreferenceSingleton.saveAs(this, "mainScreenSequence", true);
+            }, 1000);
         }
-        recyclerView=findViewById(R.id.recyclerView);
+
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -526,13 +527,12 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_queue) {
-                    if(queue.getVisibility()==View.VISIBLE){
+                    if (queue.getVisibility() == View.VISIBLE) {
                         hideQueue();
-                    }else {
+                    } else {
                         showQueue();
                     }
-                }
-                else if (item.getItemId() == R.id.favourites) {
+                } else if (item.getItemId() == R.id.favourites) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     ScrollingFragment scrollingFragment = new ScrollingFragment();
@@ -561,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         });
         toolbarPlayer = (Toolbar) findViewById(R.id.toolbar_player);
         toolbarPlayer.inflateMenu(R.menu.player_menu);
-       // toolbarPlayer.setNavigationIcon(R.drawable.ic_back);
+        // toolbarPlayer.setNavigationIcon(R.drawable.ic_back);
 
         toolbarPlayer.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -582,7 +582,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     try {
                         startActivity(intent);
                         Toast.makeText(MainActivity.this, getString(R.string.opening_youtube), Toast.LENGTH_SHORT).show();
-                    }catch (ActivityNotFoundException e){
+                    } catch (ActivityNotFoundException e) {
                         Toast.makeText(MainActivity.this, getString(R.string.not_found_youtube), Toast.LENGTH_SHORT).show();
                     }
 
@@ -597,7 +597,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
                 } else if (item.getItemId() == R.id.equalizer) {
                     openEqualizerDialog();
-                }else if(item.getItemId() == R.id.edit){
+                } else if (item.getItemId() == R.id.edit) {
                     openUpdateDialog();
                 }
                 return true;
@@ -620,8 +620,8 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     musicService.setSongs(selectedSongs);
                     removeContentSelection();
                     new PlaySongExec(MainActivity.this, 0).startPlaying();
-                } else if(item.getItemId()==R.id.add_to_queue){
-                    for(Song song: selectedSongs){
+                } else if (item.getItemId() == R.id.add_to_queue) {
+                    for (Song song : selectedSongs) {
                         addToQueue(song);
                     }
                     removeContentSelection();
@@ -669,23 +669,23 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     dialog.dismiss();
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void updateName(String newTitle,String newArtist,String newAlbum) {
+    private void updateName(String newTitle, String newArtist, String newAlbum) {
         ContentValues values = new ContentValues(3);
         values.put(MediaStore.Audio.Media.TITLE, newTitle);
         values.put(MediaStore.Audio.Media.ARTIST, newArtist);
         values.put(MediaStore.Audio.Media.ALBUM, newAlbum);
         getContentResolver().update(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                values, MediaStore.Audio.Media._ID+"=" + currentSong.getID(), null);
+                values, MediaStore.Audio.Media._ID + "=" + currentSong.getID(), null);
         title.setText(newTitle);
         title_mini.setText(newTitle);
         artist.setText(newArtist);
         artist_mini.setText(newArtist);
-        musicService.updateDetails(newTitle,newArtist,newAlbum);
+        musicService.updateDetails(newTitle, newArtist, newAlbum);
     }
 
     private void removeContentSelection() {
@@ -696,7 +696,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         miniPlayer.setVisibility(View.VISIBLE);
         shuffle_play.show();
         selectedID = new ArrayList<>();
-        selectedSongs=new ArrayList<>();
+        selectedSongs = new ArrayList<>();
         songRefreshListener.OnContextBackPressed();
 
     }
@@ -743,11 +743,9 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         } else {
             if (mainPlayer.getVisibility() == View.VISIBLE) {
                 hideMainPlayer();
-            }
-            else if(queue.getVisibility()==View.VISIBLE){
+            } else if (queue.getVisibility() == View.VISIBLE) {
                 hideQueue();
-            }
-            else {
+            } else {
                 if (musicPlaying) {
                     if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                         getSupportFragmentManager().popBackStackImmediate();
@@ -779,7 +777,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     public void setSongs(ArrayList<Song> songList) {
         this.songList = songList;
-        queueAdapter=new QueueAdapter(this,songList,recyclerView);
+        queueAdapter = new QueueAdapter(this, songList, recyclerView);
         recyclerView.setAdapter(queueAdapter);
         ItemTouchHelper.Callback callback =
                 new ItemTouchHelperCallback(queueAdapter);
@@ -793,23 +791,23 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         titles = getTitles();
     }
 
-    public void addToQueue(Song song){
+    public void addToQueue(Song song) {
         songList.add(song);
-        queueAdapter.notifyItemInserted(songList.size()-1);
+        queueAdapter.notifyItemInserted(songList.size() - 1);
     }
 
-    void showQueue(){
+    void showQueue() {
         shuffle_play.hide();
         queue.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.GONE);
         mViewPager.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.GONE);
         mToolbar.setVisibility(View.GONE);
-        queue.startAnimation(AnimationUtils.loadAnimation(this,R.anim.real_fade_in));
+        queue.startAnimation(AnimationUtils.loadAnimation(this, R.anim.real_fade_in));
     }
 
-    void hideQueue(){
-        queue.startAnimation(AnimationUtils.loadAnimation(this,R.anim.real_fade_out));
+    void hideQueue() {
+        queue.startAnimation(AnimationUtils.loadAnimation(this, R.anim.real_fade_out));
         queue.setVisibility(View.GONE);
         miniPlayer.setVisibility(View.VISIBLE);
         mViewPager.setVisibility(View.VISIBLE);
@@ -835,25 +833,18 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         miniPlayer.setVisibility(View.GONE);
         mToolbar.setVisibility(View.GONE);
         mainPlayer.startAnimation(new CustomAnimation().slide_up(MainActivity.this));
-        if (!sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "playerSequences")) {
-            new TapTargetSequence(this).targets(
-                    TapTarget.forToolbarMenuItem(toolbarPlayer, R.id.youtube, getString(R.string.app_walk3))
-                            .dimColor(android.R.color.black)
-                            .outerCircleColor(R.color.colorAccentDark)
-                            .targetCircleColor(R.color.whitePrimary)
-                            .transparentTarget(true)
-                            .textColor(android.R.color.white)
-                            .targetRadius(25)
-                            .id(1),
-                    TapTarget.forToolbarMenuItem(toolbarPlayer, R.id.equalizer, getString(R.string.equalizer_heading))
-                            .dimColor(android.R.color.black)
-                            .outerCircleColor(R.color.colorAccentDark)
-                            .targetCircleColor(R.color.whitePrimary)
-                            .transparentTarget(true)
-                            .textColor(android.R.color.white)
-                            .targetRadius(25)
-                            .id(2)).start();
-            sharedPreferenceSingleton.saveAs(MainActivity.this, "playerSequences", true);
+        if (!sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "sequence2")) {
+            fancyShowCaseView1 = new FancyShowCaseView.Builder(this)
+                    .focusOn(album_art)
+                    .title(getString(R.string.showcase3))
+                    .closeOnTouch(true)
+                    .focusShape(FocusShape.CIRCLE)
+                    .titleGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL)
+                    .titleSize((int) getResources().getDimension(R.dimen.size8dp), 1)
+                    .backgroundColor(Color.parseColor("#F221242B"))
+                    .build();
+            fancyShowCaseView1.show();
+            sharedPreferenceSingleton.saveAs(MainActivity.this, "sequence2", true);
         }
 
     }
@@ -864,7 +855,8 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
             try {
                 if (fragment.getView() != null)
                     fragment.getView().setVisibility(View.VISIBLE);
-            }catch (NullPointerException e){}
+            } catch (NullPointerException e) {
+            }
 
         } else {
             mainPlayer.startAnimation(new CustomAnimation().slide_down(MainActivity.this));
@@ -1023,7 +1015,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     }
 
     @Override
-    public void onTrackLongPress(int c, long songId, boolean songAdded,Song song) {
+    public void onTrackLongPress(int c, long songId, boolean songAdded, Song song) {
         toolbar_context_title.setText(c + "");
         if (songAdded) {
             selectedID.add(songId);
@@ -1060,7 +1052,7 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3),"Genres",getString(R.string.folder)};
+        String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB1), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3), "Genres", getString(R.string.folder)};
 
         //String tabTitles[] = new String[]{getResources().getString(R.string.TAB4), getResources().getString(R.string.TAB2), getResources().getString(R.string.TAB3)};
         SectionsPagerAdapter(FragmentManager fm) {

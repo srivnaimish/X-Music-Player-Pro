@@ -39,16 +39,9 @@
     <string name="settings_title">Ajustes de Aplicación</string>
     <string name="equalizer_heading">Ecualizador</string>
     <string name="sleep_timer_heading">Tiempo de Dormir</string>
-    <string name="sleep_timer_subHeading">Apague el reproductor de música automáticamente.</string>
-    <string name="help_heading">Ayúdanos a Traducir</string>
-    <string name="help_subHeading">Necesitamos ayuda para traducir la aplicación a tu idioma nativo</string>
     <string name="share_app">Compartir Aplicación</string>
-    <string name="recomment_it_to_others">Recomiéndalo a otros</string>
     <string name="rate_us_heading">¡Califícanos en Play Store!</string>
-    <string name="rate_us_subHeading">Muéstranos un poco de amor y danos 5 estrellas</string>
     <string name="Invalid_Time_Toast">Tiempo Invalido</string>
-    <string name="translation_help">Ayuda de traducción</string>
-    <string name="translation_help_sub">¡Gracias por mostrar interés en la traducción de X Music Player Pro! .\n\nSi nos ayudas a traducir esta aplicación a otro idioma, tu nombre será mencionado en la descripción de la tienda de juegos como una muestra de agradecimiento.</string>
     <!--CREATE PLAYLIST DIALOG-->
     <string name="create_a_new_playlist">Crear Nueva Lista de Reproducción</string>
     <string name="name">Nombre...</string>
@@ -57,10 +50,6 @@
     <string name="minutes">Minutos</string>
     <string name="action_share">Compartir está Canción</string>
     <string name="theme">Tema de Color</string>
-    <string name="switch_betweem_the_light_and_dark_app_themes">La aplicación necesita reiniciarse para aplicar el tema</string>
-    <string name="app_walk1">Temporizador de suspensión, Temas de película, Saltar carpetas, Temas de color</string>
-    <string name="app_walk2">Toque en Mini Player para abrir el reproductor principal</string>
-    <string name="app_walk3">¿Quieres buscar esta canción en YouTube?</string>
     <string name="delete_these_songs">¿Eliminar estás canciones?</string>
     <string name="delete_warning">Esta operación borrará las canciones seleccionadas del dispositivo también</string>
     <string name="empty_state_playlist_message">No has creado ninguna lista de reproducción</string>
@@ -70,7 +59,6 @@
     <string name="buy">comprar todos los temas</string>
     <string name="thanks">Gracias por la compra</string>
     <string name="aborted">Abortado</string>
-    <string name="pick_theme">Escoger</string>
     <string name="movie">Tema de Películas</string>
     <string name="scroll_to_view_more">Desplace para ver más</string>
     <string name="hint_restart_app_to_reflect_changes">Sugerencia: reinicie la aplicación para aplicar los cambios</string>
@@ -87,7 +75,6 @@
     <string name="recently_played">Canciones recientes</string>
     <string name="animation_toggle">Activar la animación de las olas en el reproductor principal</string>
     <string name="not_found_youtube">Youtube no se encuentra en el dispositivo</string>
-    <string name="try_taplor">Pruebe nuestro nuevo juego - Taplor</string>
     <string name="action_edit">Editar detalles de la canción</string>
     <string name="song_removed_from_favourites">Canción eliminada de los favoritos</string>
     <string name="song_added_to_favourites">Canción añadida a los favoritos</string>
@@ -95,7 +82,19 @@
     <string name="title">Título</string>
     <string name="artist">Artista</string>
     <string name="album">Álbum</string>
-    <string name="app_walk4">Mantenga pulsado para seleccionar las pistas que desea borrar</string>
     <string name="folder">Carpetas</string>
     <string name="action_play_now">Lista de reproducción rápida</string>
+    <string name="add_to_queue">Añadir a la cola</string>
+    <string name="queue">Cola de música</string>
+    <string name="showcase1">Mantenga presionada y seleccione varias canciones para-\n
+    1.Añadir a la cola\n
+    2.Eliminar canciones\n
+    3.Añadir a la lista de reproducción\n
+    4.Reproducir canciones seleccionadas
+    </string>
+    <string name="showcase2">1. Toque en Mini Player para abrir el reproductor principal.\n
+    2. Desliza para cambiar la canción
+    </string>
+    <string name="showcase3">Desliza  Derecha/Izquierda o Doble Toque para Álbum de Arte</string>
+
 </resources>

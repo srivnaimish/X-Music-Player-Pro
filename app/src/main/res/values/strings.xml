@@ -47,17 +47,9 @@
 
     <string name="equalizer_heading">Equalizer</string>
     <string name="sleep_timer_heading">Sleep Timer</string>
-    <string name="sleep_timer_subHeading">Turn off the music player automatically.</string>
-    <string name="help_heading">Help Us Translate</string>
-    <string name="help_subHeading">We need help in translating the app to your native language</string>
     <string name="share_app">Share App</string>
-    <string name="recomment_it_to_others">Recommend it to others</string>
     <string name="rate_us_heading">Rate us on Play Store!</string>
-    <string name="rate_us_subHeading">Show us some love and give us 5 stars</string>
     <string name="Invalid_Time_Toast">Invalid Time</string>
-    <string name="translation_help">Translation Help</string>
-    <string name="translation_help_sub">Thank you for showing interest in translation of X Music Player Pro! .\n\n If you help us translate this app to another language,your name would be mentioned on the play store description as a token of appreciation.</string>
-
 
     <!--CREATE PLAYLIST DIALOG-->
     <string name="create_a_new_playlist">Create a New Playlist</string>
@@ -68,11 +60,7 @@
     <string name="minutes">Minutes</string>
     <string name="action_share">Share this Song</string>
     <string name="theme">Color Theme</string>
-    <string name="switch_betweem_the_light_and_dark_app_themes">App Restarts to switch the theme</string>
 
-    <string name="app_walk1">Sleep Timer, Movie Themes,Skip Folders,Color Themes</string>
-    <string name="app_walk2">Tap on Mini Player to open Main Player</string>
-    <string name="app_walk3">Want to search this song on Youtube?</string>
     <string name="delete_these_songs">Delete these Songs?</string>
     <string name="delete_warning">This operation will delete the selected songs from the device also</string>
     <string name="empty_state_playlist_message">You did not create any playlist</string>
@@ -82,7 +70,6 @@
     <string name="buy">Buy All Themes</string>
     <string name="thanks">Thanks for the purchase</string>
     <string name="aborted">Aborted</string>
-    <string name="pick_theme">Pick</string>
     <string name="movie">Movies Themes</string>
     <string name="scroll_to_view_more">Scroll to view more</string>
     <string name="hint_restart_app_to_reflect_changes">Hint: Restart App to reflect changes</string>
@@ -99,7 +86,6 @@
     <string name="recently_played">Recently Played</string>
     <string name="animation_toggle">Toggle Wave animation in Main Player</string>
     <string name="not_found_youtube">Youtube not found on device</string>
-    <string name="try_taplor">Try our new game — Taplor</string>
     <string name="action_edit">Edit Song Details</string>
     <string name="song_removed_from_favourites">Song Removed from Favourites</string>
     <string name="song_added_to_favourites">Song Added to Favourites</string>
@@ -107,12 +93,15 @@
     <string name="title">Title</string>
     <string name="artist">Artist</string>
     <string name="album">Album</string>
-    <string name="app_walk4">Long press to select tracks for deletion</string>
     <string name="folder">Folders</string>
     <string name="widget_standard" translatable="false">XMusic Pro Widget</string>
     <string name="action_play_now">Play Now</string>
-    <string name="preview">Preview</string>
     <string name="add_to_queue">Add to queue</string>
     <string name="queue">Queue</string>
+
+
+    <string name="showcase1">"Hold and select multiple tracks to -  1. Add to queue.   2. Delete songs.  3. Add to playlists.  4. Play selected tracks only.     "</string>
+    <string name="showcase2">1. Tap on mini player to open the Main Player Screen    2. Swipe to change song.</string>
+    <string name="showcase3">1. Swipe to change tracks.   2. Double Tap to like/unlike track.  3.Swipe Down to Hide Main Player</string>
 
 </resources>

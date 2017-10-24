@@ -39,16 +39,9 @@
     <string name="settings_title">അപ്ലിക്കേഷൻ സെറ്റിങ്‌സ്</string>
     <string name="equalizer_heading">സമവാക്യം</string>
     <string name="sleep_timer_heading">സ്ലീപ് ടൈമർ</string>
-    <string name="sleep_timer_subHeading">യാന്ത്രികമായി മ്യൂസിക് പ്ലേയർ ഓഫുചെയ്യുക</string>
-    <string name="help_heading">ഞങ്ങളെ വിവർത്തനം ചെയ്യാൻ സഹായിക്കൂ</string>
-    <string name="help_subHeading">നിങ്ങളുടെ പ്രാദേശിക ഭാഷയിലേക്ക് അപ്ലിക്കേഷൻ വിവർത്ഥനത്തിന് ഞങ്ങൾക്ക് സഹായം ആവശ്യമാണ്</string>
     <string name="share_app">അപ്ലിക്കേഷൻ പങ്കിടുക</string>
-    <string name="recomment_it_to_others">മറ്റുള്ളവർക്ക് ഇത് ശുപാർശ ചെയ്യുക</string>
     <string name="rate_us_heading">പ്ലേ സ്റ്റോറിൽ ഞങ്ങളെ റേയ്റ്റ് ചെയ്യുക</string>
-    <string name="rate_us_subHeading">ഞങ്ങൾക്ക് കുറച്ച് സ്നേഹം കാണിച്ചു 5 സ്റ്റാർ തരുക</string>
     <string name="Invalid_Time_Toast">അസാധുവായ സമയം</string>
-    <string name="translation_help">വിവർത്തന സഹായം</string>
-    <string name="translation_help_sub">എക്സ് മ്യൂസിക് പ്ലെയർ പ്രോയുടെ വിവർത്തനത്തിൽ താല്പര്യം കാണിച്ചതിന് നന്ദി! . ഈ ആപ്ലിക്കേഷൻ മറ്റൊരു ഭാഷയിലേക്ക് വിവർത്തനം ചെയ്യാൻ നിങ്ങൾ ഞങ്ങളെ സഹായിച്ചെങ്കിൽ, അഭിനന്ദനത്തിൻ്റെ ഭാഗമായി നിങ്ങളുടെ പേര് പ്ലേ സ്റ്റോറിൽ പരാമർശിക്കപ്പെടും.</string>
     <!--CREATE PLAYLIST DIALOG-->
     <string name="create_a_new_playlist">ഒരു പുതിയ പ്ലേലിസ്റ്റ് സൃഷ്ടിക്കുക</string>
     <string name="name">പേര്...</string>
@@ -57,10 +50,6 @@
     <string name="minutes">മിനിറ്റ്സ്</string>
     <string name="action_share">ഈ ഗാനം പങ്കുവയ്ക്കുക</string>
     <string name="theme">കളർ തീം</string>
-    <string name="switch_betweem_the_light_and_dark_app_themes">തീം മാറുന്നതിന് വേണ്ടി അപ്ലിക്കേഷൻ വീണ്ടും പ്രവർത്തിക്കും</string>
-    <string name="app_walk1">സ്ലീപ് ടൈമർ,സിനിമ തീംസ്,ഫോൾഡർസ് വിടുക,കളർ തീംസ്</string>
-    <string name="app_walk2">പ്രധാന പ്ലെയർ തുറക്കുന്നതിന് മിനി പ്ലേയർ ടാപ്പുചെയ്യുക</string>
-    <string name="app_walk3">യൂട്യൂബിൽ ഈ പാട്ട് തിരയാൻ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
     <string name="delete_these_songs">ഈ ഗാനങ്ങൾ ഒഴുവാക്കണ്ണോ?</string>
     <string name="delete_warning">ഈ പ്രവർത്തനം തിരഞ്ഞെടുത്ത പാട്ടുകൾ ഉപകരണത്തിൽ നിന്നും ഇല്ലാതാക്കും</string>
     <string name="empty_state_playlist_message">നിങ്ങൾ ഒരു പ്ലേലിസ്റ്റും ഉണ്ടാക്കിയിട്ടില്ല</string>
@@ -70,7 +59,6 @@
     <string name="buy">എല്ലാ തീമുകളും വാങ്ങുക</string>
     <string name="thanks">വാങ്ങിയതിന് നന്ദി</string>
     <string name="aborted">ഉപേക്ഷിച്ചു</string>
-    <string name="pick_theme">എടുക്കുക</string>
     <string name="movie">സിനിമ തീം</string>
     <string name="scroll_to_view_more">കൂടുതൽ കാണുന്നതിനുവേണ്ടി സ്ക്രോൾ ചെയ്യുക</string>
     <string name="hint_restart_app_to_reflect_changes">സൂചന: മാറ്റങ്ങൾ പ്രതിഫലിപ്പിക്കുന്നതിനായി അപ്ലിക്കേഷൻ പുനരാരംഭിക്കുക</string>
@@ -87,7 +75,6 @@
     <string name="recently_played">സമീപകാലത്ത് പ്ലേ ചെയ്തത്</string>
     <string name="animation_toggle">വേവ് ആനിമേഷൻ പ്രധാന പ്ലേയറിൽ നിന്നും ടോഗിൾ  ചെയ്യുക</string>
     <string name="not_found_youtube">ഉപകരണത്തിൽ Youtube കണ്ടെത്തിയില്ല</string>
-    <string name="try_taplor">ഞങ്ങളുടെ പുതിയ ഗെയിം പരീക്ഷിക്കുക -</string>
     <string name="action_edit">ഗാനവിവരങ്ങൾ പ്രദർശിപ്പിക്കുക</string>
     <string name="song_removed_from_favourites">പ്രിയങ്കരങ്ങളിൽ നിന്ന് പാട്ട് നീക്കംചെയ്തു</string>
     <string name="song_added_to_favourites">പ്രിയപ്പെട്ടവയിലേക്ക് പാത്ത് ചേർത്തു</string>
@@ -95,7 +82,11 @@
     <string name="title">ശീർഷകം</string>
     <string name="artist">കലാകാരൻ</string>
     <string name="album">ആൽബം</string>
-    <string name="app_walk4">നിങ്ങൾ മായ്ക്കാൻ താൽപ്പര്യപ്പെടുന്ന ട്രാക്കുകൾ തിരഞ്ഞെടുക്കുന്നതിന് അമർത്തിപ്പിടിക്കുക</string>
     <string name="folder">ഫോൾഡറുകൾ</string>
     <string name="action_play_now">ദ്രുത പ്ലേലിസ്റ്റ്</string>
+    <string name="add_to_queue">ക്യൂവിലേക്ക് ചേർക്കുക</string>
+    <string name="queue">ക്യൂ</string>
+    <string name="showcase1">ഒന്നിലധികം ട്രാക്കുകൾ ഹോൾഡ് ചെയ്യുകയും തിരഞ്ഞെടുക്കുകയും ചെയ്യുക - 1. വരിയിലേക്ക് ചേർക്കുക. ഗാനങ്ങൾ നീക്കം ചെയ്യുക. 3. പ്ലേലിസ്റ്റുകളിലേക്ക് ചേർക്കുക.   4. തിരഞ്ഞെടുത്ത ട്രാക്കുകൾ മാത്രം പ്ലേ ചെയ്യുക.</string>
+    <string name="showcase2">1. മൈനർ പ്ലേയർ സ്ക്രീൻ തുറക്കാൻ മിനി പ്ലേയർ ടാപ്പ് 2. പാട്ട് മാറ്റാൻ സ്വൈപ്പുചെയ്യുക.</string>
+    <string name="showcase3">വലത് സ്വൈപ്പ് ചെയ്യുക/ഇടത് അഥവാ ഇരട്ട ടാപ്പുകൾ ആൽബം ആർട്ടിൽ ചെയ്യുക</string>
 </resources>

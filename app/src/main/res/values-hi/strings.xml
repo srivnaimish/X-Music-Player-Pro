@@ -9,9 +9,6 @@
     <string name="action_playlist">प्लेलिस्ट में जोड़ें</string>
     <string name="action_search">गीत की खोज</string>
     <string name="action_youtube">यूट्यूब पर गीत खोज</string>
-    <string name="app_walk1">नींद टाइमर, मूवी थीम्स, फ़ोल्डर्स छोड़ें, रंग थीम</string>
-    <string name="app_walk2">मुख्य प्लेयर को खोलने के लिए मिनी प्लेयर पर टैप करें</string>
-    <string name="app_walk3">यूट्यूब पर इस गाने को खोजना चाहते हैं?</string>
     <string name="create_a_new_playlist">नई प्लेलिस्ट बनाएं</string>
     <string name="empty_state_message">कोई गीत नहीं मिला</string>
     <string name="equalizer_heading">तुल्यकारक</string>
@@ -28,11 +25,9 @@
     <string name="play_all">सब शुरू करो</string>
     <string name="playlist_screen_placeholder">आप एक बार में कई प्लेलिस्ट को इस गीत को जोड़ सकते हैं</string>
     <string name="rate_us_heading">प्ले स्टोर पर हमें रेट करें!</string>
-    <string name="rate_us_subHeading">हमें कुछ प्यार और 5 सितारों दे</string>
     <string name="settings_title">एप्लिकेशन सेटिंग</string>
     <string name="shuffle">मिश्रण</string>
     <string name="sleep_timer_heading">सोने का टाइमर</string>
-    <string name="sleep_timer_subHeading">संगीत को स्वचालित रूप से बंद करें</string>
     <string name="start_now">अभी शुरू करो</string>
     <string name="stop_music_after">इस समय के बाद संगीत बंद करो</string>
     <string name="swipe_right_or_left_to_change_the_song">एल्बम कला पर दाएं / बायां स्वाइप करें या डबल टैप करें</string>
@@ -45,14 +40,8 @@
     <string name="song_repeat_off_toast">गीत दोहराना बंद</string>
     <string name="song_repeat_on_toast">गाने दोबारा  प्रारंभ</string>
     <string name="opening_youtube">यूट्यूब खोल रहा है</string>
-    <string name="recomment_it_to_others">इसे दूसरों के लिए सुझाएं</string>
     <string name="share_app">ऐप साझा करें</string>
-    <string name="help_heading">अनुवाद में हमारी सहायता करें</string>
-    <string name="help_subHeading">हमें ऐप को अपनी मूल भाषा में अनुवाद करने में सहायता की आवश्यकता है</string>
-    <string name="translation_help">अनुवाद सहायता</string>
-    <string name="translation_help_sub">एक्स संगीत प्लेयर प्रो के अनुवाद में रुचि दिखाने के लिए धन्यवाद! । यदि आप इस ऐप का किसी अन्य भाषा में अनुवाद करने में हमारी सहायता करते हैं, तो आपका नाम प्रशंसा के प्रतीक के रूप में प्ले स्टोर विवरण पर उल्लेख किया जाएगा।</string>
     <string name="action_share">এই গানটি শেয়ার করুন</string>
-    <string name="switch_betweem_the_light_and_dark_app_themes">थीम को स्विच करने के लिए ऐप पुनरारंभ होता है</string>
     <string name="theme">थीम</string>
     <string name="delete_these_songs">इन गीतों को हटाएं?</string>
     <string name="delete_warning">यह ऑपरेशन डिवाइस से चयनित गीतों को भी हटा देगा</string>
@@ -63,7 +52,6 @@
     <string name="aborted">निरस्त</string>
     <string name="thanks">खरीद के लिए धन्यवाद</string>
     <string name="buy">सभी थीम खरीदें</string>
-    <string name="pick_theme">यह चुनें</string>
     <string name="movie">मूवी थीम</string>
     <string name="set_the_folders_you_want_to_load_songs_from">वे फ़ोल्डर सेट करें जिन्हें आप गाने से लोड करना चाहते हैं</string>
     <string name="scroll_to_view_more">अधिक देखने के लिए स्क्रॉल करें</string>
@@ -80,7 +68,6 @@
     <string name="recently_played">हाल ही में बजाया</string>
     <string name="recently_added">हाल ही में जोड़ा गीत</string>
     <string name="not_found_youtube">डिवाइस पर यूट्यूब नहीं मिला</string>
-    <string name="try_taplor">हमारा नया गेम आज़माएं - Taplor</string>
     <string name="action_edit">गीत विवरण संपादित करें</string>
     <string name="song_removed_from_favourites">गीत पसंदीदा से हटा दिया गया</string>
     <string name="song_added_to_favourites">गीत पसंदीदा में जोड़ा गया</string>
@@ -88,7 +75,11 @@
     <string name="title">शीर्षक</string>
     <string name="artist">कलाकार</string>
     <string name="album">एल्बम</string>
-    <string name="app_walk4">हटाने के लिए ट्रैक का चयन करने के लिए लंबे समय तक दबाएं</string>
     <string name="folder">फ़ोल्डर</string>
     <string name="action_play_now">त्वरित प्लेलिस्ट</string>
+    <string name="add_to_queue">क़तार में जोड़ें</string>
+    <string name="queue">कतार</string>
+    <string name="showcase1">पकड़ो और कई पटरियों को चुनें - कतार में जोड़ें। 2. गीत हटाएं 3. प्लेलिस्ट में जोड़ें। 4. चयनित गीतों को केवल शुरू करें</string>
+    <string name="showcase2">1. मुख्य प्लेयर स्क्रीन को खोलने के लिए मिनी प्लेयर पर टैप करें 2. गीत बदलने के लिए स्वाइप करें।</string>
+    <string name="showcase3">एल्बम कला पर दाएं / बायां स्वाइप करें या डबल टैप करें</string>
 </resources>

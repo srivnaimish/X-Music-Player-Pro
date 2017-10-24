@@ -32,34 +32,23 @@
     <!--EXTRAS-->
     <string name="play_all">شغَل الكل</string>
     <string name="shuffle">خلط عشوائي</string>
-    <string name="empty_state_message">للأسف... لم توجد أي أغنية</string>
+    <string name="empty_state_message">للأسف… لم توجد أي أغنية</string>
     <string name="swipe_right_or_left_to_change_the_song">مرر يميناً / يسارا أو نقرة مزدوجة على غلاف الصورة</string>
     <string name="playing_all">تشغيل كل الأغاني من</string>
     <!--SETTINGS-->
     <string name="settings_title">إعدادات التطبيق</string>
     <string name="equalizer_heading">المسوي</string>
     <string name="sleep_timer_heading">عداد النوم</string>
-    <string name="sleep_timer_subHeading">وقَف مشغل الموسقى أوتوماتيكيا</string>
-    <string name="help_heading">ساعدنا في الترجمة</string>
-    <string name="help_subHeading">نحتاج المساعدة في ترجمة التطبيق الى لغتك الأم</string>
     <string name="share_app">أُنشر التطبيق</string>
-    <string name="recomment_it_to_others">أوصي بها للآخرين</string>
     <string name="rate_us_heading">قيم التطبيق في متجر قوقل بلاي</string>
-    <string name="rate_us_subHeading">أظهر لنا الحب بمنحنا 5 نجوم كتقييم</string>
     <string name="Invalid_Time_Toast">توقيت خاطىء</string>
-    <string name="translation_help">مساعدة في الترجمة</string>
-    <string name="translation_help_sub">شكرا لك لإظهار إهتمامك في ترجمة تطبيق Xmusic Player Pro.\n\nإذا ساعدتنا في ترجمة هذا التطبيق الى لغة أخرى , سيظهر اسمك في وصف التطبيق علو متجر قوقل بلاي و ذلك كتعبير عن الشكر .\n</string>
     <!--CREATE PLAYLIST DIALOG-->
     <string name="create_a_new_playlist">أنشأ قائمة جديدة</string>
-    <string name="name">اسم ...</string>
+    <string name="name">اسم …</string>
     <!--SLEEP TIME DIALOG-->
     <string name="stop_music_after">وقَف الموسيقى</string>
     <string name="minutes">الدقائق</string>
     <string name="action_share">شارك التطبيق</string>
-    <string name="switch_betweem_the_light_and_dark_app_themes">إعادة تشغيل التطبيق لتغيير الثيم</string>
-    <string name="app_walk1">مئقت النوم ، ثيمات الأفلام ، تخطى المجلدات ، ألوان الثيمات</string>
-    <string name="app_walk2">أنقر على المشغل الصغير لفتح المشغل الأساسي</string>
-    <string name="app_walk3">هل تريد البحث عن هذه الأغنية في يوتيوب ؟</string>
     <string name="delete_these_songs">حذف هذه الأغاني ؟</string>
     <string name="delete_warning">هذه العملية ستحذف كل الأغاني المحددة من الجهاز أيضا</string>
     <string name="empty_state_playlist_message">لم تنشئ أي قائمة تشغيل</string>
@@ -69,7 +58,6 @@
     <string name="buy">إشتري كل الثيمات</string>
     <string name="thanks">نشكرك على الإشتراء</string>
     <string name="aborted">أُجهضت</string>
-    <string name="pick_theme">إختر</string>
     <string name="movie">ثيمات الأفلام</string>
     <string name="scroll_to_view_more">مرر لمشاهدة المزيد</string>
     <string name="hint_restart_app_to_reflect_changes">ملاحظة : أعد تشغيل التطبيق لتأكيد التغييرات</string>
@@ -86,7 +74,6 @@
     <string name="recently_played">شٌغلت حاليا</string>
     <string name="animation_toggle">"الموجات المتحركة في المشغل الرئيسي "</string>
     <string name="not_found_youtube">لا يوجد يوتيوب مثبت على الهاتف</string>
-    <string name="try_taplor">جرب لعبتنا الجديدة - Taplor</string>
     <string name="action_edit">عدِل معلومات الأغنية</string>
     <string name="song_removed_from_favourites">الاغنية حٌذفت من المفضلة</string>
     <string name="song_added_to_favourites">الاغنية أضيفت الى المفضلة</string>
@@ -94,8 +81,17 @@
     <string name="title">عنوان</string>
     <string name="artist">فنان</string>
     <string name="album">الألبوم</string>
-    <string name="app_walk4">ضغط مطول لتحديد المقاطع المراد حذفها</string>
     <string name="folder">المجلدات</string>
     <string name="action_play_now">قائمة التشغيل السريعة</string>
     <string name="theme">موضوع اللون</string>
+    <string name="add_to_queue">إضافة إلى قائمة الانتظار</string>
+    <string name="showcase1">عقد وحدد المسارات متعددة ل -
+1. إضافة إلى قائمة الانتظار.
+2. حذف الأغاني.
+3. إضافة إلى قوائم التشغيل.
+4. تشغيل الأغاني المحددة.</string>
+    <string name="showcase2">1. اضغط على لاعب صغير لفتح الشاشة الرئيسية لاعب.
+2. انتقاد لتغيير الأغنية.</string>
+    <string name="showcase3">مرر يميناً / يسارا أو نقرة مزدوجة على غلاف الصورة</string>
+    <string name="queue">طابور</string>
 </resources>
