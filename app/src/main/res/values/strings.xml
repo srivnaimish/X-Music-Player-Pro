@@ -96,12 +96,11 @@
     <string name="folder">Folders</string>
     <string name="widget_standard" translatable="false">XMusic Pro Widget</string>
     <string name="action_play_now">Play Now</string>
-    <string name="add_to_queue">Add to queue</string>
-    <string name="queue">Queue</string>
 
 
-    <string name="showcase1">"Hold and select multiple tracks to -  1. Add to queue.   2. Delete songs.  3. Add to playlists.  4. Play selected tracks only.     "</string>
-    <string name="showcase2">1. Tap on mini player to open the Main Player Screen    2. Swipe to change song.</string>
-    <string name="showcase3">1. Swipe to change tracks.   2. Double Tap to like/unlike track.  3.Swipe Down to Hide Main Player</string>
+    <string name="showcase1">"Hold and select multiple tracks to -  1. Add to queue. \n  2. Delete songs. \n 3. Add to playlists. \n 4. Play selected tracks only.     "</string>
+    <string name="showcase2">1. Tap on mini player to open the Main Player Screen \n   2. Swipe to change song.</string>
+    <string name="showcase3">1.Search this Song on Youtube\n 2.Equalizer \n 3.Edit Song Details and more</string>
+    <string name="action_sort">Sort Songs</string>
 
 </resources>

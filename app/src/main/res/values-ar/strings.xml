@@ -12,7 +12,7 @@
     <!-- MENU ITEMS -->
     <string name="action_favourites">المفضلة</string>
     <string name="action_playlist">أضف الى قائمة التشغيل</string>
-    <string name="action_youtube">"إبحث عن هذه الأغنية في يوتيوب "</string>
+    <string name="action_youtube">إبحث عن هذه الأغنية في يوتيوب</string>
     <string name="action_search">إبحث عن أغنية</string>
     <!--MAINACTIVITY-->
     <string name="TAB1">قائمة التشغيل</string>
@@ -84,7 +84,6 @@
     <string name="folder">المجلدات</string>
     <string name="action_play_now">قائمة التشغيل السريعة</string>
     <string name="theme">موضوع اللون</string>
-    <string name="add_to_queue">إضافة إلى قائمة الانتظار</string>
     <string name="showcase1">عقد وحدد المسارات متعددة ل -
 1. إضافة إلى قائمة الانتظار.
 2. حذف الأغاني.
@@ -92,6 +91,6 @@
 4. تشغيل الأغاني المحددة.</string>
     <string name="showcase2">1. اضغط على لاعب صغير لفتح الشاشة الرئيسية لاعب.
 2. انتقاد لتغيير الأغنية.</string>
-    <string name="showcase3">مرر يميناً / يسارا أو نقرة مزدوجة على غلاف الصورة</string>
-    <string name="queue">طابور</string>
+    <string name="showcase3">إبحث عن هذه الأغنية في يوتيوب</string>
+    <string name="action_sort">ترتيب الأغاني</string>
 </resources>

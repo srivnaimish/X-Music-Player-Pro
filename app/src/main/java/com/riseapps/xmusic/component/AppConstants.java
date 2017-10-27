@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v7.widget.CardView;
 
 import com.riseapps.xmusic.R;
 import com.riseapps.xmusic.model.Pojo.PlaylistSelect;
@@ -25,7 +24,8 @@ public class AppConstants {
     public static int[] seekBars = {R.id.seekBar0, R.id.seekBar1, R.id.seekBar2, R.id.seekBar3, R.id.seekBar4};
     public static int[] levels = {R.id.level0, R.id.level1, R.id.level2, R.id.level3, R.id.level4};
 
-    public static final int buttonId[] = {R.id.card1, R.id.card2, R.id.card3, R.id.card4, R.id.card5, R.id.card6, R.id.card7, R.id.card8};
+
+    public static final int walkthroughbuttonId[] = {R.id.bt1, R.id.bt2, R.id.bt3, R.id.bt4, R.id.bt5, R.id.bt6};
 
     public static final int checkImages[] = {R.id.tick1, R.id.tick2, R.id.tick3, R.id.tick4, R.id.tick5, R.id.tick6, R.id.tick7, R.id.tick8};
 

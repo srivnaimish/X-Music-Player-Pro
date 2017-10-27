@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <Button
+        android:id="@+id/sort_name"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Sort by Name"
+        android:background="?colorPrimary"
+        android:layout_margin="1dp"
+        />
+
+    <Button
+        android:id="@+id/sort_duration"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="?colorPrimary"
+        android:text="Sort by Duration"
+        android:layout_margin="1dp"/>
+
+    <Button
+        android:id="@+id/sort_added"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="?colorPrimary"
+        android:text="Sort by Date Added"
+        android:layout_margin="1dp"/>
+
+</LinearLayout>

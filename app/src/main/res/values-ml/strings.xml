@@ -84,9 +84,8 @@
     <string name="album">ആൽബം</string>
     <string name="folder">ഫോൾഡറുകൾ</string>
     <string name="action_play_now">ദ്രുത പ്ലേലിസ്റ്റ്</string>
-    <string name="add_to_queue">ക്യൂവിലേക്ക് ചേർക്കുക</string>
-    <string name="queue">ക്യൂ</string>
     <string name="showcase1">ഒന്നിലധികം ട്രാക്കുകൾ ഹോൾഡ് ചെയ്യുകയും തിരഞ്ഞെടുക്കുകയും ചെയ്യുക - 1. വരിയിലേക്ക് ചേർക്കുക. ഗാനങ്ങൾ നീക്കം ചെയ്യുക. 3. പ്ലേലിസ്റ്റുകളിലേക്ക് ചേർക്കുക.   4. തിരഞ്ഞെടുത്ത ട്രാക്കുകൾ മാത്രം പ്ലേ ചെയ്യുക.</string>
     <string name="showcase2">1. മൈനർ പ്ലേയർ സ്ക്രീൻ തുറക്കാൻ മിനി പ്ലേയർ ടാപ്പ് 2. പാട്ട് മാറ്റാൻ സ്വൈപ്പുചെയ്യുക.</string>
-    <string name="showcase3">വലത് സ്വൈപ്പ് ചെയ്യുക/ഇടത് അഥവാ ഇരട്ട ടാപ്പുകൾ ആൽബം ആർട്ടിൽ ചെയ്യുക</string>
+    <string name="showcase3">1.ഈ ഗാനം യൂട്യൂബിൽ തിരയുക\n2.സമവാക്യം\n3.ഗാനവിവരങ്ങൾ പ്രദർശിപ്പിക്കുക </string>
+    <string name="action_sort">ഗാനങ്ങൾ അടുക്കുക</string>
 </resources>

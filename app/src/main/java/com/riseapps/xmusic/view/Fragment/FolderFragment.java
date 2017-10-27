@@ -19,9 +19,12 @@ import com.riseapps.xmusic.component.AppConstants;
 import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.executor.Interfaces.FragmentTransitionListener;
 import com.riseapps.xmusic.executor.RecycleViewAdapters.FoldersFragmentAdapter;
+import com.riseapps.xmusic.model.Pojo.Playlist;
 import com.riseapps.xmusic.model.Pojo.PlaylistSelect;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class FolderFragment extends Fragment {
 
@@ -75,7 +78,7 @@ public class FolderFragment extends Fragment {
                     }
                 });
             }
-        },1200);
+        },2000);
 
 
         return v;
@@ -83,7 +86,12 @@ public class FolderFragment extends Fragment {
 
     void initiallizeFolderNames() {
         folders= AppConstants.getFolderNames(getContext());
-
+        Collections.sort(folders, new Comparator<PlaylistSelect>() {
+            @Override
+            public int compare(PlaylistSelect o1, PlaylistSelect o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
     }
 
 }

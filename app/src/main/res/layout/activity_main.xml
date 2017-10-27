@@ -192,8 +192,6 @@
 
         <include layout="@layout/main_player" />
 
-        <include layout="@layout/queue"/>
-
     </RelativeLayout>
 
 

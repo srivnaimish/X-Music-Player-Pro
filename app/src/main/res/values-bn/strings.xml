@@ -76,9 +76,8 @@
     <string name="album">অ্যালবাম</string>
     <string name="folder">ফোল্ডার</string>
     <string name="action_play_now">দ্রুত প্লেলিস্ট</string>
-    <string name="add_to_queue">সারিতে যোগ করুন</string>
     <string name="showcase1">ধরে রাখুন এবং একাধিক ট্র্যাক নির্বাচন করুন -\n 1. সারিতে যোগ করুন \m2. গান মুছে ফেলুন \n3. প্লেলিস্টগুলিতে যোগ করুন \n4. নির্বাচিত গানগুলি প্লে করুন</string>
     <string name="showcase2">1. মুভি প্লেয়ার স্ক্রিন খুলতে মিনি প্লেয়ারটি আলতো চাপুন    \n2. গান পরিবর্তন করতে সোয়াইপ করুন।</string>
-    <string name="showcase3">1. ট্র্যাক পরিবর্তন করার জন্য সোয়াইপ করুন। \n  2. ট্র্যাক পছন্দ মত / আলতো চাপুন। \n   3. মুভি প্লেয়ারটি লুকিয়ে ফেলার জন্য নিচে সোয়াইপ করুন</string>
-    <string name="queue">কিউ</string>
+    <string name="showcase3">1. Youtube এ এই গানটি অনুসন্ধান করুন \n  2. ইকুয়ালাইজার \n   3. মগান বিশদ সম্পাদনা করুন</string>
+    <string name="action_sort">গানগুলি বাছাই করুন</string>
 </resources>

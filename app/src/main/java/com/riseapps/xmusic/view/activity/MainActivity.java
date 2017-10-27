@@ -24,7 +24,6 @@ import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -38,8 +37,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
@@ -49,6 +46,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -74,15 +72,12 @@ import com.riseapps.xmusic.component.SharedPreferenceSingelton;
 import com.riseapps.xmusic.component.ThemeSelector;
 import com.riseapps.xmusic.executor.FilePathFromId;
 import com.riseapps.xmusic.executor.Interfaces.AdapterToActivityListener;
-import com.riseapps.xmusic.executor.Interfaces.OnStartDragListener;
 import com.riseapps.xmusic.executor.Interfaces.PlaylistRefreshListener;
 import com.riseapps.xmusic.executor.Interfaces.SongRefreshListener;
 import com.riseapps.xmusic.executor.MyApplication;
 import com.riseapps.xmusic.executor.PlaySongExec;
-import com.riseapps.xmusic.executor.RecycleViewAdapters.QueueAdapter;
 import com.riseapps.xmusic.model.MusicService;
 import com.riseapps.xmusic.model.Pojo.Song;
-import com.riseapps.xmusic.utils.ItemTouchHelperCallback;
 import com.riseapps.xmusic.utils.OnSwipeTouchListener;
 import com.riseapps.xmusic.utils.WaveHelper;
 import com.riseapps.xmusic.utils.ZoomOutPageTransformer;
@@ -106,7 +101,7 @@ import me.toptas.fancyshowcase.FancyShowCaseQueue;
 import me.toptas.fancyshowcase.FancyShowCaseView;
 import me.toptas.fancyshowcase.FocusShape;
 
-public class MainActivity extends AppCompatActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AdapterToActivityListener, OnStartDragListener {
+public class MainActivity extends AppCompatActivity implements ScrollingFragment.OnFragmentInteractionListener, PlaylistFragment.OnFragmentInteractionListener, AdapterToActivityListener {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -151,12 +146,9 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
     private SharedPreferenceSingelton sharedPreferenceSingleton;
     public static WaveView waveView;
 
-    public ArrayList<Song> completeList;
+    public ArrayList<Song> completeList=new ArrayList<>();
     Toolbar searchBar;
     AutoCompleteTextView autoComplete;
-    RecyclerView recyclerView;
-    QueueAdapter queueAdapter;
-    private CoordinatorLayout queue;
 
     private View.OnClickListener togglePlayBtn = new View.OnClickListener() {
         @Override
@@ -455,7 +447,6 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         mainPlayer = (ConstraintLayout) findViewById(R.id.player);
         equalizerView = (EqualizerView) findViewById(R.id.equalizer_view);
         shuffle_play = (FloatingActionButton) findViewById(R.id.shuffle_songs);
-        queue = findViewById(R.id.queue_layout);
         shuffle_play.setOnClickListener(togglePlayBtn);
         play_pause.setOnClickListener(togglePlayBtn);
         play_pause_mini.setOnClickListener(togglePlayBtn);
@@ -505,10 +496,6 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                 }
             }, 1000);
         }
-
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void toolbarsInitiallize() {
@@ -526,12 +513,57 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.action_queue) {
-                    if (queue.getVisibility() == View.VISIBLE) {
-                        hideQueue();
-                    } else {
-                        showQueue();
+                if (item.getItemId() == R.id.action_sort) {
+                    dialog = new Dialog(MainActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.sorting_dialog);
+                    try {
+                        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                    } catch (Exception e) {
                     }
+                    Button name=dialog.findViewById(R.id.sort_name);
+                    Button duration=dialog.findViewById(R.id.sort_duration);
+                    Button date=dialog.findViewById(R.id.sort_added);
+
+                    switch (sharedPreferenceSingleton.getSavedInt(MainActivity.this,"Sort_by")){
+                        case 0:
+                            name.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.colorAccent));
+                            break;
+                        case 1:
+                            duration.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.colorAccent));
+                            break;
+                        case 2:
+                            date.setTextColor(ContextCompat.getColor(MainActivity.this,R.color.colorAccent));
+                            break;
+                    }
+                    dialog.show();
+                    name.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            sharedPreferenceSingleton.saveAs(MainActivity.this,"Sort_by",0);
+                            dialog.dismiss();
+                            Toast.makeText(MainActivity.this, "Restart App to view Changes", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    duration.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            sharedPreferenceSingleton.saveAs(MainActivity.this,"Sort_by",1);
+                            dialog.dismiss();
+                            Toast.makeText(MainActivity.this, "Restart App to view Changes", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                    date.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            sharedPreferenceSingleton.saveAs(MainActivity.this,"Sort_by",2);
+                            dialog.dismiss();
+                            Toast.makeText(MainActivity.this, "Restart App to view Changes", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 } else if (item.getItemId() == R.id.favourites) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -620,12 +652,6 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
                     musicService.setSongs(selectedSongs);
                     removeContentSelection();
                     new PlaySongExec(MainActivity.this, 0).startPlaying();
-                } else if (item.getItemId() == R.id.add_to_queue) {
-                    for (Song song : selectedSongs) {
-                        addToQueue(song);
-                    }
-                    removeContentSelection();
-                    Toast.makeText(MainActivity.this, "Added to Queue", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
@@ -743,8 +769,6 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         } else {
             if (mainPlayer.getVisibility() == View.VISIBLE) {
                 hideMainPlayer();
-            } else if (queue.getVisibility() == View.VISIBLE) {
-                hideQueue();
             } else {
                 if (musicPlaying) {
                     if (getSupportFragmentManager().getBackStackEntryCount() > 0)
@@ -777,43 +801,12 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
 
     public void setSongs(ArrayList<Song> songList) {
         this.songList = songList;
-        queueAdapter = new QueueAdapter(this, songList, recyclerView);
-        recyclerView.setAdapter(queueAdapter);
-        ItemTouchHelper.Callback callback =
-                new ItemTouchHelperCallback(queueAdapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     public void setCompleteSongList(ArrayList<Song> presetList) {
         completeList = presetList;
         setSongs(completeList);
         titles = getTitles();
-    }
-
-    public void addToQueue(Song song) {
-        songList.add(song);
-        queueAdapter.notifyItemInserted(songList.size() - 1);
-    }
-
-    void showQueue() {
-        shuffle_play.hide();
-        queue.setVisibility(View.VISIBLE);
-        tabLayout.setVisibility(View.GONE);
-        mViewPager.setVisibility(View.GONE);
-        miniPlayer.setVisibility(View.GONE);
-        mToolbar.setVisibility(View.GONE);
-        queue.startAnimation(AnimationUtils.loadAnimation(this, R.anim.real_fade_in));
-    }
-
-    void hideQueue() {
-        queue.startAnimation(AnimationUtils.loadAnimation(this, R.anim.real_fade_out));
-        queue.setVisibility(View.GONE);
-        miniPlayer.setVisibility(View.VISIBLE);
-        mViewPager.setVisibility(View.VISIBLE);
-        shuffle_play.show();
-        tabLayout.setVisibility(View.VISIBLE);
-        mToolbar.setVisibility(View.VISIBLE);
     }
 
     void showMainPlayer() {
@@ -835,10 +828,10 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         mainPlayer.startAnimation(new CustomAnimation().slide_up(MainActivity.this));
         if (!sharedPreferenceSingleton.getSavedBoolean(MainActivity.this, "sequence2")) {
             fancyShowCaseView1 = new FancyShowCaseView.Builder(this)
-                    .focusOn(album_art)
+                    .focusOn(toolbarPlayer)
                     .title(getString(R.string.showcase3))
                     .closeOnTouch(true)
-                    .focusShape(FocusShape.CIRCLE)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
                     .titleGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL)
                     .titleSize((int) getResources().getDimension(R.dimen.size8dp), 1)
                     .backgroundColor(Color.parseColor("#F221242B"))
@@ -1043,11 +1036,6 @@ public class MainActivity extends AppCompatActivity implements ScrollingFragment
         miniPlayer.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out));
         miniPlayer.setVisibility(View.GONE);
         shuffle_play.hide();
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
     }
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {

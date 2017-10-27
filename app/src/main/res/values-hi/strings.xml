@@ -77,9 +77,8 @@
     <string name="album">एल्बम</string>
     <string name="folder">फ़ोल्डर</string>
     <string name="action_play_now">त्वरित प्लेलिस्ट</string>
-    <string name="add_to_queue">क़तार में जोड़ें</string>
-    <string name="queue">कतार</string>
     <string name="showcase1">पकड़ो और कई पटरियों को चुनें - कतार में जोड़ें। 2. गीत हटाएं 3. प्लेलिस्ट में जोड़ें। 4. चयनित गीतों को केवल शुरू करें</string>
     <string name="showcase2">1. मुख्य प्लेयर स्क्रीन को खोलने के लिए मिनी प्लेयर पर टैप करें 2. गीत बदलने के लिए स्वाइप करें।</string>
-    <string name="showcase3">एल्बम कला पर दाएं / बायां स्वाइप करें या डबल टैप करें</string>
+    <string name="showcase3">1.यूट्यूब पर गीत खोज \n2.तुल्यकारक \n3.गीत विवरण संपादित करे</string>
+    <string name="action_sort">गीतों को सॉर्ट करें</string>
 </resources>

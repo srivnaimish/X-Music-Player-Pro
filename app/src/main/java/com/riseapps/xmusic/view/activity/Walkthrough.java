@@ -92,9 +92,9 @@ public class Walkthrough extends AppCompatActivity implements LoaderManager.Load
         @Override
         public void onPageSelected(int position) {
             for (int i = 0; i < 6; i++) {
-                findViewById(AppConstants.buttonId[i]).setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
+                findViewById(AppConstants.walkthroughbuttonId[i]).setBackground(getResources().getDrawable(R.drawable.walkthrough_unselected));
             }
-            findViewById(AppConstants.buttonId[position]).setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
+            findViewById(AppConstants.walkthroughbuttonId[position]).setBackground(getResources().getDrawable(R.drawable.walkthrough_selected));
         }
 
         @Override

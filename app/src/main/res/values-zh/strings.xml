@@ -84,9 +84,8 @@
     <string name="album">专辑</string>
     <string name="folder">文件夹</string>
     <string name="action_play_now">快速播放列表</string>
-    <string name="add_to_queue">添加到队列</string>
-    <string name="queue">队列</string>
     <string name="showcase1">按住并选择多个曲目 - 1.添加到队列 2.删除歌曲 3.添加到播放列表。   4.仅播放选定的曲目。</string>
     <string name="showcase2">1.点击迷你播放器打开主播放器屏幕2.滑动以更改歌曲。</string>
-    <string name="showcase3">向右/向左輕掃或者雙擊專輯封面</string>
+    <string name="showcase3">1.在 YouTube 上搜尋這首歌曲\n2.等化器\n3.编辑歌曲详细信息</string>
+    <string name="action_sort">排序歌曲</string>
 </resources>

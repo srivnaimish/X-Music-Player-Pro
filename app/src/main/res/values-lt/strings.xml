@@ -12,7 +12,7 @@
     <!-- MENU ITEMS -->
     <string name="action_favourites">Mėgstamiausios</string>
     <string name="action_playlist">Įtraukti į grojaraštį</string>
-    <string name="action_youtube">Susiraskite dainą kurios norite pasiklausyti Youtube tinklapyje</string>
+    <string name="action_youtube">Ieškoti šios dainos Youtube</string>
     <string name="action_search">Ieškokite dainos</string>
     <!--MAINACTIVITY-->
     <string name="TAB1">Grojaraštos</string>
@@ -84,9 +84,8 @@
     <string name="action_edit">Redaguoti daina informaciją</string>
     <string name="folder">Aplankai</string>
     <string name="action_play_now">Greitas grojaraštis</string>
-    <string name="add_to_queue">Pridėti į eilę</string>
-    <string name="queue">eilė</string>
     <string name="showcase1">Laikykite ir pasirinkite kelis takelius - 1. Įtraukti į eilę. 2. Ištrinti dainas. 3. Pridėkite prie grojaraščių.   4. Groti tik pasirinktus takelius.</string>
     <string name="showcase2">1. Bakstelėkite mini grotuvą, kad atidarytumėte pagrindinio grotuvo ekraną 2. Braukite, kad pakeistumėte dainą.</string>
-    <string name="showcase3">Braukite dešinėn/Kairėn arba du kartus paspauskite ant Albumo</string>
+    <string name="showcase3">1.Ieškoti šios dainos Youtube \n2.Ekvalaizeris \n3.Redaguoti daina informaciją </string>
+    <string name="action_sort">Rūšiuoti dainas</string>
 </resources>

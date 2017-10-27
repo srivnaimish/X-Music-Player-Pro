@@ -198,10 +198,7 @@ public class AppSettingActivity extends AppCompatActivity {
                 }
                 dialog.dismiss();
                 finish();
-                Intent intent = IntentCompat.makeMainActivity(new ComponentName(
-                        AppSettingActivity.this, Splash2Activity.class));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                restartApp();
             }
         };
         dialog.findViewById(R.id.harry).setOnClickListener(clickListener);

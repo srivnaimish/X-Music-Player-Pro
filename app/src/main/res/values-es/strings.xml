@@ -84,8 +84,6 @@
     <string name="album">Álbum</string>
     <string name="folder">Carpetas</string>
     <string name="action_play_now">Lista de reproducción rápida</string>
-    <string name="add_to_queue">Añadir a la cola</string>
-    <string name="queue">Cola de música</string>
     <string name="showcase1">Mantenga presionada y seleccione varias canciones para-\n
     1.Añadir a la cola\n
     2.Eliminar canciones\n
@@ -95,6 +93,7 @@
     <string name="showcase2">1. Toque en Mini Player para abrir el reproductor principal.\n
     2. Desliza para cambiar la canción
     </string>
-    <string name="showcase3">Desliza  Derecha/Izquierda o Doble Toque para Álbum de Arte</string>
+    <string name="showcase3">1. Buscar la canción en YouTube\n 2.Ecualizador \n 3.Editar detalles de la canción</string>
+    <string name="action_sort">Ordenar canciones</string>
 
 </resources>

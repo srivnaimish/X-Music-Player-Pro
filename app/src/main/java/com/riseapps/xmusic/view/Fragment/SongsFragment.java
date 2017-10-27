@@ -44,6 +44,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     private static final int SONG_LOADER = 1;
     ImageView imageView;
     private String selection = "";
+    private SharedPreferenceSingelton sharedPreferenceSingleton=new SharedPreferenceSingelton();
 
     public static SongsFragment newInstance() {
         return new SongsFragment();
@@ -110,18 +111,31 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         initiallizeMultipleNames();
+        String order="";
+        switch (sharedPreferenceSingleton.getSavedInt(getContext(),"Sort_by")){
+            case 0:
+                order=MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC";
+                break;
+            case 1:
+                order=MediaStore.Audio.Media.DURATION + " COLLATE NOCASE ASC";
+                break;
+            case 2:
+                order=MediaStore.Audio.Media.DATE_ADDED + " COLLATE NOCASE DESC";
+                break;
+        }
+
         if (selection != null)
-            return new CursorLoader(getContext(), musicUri, null, selection, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
+            return new CursorLoader(getContext(), musicUri, null, selection, null, order);
         else
-            return new CursorLoader(getContext(), musicUri, null, null, null, MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC");
+            return new CursorLoader(getContext(), musicUri, null, null, null, order);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, final Cursor data) {
+        songsAdapter.swapCursor(data);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                songsAdapter.swapCursor(data);
                 songsList = songsAdapter.songsList;
                 setPlayingFromThisFragment();
                 ((MainActivity) getActivity()).setCompleteSongList(songsList);
@@ -141,7 +155,7 @@ public class SongsFragment extends Fragment implements LoaderManager.LoaderCallb
         songsAdapter.setMainListPlayingListener(new MainListPlayingListener() {
             @Override
             public void onPlayingFromTrackList() {
-                if (((MainActivity) getActivity()).getSongs() != songsList) {
+                if (((MainActivity) getActivity()).getSongs().size() != songsList.size()) {
                     ((MainActivity) getActivity()).setSongs(songsList);
                     ((MainActivity) getActivity()).getMusicService().setSongs(songsList);
                 }
